@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SoloCRM</title>
+    
+    <!-- Dependencies (Using CDNs for functionality) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+                400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              }
+            },
+            animation: { 'slide-up': 'slideUp 0.3s ease-out forwards', 'fade-in': 'fadeIn 0.3s ease-out forwards' },
+            keyframes: {
+              slideUp: { '0%': { transform: 'translateY(100%)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+              fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      /* Hide Scrollbars */
+      ::-webkit-scrollbar { display: none; }
+      * { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      body { 
+          background-color: #f8fafc; 
+          -webkit-tap-highlight-color: transparent; 
+          overscroll-behavior-y: none; 
+          font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      }
+
+      /* SortableJS Classes */
+      .sortable-ghost { opacity: 0.4; background: #eff6ff; border: 2px dashed #3b82f6; }
+      
+      /* Disable selection globally during active drag */
+      body.dragging-active, body.dragging-active * {
+          user-select: none !important;
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+      }
+      
+      /* Dragging visual feedback */
+      .sortable-drag { 
+          cursor: grabbing; 
+          opacity: 1; 
+          background: white; 
+          transform: rotate(3deg) scale(1.02); 
+          box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2) !important; 
+          z-index: 9999 !important; 
+      }
+      
+      /* Snap scrolling for Kanban */
+      .snap-x-mandatory {
+          scroll-snap-type: x mandatory;
+      }
+      .snap-center {
+          scroll-snap-align: center;
+          scroll-snap-stop: always; /* Ensure we stop exactly on a column */
+      }
+
+      /* Disable snap and smoothing during drag to allow JS auto-scroll */
+      .no-snap {
+          scroll-snap-type: none !important;
+          scroll-behavior: auto !important;
+      }
+      
+      .chat-bubble { animation: fadeIn 0.3s ease-out forwards; }
+      
+      .sync-spin { animation: spin 2s linear infinite; }
+      @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+
+    <div id="app" class="flex flex-col h-screen">
+        
+        <!-- Header -->
+        <header class="h-20 md:h-24 bg-slate-50/90 backdrop-blur-md flex items-center justify-between px-4 md:px-8 shrink-0 z-10 sticky top-0 border-b border-slate-100 transition-all">
+            <div class="flex items-center">
+                <img src="Logo2.png" class="h-auto max-h-[45px] md:max-h-[60px] w-auto" alt="NextGee">
+            </div>
+            
+            <div class="flex items-center gap-3 md:gap-4">
+                <!-- Sync Button -->
+                <button onclick="fetchLeadsFromSheets()" id="sync-btn" class="flex items-center gap-2 px-3 py-2 text-xs font-bold bg-white text-blue-600 border border-blue-100 rounded-lg hover:bg-blue-50 transition-all shadow-sm">
+                    <i data-lucide="refresh-cw" id="sync-icon" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Refresh Data</span>
+                </button>
+                <button onclick="toggleMenu()" class="p-2 hover:bg-slate-100 rounded-xl transition-all active:scale-90 flex md:hidden">
+                    <i data-lucide="menu" class="w-6 h-6 text-slate-700"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar (Desktop) -->
+        <aside class="hidden md:flex flex-col fixed left-0 top-24 bottom-0 w-64 bg-slate-50 border-r border-slate-200/50 p-4 z-20">
+            <div class="space-y-1 flex-1 animate-fade-in" id="desktop-nav">
+                <!-- Nav items rendered by JS -->
+            </div>
+            <!-- Profile Section -->
+            <div id="desktop-profile" class="mt-auto border-t border-slate-200/50 pt-4 pb-2 px-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100/60 rounded-xl transition-all" onclick="openProfileModal()">
+                <img src="CRM USER LOGO.jpg" id="profile-avatar-img" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm shrink-0" alt="Profile">
+                <div class="overflow-hidden">
+                    <p id="profile-name-text" class="text-sm font-bold text-slate-700 truncate">Admin User</p>
+                    <p id="profile-role-text" class="text-[10px] font-semibold text-slate-400 uppercase truncate">Administrator</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth md:ml-64">
+            <!-- Content rendered by JS -->
+        </main>
+
+        <!-- Bottom Navigation (Mobile) -->
+        <nav class="md:hidden h-16 bg-white border-t border-slate-200 flex justify-around items-center shrink-0 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)] z-30" id="mobile-nav">
+            <!-- Nav items rendered by JS -->
+        </nav>
+
+        <!-- Drawer Menu (Mobile & More) -->
+        <div id="side-menu" class="fixed inset-0 z-[60] hidden overflow-hidden pointer-events-none">
+            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm pointer-events-auto transition-opacity duration-300 opacity-0" id="menu-overlay" onclick="toggleMenu()"></div>
+            <div class="absolute top-0 right-0 h-full w-72 bg-white shadow-2xl pointer-events-auto transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col" id="menu-content">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
+                    <div>
+                        <h3 class="font-black text-xl text-slate-800 tracking-tight">Workspace</h3>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5"></p>
+                    </div>
+                    <button onclick="toggleMenu()" class="p-2 hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-full transition-all active:scale-95"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="flex-1 py-6 px-4 space-y-6 overflow-y-auto" id="side-menu-items">
+                    <!-- Items injected by JS -->
+                </div>
+                <div class="p-6 border-t border-slate-150 bg-slate-50/50 flex items-center gap-3 cursor-pointer hover:bg-slate-100/60 rounded-xl transition-all" onclick="toggleMenu(); openProfileModal()">
+                    <img src="CRM USER LOGO.jpg" id="profile-avatar-img-mobile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm shrink-0" alt="Profile">
+                    <div class="overflow-hidden text-left flex-1">
+                        <p id="profile-name-text-mobile" class="text-sm font-bold text-slate-700 truncate">Admin User</p>
+                        <p id="profile-role-text-mobile" class="text-[10px] font-semibold text-slate-400 uppercase truncate">Administrator</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Agent Floating Button -->
+    <button onclick="openAgentModal()" class="fixed bottom-24 md:bottom-10 left-4 md:left-[280px] bg-slate-900 text-white p-3 rounded-full shadow-xl hover:bg-slate-800 transition-transform active:scale-95 z-40 flex items-center justify-center group">
+        <i data-lucide="message-square" class="w-6 h-6"></i>
+    </button>
+
+    <!-- MODALS -->
+
+    <!-- Agent Modal -->
+    <div id="agent-modal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="closeModal('agent-modal')"></div>
+        <div class="relative bg-white w-full md:max-w-md md:rounded-2xl rounded-t-3xl shadow-2xl flex flex-col animate-slide-up h-[80vh] md:h-[70vh]">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-50 bg-slate-50 rounded-t-3xl md:rounded-t-2xl">
+                <div class="flex items-center gap-3">
+                    <img src="jerry.jpeg" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" alt="Jerry">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Jerry</h2>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Online</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="closeModal('agent-modal')" class="p-1.5 bg-white hover:bg-red-50 text-gray-500 hover:text-red-600 rounded-full border border-gray-100">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50" id="agent-chat-area"></div>
+
+            <div class="p-4 bg-white border-t border-gray-100 pb-safe">
+                <div class="flex items-center justify-between mb-3">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Suggested Actions:</p>
+                    <button onclick="resetAgentOptions()" class="text-[10px] text-blue-600 font-bold hover:underline">Main Menu</button>
+                </div>
+                <div class="flex flex-wrap gap-2" id="agent-options"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lead Details Modal -->
+    <div id="lead-modal" class="fixed inset-0 z-50 flex items-end md:items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity" onclick="closeModal('lead-modal')"></div>
+        <div class="relative bg-white w-full md:max-w-lg md:rounded-2xl rounded-t-3xl shadow-2xl flex flex-col animate-slide-up h-[92vh] md:h-auto md:max-h-[85vh]">
+            <div class="md:hidden w-full flex justify-center pt-3 pb-1" onclick="closeModal('lead-modal')">
+                <div class="w-12 h-1.5 bg-gray-200 rounded-full"></div>
+            </div>
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-50">
+                <h2 class="text-xl font-bold text-gray-800 tracking-tight">Lead Profile</h2>
+                <button onclick="closeModal('lead-modal')" class="p-2 bg-gray-50 hover:bg-blue-50 text-gray-500 hover:text-blue-600 rounded-full transition-colors">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="overflow-y-auto p-6 flex-1 bg-white" id="lead-modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Profile Details Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity" onclick="closeModal('profile-modal')"></div>
+        <div class="relative bg-white w-full max-w-sm rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center animate-slide-up mx-4 border border-slate-100">
+            <button onclick="closeModal('profile-modal')" class="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="w-32 h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-slate-50 shadow-xl mb-6 relative">
+                <img src="CRM USER LOGO.jpg" id="modal-avatar-img" class="w-full h-full object-cover" alt="Profile Avatar">
+            </div>
+            
+            <span id="modal-profile-role" class="text-xs font-extrabold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full mb-2">Administrator</span>
+            <h3 id="modal-profile-name" class="text-2xl font-black text-slate-800 tracking-tight leading-none mb-1">Admin User</h3>
+            <p id="modal-profile-email" class="text-slate-400 text-sm font-medium mb-8">admin@solocrm.com</p>
+            
+            <button onclick="handleLogout()" class="w-full bg-red-600 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-100 hover:bg-red-700 active:scale-95 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-xs">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Lead Modal -->
+    <div id="add-modal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+        <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity" onclick="closeModal('add-modal')"></div>
+        <div class="relative bg-white w-full md:max-w-lg md:rounded-2xl rounded-t-3xl shadow-2xl flex flex-col animate-slide-up h-auto pb-6">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-50">
+                <h2 class="text-xl font-bold text-gray-800">New Lead</h2>
+                <button onclick="closeModal('add-modal')" class="p-2 bg-gray-50 hover:bg-red-50 text-gray-500 hover:text-red-600 rounded-full">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <div class="flex border-b border-gray-100 px-6">
+                <button id="tab-manual" class="flex-1 py-4 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition-colors" onclick="switchTab('manual')">Manual Entry</button>
+                <button id="tab-import" class="flex-1 py-4 text-sm font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-600 transition-colors" onclick="switchTab('import')">Import Excel</button>
+            </div>
+
+            <div class="p-6">
+                <!-- Manual Form -->
+                <form id="add-lead-form" class="space-y-4">
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-3 top-3.5 text-slate-400 w-4 h-4"></i>
+                        <input name="name" required class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-100 outline-none" placeholder="Full Name">
+                    </div>
+                    <div class="relative">
+                        <i data-lucide="briefcase" class="absolute left-3 top-3.5 text-slate-400 w-4 h-4"></i>
+                        <input name="company" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-100 outline-none" placeholder="Company Name">
+                    </div>
+                    <div class="relative">
+                        <i data-lucide="tag" class="absolute left-3 top-3.5 text-slate-400 w-4 h-4"></i>
+                        <select name="category" id="cat-select" required class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-10 py-3 focus:ring-2 focus:ring-blue-100 outline-none appearance-none cursor-pointer font-bold text-slate-700">
+                            <!-- Categories populated by JS -->
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-3 top-3.5 text-slate-400 w-4 h-4 pointer-events-none"></i>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <i data-lucide="phone" class="absolute left-3 top-3.5 text-slate-400 w-4 h-4"></i>
+                            <input name="phone" type="tel" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-100 outline-none" placeholder="Phone">
+                        </div>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-3 top-3.5 text-slate-400 w-4 h-4"></i>
+                            <input name="email" type="email" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-100 outline-none" placeholder="Email">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 mt-2 shadow-lg shadow-blue-200 flex justify-center items-center gap-2 transition-all">
+                        <i data-lucide="user-plus" class="w-5 h-5"></i> Create Lead
+                    </button>
+                </form>
+
+                <div id="import-form" class="hidden space-y-5 animate-fade-in">
+                    <div class="border-2 border-dashed border-blue-200 rounded-2xl p-8 text-center bg-blue-50/50 relative group transition-colors hover:bg-blue-50">
+                        <input type="file" id="excel-upload" accept=".xlsx, .xls, .csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleFileUpload(this)">
+                        <div class="pointer-events-none">
+                            <div class="bg-white w-16 h-16 rounded-full shadow-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="upload-cloud" class="w-8 h-8 text-blue-500"></i>
+                            </div>
+                            <p class="text-base font-bold text-slate-800">Click to Upload Excel</p>
+                            <p class="text-xs text-slate-500 mt-2">Supports .xlsx, .xls, .csv</p>
+                        </div>
+                    </div>
+                    
+                    <div id="import-preview" class="hidden bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
+                                    <i data-lucide="file-spreadsheet"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm">File Ready</p>
+                                    <p class="text-xs text-slate-500">Found <span id="import-count" class="font-bold text-emerald-600">0</span> leads</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="confirmImport()" class="w-full bg-emerald-500 text-white font-bold py-3 rounded-xl hover:bg-emerald-600 shadow-lg shadow-emerald-200 flex items-center justify-center gap-2 transition-transform active:scale-95">
+                            <i data-lucide="check-circle" class="w-5 h-5"></i> Import Leads
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        const GAS_DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyyKzL8oVGCkrTaTZRXDA2zoaoY6MzpYAbc8RFEwbx-rU6ac_NQA2G9SG-VKKCW6J1F/exec";
+
+        const LeadStatus = {
+            NEW: 'New', CONTACTED: 'Contacted', FOLLOW_UP: 'Follow-Up', 
+            INTERESTED: 'Interested', WON: 'Won', LOST: 'Lost'
+        };
+        const InteractionType = { CALL: 'Call', WHATSAPP: 'WhatsApp', EMAIL: 'Email', NOTE: 'Note' };
+        
+        const COLUMNS = [
+            { id: LeadStatus.NEW, title: 'New' }, { id: LeadStatus.CONTACTED, title: 'Contacted' },
+            { id: LeadStatus.FOLLOW_UP, title: 'Follow Up' }, { id: LeadStatus.INTERESTED, title: 'Interested' },
+            { id: LeadStatus.WON, title: 'Won' }, { id: LeadStatus.LOST, title: 'Lost' }
+        ];
+
+        class Database {
+            constructor() {
+                this.KEYS = { 
+                    LEADS: 'solocrm_leads', 
+                    TASKS: 'solocrm_tasks', 
+                    INTERACTIONS: 'solocrm_interactions', 
+                    CLIENTS: 'solocrm_clients', 
+                    CATEGORIES: 'solocrm_categories',
+                    FOLLOWUPS: 'solocrm_followups',
+                    TEMPLATES: 'solocrm_templates'
+                };
+                this.init();
+            }
+            init() {
+                if (!localStorage.getItem(this.KEYS.LEADS)) localStorage.setItem(this.KEYS.LEADS, JSON.stringify([]));
+                if (!localStorage.getItem(this.KEYS.TASKS)) localStorage.setItem(this.KEYS.TASKS, JSON.stringify([]));
+                if (!localStorage.getItem(this.KEYS.INTERACTIONS)) localStorage.setItem(this.KEYS.INTERACTIONS, JSON.stringify([]));
+                if (!localStorage.getItem(this.KEYS.CLIENTS)) localStorage.setItem(this.KEYS.CLIENTS, JSON.stringify([]));
+                if (!localStorage.getItem(this.KEYS.FOLLOWUPS)) localStorage.setItem(this.KEYS.FOLLOWUPS, JSON.stringify([]));
+                
+                if (!localStorage.getItem(this.KEYS.TEMPLATES)) {
+                    const defaultTemplates = [
+                        { id: 'bday', name: 'Birthday Wish', content: 'Happy Birthday {client}! Hope you have a fantastic day ahead.' },
+                        { id: 'fu-2m', name: '2 Month Follow-up', content: 'Hi {client}, it has been 2 months since our project for {company} finished. Just wanted to check if everything is running smoothly!' },
+                        { id: 'anni', name: 'Anniversary Message', content: 'Happy 1 Year Anniversary {client}! It has been exactly one year since we completed your project. Thank you for your continued trust.' }
+                    ];
+                    localStorage.setItem(this.KEYS.TEMPLATES, JSON.stringify(defaultTemplates));
+                }
+
+                if (!localStorage.getItem(this.KEYS.CATEGORIES)) {
+                    const defaultCats = [
+                        { id: 'Education', color: '#10b981' },
+                        { id: 'Packaging', color: '#3b82f6' },
+                        { id: 'Food Business', color: '#f59e0b' }
+                    ];
+                    localStorage.setItem(this.KEYS.CATEGORIES, JSON.stringify(defaultCats));
+                } else {
+                    // Cleanup unwanted categories if they exist (Inbound, Outbound, Referral)
+                    let cats = this.load(this.KEYS.CATEGORIES);
+                    const unwanted = ['Inbound', 'Outbound', 'Referral'];
+                    const filtered = cats.filter(c => !unwanted.includes(c.id));
+                    if (filtered.length !== cats.length) {
+                        // If we removed something, ensure the 3 required ones exist
+                        const required = [
+                            { id: 'Education', color: '#10b981' },
+                            { id: 'Packaging', color: '#3b82f6' },
+                            { id: 'Food Business', color: '#f59e0b' }
+                        ];
+                        required.forEach(r => {
+                            if (!filtered.find(f => f.id === r.id)) filtered.push(r);
+                        });
+                        this.saveCategories(filtered);
+                    }
+                }
+            }
+            load(key) { 
+                try {
+                    return JSON.parse(localStorage.getItem(key) || '[]'); 
+                } catch(e) {
+                    console.error("Storage load error", key, e);
+                    return [];
+                }
+            }
+            save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+            getLeads() { return this.load(this.KEYS.LEADS); }
+            saveLeads(leads) { this.save(this.KEYS.LEADS, leads); }
+            getTasks() { return this.load(this.KEYS.TASKS); }
+            saveTasks(tasks) { this.save(this.KEYS.TASKS, tasks); }
+            getInteractions() { return this.load(this.KEYS.INTERACTIONS); }
+            getClients() { return this.load(this.KEYS.CLIENTS); }
+            getFollowUps() { return this.load(this.KEYS.FOLLOWUPS); }
+            getTemplates() { return this.load(this.KEYS.TEMPLATES); }
+            getCategories() {
+                return [
+                    { id: 'Education', color: '#10b981' },
+                    { id: 'Packaging', color: '#3b82f6' },
+                    { id: 'Food Business', color: '#f59e0b' }
+                ];
+            }
+            saveCategories(cats) { this.save(this.KEYS.CATEGORIES, cats); }
+            saveFollowUps(data) { this.save(this.KEYS.FOLLOWUPS, data); }
+            saveTemplates(data) { this.save(this.KEYS.TEMPLATES, data); }
+            addCategory(cat) { 
+                const cats = this.getCategories(); 
+                if(!cats.find(c => c.id === cat.id)) {
+                    cats.push(cat); 
+                    this.saveCategories(cats); 
+                }
+            }
+            addInteraction(interaction) {
+                const ints = this.getInteractions(); ints.push(interaction); this.save(this.KEYS.INTERACTIONS, ints);
+                const leads = this.getLeads(); const lead = leads.find(l => l.id === interaction.leadId);
+                if (lead) { 
+                    lead.lastInteraction = interaction.timestamp; 
+                    this.saveLeads(leads); 
+                    autoSync();
+                }
+            }
+            addLead(lead) { 
+                const leads = this.getLeads(); 
+                leads.push(lead); 
+                this.saveLeads(leads); 
+                autoSync();
+            }
+            deleteLead(id) { 
+                const leads = this.getLeads().filter(l => l.id !== id); 
+                this.saveLeads(leads); 
+                autoSync();
+            }
+            createClient(lead) {
+                const clients = this.load(this.KEYS.CLIENTS); 
+                if (clients.find(c => c.leadId === lead.id)) return;
+                
+                const client = { 
+                    ...lead, // Copy all lead data (full row copy)
+                    id: lead.id, // Match the ID
+                    stages: [
+                        { name: "Question Stage", date: "", completed: false },
+                        { name: "Requirement Gathering Stage", date: "", completed: false },
+                        { name: "Development Stage", date: "", completed: false },
+                        { name: "Delivery Stage", date: "", completed: false },
+                        { name: "Payment & Activation Stage", date: "", completed: false },
+                        { name: "Aftercare & Retention Stage", date: "", completed: false }
+                    ],
+                    crmStatus: 'Active',
+                    convertedAt: Date.now()
+                };
+                clients.push(client);
+                this.save(this.KEYS.CLIENTS, clients);
+                autoSync();
+            }
+        }
+        const db = new Database();
+
+        async function fetchLeadsFromSheets(silent = false) {
+            if (!GAS_DEPLOY_URL || GAS_DEPLOY_URL.includes("PASTE_YOUR")) return;
+            const icon = document.getElementById('sync-icon');
+            if(icon && !silent) icon.classList.add('sync-spin');
+            
+            try {
+                // 1. Sync Leads
+                const leadRes = await fetch(GAS_DEPLOY_URL + "?sheet=Leads");
+                const leads = JSON.parse(await leadRes.text());
+                if (Array.isArray(leads)) db.saveLeads(leads);
+
+                // 2. Sync CRM (Clients)
+                const clientRes = await fetch(GAS_DEPLOY_URL + "?sheet=CRM");
+                const cloudClients = JSON.parse(await clientRes.text());
+                if (Array.isArray(cloudClients)) {
+                    const restoredClients = cloudClients.map(unflattenClient);
+                    db.save(db.KEYS.CLIENTS, restoredClients);
+                }
+
+                // 3. Sync FollowUps (Optional/Internal)
+                try {
+                    const fuRes = await fetch(GAS_DEPLOY_URL + "?sheet=FollowUps");
+                    const fus = JSON.parse(await fuRes.text());
+                    if (Array.isArray(fus)) db.saveFollowUps(fus);
+                } catch(e) {}
+
+                // 4. Sync Templates (Optional/Internal)
+                try {
+                    const tRes = await fetch(GAS_DEPLOY_URL + "?sheet=Templates");
+                    const ts = JSON.parse(await tRes.text());
+                    if (Array.isArray(ts)) db.saveTemplates(ts);
+                } catch(e) {}
+
+                if (!silent) alert(`Sync Successful!`);
+                handleRoute(); 
+            } catch (e) {
+                console.error("Cloud Sync Error:", e);
+                if (!silent) alert("Sync partially completed or failed. Check connection.");
+            } finally {
+                if(icon && !silent) icon.classList.remove('sync-spin');
+            }
+        }
+
+        function unflattenClient(c) {
+            const stages = [];
+            for (let i = 1; i <= 6; i++) {
+                if (c[`stage_${i}_name`]) {
+                    stages.push({
+                        name: c[`stage_${i}_name`],
+                        date: c[`stage_${i}_date`] || "",
+                        completed: String(c[`stage_${i}_completed`]).toLowerCase() === 'true'
+                    });
+                }
+            }
+            if (stages.length === 0) {
+                // Default stages fallback
+                return { ...c, stages: [
+                    { name: "Question Stage", date: "", completed: false },
+                    { name: "Requirement Gathering Stage", date: "", completed: false },
+                    { name: "Development Stage", date: "", completed: false },
+                    { name: "Delivery Stage", date: "", completed: false },
+                    { name: "Payment & Activation Stage", date: "", completed: false },
+                    { name: "Aftercare & Retention Stage", date: "", completed: false }
+                ]};
+            }
+            return { ...c, stages };
+        }
+
+        let syncTimeout = null;
+        function autoSync() {
+            if (syncTimeout) clearTimeout(syncTimeout);
+            syncTimeout = setTimeout(() => {
+                syncLeadsToSheets(true);
+            }, 3000); // 3 second delay to batch rapid changes
+        }
+
+        async function syncLeadsToSheets(silent = false) {
+            if (!GAS_DEPLOY_URL || GAS_DEPLOY_URL.includes("PASTE_YOUR")) return;
+            const icon = document.getElementById('sync-icon');
+            if(icon && !silent) icon.classList.add('sync-spin');
+            try {
+                const leads = db.getLeads();
+                const interactions = db.getInteractions();
+                const leadData = leads.map(l => {
+                    const leadInts = interactions.filter(i => i.leadId === l.id).sort((a,b) => b.timestamp - a.timestamp);
+                    const lastNote = leadInts.find(i => i.type === 'Note')?.content || '';
+                    return { ...l, interactionCount: leadInts.length, lastNote };
+                });
+                
+                // Batch all syncs
+                await Promise.all([
+                    fetch(GAS_DEPLOY_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ sheetName: "Leads", data: leadData }) }),
+                    fetch(GAS_DEPLOY_URL, { 
+                        method: 'POST', 
+                        mode: 'no-cors', 
+                        body: JSON.stringify({ 
+                            sheetName: "CRM", 
+                            data: db.getClients().map(c => {
+                                const flat = { ...c };
+                                delete flat.stages;
+                                c.stages.forEach((s, i) => {
+                                    flat[`stage_${i+1}_name`] = s.name;
+                                    flat[`stage_${i+1}_date`] = s.date;
+                                    flat[`stage_${i+1}_completed`] = s.completed;
+                                });
+                                return flat;
+                            }) 
+                        }) 
+                    }),
+                    fetch(GAS_DEPLOY_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ sheetName: "FollowUps", data: db.getFollowUps() }) }),
+                    fetch(GAS_DEPLOY_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ sheetName: "Templates", data: db.getTemplates() }) })
+                ]);
+                
+                if (!silent) alert("Production Sync Complete!");
+            } catch (e) { 
+                console.error(e); 
+                if (!silent) alert("Sync Failed."); 
+            }
+            finally { if(icon && !silent) icon.classList.remove('sync-spin'); }
+        }
+
+        // Horizontal Scroll for Kanban (Mobile Auto-Slide)
+        let isDraggingLead = false;
+        let currentTouchX = 0;
+        function checkAutoSlide() {
+            if (!isDraggingLead) return;
+            const board = document.getElementById('kanban-board');
+            if (!board) return;
+            
+            const viewportWidth = window.innerWidth;
+            const threshold = 85; // Wider threshold for better mobile edge detection
+            let scrollAmount = 0;
+
+            if (currentTouchX > (viewportWidth - threshold)) {
+                scrollAmount = 12; // Faster scroll
+            } else if (currentTouchX < threshold && currentTouchX > 0) {
+                scrollAmount = -12;
+            }
+
+            if (scrollAmount !== 0) {
+                board.scrollLeft += scrollAmount;
+            }
+            requestAnimationFrame(checkAutoSlide);
+        }
+        window.addEventListener('touchmove', (e) => {
+            if (isDraggingLead && e.touches[0]) currentTouchX = e.touches[0].clientX;
+        }, { passive: true });
+        window.addEventListener('mousemove', (e) => {
+            if (isDraggingLead) currentTouchX = e.clientX;
+        });
+
+        function renderNav() {
+            try {
+                const mainRoutes = [ 
+                    { id: 'dashboard', icon: 'layout-dashboard', label: 'Dash' }, 
+                    { id: 'leads', icon: 'users', label: 'Leads' }, 
+                    { id: 'tasks', icon: 'check-square', label: 'Tasks' }, 
+                    { id: 'clients', icon: 'briefcase', label: 'Clients' }
+                ];
+                const moreRoutes = [
+                    { id: 'retention', icon: 'history', label: 'Retention' },
+                    { id: 'library', icon: 'book-open', label: 'Library' }
+                ];
+                
+                const allRoutes = [...mainRoutes, ...moreRoutes];
+                const current = location.hash.replace('#', '') || 'dashboard';
+
+                // Desktop Sidebar (Full list)
+                document.getElementById('desktop-nav').innerHTML = allRoutes.map(r => `
+                    <a href="#${r.id}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${current === r.id ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100' : 'text-slate-600 hover:bg-white'}">
+                        <i data-lucide="${r.icon}" class="w-4 h-4"></i> ${r.label}
+                    </a>
+                `).join('');
+
+                // Mobile Bottom Nav (Core 4)
+                document.getElementById('mobile-nav').innerHTML = mainRoutes.map(r => `
+                    <a href="#${r.id}" class="flex flex-col items-center justify-center w-full h-full gap-1 ${current === r.id ? 'text-blue-600' : 'text-slate-400'}">
+                        <i data-lucide="${r.icon}" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-medium">${r.label}</span>
+                    </a>
+                `).join('');
+
+                // Side Menu Items
+                document.getElementById('side-menu-items').innerHTML = `
+                    <section>
+                        <p class="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] mb-4 ml-2">Operations</p>
+                        <div class="grid gap-2">
+                            ${mainRoutes.map(r => `
+                                <a href="#${r.id}" onclick="toggleMenu()" class="flex items-center gap-4 p-4 rounded-2xl transition-all ${current === r.id ? 'bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-sm' : 'text-slate-600 hover:bg-slate-50 border border-transparent'}">
+                                    <i data-lucide="${r.icon}" class="w-5 h-5"></i>
+                                    <span class="font-bold text-sm">${r.label}</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </section>
+                    <section>
+                        <p class="text-[10px] font-black uppercase text-rose-400 tracking-[0.2em] mb-4 ml-2">Add-ons</p>
+                        <div class="grid gap-2">
+                            ${moreRoutes.map(r => `
+                                <a href="#${r.id}" onclick="toggleMenu()" class="flex items-center gap-4 p-4 rounded-2xl transition-all ${current === r.id ? 'bg-rose-50 text-rose-600 border border-rose-100 shadow-sm' : 'text-slate-600 hover:bg-slate-50 border border-transparent'}">
+                                    <i data-lucide="${r.icon}" class="w-5 h-5"></i>
+                                    <span class="font-bold text-sm">${r.label}</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch(e) { console.error("Nav render error", e); }
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('menu-overlay');
+            const content = document.getElementById('menu-content');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    content.style.transform = 'translateX(0)';
+                }, 10);
+            } else {
+                overlay.style.opacity = '0';
+                content.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function renderDashboard() {
+            try {
+                const leads = db.getLeads();
+                const tasks = db.getTasks();
+                const interactions = db.getInteractions();
+                const today = new Date().setHours(0,0,0,0);
+
+                const activity = {
+                    calls: interactions.filter(i => i.type === 'Call' && i.timestamp >= today).length,
+                    msgs: interactions.filter(i => i.type === 'WhatsApp' && i.timestamp >= today).length,
+                    emails: interactions.filter(i => i.type === 'Email' && i.timestamp >= today).length
+                };
+
+                const counts = {}; Object.values(LeadStatus).forEach(s => counts[s] = 0);
+                leads.forEach(l => {
+                    const status = l.status || LeadStatus.NEW;
+                    counts[status] = (counts[status] || 0) + 1;
+                });
+
+                const retentionFollowups = db.getFollowUps().filter(f => !f.completed && f.date <= today).map(f => ({
+                    id: f.id,
+                    name: f.clientName,
+                    type: f.type,
+                    date: f.date,
+                    link: '#retention'
+                }));
+
+                const leadFollowups = leads.filter(l => l.status === LeadStatus.FOLLOW_UP && l.followUpDate).map(l => {
+                    const fuDate = new Date(l.followUpDate).setHours(0,0,0,0);
+                    return { l, fuDate };
+                }).filter(x => x.fuDate <= today).map(x => ({
+                    id: x.l.id,
+                    name: x.l.name,
+                    type: 'Lead Follow-up',
+                    date: x.fuDate,
+                    link: '#leads'
+                }));
+
+                const pendingFollowUps = [...retentionFollowups, ...leadFollowups].sort((a,b) => a.date - b.date);
+                
+                document.getElementById('main-content').innerHTML = `
+                    <div class="p-4 md:p-8 w-full max-w-[1800px] mx-auto space-y-8 pb-24 md:pb-12">
+                        <div class="flex flex-col gap-1 text-center md:text-left transition-all">
+                            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight leading-tight"></h1>
+                            <p class="text-slate-400 text-[10px] md:text-xs uppercase tracking-widest font-bold opacity-80"></p>
+                        </div>
+
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all group">
+                                <p class="text-[10px] font-bold uppercase text-slate-400 mb-1 tracking-widest">Pipeline Leads</p>
+                                <p class="text-3xl font-bold text-slate-800">${leads.length}</p>
+                            </div>
+                            <div onclick="location.hash='#retention'" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:bg-slate-50 transition-all active:scale-95 group">
+                                <p class="text-[10px] font-bold uppercase text-slate-500 mb-1 tracking-widest flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Follow Ups
+                                </p>
+                                <p class="text-3xl font-bold text-slate-800">${pendingFollowUps.length}</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm group">
+                                <p class="text-[10px] font-bold uppercase text-slate-400 mb-1 tracking-widest">Active Clients</p>
+                                <p class="text-3xl font-bold text-slate-800">${db.getClients().length}</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                                <p class="text-[10px] font-bold uppercase text-slate-400 mb-1 tracking-widest">Won Leads</p>
+                                <p class="text-3xl font-bold text-slate-800">${counts[LeadStatus.WON] || 0}</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <!-- Left: Action & Activity -->
+                            <div class="lg:col-span-2 space-y-8">
+                                <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <h2 class="font-bold text-lg flex items-center gap-2 tracking-tight">Active Reach</h2>
+                                        <div class="flex gap-2">
+                                            <div class="px-3 py-1 bg-slate-100 rounded-full text-[9px] font-bold uppercase">Daily Stat</div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-6">
+                                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 flex flex-col items-center">
+                                            <span class="text-xl font-bold block text-slate-800">${activity.calls}</span>
+                                            <span class="text-[9px] uppercase text-slate-400 font-bold tracking-widest">Calls</span>
+                                        </div>
+                                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 flex flex-col items-center">
+                                            <span class="text-xl font-bold block text-slate-800">${activity.msgs}</span>
+                                            <span class="text-[9px] uppercase text-slate-400 font-bold tracking-widest">Msgs</span>
+                                        </div>
+                                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 flex flex-col items-center">
+                                            <span class="text-xl font-bold block text-slate-800">${activity.emails}</span>
+                                            <span class="text-[9px] uppercase text-slate-400 font-bold tracking-widest">Emails</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Activity Feed -->
+                                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                                        <h2 class="font-bold text-xs uppercase tracking-widest text-slate-400">Interaction Log</h2>
+                                    </div>
+                                    <div class="divide-y divide-slate-100">
+                                        ${interactions.slice(-6).reverse().map(i => {
+                                            const lead = leads.find(l => l.id === i.leadId) || db.getClients().find(c => c.id === i.leadId);
+                                            return `
+                                                <div class="p-6 flex items-start gap-4 hover:bg-slate-50/50 transition-all">
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex justify-between items-start">
+                                                            <p class="text-sm font-bold text-slate-800 truncate">${lead?.name || 'Contact'}</p>
+                                                            <span class="text-[10px] font-medium text-slate-400 uppercase">${new Date(i.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                        </div>
+                                                        <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">${i.content}</p>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                        ${!interactions.length ? '<p class="p-8 text-center text-slate-300 italic text-sm">No recent activity detected.</p>' : ''}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Priority -->
+                            <div class="space-y-8">
+                                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                                    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                                        <h2 class="font-bold text-slate-500 text-xs uppercase tracking-widest">Due Follow-ups</h2>
+                                        <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-full font-bold">${pendingFollowUps.length}</span>
+                                    </div>
+                                    <div class="p-4 space-y-3">
+                                        ${pendingFollowUps.slice(0, 7).map(f => `
+                                            <div onclick="location.hash='${f.link}'" class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 hover:border-slate-200 transition-all cursor-pointer group">
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="text-xs font-bold text-slate-800 truncate">${f.name}</p>
+                                                    <p class="text-[9px] font-medium text-slate-400 uppercase">${f.type}</p>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                        ${!pendingFollowUps.length ? '<p class="text-center text-slate-400 py-6 text-xs italic">All caught up</p>' : ''}
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-800 rounded-2xl p-8 text-white relative overflow-hidden">
+                                    <div class="relative z-10">
+                                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-6">Metrics</p>
+                                        <div class="space-y-6">
+                                            <div>
+                                                <div class="flex justify-between text-[10px] font-bold uppercase mb-2"><span>Conversion Rate</span><span>${Math.round((counts[LeadStatus.WON]/leads.length)*100 || 0)}%</span></div>
+                                                <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                                                    <div class="bg-blue-400 h-full" style="width: ${Math.round((counts[LeadStatus.WON]/leads.length)*100 || 0)}%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between text-[10px] font-bold uppercase mb-2"><span>Projects Won</span><span>${counts[LeadStatus.WON] || 0}</span></div>
+                                                <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                                                    <div class="bg-emerald-400 h-full" style="width: 100%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch(e) { console.error("Dashboard render error", e); document.getElementById('main-content').innerHTML = '<div class="p-10 text-red-500">Error loading dashboard. Please refresh.</div>'; }
+        }
+
+        let leadSearchQuery = '';
+        let leadCategoryFilter = 'All';
+        let libStdFilter = 'All';
+        let libMedFilter = 'All';
+
+        function renderLeads() {
+            try {
+                const leads = db.getLeads();
+                const categories = db.getCategories() || [];
+                
+                const filteredLeads = (leads || []).filter(l => {
+                    if(!l) return false;
+                    const lName = String(l.name || '').toLowerCase();
+                    const lCompany = String(l.company || '').toLowerCase();
+                    const query = (leadSearchQuery || '').toLowerCase();
+                    
+                    const matchesSearch = !leadSearchQuery || lName.includes(query) || lCompany.includes(query);
+                    const matchesCategory = leadCategoryFilter === 'All' || l.category === leadCategoryFilter;
+                    return matchesSearch && matchesCategory;
+                });
+
+                const cols = COLUMNS.map(col => {
+                    const cLeads = filteredLeads.filter(l => (l.status || LeadStatus.NEW) === col.id);
+                    return `
+                        <div class="flex flex-col h-full w-[85vw] md:w-96 shrink-0 snap-center snap-stop-always bg-slate-50 md:bg-transparent">
+                            <div class="p-4 md:p-3 sticky top-0 z-10 flex justify-between items-center backdrop-blur-sm">
+                                <h3 class="font-bold text-slate-700 text-xs uppercase flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full ${cLeads.length ? 'bg-blue-500' : 'bg-slate-300'}"></div>
+                                    ${col.title}
+                                </h3>
+                                <span class="bg-white px-2 py-1 rounded text-[10px] font-bold text-slate-600 shadow-sm">${cLeads.length}</span>
+                            </div>
+                            <div class="flex-1 p-4 md:p-2 overflow-y-auto kanban-col min-h-[50px] space-y-3" data-status="${col.id}">
+                                ${cLeads.map(l => {
+                                    const phoneStr = String(l.phone || '');
+                                    const rawPhone = phoneStr.replace(/\D/g, '');
+                                    const waPhone = rawPhone.length === 10 ? '91' + rawPhone : rawPhone;
+                                    
+                                    const cat = categories.find(c => c.id === l.category) || { color: '#e2e8f0' };
+                                    const leadDate = l.createdAt ? new Date(l.createdAt) : null;
+                                    const dateStr = leadDate && !isNaN(leadDate) ? leadDate.toLocaleDateString() : 'N/A';
+                                    
+                                    // Follow-up Timer logic
+                                    let timerHtml = '';
+                                    if (l.followUpDate) {
+                                        const todayNow = new Date().setHours(0,0,0,0);
+                                        const fuDate = new Date(l.followUpDate).setHours(0,0,0,0);
+                                        const diff = Math.ceil((fuDate - todayNow) / (1000 * 60 * 60 * 24));
+                                        const colorClass = diff < 0 ? 'bg-red-50 text-red-600 border-red-100' : diff === 0 ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100';
+                                        const text = diff < 0 ? `${Math.abs(diff)}d Overdue` : diff === 0 ? 'Today' : `${diff}d Left`;
+                                        timerHtml = `<div class="flex items-center gap-1 px-2 py-1 ${colorClass} rounded-lg border text-[9px] font-bold shadow-sm"><i data-lucide="calendar-clock" class="w-3 h-3"></i><span>${text}</span></div>`;
+                                    }
+
+                                    return `
+                                    <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm group hover:border-blue-300 relative pl-10 cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98]" data-id="${l.id}" onclick="openLeadModal('${l.id}')">
+                                        <div class="drag-handle absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing text-slate-300 hover:text-blue-500 bg-gray-50/10 border-r border-gray-50 rounded-l-xl" onclick="event.stopPropagation()">
+                                            <i data-lucide="grip-vertical" class="w-4 h-4"></i>
+                                        </div>
+                                        <div class="flex justify-between items-start mb-1">
+                                            <h3 class="font-semibold text-gray-900 truncate text-sm">${l.name || 'Unknown'}</h3>
+                                            <span class="text-[9px] text-gray-400 bg-gray-50 px-1 py-0.5 rounded whitespace-nowrap">${dateStr}</span>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="text-[10px] text-slate-400 truncate max-w-[50%]">${l.company || ''}</div>
+                                            ${l.category ? `<span class="text-[8px] font-bold px-1.5 py-0.5 rounded-full text-white uppercase tracking-wider" style="background-color: ${cat.color}">${l.category}</span>` : ''}
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-2 mt-2 pt-2 border-t border-slate-50" onclick="event.stopPropagation()">
+                                            <a href="tel:${phoneStr}" onclick="logAction('${l.id}', 'Call')" class="p-1.5 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100"><i data-lucide="phone" class="w-3.5 h-3.5"></i></a>
+                                            <a href="https://wa.me/${waPhone}" target="_blank" onclick="logAction('${l.id}', 'WhatsApp')" class="p-1.5 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i></a>
+                                            <div class="flex items-center gap-1.5 ml-auto">
+                                                ${timerHtml}
+                                                <button onclick="openLeadModal('${l.id}'); editLead('${l.id}')" class="p-1.5 rounded-full bg-slate-50 text-indigo-600 hover:bg-indigo-50" title="Edit Profile"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+                                                <button onclick="quickNote('${l.id}')" class="p-1.5 rounded-full bg-slate-50 text-amber-600 hover:bg-amber-100" title="Quick Note"><i data-lucide="file-edit" class="w-3.5 h-3.5"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `}).join('')}
+                            </div>
+                        </div>`;
+                }).join('');
+
+                const catOptions = categories.map(c => `<option value="${c.id}" ${leadCategoryFilter === c.id ? 'selected' : ''}>${c.id}</option>`).join('');
+
+                document.getElementById('main-content').innerHTML = `
+                    <div class="h-full flex flex-col relative bg-white md:bg-slate-50/50 overflow-hidden">
+                        <!-- Leads Filters -->
+                        <div class="p-4 bg-white border-b border-slate-100">
+                            <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center gap-4">
+                                <div class="relative flex-1 group">
+                                    <i data-lucide="search" class="absolute left-4 top-3.5 text-slate-400 w-4 h-4 transition-colors group-focus-within:text-indigo-500"></i>
+                                    <input id="lead-search" value="${leadSearchQuery}" oninput="updateLeadSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:ring-4 focus:ring-indigo-100 focus:bg-white focus:border-indigo-300 outline-none transition-all shadow-inner" placeholder="Search by name or company...">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="relative flex-1 md:flex-none md:min-w-[180px]">
+                                        <select onchange="updateLeadCatFilter(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm outline-none font-bold text-slate-700 appearance-none pr-12 hover:bg-slate-100 transition-colors shadow-sm">
+                                            <option value="All">All Categories</option>
+                                            ${catOptions}
+                                        </select>
+                                        <i data-lucide="chevron-down" class="absolute right-4 top-4 text-slate-400 w-4 h-4 pointer-events-none"></i>
+                                    </div>
+                                    <button onclick="openAddModal()" class="bg-indigo-600 text-white px-6 py-3.5 rounded-2xl text-sm font-black flex items-center gap-2 shadow-xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all">
+                                        <i data-lucide="user-plus" class="w-5 h-5"></i>
+                                        <span class="hidden sm:inline uppercase tracking-widest">New Lead</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-1 flex flex-row overflow-x-auto snap-x-mandatory scroll-smooth p-4 md:p-6 gap-4 md:gap-6" id="kanban-board" onscroll="updateMobileDots()">
+                            ${cols}
+                        </div>
+
+                        <!-- Mobile Scroll Indicator (Dots) -->
+                        <div class="md:hidden flex justify-center gap-1.5 pb-4 bg-slate-50" id="kanban-dots">
+                             ${COLUMNS.map((_, i) => `<div class="w-1.5 h-1.5 rounded-full transition-all ${i === 0 ? 'bg-blue-500 w-3' : 'bg-slate-300'}"></div>`).join('')}
+                        </div>
+                    </div>`;
+                
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                initSortable();
+            } catch(e) { 
+                console.error("Leads render error", e); 
+                document.getElementById('main-content').innerHTML = '<div class="p-10 text-red-500">Error loading leads. Try clicking "Refresh Data" or check your internet.</div>';
+            }
+        }
+
+        function updateLeadSearch(val) { leadSearchQuery = val; renderLeads(); }
+        function updateLeadCatFilter(val) { leadCategoryFilter = val; renderLeads(); }
+
+        function quickNote(id) {
+            openLeadModal(id);
+            setTimeout(() => {
+                const noteIn = document.getElementById('note-in');
+                if(noteIn) {
+                    noteIn.focus();
+                    noteIn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 300);
+        }
+
+        function initSortable() {
+            try {
+                if (typeof Sortable === 'undefined') return;
+                document.querySelectorAll('.kanban-col').forEach(col => {
+                    new Sortable(col, {
+                        group: 'leads', animation: 200, handle: '.drag-handle', forceFallback: true,
+                        onStart: (evt) => {
+                            isDraggingLead = true;
+                            document.body.classList.add('dragging-active');
+                            const board = document.getElementById('kanban-board');
+                            if(board) {
+                                board.classList.add('no-snap');
+                                board.style.scrollSnapType = 'none';
+                            }
+                            requestAnimationFrame(checkAutoSlide);
+                        },
+                        onEnd: (evt) => {
+                            isDraggingLead = false;
+                            document.body.classList.remove('dragging-active');
+                            const board = document.getElementById('kanban-board');
+                            if(board) {
+                                board.classList.remove('no-snap');
+                                board.style.scrollSnapType = 'x mandatory';
+                            }
+                            const next = evt.to.dataset.status; const prev = evt.from.dataset.status; const id = evt.item.dataset.id;
+                            if (next !== prev) {
+                                const ls = db.getLeads(); const l = ls.find(x => x.id === id);
+                                if(l) { 
+                                    l.status = next; db.saveLeads(ls); 
+                                    db.addInteraction({ id: crypto.randomUUID(), leadId: id, type: 'Note', content: `Moved ${prev} -> ${next}`, timestamp: Date.now() }); 
+                                    if(next === LeadStatus.WON) {
+                                        db.createClient(l); 
+                                        db.addInteraction({ id: crypto.randomUUID(), leadId: id, type: 'Note', content: `Converted to CRM Client`, timestamp: Date.now() }); 
+                                    }
+                                    autoSync();
+                                    renderLeads();
+                                }
+                            }
+                        }
+                    });
+                });
+            } catch(e) { console.error("Sortable init error", e); }
+        }
+
+        function renderTasks() {
+            try {
+                const tasks = db.getTasks();
+                document.getElementById('main-content').innerHTML = `
+                    <div class="p-4 md:p-10 w-full max-w-4xl mx-auto pb-20">
+                        <div class="flex justify-between items-center mb-8">
+                            <h1 class="text-3xl font-bold">Tasks</h1>
+                            <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">${tasks.filter(t => !t.isCompleted).length} Pending</span>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                            <form onsubmit="addTask(event)" class="p-4 bg-slate-50 border-b border-slate-100 flex gap-2">
+                                <input id="task-in" required placeholder="Add a new task..." class="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 transition-all">
+                                <button type="submit" class="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 active:scale-95 transition-all">
+                                    <i data-lucide="plus" class="w-4 h-4"></i> Add
+                                </button>
+                            </form>
+                            <div class="divide-y divide-slate-100">
+                                ${tasks.length ? tasks.map(t => `
+                                    <div class="p-4 flex items-center gap-4 hover:bg-slate-50 transition-colors group">
+                                        <button onclick="toggleTask('${t.id}')" class="w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${t.isCompleted ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 group-hover:border-blue-400'}">
+                                            ${t.isCompleted ? '<i data-lucide="check" class="w-3.5 h-3.5"></i>' : ''}
+                                        </button>
+                                        <span class="flex-1 ${t.isCompleted ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${t.title}</span>
+                                        <button onclick="deleteTask('${t.id}')" class="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 transition-all">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                `).join('') : '<div class="p-10 text-center text-slate-400">No tasks found. Get started by adding one!</div>'}
+                            </div>
+                        </div>
+                    </div>`;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch(e) { console.error("Tasks render error", e); }
+        }
+
+        function renderClients() {
+            try {
+                const clients = db.getClients();
+                document.getElementById('main-content').innerHTML = `
+                    <div class="p-4 md:p-10 w-full max-w-6xl mx-auto pb-20">
+                        <div class="flex justify-between items-center mb-8">
+                            <h1 class="text-3xl font-bold">Clients</h1>
+                            <div class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold">${clients.length} Active</div>
+                        </div>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${clients.length ? clients.map(c => {
+                                // Calculate overall progress
+                                const completedCount = (c.stages || []).filter(s => s.completed).length;
+                                const progressPct = Math.round((completedCount / 6) * 100);
+                                
+                                return `
+                                <div onclick="openClientProfile('${c.id}')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group cursor-pointer active:scale-95">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="p-3 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="briefcase"></i></div>
+                                        <div class="text-right">
+                                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Progress</p>
+                                            <p class="text-sm font-black text-blue-600">${progressPct}%</p>
+                                        </div>
+                                    </div>
+                                    <h3 class="font-bold text-xl text-slate-800 mb-1">${c.name}</h3>
+                                    <p class="text-sm font-medium text-slate-500 mb-6">${c.company || 'Direct Client'}</p>
+                                    
+                                    <div class="w-full bg-slate-100 h-2 rounded-full mb-6">
+                                        <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: ${progressPct}%"></div>
+                                    </div>
+
+                                    <div class="pt-4 border-t border-slate-50 flex items-center justify-between">
+                                         <div>
+                                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</p>
+                                            <p class="text-xs font-bold text-emerald-600">${completedCount === 6 ? 'Completed' : 'Working'}</p>
+                                         </div>
+                                         <div class="bg-slate-50 text-slate-400 p-2 rounded-lg group-hover:text-blue-500 group-hover:bg-blue-50 transition-all">
+                                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                         </div>
+                                    </div>
+                                </div>
+                            `}).join('') : '<div class="col-span-full py-20 text-center text-slate-400 border-2 border-dashed rounded-3xl">No clients found. Convert an "Interested" lead to "Won" to see them here!</div>'}
+                        </div>
+                    </div>`;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch(e) { console.error("Clients render error", e); }
+        }
+
+        let currentClientId = null;
+        function openClientProfile(id) {
+            currentClientId = id;
+            renderClientProfile();
+            document.getElementById('lead-modal').classList.remove('hidden');
+        }
+
+        function renderClientProfile() {
+            try {
+                const c = db.getClients().find(x => x.id === currentClientId);
+                if (!c) return;
+
+                const today = new Date().setHours(0,0,0,0);
+                const stages = c.stages || [];
+                const followups = db.getFollowUps().filter(f => f.clientId === c.id);
+
+                document.getElementById('lead-modal-content').innerHTML = `
+                    <div class="relative pb-6 space-y-8">
+                        <!-- Client Header -->
+                        <div class="text-center p-6 bg-slate-50 rounded-3xl border border-slate-100 relative overflow-hidden">
+                             <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500"></div>
+                             <div class="flex justify-between items-center mb-4">
+                                <button onclick="editLead('${c.id}')" class="p-2 bg-white rounded-xl shadow-sm text-slate-400 hover:text-indigo-600"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                <div class="px-3 py-1 bg-white rounded-full text-[9px] font-black uppercase text-emerald-600 shadow-sm border border-emerald-50">${c.crmStatus}</div>
+                             </div>
+                             <h2 class="text-2xl font-bold text-slate-800">${c.name}</h2>
+                             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">${c.company || 'Private Entity'}</p>
+                             
+                             <div class="flex justify-center gap-6 mt-6">
+                                <div class="text-center">
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase">Stage</p>
+                                    <p class="text-sm font-black text-emerald-600">${stages.filter(s => s.completed).length}/6</p>
+                                </div>
+                                <div class="w-px h-8 bg-slate-200"></div>
+                                <div class="text-center">
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase">Birthday</p>
+                                    <p class="text-sm font-black text-slate-700">${(c.birthday && !isNaN(new Date(c.birthday))) ? new Date(c.birthday).toLocaleDateString([], {month:'short', day:'numeric'}) : 'N/A'}</p>
+                                </div>
+                             </div>
+
+                             ${c.extraNotes ? `
+                             <div class="mt-6 pt-6 border-t border-slate-100 text-left">
+                                <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Internal Notes</p>
+                                <p class="text-xs text-slate-600 font-medium">${c.extraNotes}</p>
+                             </div>` : ''}
+                        </div>
+
+                        <!-- Core Timeline -->
+                        <div>
+                            <p class="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] mb-6 px-2">Project Execution</p>
+                            <div class="relative pl-4 space-y-0">
+                                <div class="absolute left-[26px] top-4 bottom-4 w-1 bg-slate-100 rounded-full"></div>
+                                <div id="vertical-progress" class="absolute left-[26px] top-4 w-1 bg-emerald-500 rounded-full transition-all duration-500 max-h-full"></div>
+
+                                <div class="space-y-6">
+                                    ${stages.map((s, idx) => {
+                                        const stageDate = s.date ? new Date(s.date) : null;
+                                        const isLate = !s.completed && stageDate && stageDate < today;
+                                        const lateDays = isLate ? Math.floor((today - stageDate) / (1000 * 60 * 60 * 24)) : 0;
+                                        
+                                        return `
+                                        <div class="relative flex items-start gap-6 group">
+                                            <div onclick="toggleStageCompletion('${c.id}', ${idx})" class="relative z-10 shrink-0 w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-md transition-all cursor-pointer ${s.completed ? 'bg-emerald-500 text-white scale-110' : 'bg-slate-200 text-slate-400 hover:bg-emerald-100'}">
+                                                ${s.completed ? '<i data-lucide="check" class="w-4 h-4"></i>' : `<span class="text-[10px] font-black">${idx + 1}</span>`}
+                                            </div>
+
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <h4 class="font-bold text-slate-800 text-sm md:text-base ${s.completed ? 'opacity-50 line-through' : ''}">${s.name}</h4>
+                                                    <div class="relative p-1 rounded-lg hover:bg-indigo-50 transition-colors cursor-pointer text-slate-300 hover:text-indigo-600">
+                                                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                                                        <input type="date" value="${s.date || ''}" 
+                                                               onchange="saveStageDate('${c.id}', ${idx}, this.value)"
+                                                               class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex flex-wrap items-center gap-2">
+                                                    ${s.date ? `
+                                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${isLate ? 'bg-red-50 text-red-500 border border-red-100' : 'bg-slate-50 text-slate-500 border border-slate-100'}">
+                                                            Deadline: ${new Date(s.date).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                                                        </span>
+                                                    ` : '<span class="text-[10px] text-slate-300">No deadline set</span>'}
+                                                    
+                                                    ${isLate ? `
+                                                        <span class="text-[10px] font-black text-red-600 animate-pulse uppercase tracking-wider flex items-center gap-1">
+                                                            <i data-lucide="alert-circle" class="w-3 h-3"></i> Late by ${lateDays} days
+                                                        </span>
+                                                    ` : ''}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Retention Timeline -->
+                        ${c.projectCompletedAt ? `
+                        <div class="animate-fade-in">
+                            <p class="text-[10px] font-black uppercase text-indigo-400 tracking-[0.2em] mb-6 px-2">Relationship Timeline</p>
+                            <div class="relative pl-10 space-y-6">
+                                <div class="absolute left-[15px] top-2 bottom-2 w-0.5 bg-indigo-100 border-l border-dashed border-indigo-200"></div>
+                                
+                                <div class="relative flex items-center gap-4">
+                                    <div class="absolute -left-[31px] w-4 h-4 rounded-full bg-indigo-500 border-4 border-white shadow-sm ring-1 ring-indigo-100"></div>
+                                    <div>
+                                        <p class="text-xs font-black text-slate-800">Project Completed</p>
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase">${new Date(c.projectCompletedAt).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+
+                                ${followups.map(f => `
+                                    <div class="relative flex items-center gap-4 group">
+                                        <div class="absolute -left-[31px] w-4 h-4 rounded-full ${f.completed ? 'bg-emerald-500' : 'bg-white'} border-4 ${f.completed ? 'border-emerald-100' : 'border-indigo-200'} shadow-sm transition-all"></div>
+                                        <div class="flex-1">
+                                            <p class="text-xs font-black ${f.completed ? 'text-slate-400 line-through' : 'text-slate-800'}">${f.type}</p>
+                                            <p class="text-[10px] font-bold text-slate-400 uppercase">${new Date(f.date).toLocaleDateString()}</p>
+                                        </div>
+                                        ${!f.completed ? `<button onclick="openTemplateSelector('${c.id}', '${f.type}')" class="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="send" class="w-3 h-3"></i></button>` : ''}
+                                    </div>
+                                `).join('')}
+                                
+                                <div class="relative flex items-center gap-4">
+                                    <div class="absolute -left-[31px] w-4 h-4 rounded-full bg-slate-50 border-4 border-slate-100"></div>
+                                    <p class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Yearly Retention cycle</p>
+                                </div>
+                            </div>
+                        </div>` : ''}
+                    </div>
+                `;
+                
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                updateVerticalBar(c);
+            } catch(e) { console.error("Client profile render error", e); }
+        }
+
+        function updateVerticalBar(client) {
+            const bar = document.getElementById('vertical-progress');
+            if(!bar) return;
+            const completedCount = client.stages.filter(s => s.completed).length;
+            const pct = completedCount > 0 ? (completedCount / 6) * 100 : 0;
+            bar.style.height = `calc(${pct}% - 8px)`;
+            
+            const today = new Date().setHours(0,0,0,0);
+            const isAnyLate = client.stages.some(s => !s.completed && s.date && new Date(s.date) < today);
+            if(isAnyLate) {
+                bar.classList.remove('bg-emerald-500');
+                bar.classList.add('bg-red-500');
+            } else {
+                bar.classList.remove('bg-red-500');
+                bar.classList.add('bg-emerald-500');
+            }
+        }
+
+        function toggleStageCompletion(clientId, stageIdx) {
+            const cs = db.getClients();
+            const c = cs.find(x => x.id === clientId);
+            if(c) {
+                const wasCompleted = c.stages[stageIdx].completed;
+                c.stages[stageIdx].completed = !wasCompleted;
+                
+                // If the last stage is now completed and wasn't before
+                if (stageIdx === 5 && c.stages[stageIdx].completed && !wasCompleted) {
+                    c.projectCompletedAt = Date.now();
+                    const followups = db.getFollowUps();
+                    
+                    // Helper to add months to date
+                    const addMonths = (date, months) => {
+                        const d = new Date(date);
+                        d.setMonth(d.getMonth() + months);
+                        return d.getTime();
+                    };
+
+                    const newFollowUps = [
+                        { id: crypto.randomUUID(), clientId: c.id, clientName: c.name, company: c.company, type: '2 Month Review', date: addMonths(Date.now(), 2), completed: false },
+                        { id: crypto.randomUUID(), clientId: c.id, clientName: c.name, company: c.company, type: '6 Month Health Check', date: addMonths(Date.now(), 6), completed: false },
+                        { id: crypto.randomUUID(), clientId: c.id, clientName: c.name, company: c.company, type: '12 Month Anniversary', date: addMonths(Date.now(), 12), completed: false }
+                    ];
+
+                    followups.push(...newFollowUps);
+                    db.saveFollowUps(followups);
+                    
+                    db.addInteraction({ 
+                        id: crypto.randomUUID(), 
+                        leadId: c.id, 
+                        type: 'Note', 
+                        content: `Project Marks as Completed! Retention cycle initiated.`, 
+                        timestamp: Date.now() 
+                    });
+                }
+
+                db.save(db.KEYS.CLIENTS, cs);
+                renderClientProfile();
+                autoSync();
+            }
+        }
+
+        function updateMobileDots() {
+            const board = document.getElementById('kanban-board');
+            const dotsCont = document.getElementById('kanban-dots');
+            if(!board || !dotsCont) return;
+            const scrollLeft = board.scrollLeft;
+            const width = board.offsetWidth;
+            const activeIdx = Math.round(scrollLeft / width);
+            
+            const dots = dotsCont.children;
+            for(let i=0; i<dots.length; i++) {
+                if(i === activeIdx) {
+                    dots[i].className = "w-1.5 h-1.5 rounded-full transition-all bg-blue-500 w-3";
+                } else {
+                    dots[i].className = "w-1.5 h-1.5 rounded-full transition-all bg-slate-300";
+                }
+            }
+        }
+
+        function saveStageDate(clientId, stageIdx, date) {
+            const cs = db.getClients();
+            const c = cs.find(x => x.id === clientId);
+            if(c) {
+                c.stages[stageIdx].date = date;
+                db.save(db.KEYS.CLIENTS, cs);
+                renderClientProfile();
+                autoSync();
+            }
+        }
+
+        function editStageDate(clientId, stageIdx) {
+            // Native picker handled by hidden input overlay in HTML
+        }
+
+        function renderRetention() {
+            try {
+                const followups = db.getFollowUps();
+                const today = new Date().setHours(0,0,0,0);
+                
+                const overdue = followups.filter(f => !f.completed && f.date < today).sort((a,b) => a.date - b.date);
+                const todayF = followups.filter(f => !f.completed && new Date(f.date).setHours(0,0,0,0) === today);
+                const upcoming = followups.filter(f => !f.completed && f.date > today).sort((a,b) => a.date - b.date);
+
+                const renderCard = (f) => {
+                    const diff = Math.ceil((f.date - today) / (1000 * 60 * 60 * 24));
+                    const daysText = diff === 0 ? 'Today' : diff < 0 ? `${Math.abs(diff)}d Overdue` : `${diff}d Left`;
+                    const color = diff < 0 ? 'text-red-500 bg-red-50 border-red-100' : diff === 0 ? 'text-blue-500 bg-blue-50 border-blue-100' : 'text-slate-500 bg-slate-50 border-slate-100';
+                    
+                    return `
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h4 class="font-bold text-slate-800">${f.clientName}</h4>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${color} border">${daysText}</span>
+                                </div>
+                                <p class="text-xs text-slate-500">${f.company || 'Private Entity'} • <span class="font-bold text-indigo-600">${f.type}</span></p>
+                                <p class="text-[10px] text-slate-400 mt-1">${new Date(f.date).toLocaleDateString()}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openTemplateSelector('${f.clientId}', '${f.type}')" class="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 active:scale-95 transition-all">
+                                    <i data-lucide="send" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="markFollowUpDone('${f.id}')" class="p-2 bg-slate-50 text-slate-400 rounded-xl hover:text-blue-600 hover:bg-blue-50 active:scale-95 transition-all">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                };
+
+                document.getElementById('main-content').innerHTML = `
+                    <div class="p-4 md:p-10 w-full max-w-5xl mx-auto pb-24">
+                        <header class="mb-10">
+                            <h1 class="text-3xl font-black text-slate-800 tracking-tight">Retention Dash</h1>
+                            <p class="text-slate-500 text-sm font-medium">Automatic lifecycle management for your clients.</p>
+                        </header>
+
+                        <div class="space-y-10">
+                            <!-- Overdue Section -->
+                            ${overdue.length ? `
+                            <section>
+                                <h3 class="text-xs font-black text-red-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Overdue Tasks (${overdue.length})
+                                </h3>
+                                <div class="grid gap-3">${overdue.map(renderCard).join('')}</div>
+                            </section>` : ''}
+
+                            <!-- Today Section -->
+                            <section>
+                                <h3 class="text-xs font-black text-blue-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                                    <i data-lucide="calendar-check" class="w-4 h-4"></i> Today's Follow-ups
+                                </h3>
+                                <div class="grid gap-3">
+                                    ${todayF.length ? todayF.map(renderCard).join('') : '<p class="text-center py-6 text-slate-300 text-xs border border-dashed rounded-2xl">No follow-ups scheduled for today.</p>'}
+                                </div>
+                            </section>
+
+                            <!-- Upcoming Section -->
+                            <section>
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                                    <i data-lucide="calendar" class="w-4 h-4"></i> Upcoming Lifecycle Events
+                                </h3>
+                                <div class="grid md:grid-cols-2 gap-3">
+                                    ${upcoming.map(renderCard).join('')}
+                                    ${!upcoming.length ? '<p class="col-span-full text-center py-10 text-slate-300 italic text-sm">Waiting for more projects to complete...</p>' : ''}
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch(e) { console.error("Retention render error", e); }
+        }
+
+        function markFollowUpDone(id) {
+            const fs = db.getFollowUps();
+            const idx = fs.findIndex(x => x.id === id);
+            if(idx !== -1) {
+                fs[idx].completed = true;
+                
+                // Generate next year's anniversary if this was an anniversary
+                if (fs[idx].type.includes('Anniversary')) {
+                    const nextYear = new Date(fs[idx].date);
+                    nextYear.setFullYear(nextYear.getFullYear() + 1);
+                    fs.push({
+                        ...fs[idx],
+                        id: crypto.randomUUID(),
+                        date: nextYear.getTime(),
+                        completed: false
+                    });
+                }
+
+                db.saveFollowUps(fs);
+                renderRetention();
+                autoSync();
+            }
+        }
+
+        function renderLibrary() {
+            try {
+                let templates = db.getTemplates();
+                
+                // Filter Logic
+                const filtered = templates.filter(t => {
+                    const matchStd = libStdFilter === 'All' || String(t.standard) === libStdFilter;
+                    const matchMed = libMedFilter === 'All' || String(t.medium) === libMedFilter;
+                    return matchStd && matchMed;
+                });
+
+                const stds = ["All", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+                const meds = ["All", "English", "Hindi", "Marathi", "Semi-English"];
+
+                document.getElementById('main-content').innerHTML = `
+                    <div class="p-4 md:p-10 w-full max-w-5xl mx-auto pb-24">
+                        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                            <div>
+                                <h1 class="text-4xl font-black text-slate-800 tracking-tight">Study Library</h1>
+                                <p class="text-slate-500 text-sm font-medium">Class schedules, subjects, and study materials.</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="flex gap-2">
+                                    <div class="relative">
+                                        <select onchange="updateLibFilter('std', this.value)" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 appearance-none pr-10 outline-none focus:ring-2 focus:ring-indigo-100">
+                                            ${stds.map(s => `<option value="${s}" ${libStdFilter === s ? 'selected' : ''}>Std ${s}</option>`).join('')}
+                                        </select>
+                                        <i data-lucide="chevron-down" class="absolute right-3 top-3 text-slate-400 w-3 h-3 pointer-events-none"></i>
+                                    </div>
+                                    <div class="relative">
+                                        <select onchange="updateLibFilter('med', this.value)" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 appearance-none pr-10 outline-none focus:ring-2 focus:ring-indigo-100">
+                                            ${meds.map(m => `<option value="${m}" ${libMedFilter === m ? 'selected' : ''}>${m}</option>`).join('')}
+                                        </select>
+                                        <i data-lucide="chevron-down" class="absolute right-3 top-3 text-slate-400 w-3 h-3 pointer-events-none"></i>
+                                    </div>
+                                </div>
+                                <button onclick="openTemplateModal()" class="bg-indigo-600 text-white p-3 rounded-2xl shadow-xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                            </div>
+                        </header>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            ${filtered.map(t => `
+                                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative group hover:shadow-md transition-all">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="font-bold text-lg text-slate-800 leading-tight">${t.name} ${t.subject ? `• <span class="text-indigo-600">${t.subject}</span>` : ''}</h3>
+                                            <div class="flex gap-2 mt-1">
+                                                ${t.standard ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-500">Std ${t.standard}</span>` : ''}
+                                                ${t.medium ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-500">${t.medium}</span>` : ''}
+                                                ${t.day ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-amber-50 text-amber-600">${t.day}</span>` : ''}
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-1">
+                                            <button onclick="editTemplate('${t.id}')" class="p-2 text-slate-300 hover:text-indigo-600 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                            <button onclick="deleteTemplate('${t.id}')" class="p-2 text-slate-300 hover:text-red-600 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="bg-slate-50 p-4 rounded-xl text-sm font-medium text-slate-600 italic border border-slate-100 mb-4 h-24 overflow-y-auto">
+                                        "${t.content}"
+                                    </div>
+                                    ${t.date ? `<p class="text-[10px] text-slate-400 font-bold mb-3 flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> ${new Date(t.date).toLocaleDateString()}</p>` : ''}
+                                    <div class="flex gap-2 opacity-40 group-hover:opacity-100 transition-opacity">
+                                        <span class="text-[8px] font-black uppercase text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded tracking-tighter">{client}</span>
+                                        <span class="text-[8px] font-black uppercase text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded tracking-tighter">{company}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            ${!filtered.length ? '<div class="col-span-full py-20 text-center text-slate-300 italic">No study materials found for this filter.</div>' : ''}
+                        </div>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch(e) { console.error("Library render error", e); }
+        }
+
+        function updateLibFilter(type, val) {
+            if(type === 'std') libStdFilter = val;
+            else libMedFilter = val;
+            renderLibrary();
+        }
+
+        function openTemplateModal(id = null) {
+            const templates = db.getTemplates();
+            const t = id ? templates.find(x => x.id === id) : { name: '', content: '', standard: '', medium: '', subject: '', day: '', date: '' };
+            
+            const stds = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+            const meds = ["", "English", "Hindi", "Marathi", "Semi-English"];
+
+            document.getElementById('lead-modal-content').innerHTML = `
+                <div class="space-y-6">
+                    <h3 class="font-black text-2xl text-slate-800 tracking-tight">${id ? 'Update Material' : 'New Study Material'}</h3>
+                    <form onsubmit="saveTemplate(event, ${id ? `'${id}'` : 'null'})" class="space-y-5">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Title / ID</label>
+                                <input name="name" value="${t.name}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Subject (e.g. Maths)</label>
+                                <input name="subject" value="${t.subject || ''}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Standard</label>
+                                <select name="standard" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
+                                    ${stds.map(s => `<option value="${s}" ${t.standard === s ? 'selected' : ''}>${s ? `Std ${s}` : 'Select'}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Medium</label>
+                                <select name="medium" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
+                                    ${meds.map(m => `<option value="${m}" ${t.medium === m ? 'selected' : ''}>${m || 'Select'}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Day</label>
+                                <input name="day" value="${t.day || ''}" placeholder="Friday" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date</label>
+                                <input type="date" name="date" value="${t.date || ''}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Notes / Content</label>
+                            <textarea name="content" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none h-32 font-medium text-slate-700">${t.content}</textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg shadow-indigo-100 active:scale-95 transition-all uppercase tracking-widest text-sm">Save to Library</button>
+                    </form>
+                </div>
+            `;
+            document.getElementById('lead-modal').classList.remove('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function saveTemplate(e, id) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const ts = db.getTemplates();
+            const data = { 
+                id: id || crypto.randomUUID(), 
+                name: fd.get('name'), 
+                content: fd.get('content'),
+                subject: fd.get('subject'),
+                standard: fd.get('standard'),
+                medium: fd.get('medium'),
+                day: fd.get('day'),
+                date: fd.get('date')
+            };
+
+            if(id) {
+                const idx = ts.findIndex(x => x.id === id);
+                ts[idx] = data;
+            } else {
+                ts.push(data);
+            }
+
+            db.saveTemplates(ts);
+            closeModal('lead-modal');
+            renderLibrary();
+            autoSync();
+        }
+
+        function deleteTemplate(id) {
+            if(confirm("Discard this template?")) {
+                const ts = db.getTemplates().filter(x => x.id !== id);
+                db.saveTemplates(ts);
+                renderLibrary();
+            }
+        }
+
+        function editTemplate(id) { openTemplateModal(id); }
+
+        function openTemplateSelector(clientId, followUpType = '') {
+            const templates = db.getTemplates();
+            const clients = db.getClients();
+            const c = clients.find(x => x.id === clientId) || db.getLeads().find(x => x.id === clientId);
+            
+            if(!c) return;
+
+            document.getElementById('lead-modal-content').innerHTML = `
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-black text-xl text-slate-800">Choose a Message</h3>
+                        <p class="text-sm text-slate-500 font-medium">To: ${c.name} (${c.company || 'Private'})</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        ${templates.map(t => {
+                            const preview = t.content
+                                .replace(/{client}/g, c.name)
+                                .replace(/{company}/g, c.company || 'your firm')
+                                .replace(/{service}/g, c.serviceType || 'our service')
+                                .replace(/{date}/g, new Date().toLocaleDateString());
+
+                            return `
+                                <div onclick="processSendWhatsApp('${clientId}', \`${encodeURIComponent(preview)}\`)" class="p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-emerald-200 hover:bg-emerald-50 transition-all cursor-pointer group">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="font-black text-[10px] text-slate-400 uppercase group-hover:text-emerald-600">${t.name}</span>
+                                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-emerald-500"></i>
+                                    </div>
+                                    <p class="text-sm text-slate-600 font-medium italic">"${preview}"</p>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            document.getElementById('lead-modal').classList.remove('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function processSendWhatsApp(clientId, encodedMsg) {
+            const clients = db.getClients();
+            const l = clients.find(x => x.id === clientId) || db.getLeads().find(x => x.id === clientId);
+            if(!l) return;
+
+            const phoneStr = String(l.phone || '');
+            const rawPhone = phoneStr.replace(/\D/g, '');
+            const waPhone = rawPhone.length === 10 ? '91' + rawPhone : rawPhone;
+            
+            const waUrl = `https://wa.me/${waPhone}?text=${encodedMsg}`;
+            window.open(waUrl, '_blank');
+            logAction(clientId, 'WhatsApp');
+            closeModal('lead-modal');
+        }
+        function handleRoute() { 
+            if (!checkLogin()) return;
+            renderNav(); 
+            const h = location.hash || '#dashboard'; 
+            if(h === '#leads') renderLeads(); 
+            else if(h === '#tasks') renderTasks(); 
+            else if(h === '#clients') renderClients(); 
+            else if(h === '#retention') renderRetention();
+            else if(h === '#library') renderLibrary();
+            else renderDashboard(); 
+        }
+        window.onclick = (e) => { if(e.target.dataset.close) closeModal(e.target.dataset.close); };
+        window.onhashchange = handleRoute;
+        window.onload = () => {
+            if (checkLogin()) {
+                handleRoute();
+                // Initial cloud pull should happen after db initialization
+                setTimeout(() => fetchLeadsFromSheets(true), 500); 
+            }
+        };
+
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.body.style.overflow = ''; }
+        function openAddModal() { 
+            document.getElementById('add-modal').classList.remove('hidden'); 
+            populateCatSelect();
+        }
+
+        function populateCatSelect() {
+            const cats = db.getCategories();
+            const select = document.getElementById('cat-select');
+            select.innerHTML = cats.map(c => `<option value="${c.id}">${c.id}</option>`).join('');
+            lucide.createIcons();
+        }
+
+        function toggleNewCat() {
+            const area = document.getElementById('new-cat-area');
+            area.classList.toggle('hidden');
+        }
+
+        function saveNewCat() {
+            const name = document.getElementById('new-cat-name').value.trim();
+            const color = document.getElementById('new-cat-color').value;
+            if(!name) return;
+            db.addCategory({ id: name, color: color });
+            document.getElementById('new-cat-name').value = '';
+            populateCatSelect();
+            document.getElementById('cat-select').value = name;
+            toggleNewCat();
+        }
+        function openAgentModal() { document.getElementById('agent-modal').classList.remove('hidden'); if(!document.getElementById('agent-chat-area').children.length) addAgentMsg("Hello! I'm Jerry."); }
+        function switchTab(t) { 
+            const m = document.getElementById('tab-manual'), i = document.getElementById('tab-import'), mf = document.getElementById('add-lead-form'), ifr = document.getElementById('import-form');
+            if(t === 'manual') { mf.classList.remove('hidden'); ifr.classList.add('hidden'); m.className = "flex-1 py-4 text-sm font-bold text-blue-600 border-b-2 border-blue-600"; i.className = "flex-1 py-4 text-sm font-bold text-slate-400 border-b-2 border-transparent"; }
+            else { mf.classList.add('hidden'); ifr.classList.remove('hidden'); i.className = "flex-1 py-4 text-sm font-bold text-blue-600 border-b-2 border-blue-600"; m.className = "flex-1 py-4 text-sm font-bold text-slate-400 border-b-2 border-transparent"; }
+        }
+
+        document.getElementById('add-lead-form').onsubmit = (e) => {
+            e.preventDefault(); const fd = new FormData(e.target);
+            db.addLead({ 
+                id: crypto.randomUUID(), 
+                name: fd.get('name'), 
+                phone: fd.get('phone'), 
+                email: fd.get('email'), 
+                company: fd.get('company'), 
+                category: fd.get('category') || 'Education',
+                status: LeadStatus.NEW, 
+                createdAt: Date.now() 
+            });
+            e.target.reset(); closeModal('add-modal'); renderLeads();
+        };
+
+        function handleFileUpload(input) {
+            const reader = new FileReader(); reader.onload = (e) => {
+                const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+                window.pData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
+                document.getElementById('import-count').innerText = window.pData.length; document.getElementById('import-preview').classList.remove('hidden');
+            }; reader.readAsArrayBuffer(input.files[0]);
+        }
+        function confirmImport() {
+            if(!window.pData) return; 
+            const leads = db.getLeads();
+            
+            window.pData.forEach(r => {
+                const findVal = (possibleKeys) => {
+                    const foundKey = Object.keys(r).find(k => possibleKeys.includes(k.trim().toLowerCase()));
+                    return foundKey ? String(r[foundKey] || '').trim() : '';
+                };
+
+                const name = findVal(['name', 'lead name', 'full name', 'business name']) || 'Lead';
+                const company = findVal(['company', 'company name', 'business', 'org', 'organization']);
+                const phone = findVal(['phone', 'phone number', 'mobile', 'mobile number', 'contact']);
+                const email = findVal(['email', 'email address']);
+                let category = findVal(['category', 'category name', 'tag', 'lead category']).trim().toLowerCase();
+
+                if (category) {
+                    if (category.includes('packag')) {
+                        category = 'Packaging';
+                    } else if (category.includes('food') || category.includes('restaur') || category.includes('cafe')) {
+                        category = 'Food Business';
+                    } else {
+                        category = 'Education';
+                    }
+                } else {
+                    category = 'Education';
+                }
+
+                leads.push({ 
+                    id: crypto.randomUUID(), 
+                    name: name, 
+                    company: company,
+                    phone: phone, 
+                    email: email,
+                    category: category,
+                    status: LeadStatus.NEW, 
+                    createdAt: Date.now() 
+                });
+            });
+            db.saveLeads(leads);
+            autoSync();
+            alert(`Imported ${window.pData.length} leads successfully!`); 
+            closeModal('add-modal'); 
+            handleRoute();
+        }
+
+        function addTask(e) { e.preventDefault(); const t = document.getElementById('task-in').value; if(!t) return; const ts = db.getTasks(); ts.push({ id: crypto.randomUUID(), title: t, isCompleted: false }); db.saveTasks(ts); renderTasks(); }
+        function toggleTask(id) { const ts = db.getTasks(); const t = ts.find(x => x.id === id); if(t) t.isCompleted = !t.isCompleted; db.saveTasks(ts); renderTasks(); }
+
+        function openLeadModal(id) {
+            currentLeadId = id;
+            renderLeadModalContent();
+            document.getElementById('lead-modal').classList.remove('hidden');
+        }
+
+        function renderLeadModalContent() {
+            try {
+                const l = db.getLeads().find(x => x.id === currentLeadId); if(!l) return;
+                const ints = db.getInteractions().filter(x => x.leadId === currentLeadId).sort((a,b) => b.timestamp - a.timestamp);
+                const phoneStr = String(l.phone || '');
+                const rawPhone = phoneStr.replace(/\D/g, '');
+                const waPhone = rawPhone.length === 10 ? '91' + rawPhone : rawPhone;
+
+                document.getElementById('lead-modal-content').innerHTML = `
+                    <div class="relative pb-6">
+                        <div class="text-center p-6 md:p-10 bg-slate-50 rounded-3xl mb-8 border border-slate-100 shadow-sm relative">
+                            <button onclick="editLead('${l.id}')" class="absolute top-4 right-4 p-3 bg-white hover:bg-indigo-50 text-slate-400 hover:text-indigo-600 rounded-2xl border border-slate-100 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100 outline-none" title="Edit Profile">
+                                <i data-lucide="edit-3" class="w-5 h-5"></i>
+                            </button>
+                            
+                            <div class="relative inline-block mb-6">
+                                <div class="w-24 h-24 md:w-32 md:h-32 bg-indigo-600 text-white rounded-full flex items-center justify-center text-4xl md:text-5xl font-black mx-auto shadow-xl shadow-indigo-100 ring-4 ring-white">${(l.name || 'U')[0]}</div>
+                            </div>
+
+                            <h2 class="text-3xl font-bold text-slate-800 tracking-tight leading-tight">${l.name || 'Unknown'}</h2>
+                            <p class="text-indigo-600 text-sm font-bold mt-2 uppercase tracking-widest opacity-80">${l.company || 'Private Entity'}</p>
+                            
+                            <div class="grid grid-cols-3 gap-2 md:gap-4 mt-8">
+                                <a href="tel:${phoneStr}" onclick="logAction('${l.id}', 'Call')" class="py-3 bg-indigo-600 text-white rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg shadow-indigo-100 active:scale-95 transition-all">
+                                    <i data-lucide="phone" class="w-5 h-5"></i>
+                                    <span class="text-[9px] font-black uppercase">Call</span>
+                                </a>
+                                <a href="https://wa.me/${waPhone}" onclick="logAction('${l.id}', 'WhatsApp')" target="_blank" class="py-3 bg-emerald-500 text-white rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg shadow-emerald-100 active:scale-95 transition-all">
+                                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                                    <span class="text-[9px] font-black uppercase">WA</span>
+                                </a>
+                                <a href="mailto:${l.email || ''}" onclick="logAction('${l.id}', 'Email')" class="py-3 bg-slate-900 text-white rounded-2xl flex flex-col items-center justify-center gap-1 shadow-lg active:scale-95 transition-all">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                    <span class="text-[9px] font-black uppercase">Mail</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mb-8">
+                            <div class="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wider">Stage</p>
+                                <span class="text-sm font-bold text-slate-700 block">${l.status}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wider">Tag</p>
+                                <span class="text-sm font-bold text-indigo-700 block truncate">${l.category || 'N/A'}</span>
+                            </div>
+                        </div>
+
+                        ${l.status === LeadStatus.FOLLOW_UP ? `
+                        <div class="mb-8 p-5 bg-blue-50/50 rounded-3xl border border-blue-100 animate-fade-in">
+                            <p class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-4">Follow-Up Configuration</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-1 block">Scheduled Date</label>
+                                    <input type="date" value="${l.followUpDate || ''}" onchange="updateLeadFollowUp('${l.id}', 'followUpDate', this.value)" class="w-full bg-white border border-blue-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-blue-200">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-1 block">Follow-up Message</label>
+                                    <textarea id="fu-msg-${l.id}" class="w-full bg-white border border-blue-100 rounded-xl px-4 py-3 text-sm font-medium text-slate-600 outline-none focus:ring-2 focus:ring-blue-200 h-20" placeholder="Type a reminder or message...">${l.followUpMsg || ''}</textarea>
+                                    <button onclick="sendFollowUpWhatsApp('${l.id}')" class="w-full py-3 bg-emerald-500 text-white rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-emerald-100 active:scale-95 transition-all">
+                                        <i data-lucide="send" class="w-4 h-4"></i> Send Follow-up (WA)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <div class="mb-8">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-3">Add Update</p>
+                            <div class="bg-indigo-50/50 p-1.5 rounded-2xl flex gap-2">
+                                <input id="note-in" class="flex-1 px-4 py-3 bg-white border-transparent rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 text-sm font-medium" placeholder="Type a note...">
+                                <button onclick="addNote()" class="bg-indigo-600 text-white px-5 rounded-xl shadow-md active:scale-90 transition-all"><i data-lucide="plus" class="w-5 h-5"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2">History</p>
+                            <div class="space-y-3 px-1">
+                                ${ints.map(i => {
+                                    const audioSection = i.audioUrl ? `
+                                        <div class="mt-2.5 flex items-center gap-2 bg-indigo-50/50 border border-indigo-100/40 p-2 rounded-xl">
+                                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+                                            <span class="text-[10px] font-bold text-slate-500 truncate flex-1" title="${i.audioName || 'Recording'}">${i.audioName || 'Recording.mp3'}</span>
+                                            ${i.audioUrl !== '#' ? `
+                                                <a href="${i.audioUrl}" target="_blank" class="text-[9px] font-extrabold text-indigo-600 hover:text-indigo-800 uppercase bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-full flex items-center gap-1 transition-all">
+                                                    <span>Stored</span>
+                                                    <i data-lucide="external-link" class="w-3 h-3"></i>
+                                                </a>
+                                            ` : `
+                                                <span class="text-[9px] font-extrabold text-indigo-500 uppercase bg-indigo-50 px-3 py-1.5 rounded-full">Stored</span>
+                                            `}
+                                        </div>
+                                    ` : `
+                                        <div class="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 font-medium" id="upload-container-${i.id}">
+                                            <span>No recording uploaded</span>
+                                            <button onclick="triggerRecordingUpload('${l.id}', '${i.id}')" class="p-1.5 bg-slate-50 hover:bg-indigo-50 text-slate-400 hover:text-indigo-600 border border-slate-100 rounded-xl transition-all active:scale-95 flex items-center gap-1 font-bold">
+                                                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Rec
+                                            </button>
+                                        </div>
+                                        <div class="hidden mt-2.5 w-full space-y-1.5 bg-slate-50 border border-slate-100 p-2.5 rounded-xl" id="progress-container-${i.id}">
+                                            <div class="flex justify-between text-[9px] font-black text-slate-400 uppercase tracking-wider">
+                                                <span>Uploading Audio...</span>
+                                                <span id="progress-text-${i.id}">0%</span>
+                                            </div>
+                                            <div class="w-full bg-slate-200/50 h-1 rounded-full overflow-hidden">
+                                                <div id="progress-bar-${i.id}" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    
+                                    return `
+                                        <div class="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm text-sm">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-extrabold text-[10px] text-indigo-500 uppercase">${i.type}</span>
+                                                <span class="text-[10px] font-bold text-slate-300">${new Date(i.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</span>
+                                            </div>
+                                            <p class="text-slate-600 font-medium">${i.content}</p>
+                                            ${audioSection}
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                            ${!ints.length ? '<p class="text-center py-6 text-slate-300 text-sm">No activity recorded</p>' : ''}
+                        </div>
+                    </div>`;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch(e) { console.error("Profile render error", e); }
+        }
+
+        function editLead(id) {
+            const l = db.getLeads().find(x => x.id === id); if(!l) return;
+            const cats = db.getCategories();
+            
+            document.getElementById('lead-modal-content').innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 py-2 border-b border-indigo-50 mb-4">
+                        <button onclick="renderLeadModalContent()" class="p-2.5 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-all active:scale-90 shadow-sm">
+                            <i data-lucide="arrow-left" class="w-5 h-5 text-slate-700"></i>
+                        </button>
+                        <h3 class="font-black text-xl text-slate-800 tracking-tight">Modify Profile</h3>
+                    </div>
+
+                    <form onsubmit="handleLeadUpdate(event, '${l.id}')" class="space-y-5">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Full Name</label>
+                            <input name="name" value="${l.name || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all font-bold text-slate-700" placeholder="e.g. John Doe">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Business/Company</label>
+                            <input name="company" value="${l.company || ''}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all font-bold text-slate-700" placeholder="e.g. Acme Corp">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Category</label>
+                                <div class="relative">
+                                    <select name="category" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none appearance-none font-bold text-slate-700 cursor-pointer">
+                                        ${cats.map(c => `<option value="${c.id}" ${l.category === c.id ? 'selected' : ''}>${c.id}</option>`).join('')}
+                                    </select>
+                                    <i data-lucide="tag" class="absolute right-4 top-4 text-slate-300 w-4 h-4 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Sales Status</label>
+                                <div class="relative">
+                                    <select name="status" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none appearance-none font-bold text-slate-700 cursor-pointer">
+                                        ${Object.values(LeadStatus).map(s => `<option value="${s}" ${l.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+                                    </select>
+                                    <i data-lucide="layers" class="absolute right-4 top-4 text-slate-300 w-4 h-4 pointer-events-none"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Mobile Contact</label>
+                                <input name="phone" value="${l.phone || ''}" type="tel" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all font-bold text-slate-700" placeholder="+91 00000 00000">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Birthday</label>
+                                <input name="birthday" value="${l.birthday || ''}" type="date" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all font-bold text-slate-700">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Email Address</label>
+                            <input name="email" value="${l.email || ''}" type="email" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all font-bold text-slate-700" placeholder="example@domain.com">
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Internal Retention Notes</label>
+                            <textarea name="extraNotes" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all font-medium text-slate-700 h-24" placeholder="Add specific client preferences or background...">${l.extraNotes || ''}</textarea>
+                        </div>
+                        
+                        <div class="pt-6 flex flex-col sm:flex-row gap-3">
+                            <button type="button" onclick="deleteLeadConfirm('${l.id}')" class="w-full sm:w-auto px-8 py-4 bg-red-50 text-red-600 font-black rounded-[1.25rem] hover:bg-red-100 transition-all active:scale-95 uppercase tracking-widest text-xs">Delete Lead</button>
+                            <button type="submit" class="flex-1 py-4 bg-indigo-600 text-white font-black rounded-[1.25rem] hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all active:scale-95 uppercase tracking-widest text-xs">Commit Changes</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function handleLeadUpdate(e, id) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const ls = db.getLeads();
+            const idx = ls.findIndex(x => x.id === id);
+            if(idx === -1) return;
+            
+            const oldStatus = ls[idx].status;
+            const newStatus = fd.get('status');
+
+            ls[idx] = { 
+                ...ls[idx], 
+                name: fd.get('name'), 
+                company: fd.get('company'), 
+                category: fd.get('category'), 
+                status: newStatus,
+                phone: fd.get('phone'),
+                email: fd.get('email'),
+                birthday: fd.get('birthday'),
+                extraNotes: fd.get('extraNotes')
+            };
+            
+            db.saveLeads(ls);
+
+            // Propagate to Clients if exists
+            const clients = db.getClients();
+            const cIdx = clients.findIndex(c => c.id === id);
+            if (cIdx !== -1) {
+                clients[cIdx] = {
+                    ...clients[cIdx],
+                    name: ls[idx].name,
+                    company: ls[idx].company,
+                    phone: ls[idx].phone,
+                    email: ls[idx].email,
+                    birthday: ls[idx].birthday,
+                    extraNotes: ls[idx].extraNotes
+                };
+                db.save(db.KEYS.CLIENTS, clients);
+            }
+
+            if(oldStatus !== newStatus) {
+                db.addInteraction({ id: crypto.randomUUID(), leadId: id, type: 'Note', content: `Status changed from ${oldStatus} to ${newStatus}`, timestamp: Date.now() });
+                if(newStatus === LeadStatus.WON) db.createClient(ls[idx]);
+            } else {
+                db.addInteraction({ id: crypto.randomUUID(), leadId: id, type: 'Note', content: `Profile updated`, timestamp: Date.now() });
+            }
+            
+            autoSync();
+            
+            // If we are currently viewing this as a client profile, stay in that view
+            if (cIdx !== -1 && currentClientId === id) {
+                renderClientProfile();
+            } else {
+                renderLeadModalContent();
+            }
+            renderLeads();
+            if (location.hash === '#clients') renderClients();
+        }
+
+        function deleteLeadConfirm(id) {
+            if(confirm("Are you sure you want to delete this lead? This cannot be undone.")) {
+                db.deleteLead(id);
+                closeModal('lead-modal');
+                renderLeads();
+            }
+        }
+
+        function jumpToStatus(status) {
+            location.hash = '#leads';
+            setTimeout(() => {
+                const board = document.getElementById('kanban-board');
+                if(!board) return;
+                const colTarget = board.querySelector(`[data-status="${status}"]`);
+                if(colTarget) {
+                    const colWrapper = colTarget.closest('.snap-center');
+                    if(colWrapper) {
+                        board.scrollTo({
+                            left: colWrapper.offsetLeft - 16,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }, 150);
+        }
+
+        let currentLeadId = null;
+        function addNote() {
+            const cin = document.getElementById('note-in');
+            const val = cin.value.trim();
+            if(!val || !currentLeadId) return;
+            db.addInteraction({ id: crypto.randomUUID(), leadId: currentLeadId, type: 'Note', content: val, timestamp: Date.now() });
+            cin.value = '';
+            renderLeadModalContent();
+        }
+
+        function updateLeadFollowUp(id, key, val) {
+            const ls = db.getLeads();
+            const l = ls.find(x => x.id === id);
+            if(l) {
+                l[key] = val;
+                db.saveLeads(ls);
+                if(key === 'followUpDate' && val) {
+                    db.addInteraction({ id: crypto.randomUUID(), leadId: id, type: 'Note', content: `Follow-up date set to ${val}`, timestamp: Date.now() });
+                }
+                autoSync();
+                // We don't necessarily need to re-render everything if it's just a data update, 
+                // but for followUpDate we might want to update the history shown in modal
+                if(key === 'followUpDate') renderLeadModalContent();
+            }
+        }
+
+        async function sendFollowUpWhatsApp(id) {
+            const ls = db.getLeads();
+            const l = ls.find(x => x.id === id);
+            if(!l) return;
+            
+            const msgArea = document.getElementById(`fu-msg-${l.id}`);
+            const msg = msgArea ? msgArea.value.trim() : (l.followUpMsg || '');
+            
+            // Save the message content
+            l.followUpMsg = msg;
+            db.saveLeads(ls);
+            
+            const phoneStr = String(l.phone || '');
+            const rawPhone = phoneStr.replace(/\D/g, '');
+            const waPhone = rawPhone.length === 10 ? '91' + rawPhone : rawPhone;
+            
+            const encodedMsg = encodeURIComponent(msg);
+            const waUrl = `https://wa.me/${waPhone}?text=${encodedMsg}`;
+            
+            logAction(id, 'WhatsApp');
+            window.open(waUrl, '_blank');
+            autoSync();
+        }
+
+        function logAction(id, type) {
+            db.addInteraction({ id: crypto.randomUUID(), leadId: id, type: type, content: `Logged ${type} action`, timestamp: Date.now() });
+            if(id === currentLeadId) renderLeadModalContent();
+        }
+
+        function addAgentMsg(t, u=false) {
+            document.getElementById('agent-chat-area').insertAdjacentHTML('beforeend', `<div class="flex ${u?'justify-end':'justify-start'} animate-fade-in"><div class="max-w-[85%] p-3 rounded-2xl text-sm ${u?'bg-blue-600 text-white':'bg-white text-slate-700 shadow-sm border'}">${t}</div></div>`);
+            document.getElementById('agent-chat-area').scrollTop = 9999;
+        }
+        function resetAgentOptions() {
+            const opts = [
+                {id:'sum', label:'Status Summary'}, 
+                {id:'new', label:'Show New'}, 
+                {id:'sync', label:'Cloud Refresh'},
+                {id:'over', label:'Overdue Tasks'}
+            ];
+            document.getElementById('agent-options').innerHTML = opts.map(o => `<button onclick="handleAgentQuery('${o.id}','${o.label}')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">${o.label}</button>`).join('');
+        }
+        function handleAgentQuery(id, label) {
+            addAgentMsg(label, true);
+            setTimeout(() => {
+                let r = "I'm checking on that for you...";
+                if(id === 'sum') {
+                    const leads = db.getLeads();
+                    r = `You currently have ${leads.length} total leads in your pipeline.`;
+                }
+                else if(id === 'new') {
+                    const count = db.getLeads().filter(x=>x.status===LeadStatus.NEW).length;
+                    r = `There are ${count} leads in 'New' status waiting for contact.`;
+                }
+                else if(id === 'sync') {
+                    r = "Initiating cloud pull... I'll update the list as soon as data arrives.";
+                    fetchLeadsFromSheets(false);
+                }
+                else if(id === 'over') {
+                    const overdue = db.getTasks().filter(t => !t.isCompleted && new Date(t.dueDate) < new Date());
+                    r = overdue.length ? `You have ${overdue.length} overdue tasks that need attention.` : "No overdue tasks! You're all caught up.";
+                }
+                addAgentMsg(r);
+            }, 600);
+        }
+
+        function checkLogin() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                document.getElementById('app').style.display = 'none';
+                let loginScreen = document.getElementById('login-screen');
+                if (!loginScreen) {
+                    loginScreen = document.createElement('div');
+                    loginScreen.id = 'login-screen';
+                    loginScreen.className = 'fixed inset-0 bg-white z-[9999] flex items-center justify-center p-4 overflow-y-auto animate-fade-in';
+                    loginScreen.innerHTML = `
+                        <div class="w-full max-w-md bg-white border border-slate-100 rounded-3xl p-8 md:p-12 shadow-2xl shadow-slate-100 flex flex-col justify-center space-y-8 animate-slide-up">
+                            <div class="text-center space-y-2">
+                                <img src="Logo2.png" class="h-12 mx-auto" alt="Logo">
+                                <h1 class="text-3xl font-black text-slate-800 tracking-tight pt-4">Sign In to Continue</h1>
+                                <p class="text-slate-400 text-sm font-medium">Powered by NextGen, built for smarter business growth.</p>
+                            </div>
+                            
+                            <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-5">
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
+                                    <div class="relative">
+                                        <i data-lucide="mail" class="absolute left-4 top-4 text-slate-400 w-4 h-4"></i>
+                                        <input id="login-email" type="email" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 focus:ring-4 focus:ring-indigo-50 outline-none font-semibold text-slate-700 transition-all" placeholder="name@domain.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
+                                    <div class="relative">
+                                        <i data-lucide="lock" class="absolute left-4 top-4 text-slate-400 w-4 h-4"></i>
+                                        <input id="login-password" type="password" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 focus:ring-4 focus:ring-indigo-50 outline-none font-semibold text-slate-700 transition-all" placeholder="••••••••">
+                                    </div>
+                                </div>
+                                
+                                <div id="login-error" class="hidden text-red-500 text-xs font-bold bg-red-50 border border-red-100 p-3 rounded-xl flex items-center gap-2">
+                                    <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+                                    <span id="login-error-text">Invalid email or password</span>
+                                </div>
+                                
+                                <button type="submit" id="login-submit-btn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-xl shadow-slate-200 hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+                                    <span>Sign In</span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </button>
+                            </form>
+                            
+                            <div class="text-center text-slate-300 text-[10px] font-black uppercase tracking-[0.2em] pt-4">
+                                NextGen Protected Workspace
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(loginScreen);
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                } else {
+                    loginScreen.style.display = 'flex';
+                }
+                return false;
+            } else {
+                document.getElementById('app').style.display = 'flex';
+                const loginScreen = document.getElementById('login-screen');
+                if (loginScreen) {
+                    loginScreen.style.display = 'none';
+                }
+                updateUserProfileUI();
+                return true;
+            }
+        }
+
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorEl = document.getElementById('login-error');
+            const errorTextEl = document.getElementById('login-error-text');
+            const btn = document.getElementById('login-submit-btn');
+            
+            if (GAS_DEPLOY_URL && !GAS_DEPLOY_URL.includes("PASTE_YOUR")) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="sync-spin"><i data-lucide="refresh-cw" class="w-4 h-4"></i></span> <span>Authenticating...</span>`;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                
+                try {
+                    const url = `${GAS_DEPLOY_URL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                    const response = await fetch(url);
+                    const result = await response.json();
+                    
+                    if (result.success && result.user) {
+                        localStorage.setItem('currentUser', JSON.stringify(result.user));
+                        errorEl.classList.add('hidden');
+                        checkLogin();
+                        handleRoute();
+                        setTimeout(() => fetchLeadsFromSheets(true), 500);
+                    } else {
+                        errorTextEl.innerText = result.error || 'Invalid email or password';
+                        errorEl.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error("Login verification failed", error);
+                    errorTextEl.innerText = "Connection failed. Checking local credentials bypass...";
+                    errorEl.classList.remove('hidden');
+                    
+                    // Offline fallback: check locally
+                    if (email === 'admin@solocrm.com' && password === 'admin123') {
+                        const demoUser = { name: "Admin User", email: "admin@solocrm.com", role: "Administrator" };
+                        localStorage.setItem('currentUser', JSON.stringify(demoUser));
+                        errorEl.classList.add('hidden');
+                        checkLogin();
+                        handleRoute();
+                        setTimeout(() => fetchLeadsFromSheets(true), 500);
+                    }
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Sign In</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                }
+            } else {
+                if (email === 'admin@solocrm.com' && password === 'admin123') {
+                    const demoUser = { name: "Admin User", email: "admin@solocrm.com", role: "Administrator" };
+                    localStorage.setItem('currentUser', JSON.stringify(demoUser));
+                    errorEl.classList.add('hidden');
+                    checkLogin();
+                    handleRoute();
+                } else {
+                    errorTextEl.innerText = "Demo login: admin@solocrm.com / admin123";
+                    errorEl.classList.remove('hidden');
+                }
+            }
+        }
+
+        async function handleLogout() {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                if (GAS_DEPLOY_URL && !GAS_DEPLOY_URL.includes("PASTE_YOUR")) {
+                    try {
+                        await fetch(`${GAS_DEPLOY_URL}?action=logout&email=${encodeURIComponent(user.email)}`, { mode: 'no-cors' });
+                    } catch (e) {
+                        console.error("Logout log failed", e);
+                    }
+                }
+            }
+            localStorage.removeItem('currentUser');
+            closeModal('profile-modal');
+            checkLogin();
+        }
+
+        function openProfileModal() {
+            updateUserProfileUI();
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        }
+
+        function updateUserProfileUI() {
+            try {
+                const userJson = localStorage.getItem('currentUser');
+                if (userJson) {
+                    const user = JSON.parse(userJson);
+                    
+                    const dName = document.getElementById('profile-name-text');
+                    const dRole = document.getElementById('profile-role-text');
+                    if (dName) dName.innerText = user.name || 'User';
+                    if (dRole) dRole.innerText = user.role || 'User';
+                    
+                    const mName = document.getElementById('profile-name-text-mobile');
+                    const mRole = document.getElementById('profile-role-text-mobile');
+                    if (mName) mName.innerText = user.name || 'User';
+                    if (mRole) mRole.innerText = user.role || 'User';
+                    
+                    const modalName = document.getElementById('modal-profile-name');
+                    const modalRole = document.getElementById('modal-profile-role');
+                    const modalEmail = document.getElementById('modal-profile-email');
+                    if (modalName) modalName.innerText = user.name || 'User';
+                    if (modalRole) modalRole.innerText = user.role || 'User';
+                    if (modalEmail) modalEmail.innerText = user.email || '';
+                }
+            } catch (e) {
+                console.error("Failed to update user profile UI", e);
+            }
+        }
+
+        function triggerRecordingUpload(leadId, interactionId) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'audio/*';
+            input.onchange = (e) => {
+                if (e.target.files.length > 0) {
+                    uploadRecordingToDrive(leadId, interactionId, e.target.files[0]);
+                }
+            };
+            input.click();
+        }
+
+        async function uploadRecordingToDrive(leadId, interactionId, file) {
+            const l = db.getLeads().find(x => x.id === leadId);
+            if (!l) return;
+            
+            const clientName = (l.name || 'Lead').replace(/[^a-zA-Z0-9]/g, '_');
+            const status = (l.status || 'New').replace(/[^a-zA-Z0-9]/g, '_');
+            
+            // Format timestamp: DD-MM-YYYY_HH-mm-ss
+            const now = new Date();
+            const pad = (num) => String(num).padStart(2, '0');
+            const dateStr = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
+            const timeStr = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+            const timestamp = `${dateStr}_${timeStr}`;
+            
+            // File extension
+            const ext = file.name.split('.').pop() || 'mp3';
+            const newFileName = `${clientName}_${status}_${timestamp}.${ext}`;
+            
+            // Show progress bar
+            const container = document.getElementById(`upload-container-${interactionId}`);
+            const progress = document.getElementById(`progress-container-${interactionId}`);
+            const progressText = document.getElementById(`progress-text-${interactionId}`);
+            const progressBar = document.getElementById(`progress-bar-${interactionId}`);
+            
+            if (container && progress) {
+                container.classList.add('hidden');
+                progress.classList.remove('hidden');
+            }
+            
+            if (progressBar && progressText) {
+                progressBar.style.width = '20%';
+                progressText.innerText = '20%';
+            }
+
+            // Read file as base64
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const dataUrl = e.target.result;
+                    const base64Data = dataUrl.split(',')[1];
+                    
+                    if (progressBar && progressText) {
+                        progressBar.style.width = '60%';
+                        progressText.innerText = '60%';
+                    }
+                    
+                    if (!GAS_DEPLOY_URL || GAS_DEPLOY_URL.includes("PASTE_YOUR")) {
+                        console.warn("GAS_DEPLOY_URL not set, simulating offline upload");
+                        setTimeout(() => {
+                            if (progressBar && progressText) {
+                                progressBar.style.width = '100%';
+                                progressText.innerText = '100%';
+                            }
+                            
+                            // Save locally as simulation
+                            const ints = db.getInteractions();
+                            const targetInt = ints.find(x => x.id === interactionId);
+                            if (targetInt) {
+                                targetInt.audioUrl = '#';
+                                targetInt.audioName = newFileName;
+                                db.save(db.KEYS.INTERACTIONS, ints);
+                                renderLeadModalContent();
+                                autoSync();
+                            }
+                        }, 800);
+                        return;
+                    }
+                    
+                    const payload = {
+                        action: 'uploadAudio',
+                        clientName: l.name || 'Lead',
+                        status: l.status || 'New',
+                        fileName: newFileName,
+                        mimeType: file.type || 'audio/mpeg',
+                        fileData: base64Data
+                    };
+                    
+                    const response = await fetch(GAS_DEPLOY_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const responseText = await response.text();
+                    let result;
+                    try {
+                        result = JSON.parse(responseText);
+                    } catch (parseErr) {
+                        console.error("Failed to parse GAS response as JSON. Response text:", responseText);
+                        throw new Error(responseText || "Empty or invalid response from server");
+                    }
+                    
+                    if (result.success && (result.downloadUrl || result.url)) {
+                        if (progressBar && progressText) {
+                            progressBar.style.width = '100%';
+                            progressText.innerText = '100%';
+                        }
+                        
+                        // Save in database
+                        const ints = db.getInteractions();
+                        const targetInt = ints.find(x => x.id === interactionId);
+                        if (targetInt) {
+                            targetInt.audioUrl = result.downloadUrl || result.url;
+                            targetInt.audioName = newFileName;
+                            db.save(db.KEYS.INTERACTIONS, ints);
+                            
+                            // Re-render
+                            renderLeadModalContent();
+                            autoSync();
+                        }
+                    } else {
+                        alert("Upload failed: " + (result.error || "Unknown server error"));
+                        if (container && progress) {
+                            container.classList.remove('hidden');
+                            progress.classList.add('hidden');
+                        }
+                    }
+                } catch (err) {
+                    console.error("Upload error details:", err);
+                    alert("Upload error: " + err.message + ". Saving offline fallback recording.");
+                    
+                    const ints = db.getInteractions();
+                    const targetInt = ints.find(x => x.id === interactionId);
+                    if (targetInt) {
+                        targetInt.audioUrl = '#';
+                        targetInt.audioName = newFileName;
+                        db.save(db.KEYS.INTERACTIONS, ints);
+                        renderLeadModalContent();
+                        autoSync();
+                    }
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        resetAgentOptions();
+    </script>
+</body>
+</html>
