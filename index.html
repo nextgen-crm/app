@@ -411,6 +411,10 @@
             getFollowUps() { return this.load(this.KEYS.FOLLOWUPS); }
             getTemplates() { return this.load(this.KEYS.TEMPLATES); }
             getCategories() {
+                const stored = this.load(this.KEYS.CATEGORIES);
+                if (stored && stored.length > 0) {
+                    return stored;
+                }
                 return [
                     { id: 'Education', color: '#10b981' },
                     { id: 'Packaging', color: '#3b82f6' },
@@ -1803,18 +1807,21 @@
                 const company = findVal(['company', 'company name', 'business', 'org', 'organization']);
                 const phone = findVal(['phone', 'phone number', 'mobile', 'mobile number', 'contact']);
                 const email = findVal(['email', 'email address']);
-                let category = findVal(['category', 'category name', 'tag', 'lead category']).trim().toLowerCase();
+                let rawCategory = findVal(['category', 'category name', 'tag', 'lead category']).trim();
+                let category = 'Education';
 
-                if (category) {
-                    if (category.includes('packag')) {
+                if (rawCategory) {
+                    const lower = rawCategory.toLowerCase();
+                    if (lower.includes('packag')) {
                         category = 'Packaging';
-                    } else if (category.includes('food') || category.includes('restaur') || category.includes('cafe')) {
+                    } else if (lower.includes('food') || lower.includes('restaur') || lower.includes('cafe')) {
                         category = 'Food Business';
-                    } else {
+                    } else if (lower === 'education') {
                         category = 'Education';
+                    } else {
+                        category = rawCategory;
+                        db.addCategory({ id: category, color: '#' + Math.floor(Math.random()*16777215).toString(16) });
                     }
-                } else {
-                    category = 'Education';
                 }
 
                 leads.push({ 
@@ -1837,6 +1844,7 @@
 
         function addTask(e) { e.preventDefault(); const t = document.getElementById('task-in').value; if(!t) return; const ts = db.getTasks(); ts.push({ id: crypto.randomUUID(), title: t, isCompleted: false }); db.saveTasks(ts); renderTasks(); }
         function toggleTask(id) { const ts = db.getTasks(); const t = ts.find(x => x.id === id); if(t) t.isCompleted = !t.isCompleted; db.saveTasks(ts); renderTasks(); }
+        function deleteTask(id) { const ts = db.getTasks().filter(x => x.id !== id); db.saveTasks(ts); renderTasks(); }
 
         function openLeadModal(id) {
             currentLeadId = id;
