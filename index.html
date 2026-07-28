@@ -356,12 +356,14 @@
                 if (!localStorage.getItem(this.KEYS.CLIENTS)) localStorage.setItem(this.KEYS.CLIENTS, JSON.stringify([]));
                 if (!localStorage.getItem(this.KEYS.FOLLOWUPS)) localStorage.setItem(this.KEYS.FOLLOWUPS, JSON.stringify([]));
                 
-                if (!localStorage.getItem(this.KEYS.TEMPLATES)) {
-                    const defaultTemplates = [
-                        { id: 'bday', name: 'Birthday Wish', content: 'Happy Birthday {client}! Hope you have a fantastic day ahead.' },
-                        { id: 'fu-2m', name: '2 Month Follow-up', content: 'Hi {client}, it has been 2 months since our project for {company} finished. Just wanted to check if everything is running smoothly!' },
-                        { id: 'anni', name: 'Anniversary Message', content: 'Happy 1 Year Anniversary {client}! It has been exactly one year since we completed your project. Thank you for your continued trust.' }
-                    ];
+                const defaultTemplates = [
+                    { id: 'f82397ef-7c92-49b8-9bb5-9df5a36db723', name: 'Month Follow-up', content: 'Hello {client}, hope everything is running smoothly with your project. Just checking in to see if you need any updates, improvements, or support from our side.' },
+                    { id: 'dd9c0c11-e3a6-495f-88fd-bbef0bacecfe', name: '15 Days Follow-up', content: 'Hello {client}, hope you are doing well after the recent delivery. We wanted to check if everything is running smoothly since the project completion. If you need any minor updates or assistance, feel free to reach out.' },
+                    { id: 'bday', name: 'Birthday Wish', content: 'Happy Birthday {client}! Hope you have a fantastic day ahead.' },
+                    { id: 'fu-2m', name: '2 Month Follow-up', content: 'Hi {client}, it has been 2 months since our project for {company} finished. Just wanted to check if everything is running smoothly!' },
+                    { id: 'anni', name: 'Anniversary Message', content: 'Happy 1 Year Anniversary {client}! It has been exactly one year since we completed your project. Thank you for your continued trust.' }
+                ];
+                if (!localStorage.getItem(this.KEYS.TEMPLATES) || JSON.parse(localStorage.getItem(this.KEYS.TEMPLATES)).length < 5) {
                     localStorage.setItem(this.KEYS.TEMPLATES, JSON.stringify(defaultTemplates));
                 }
 
@@ -1373,14 +1375,43 @@
                 const followups = db.getFollowUps();
                 const today = new Date().setHours(0,0,0,0);
                 
-                const overdue = followups.filter(f => !f.completed && f.date < today).sort((a,b) => a.date - b.date);
-                const todayF = followups.filter(f => !f.completed && new Date(f.date).setHours(0,0,0,0) === today);
-                const upcoming = followups.filter(f => !f.completed && f.date > today).sort((a,b) => a.date - b.date);
+                const isCompleted = (val) => {
+                    if (val === undefined || val === null) return false;
+                    if (typeof val === 'boolean') return val;
+                    const s = String(val).toLowerCase().trim();
+                    return s === 'true';
+                };
+
+                const parseSafeDate = (d) => {
+                    if (!d) return 0;
+                    if (typeof d === 'number') return d;
+                    const parsedNum = Number(d);
+                    if (!isNaN(parsedNum)) return parsedNum;
+                    
+                    const ts = Date.parse(d);
+                    if (!isNaN(ts)) return ts;
+                    
+                    const parts = String(d).split('/');
+                    if (parts.length === 3) {
+                        const day = parseInt(parts[0], 10);
+                        const month = parseInt(parts[1], 10) - 1;
+                        const year = parseInt(parts[2], 10);
+                        const dateObj = new Date(year, month, day);
+                        if (!isNaN(dateObj.getTime())) return dateObj.getTime();
+                    }
+                    return 0;
+                };
+
+                const overdue = followups.filter(f => !isCompleted(f.completed) && parseSafeDate(f.date) < today).sort((a,b) => parseSafeDate(a.date) - parseSafeDate(b.date));
+                const todayF = followups.filter(f => !isCompleted(f.completed) && new Date(parseSafeDate(f.date)).setHours(0,0,0,0) === today);
+                const upcoming = followups.filter(f => !isCompleted(f.completed) && parseSafeDate(f.date) > today).sort((a,b) => parseSafeDate(a.date) - parseSafeDate(b.date));
 
                 const renderCard = (f) => {
-                    const diff = Math.ceil((f.date - today) / (1000 * 60 * 60 * 24));
+                    const diff = Math.ceil((parseSafeDate(f.date) - today) / (1000 * 60 * 60 * 24));
                     const daysText = diff === 0 ? 'Today' : diff < 0 ? `${Math.abs(diff)}d Overdue` : `${diff}d Left`;
                     const color = diff < 0 ? 'text-red-500 bg-red-50 border-red-100' : diff === 0 ? 'text-blue-500 bg-blue-50 border-blue-100' : 'text-slate-500 bg-slate-50 border-slate-100';
+                    const displayCompany = f.company || 'Nextgen';
+                    const displayDate = new Date(parseSafeDate(f.date)).toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' });
                     
                     return `
                         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
@@ -1389,11 +1420,11 @@
                                     <h4 class="font-bold text-slate-800">${f.clientName}</h4>
                                     <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${color} border">${daysText}</span>
                                 </div>
-                                <p class="text-xs text-slate-500">${f.company || 'Private Entity'} • <span class="font-bold text-indigo-600">${f.type}</span></p>
-                                <p class="text-[10px] text-slate-400 mt-1">${new Date(f.date).toLocaleDateString()}</p>
+                                <p class="text-xs text-slate-500">${displayCompany} • <span class="font-bold text-indigo-600">${f.type}</span></p>
+                                <p class="text-[10px] text-slate-400 mt-1">${displayDate}</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button onclick="openTemplateSelector('${f.clientId}', '${f.type}')" class="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 active:scale-95 transition-all">
+                                <button onclick="openTemplateSelector('${f.clientId}', '${f.type}', '${f.clientName}')" class="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 active:scale-95 transition-all">
                                     <i data-lucide="send" class="w-4 h-4"></i>
                                 </button>
                                 <button onclick="markFollowUpDone('${f.id}')" class="p-2 bg-slate-50 text-slate-400 rounded-xl hover:text-blue-600 hover:bg-blue-50 active:scale-95 transition-all">
@@ -1475,39 +1506,16 @@
         function renderLibrary() {
             try {
                 let templates = db.getTemplates();
-                
-                // Filter Logic
-                const filtered = templates.filter(t => {
-                    const matchStd = libStdFilter === 'All' || String(t.standard) === libStdFilter;
-                    const matchMed = libMedFilter === 'All' || String(t.medium) === libMedFilter;
-                    return matchStd && matchMed;
-                });
-
-                const stds = ["All", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-                const meds = ["All", "English", "Hindi", "Marathi", "Semi-English"];
+                const filtered = templates;
 
                 document.getElementById('main-content').innerHTML = `
                     <div class="p-4 md:p-10 w-full max-w-5xl mx-auto pb-24">
                         <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                             <div>
-                                <h1 class="text-4xl font-black text-slate-800 tracking-tight">Study Library</h1>
-                                <p class="text-slate-500 text-sm font-medium">Class schedules, subjects, and study materials.</p>
+                                <h1 class="text-4xl font-black text-slate-800 tracking-tight">Template Library</h1>
+                                <p class="text-slate-500 text-sm font-medium">Ready-to-use message templates for client interactions.</p>
                             </div>
                             <div class="flex items-center gap-3">
-                                <div class="flex gap-2">
-                                    <div class="relative">
-                                        <select onchange="updateLibFilter('std', this.value)" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 appearance-none pr-10 outline-none focus:ring-2 focus:ring-indigo-100">
-                                            ${stds.map(s => `<option value="${s}" ${libStdFilter === s ? 'selected' : ''}>Std ${s}</option>`).join('')}
-                                        </select>
-                                        <i data-lucide="chevron-down" class="absolute right-3 top-3 text-slate-400 w-3 h-3 pointer-events-none"></i>
-                                    </div>
-                                    <div class="relative">
-                                        <select onchange="updateLibFilter('med', this.value)" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 appearance-none pr-10 outline-none focus:ring-2 focus:ring-indigo-100">
-                                            ${meds.map(m => `<option value="${m}" ${libMedFilter === m ? 'selected' : ''}>${m}</option>`).join('')}
-                                        </select>
-                                        <i data-lucide="chevron-down" class="absolute right-3 top-3 text-slate-400 w-3 h-3 pointer-events-none"></i>
-                                    </div>
-                                </div>
                                 <button onclick="openTemplateModal()" class="bg-indigo-600 text-white p-3 rounded-2xl shadow-xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all">
                                     <i data-lucide="plus"></i>
                                 </button>
@@ -1519,29 +1527,23 @@
                                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative group hover:shadow-md transition-all">
                                     <div class="flex justify-between items-start mb-4">
                                         <div>
-                                            <h3 class="font-bold text-lg text-slate-800 leading-tight">${t.name} ${t.subject ? `• <span class="text-indigo-600">${t.subject}</span>` : ''}</h3>
-                                            <div class="flex gap-2 mt-1">
-                                                ${t.standard ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-500">Std ${t.standard}</span>` : ''}
-                                                ${t.medium ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-500">${t.medium}</span>` : ''}
-                                                ${t.day ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-amber-50 text-amber-600">${t.day}</span>` : ''}
-                                            </div>
+                                            <h3 class="font-bold text-lg text-slate-800 leading-tight">${t.name}</h3>
                                         </div>
                                         <div class="flex gap-1">
                                             <button onclick="editTemplate('${t.id}')" class="p-2 text-slate-300 hover:text-indigo-600 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
                                             <button onclick="deleteTemplate('${t.id}')" class="p-2 text-slate-300 hover:text-red-600 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                                         </div>
                                     </div>
-                                    <div class="bg-slate-50 p-4 rounded-xl text-sm font-medium text-slate-600 italic border border-slate-100 mb-4 h-24 overflow-y-auto">
+                                    <div class="bg-slate-50 p-4 rounded-xl text-sm font-medium text-slate-600 italic border border-slate-100 mb-4 h-32 overflow-y-auto">
                                         "${t.content}"
                                     </div>
-                                    ${t.date ? `<p class="text-[10px] text-slate-400 font-bold mb-3 flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> ${new Date(t.date).toLocaleDateString()}</p>` : ''}
                                     <div class="flex gap-2 opacity-40 group-hover:opacity-100 transition-opacity">
                                         <span class="text-[8px] font-black uppercase text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded tracking-tighter">{client}</span>
                                         <span class="text-[8px] font-black uppercase text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded tracking-tighter">{company}</span>
                                     </div>
                                 </div>
                             `).join('')}
-                            ${!filtered.length ? '<div class="col-span-full py-20 text-center text-slate-300 italic">No study materials found for this filter.</div>' : ''}
+                            ${!filtered.length ? '<div class="col-span-full py-20 text-center text-slate-300 italic">No templates found. Add one above!</div>' : ''}
                         </div>
                     </div>
                 `;
@@ -1550,64 +1552,27 @@
         }
 
         function updateLibFilter(type, val) {
-            if(type === 'std') libStdFilter = val;
-            else libMedFilter = val;
             renderLibrary();
         }
 
         function openTemplateModal(id = null) {
             const templates = db.getTemplates();
-            const t = id ? templates.find(x => x.id === id) : { name: '', content: '', standard: '', medium: '', subject: '', day: '', date: '' };
+            const t = id ? templates.find(x => x.id === id) : { name: '', content: '' };
             
-            const stds = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-            const meds = ["", "English", "Hindi", "Marathi", "Semi-English"];
-
             document.getElementById('lead-modal-content').innerHTML = `
                 <div class="space-y-6">
-                    <h3 class="font-black text-2xl text-slate-800 tracking-tight">${id ? 'Update Material' : 'New Study Material'}</h3>
+                    <h3 class="font-black text-2xl text-slate-800 tracking-tight">${id ? 'Update Template' : 'New Template'}</h3>
                     <form onsubmit="saveTemplate(event, ${id ? `'${id}'` : 'null'})" class="space-y-5">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Title / ID</label>
-                                <input name="name" value="${t.name}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Subject (e.g. Maths)</label>
-                                <input name="subject" value="${t.subject || ''}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Standard</label>
-                                <select name="standard" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
-                                    ${stds.map(s => `<option value="${s}" ${t.standard === s ? 'selected' : ''}>${s ? `Std ${s}` : 'Select'}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Medium</label>
-                                <select name="medium" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
-                                    ${meds.map(m => `<option value="${m}" ${t.medium === m ? 'selected' : ''}>${m || 'Select'}</option>`).join('')}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Day</label>
-                                <input name="day" value="${t.day || ''}" placeholder="Friday" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date</label>
-                                <input type="date" name="date" value="${t.date || ''}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700">
-                            </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Template Name</label>
+                            <input name="name" value="${t.name}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-slate-700" placeholder="e.g. Month Follow-up">
                         </div>
 
                         <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Notes / Content</label>
-                            <textarea name="content" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none h-32 font-medium text-slate-700">${t.content}</textarea>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Message Content</label>
+                            <textarea name="content" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-indigo-100 outline-none h-40 font-medium text-slate-700" placeholder="Hello {client}...">${t.content}</textarea>
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg shadow-indigo-100 active:scale-95 transition-all uppercase tracking-widest text-sm">Save to Library</button>
+                        <button type="submit" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg shadow-indigo-100 active:scale-95 transition-all uppercase tracking-widest text-sm">Save Template</button>
                     </form>
                 </div>
             `;
@@ -1622,12 +1587,7 @@
             const data = { 
                 id: id || crypto.randomUUID(), 
                 name: fd.get('name'), 
-                content: fd.get('content'),
-                subject: fd.get('subject'),
-                standard: fd.get('standard'),
-                medium: fd.get('medium'),
-                day: fd.get('day'),
-                date: fd.get('date')
+                content: fd.get('content')
             };
 
             if(id) {
@@ -1653,30 +1613,49 @@
 
         function editTemplate(id) { openTemplateModal(id); }
 
-        function openTemplateSelector(clientId, followUpType = '') {
+        function openTemplateSelector(clientId, followUpType = '', clientNameFallback = '') {
             const templates = db.getTemplates();
             const clients = db.getClients();
-            const c = clients.find(x => x.id === clientId) || db.getLeads().find(x => x.id === clientId);
+            const leads = db.getLeads();
             
-            if(!c) return;
+            let c = clients.find(x => x.id === clientId) || leads.find(x => x.id === clientId);
+            if (!c && clientNameFallback) {
+                c = clients.find(x => x.name === clientNameFallback) || leads.find(x => x.name === clientNameFallback);
+            }
+            if (!c && clientId) {
+                c = clients.find(x => x.name === clientId) || leads.find(x => x.name === clientId);
+            }
+            
+            // If still not found, create a temporary object so the message can still be chosen/sent!
+            if (!c) {
+                c = {
+                    id: clientId || crypto.randomUUID(),
+                    name: clientNameFallback || clientId || "Client",
+                    company: "Nextgen",
+                    phone: ""
+                };
+            }
+            
+            const clientName = c.name || clientNameFallback || "Client";
+            const clientCompany = c.company || "Nextgen";
 
             document.getElementById('lead-modal-content').innerHTML = `
                 <div class="space-y-6">
                     <div>
                         <h3 class="font-black text-xl text-slate-800">Choose a Message</h3>
-                        <p class="text-sm text-slate-500 font-medium">To: ${c.name} (${c.company || 'Private'})</p>
+                        <p class="text-sm text-slate-500 font-medium">To: ${clientName} (${clientCompany})</p>
                     </div>
 
                     <div class="space-y-3">
                         ${templates.map(t => {
                             const preview = t.content
-                                .replace(/{client}/g, c.name)
-                                .replace(/{company}/g, c.company || 'your firm')
+                                .replace(/{client}/g, clientName)
+                                .replace(/{company}/g, clientCompany)
                                 .replace(/{service}/g, c.serviceType || 'our service')
                                 .replace(/{date}/g, new Date().toLocaleDateString());
 
                             return `
-                                <div onclick="processSendWhatsApp('${clientId}', \`${encodeURIComponent(preview)}\`)" class="p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-emerald-200 hover:bg-emerald-50 transition-all cursor-pointer group">
+                                <div onclick="processSendWhatsApp('${c.id}', \`${encodeURIComponent(preview)}\`, \`${encodeURIComponent(clientName)}\`)" class="p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-emerald-200 hover:bg-emerald-50 transition-all cursor-pointer group">
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="font-black text-[10px] text-slate-400 uppercase group-hover:text-emerald-600">${t.name}</span>
                                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-emerald-500"></i>
@@ -1692,18 +1671,44 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        function processSendWhatsApp(clientId, encodedMsg) {
+        function processSendWhatsApp(clientId, encodedMsg, clientNameFallback = '') {
             const clients = db.getClients();
-            const l = clients.find(x => x.id === clientId) || db.getLeads().find(x => x.id === clientId);
-            if(!l) return;
+            const leads = db.getLeads();
+            let l = clients.find(x => x.id === clientId) || leads.find(x => x.id === clientId);
+            
+            if (!l && clientNameFallback) {
+                l = clients.find(x => x.name === decodeURIComponent(clientNameFallback)) || leads.find(x => x.name === decodeURIComponent(clientNameFallback));
+            }
 
-            const phoneStr = String(l.phone || '');
+            let phoneStr = l ? String(l.phone || '') : '';
+            if (!phoneStr || phoneStr.trim() === '') {
+                const nameDisplay = l ? l.name : (clientNameFallback ? decodeURIComponent(clientNameFallback) : "Client");
+                const userPhone = prompt(`Please enter a WhatsApp/phone number for ${nameDisplay}:`, "");
+                if (userPhone) {
+                    phoneStr = userPhone;
+                    // If we found a local client/lead, let's update their phone number in the database so it's auto-detected next time!
+                    if (l) {
+                        l.phone = phoneStr;
+                        if (clients.some(x => x.id === l.id)) {
+                            db.save(db.KEYS.CLIENTS, clients);
+                        } else if (leads.some(x => x.id === l.id)) {
+                            db.saveLeads(leads);
+                        }
+                        autoSync();
+                    }
+                } else {
+                    return; // user cancelled
+                }
+            }
+
             const rawPhone = phoneStr.replace(/\D/g, '');
             const waPhone = rawPhone.length === 10 ? '91' + rawPhone : rawPhone;
             
             const waUrl = `https://wa.me/${waPhone}?text=${encodedMsg}`;
             window.open(waUrl, '_blank');
-            logAction(clientId, 'WhatsApp');
+            if (l) {
+                logAction(l.id, 'WhatsApp');
+            }
             closeModal('lead-modal');
         }
         function handleRoute() { 
