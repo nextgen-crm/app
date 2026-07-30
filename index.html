@@ -1787,7 +1787,17 @@
             document.getElementById('cat-select').value = name;
             toggleNewCat();
         }
-        function openAgentModal() { document.getElementById('agent-modal').classList.remove('hidden'); if(!document.getElementById('agent-chat-area').children.length) addAgentMsg("Hello! I'm Jerry."); }
+        function openAgentModal() {
+            document.getElementById('agent-modal').classList.remove('hidden');
+            if(!document.getElementById('agent-chat-area').children.length) {
+                let uName = "User";
+                try {
+                    const uJson = localStorage.getItem('currentUser');
+                    if(uJson) uName = JSON.parse(uJson).name || "User";
+                } catch(e){}
+                addAgentMsg(`Hi ${uName}! 👋 I'm Jerry. How can I help you today?`);
+            }
+        }
         function switchTab(t) { 
             const m = document.getElementById('tab-manual'), i = document.getElementById('tab-import'), mf = document.getElementById('add-lead-form'), ifr = document.getElementById('import-form');
             if(t === 'manual') { mf.classList.remove('hidden'); ifr.classList.add('hidden'); m.className = "flex-1 py-4 text-sm font-bold text-blue-600 border-b-2 border-blue-600"; i.className = "flex-1 py-4 text-sm font-bold text-slate-400 border-b-2 border-transparent"; }
@@ -2218,12 +2228,42 @@
             if(id === currentLeadId) renderLeadModalContent();
         }
 
+        let jerryState = {
+            step: 'idle',
+            data: {
+                name: '',
+                phone: '',
+                email: '',
+                company: '',
+                category: '',
+                status: '',
+                followup_lead_id: '',
+                followup_lead_name: '',
+                followup_lead_company: '',
+                followup_lead_status: '',
+                followup_find_type: '',
+                followup_search_query: '',
+                followup_stage: '',
+                followup_remind_time: '',
+                followup_remind_date_val: '',
+                followup_message_choice: '',
+                followup_message: '',
+                matched_leads: [],
+                leads_in_stage: [],
+                view_more_limit: 3
+            }
+        };
+
         function addAgentMsg(t, u=false) {
             document.getElementById('agent-chat-area').insertAdjacentHTML('beforeend', `<div class="flex ${u?'justify-end':'justify-start'} animate-fade-in"><div class="max-w-[85%] p-3 rounded-2xl text-sm ${u?'bg-blue-600 text-white':'bg-white text-slate-700 shadow-sm border'}">${t}</div></div>`);
             document.getElementById('agent-chat-area').scrollTop = 9999;
         }
+
         function resetAgentOptions() {
+            jerryState.step = 'idle';
             const opts = [
+                {id:'new_lead_start', label:'➕ New Lead'},
+                {id:'schedule_followup_start', label:'📆 Schedule Follow-up'},
                 {id:'sum', label:'Status Summary'}, 
                 {id:'new', label:'Show New'}, 
                 {id:'sync', label:'Cloud Refresh'},
@@ -2231,10 +2271,792 @@
             ];
             document.getElementById('agent-options').innerHTML = opts.map(o => `<button onclick="handleAgentQuery('${o.id}','${o.label}')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">${o.label}</button>`).join('');
         }
+
+        function renderJerryStepOptions() {
+            const container = document.getElementById('agent-options');
+            if (!container) return;
+
+            switch (jerryState.step) {
+                case 'idle':
+                    resetAgentOptions();
+                    break;
+
+                case 'awaiting_start':
+                    container.innerHTML = `
+                        <div class="flex gap-2">
+                            <button onclick="handleJerryWizard('wizard_start', '➕ Start')" class="px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 rounded-full text-[11px] font-bold transition-transform active:scale-95">➕ Start</button>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'awaiting_name':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="text" id="jerry-input" placeholder="What's the lead's name?" class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold" onkeydown="if(event.key === 'Enter') submitJerryInput()">
+                                <button onclick="submitJerryInput()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Submit</button>
+                            </div>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        const inp = document.getElementById('jerry-input');
+                        if (inp) inp.focus();
+                    }, 100);
+                    break;
+
+                case 'awaiting_phone':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="tel" id="jerry-input" placeholder="e.g. 9876543210" class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold" onkeydown="if(event.key === 'Enter') submitJerryInput()">
+                                <button onclick="submitJerryInput()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Submit</button>
+                            </div>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        const inp = document.getElementById('jerry-input');
+                        if (inp) inp.focus();
+                    }, 100);
+                    break;
+
+                case 'awaiting_email':
+                    container.innerHTML = `
+                        <div class="flex gap-2">
+                            <button onclick="handleJerryWizard('wizard_enter_email', '✍️ Enter Email')" class="px-3 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 hover:bg-blue-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">✍️ Enter Email</button>
+                            <button onclick="handleJerryWizard('wizard_skip_email', '⏭️ Skip')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">⏭️ Skip</button>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'awaiting_email_input':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="email" id="jerry-input" placeholder="name@domain.com" class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold" onkeydown="if(event.key === 'Enter') submitJerryInput()">
+                                <button onclick="submitJerryInput()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Submit</button>
+                            </div>
+                            <div class="flex justify-between w-full">
+                                <button onclick="handleJerryWizard('wizard_skip_email', '⏭️ Skip')" class="text-[10px] text-blue-600 font-bold hover:underline">⏭️ Skip</button>
+                                <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                            </div>
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        const inp = document.getElementById('jerry-input');
+                        if (inp) inp.focus();
+                    }, 100);
+                    break;
+
+                case 'awaiting_company':
+                    container.innerHTML = `
+                        <div class="flex gap-2">
+                            <button onclick="handleJerryWizard('wizard_enter_company', '✍️ Enter Company')" class="px-3 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 hover:bg-blue-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">✍️ Enter Company</button>
+                            <button onclick="handleJerryWizard('wizard_skip_company', '⏭️ Skip')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">⏭️ Skip</button>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'awaiting_company_input':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="text" id="jerry-input" placeholder="Acme Corp" class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold" onkeydown="if(event.key === 'Enter') submitJerryInput()">
+                                <button onclick="submitJerryInput()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Submit</button>
+                            </div>
+                            <div class="flex justify-between w-full">
+                                <button onclick="handleJerryWizard('wizard_skip_company', '⏭️ Skip')" class="text-[10px] text-blue-600 font-bold hover:underline">⏭️ Skip</button>
+                                <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                            </div>
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        const inp = document.getElementById('jerry-input');
+                        if (inp) inp.focus();
+                    }, 100);
+                    break;
+
+                case 'awaiting_category':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex flex-wrap gap-1.5">
+                                <button onclick="handleJerryWizard('cat_Restaurant', '🍽️ Restaurant')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🍽️ Restaurant</button>
+                                <button onclick="handleJerryWizard('cat_Manufacturing', '🏭 Manufacturing')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🏭 Manufacturing</button>
+                                <button onclick="handleJerryWizard('cat_IT_Company', '🏢 IT Company')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🏢 IT Company</button>
+                                <button onclick="handleJerryWizard('cat_Retail', '🛒 Retail')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🛒 Retail</button>
+                                <button onclick="handleJerryWizard('cat_Healthcare', '🏥 Healthcare')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🏥 Healthcare</button>
+                                <button onclick="handleJerryWizard('cat_Hotel', '🏨 Hotel')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🏨 Hotel</button>
+                                <button onclick="handleJerryWizard('cat_Packaging', '📦 Packaging')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">📦 Packaging</button>
+                                <button onclick="handleJerryWizard('cat_Other', '✍️ Other')" class="px-2.5 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 hover:bg-blue-100 rounded-full text-[10px] font-bold transition-all">✍️ Other</button>
+                            </div>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'awaiting_category_other_input':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="text" id="jerry-input" placeholder="e.g. Services" class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold" onkeydown="if(event.key === 'Enter') submitJerryInput()">
+                                <button onclick="submitJerryInput()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Submit</button>
+                            </div>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        const inp = document.getElementById('jerry-input');
+                        if (inp) inp.focus();
+                    }, 100);
+                    break;
+
+                case 'awaiting_status':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2">
+                                <button onclick="handleJerryWizard('status_New', '🟢 New')" class="px-3 py-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 hover:bg-emerald-100 rounded-full text-[11px] font-bold transition-all">🟢 New</button>
+                                <button onclick="handleJerryWizard('status_Contacted', '🟡 Contacted')" class="px-3 py-1.5 bg-amber-50 border border-amber-100 text-amber-700 hover:bg-amber-100 rounded-full text-[11px] font-bold transition-all">🟡 Contacted</button>
+                                <button onclick="handleJerryWizard('status_Interested', '🔵 Interested')" class="px-3 py-1.5 bg-blue-50 border border-blue-100 text-blue-700 hover:bg-blue-100 rounded-full text-[11px] font-bold transition-all">🔵 Interested</button>
+                            </div>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'confirm_create':
+                    container.innerHTML = `
+                        <div class="flex gap-2">
+                            <button onclick="handleJerryWizard('wizard_confirm_create', '✅ Create Lead')" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full text-[11px] font-bold transition-transform active:scale-95">✅ Create Lead</button>
+                            <button onclick="handleJerryWizard('wizard_edit_details', '✏️ Edit Details')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">✏️ Edit Details</button>
+                            <button onclick="handleJerryWizard('wizard_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'wizard_finished':
+                    container.innerHTML = `
+                        <button onclick="resetAgentOptions()" class="px-4 py-1.5 bg-blue-600 text-white rounded-full text-[11px] font-bold transition-transform active:scale-95">Main Menu</button>
+                    `;
+                    break;
+
+                // Follow-up scheduling new states
+                case 'fu_start':
+                    container.innerHTML = `
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="handleJerryFollowUp('fu_opt_find', '🔍 Find Lead')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">🔍 Find Lead</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_stage', '📂 Browse by Stage')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">📂 Browse by Stage</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_recent', '⭐ Recent Leads')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">⭐ Recent Leads</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'fu_find_lead_type':
+                    container.innerHTML = `
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="handleJerryFollowUp('fu_find_by_name', '👤 Name')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">👤 Name</button>
+                            <button onclick="handleJerryFollowUp('fu_find_by_phone', '📞 Phone Number')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">📞 Phone Number</button>
+                            <button onclick="handleJerryFollowUp('fu_find_by_company', '🏢 Company')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">🏢 Company</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'fu_enter_search':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="text" id="jerry-fu-search-input" placeholder="Enter search..." class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold" onkeydown="if(event.key === 'Enter') submitJerryFollowUpSearch()">
+                                <button onclick="submitJerryFollowUpSearch()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Search</button>
+                            </div>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        const inp = document.getElementById('jerry-fu-search-input');
+                        if (inp) inp.focus();
+                    }, 100);
+                    break;
+
+                case 'fu_select_lead': {
+                    const matched = jerryState.data.matched_leads || [];
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full max-h-48 overflow-y-auto">
+                            ${matched.map(l => `
+                                <button onclick="handleJerryFollowUp('select_lead_${l.id}', '👤 ${l.name} • ${l.company || 'Private Entity'}')" class="w-full text-left p-2 border border-slate-200 bg-white hover:bg-slate-50 hover:border-blue-400 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all">
+                                    <span class="text-slate-700 font-bold">👤 ${l.name}</span>
+                                    <span class="text-slate-400 text-[10px] truncate">• ${l.company || 'Private'}</span>
+                                </button>
+                            `).join('')}
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+                }
+
+                case 'fu_browse_stage':
+                    container.innerHTML = `
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="handleJerryFollowUp('fu_stage_New', '🟢 New')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🟢 New</button>
+                            <button onclick="handleJerryFollowUp('fu_stage_Contacted', '🟡 Contacted')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🟡 Contacted</button>
+                            <button onclick="handleJerryFollowUp('fu_stage_Interested', '🔵 Interested')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🔵 Interested</button>
+                            <button onclick="handleJerryFollowUp('fu_stage_Follow-up', '🟠 Follow-up')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🟠 Follow-up</button>
+                            <button onclick="handleJerryFollowUp('fu_stage_Won', '🟣 Won')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🟣 Won</button>
+                            <button onclick="handleJerryFollowUp('fu_stage_Lost', '🔴 Lost')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">🔴 Lost</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[10px] font-bold transition-all">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'fu_select_lead_by_stage': {
+                    const leads = jerryState.data.leads_in_stage || [];
+                    const limit = jerryState.data.view_more_limit || 3;
+                    const sliced = leads.slice(0, limit);
+                    const showViewMore = leads.length > limit;
+
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full max-h-48 overflow-y-auto">
+                            ${sliced.map(l => `
+                                <button onclick="handleJerryFollowUp('select_lead_${l.id}', '👤 ${l.name} • ${l.company || 'Private Entity'}')" class="w-full text-left p-2 border border-slate-200 bg-white hover:bg-slate-50 hover:border-blue-400 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all animate-fade-in">
+                                    <span class="text-slate-700 font-bold">👤 ${l.name}</span>
+                                    <span class="text-slate-400 text-[10px] truncate">• ${l.company || 'Private'}</span>
+                                </button>
+                            `).join('')}
+                            ${showViewMore ? `
+                                <button onclick="handleJerryFollowUp('fu_view_more_stage', '📄 View More...')" class="w-full text-center p-2 border border-slate-200 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 transition-all">
+                                    📄 View More...
+                                </button>
+                            ` : ''}
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+                }
+
+                case 'fu_recent_leads': {
+                    const leads = db.getLeads().sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full max-h-48 overflow-y-auto">
+                            ${leads.map(l => `
+                                <button onclick="handleJerryFollowUp('select_lead_${l.id}', '👤 ${l.name}')" class="w-full text-left p-2 border border-slate-200 bg-white hover:bg-slate-50 hover:border-blue-400 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all">
+                                    <span class="text-slate-700 font-bold">👤 ${l.name}</span>
+                                </button>
+                            `).join('')}
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+                }
+
+                case 'fu_remind_time':
+                    container.innerHTML = `
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="handleJerryFollowUp('remind_tomorrow', '🌅 Tomorrow')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">🌅 Tomorrow</button>
+                            <button onclick="handleJerryFollowUp('remind_3days', '📅 In 3 Days')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">📅 In 3 Days</button>
+                            <button onclick="handleJerryFollowUp('remind_nextweek', '🗓️ Next Week')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">🗓️ Next Week</button>
+                            <button onclick="handleJerryFollowUp('remind_pickdate', '📆 Pick Date')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">📆 Pick Date</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'fu_remind_pickdate_input':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="date" id="jerry-fu-date-input" class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold animate-fade-in">
+                                <button onclick="submitJerryFollowUpDate()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Next</button>
+                            </div>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'fu_message_choice':
+                    container.innerHTML = `
+                        <div class="flex gap-2">
+                            <button onclick="handleJerryFollowUp('msg_add', '✍️ Add Message')" class="px-3 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 hover:bg-blue-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">✍️ Add Message</button>
+                            <button onclick="handleJerryFollowUp('msg_skip', '⏭️ Skip')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">⏭️ Skip</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'fu_message_input':
+                    container.innerHTML = `
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex gap-2 w-full">
+                                <input type="text" id="jerry-fu-msg-input" placeholder="Call regarding website proposal..." class="flex-1 px-4 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 font-semibold animate-fade-in" onkeydown="if(event.key === 'Enter') submitJerryFollowUpMsg()">
+                                <button onclick="submitJerryFollowUpMsg()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-xs transition-transform active:scale-95">Next</button>
+                            </div>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="self-start text-[10px] text-slate-400 font-bold hover:underline">❌ Cancel</button>
+                        </div>
+                    `;
+                    setTimeout(() => {
+                        const inp = document.getElementById('jerry-fu-msg-input');
+                        if (inp) inp.focus();
+                    }, 100);
+                    break;
+
+                case 'fu_confirm_create':
+                    container.innerHTML = `
+                        <div class="flex gap-2">
+                            <button onclick="handleJerryFollowUp('fu_confirm_yes', '✅ Create Follow-up')" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full text-[11px] font-bold transition-transform active:scale-95">✅ Create Follow-up</button>
+                            <button onclick="handleJerryFollowUp('fu_confirm_edit', '✏️ Edit')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">✏️ Edit</button>
+                            <button onclick="handleJerryFollowUp('fu_opt_cancel', '❌ Cancel')" class="px-3 py-1.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-full text-[11px] font-bold transition-transform active:scale-95">❌ Cancel</button>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+
+        function submitJerryInput() {
+            const inp = document.getElementById('jerry-input');
+            if (!inp) return;
+            const val = inp.value.trim();
+            if (!val) return;
+
+            addAgentMsg(val, true);
+
+            setTimeout(() => {
+                if (jerryState.step === 'awaiting_name') {
+                    jerryState.data.name = val;
+                    jerryState.step = 'awaiting_phone';
+                    addAgentMsg(`Great! What's ${jerryState.data.name}'s phone number?`);
+                    renderJerryStepOptions();
+                } else if (jerryState.step === 'awaiting_phone') {
+                    jerryState.data.phone = val;
+                    jerryState.step = 'awaiting_email';
+                    addAgentMsg(`Do you have an email address?`);
+                    renderJerryStepOptions();
+                } else if (jerryState.step === 'awaiting_email_input') {
+                    jerryState.data.email = val;
+                    jerryState.step = 'awaiting_company';
+                    addAgentMsg(`What's the company name?`);
+                    renderJerryStepOptions();
+                } else if (jerryState.step === 'awaiting_company_input') {
+                    jerryState.data.company = val;
+                    jerryState.step = 'awaiting_category';
+                    addAgentMsg(`What business category best fits this lead?`);
+                    renderJerryStepOptions();
+                } else if (jerryState.step === 'awaiting_category_other_input') {
+                    jerryState.data.category = val;
+                    db.addCategory({ id: val, color: '#' + Math.floor(Math.random()*16777215).toString(16) });
+                    jerryState.step = 'awaiting_status';
+                    addAgentMsg(`What is the current lead status?`);
+                    renderJerryStepOptions();
+                }
+            }, 500);
+        }
+
+        function handleJerryWizard(actionId, label) {
+            addAgentMsg(label, true);
+
+            setTimeout(() => {
+                if (actionId === 'wizard_cancel') {
+                    addAgentMsg(`Lead creation cancelled. Let me know if you need anything else!`);
+                    jerryState.step = 'idle';
+                    resetAgentOptions();
+                    return;
+                }
+
+                if (jerryState.step === 'awaiting_start') {
+                    if (actionId === 'wizard_start') {
+                        jerryState.step = 'awaiting_name';
+                        addAgentMsg(`What's the lead's name?`);
+                        renderJerryStepOptions();
+                    }
+                } else if (jerryState.step === 'awaiting_email') {
+                    if (actionId === 'wizard_enter_email') {
+                        jerryState.step = 'awaiting_email_input';
+                        addAgentMsg(`Please enter the email address:`);
+                        renderJerryStepOptions();
+                    } else if (actionId === 'wizard_skip_email') {
+                        jerryState.data.email = '—';
+                        jerryState.step = 'awaiting_company';
+                        addAgentMsg(`What's the company name?`);
+                        renderJerryStepOptions();
+                    }
+                } else if (jerryState.step === 'awaiting_email_input' && actionId === 'wizard_skip_email') {
+                    jerryState.data.email = '—';
+                    jerryState.step = 'awaiting_company';
+                    addAgentMsg(`What's the company name?`);
+                    renderJerryStepOptions();
+                } else if (jerryState.step === 'awaiting_company') {
+                    if (actionId === 'wizard_enter_company') {
+                        jerryState.step = 'awaiting_company_input';
+                        addAgentMsg(`Please enter the company name:`);
+                        renderJerryStepOptions();
+                    } else if (actionId === 'wizard_skip_company') {
+                        jerryState.data.company = '—';
+                        jerryState.step = 'awaiting_category';
+                        addAgentMsg(`What business category best fits this lead?`);
+                        renderJerryStepOptions();
+                    }
+                } else if (jerryState.step === 'awaiting_company_input' && actionId === 'wizard_skip_company') {
+                    jerryState.data.company = '—';
+                    jerryState.step = 'awaiting_category';
+                    addAgentMsg(`What business category best fits this lead?`);
+                    renderJerryStepOptions();
+                } else if (jerryState.step === 'awaiting_category') {
+                    if (actionId === 'cat_Other') {
+                        jerryState.step = 'awaiting_category_other_input';
+                        addAgentMsg(`Please specify the category:`);
+                        renderJerryStepOptions();
+                    } else if (actionId.startsWith('cat_')) {
+                        const selectedCat = actionId.replace('cat_', '').replace(/_/g, ' ');
+                        jerryState.data.category = selectedCat;
+                        jerryState.step = 'awaiting_status';
+                        addAgentMsg(`What is the current lead status?`);
+                        renderJerryStepOptions();
+                    }
+                } else if (jerryState.step === 'awaiting_status') {
+                    if (actionId.startsWith('status_')) {
+                        const selectedStatus = actionId.replace('status_', '');
+                        jerryState.data.status = selectedStatus;
+                        jerryState.step = 'confirm_create';
+
+                        const summaryHtml = `
+Here's what I collected:
+
+👤 Name: ${jerryState.data.name}
+📞 Phone: ${jerryState.data.phone}
+📧 Email: ${jerryState.data.email}
+🏢 Company: ${jerryState.data.company}
+🏷️ Category: ${jerryState.data.category}
+📌 Status: ${jerryState.data.status}
+
+Create this lead?
+                        `.trim().replace(/\n/g, '<br>');
+
+                        addAgentMsg(`Summary<br><br>${summaryHtml}`);
+                        renderJerryStepOptions();
+                    }
+                } else if (jerryState.step === 'confirm_create') {
+                    if (actionId === 'wizard_confirm_create') {
+                        const newLead = {
+                            id: crypto.randomUUID(),
+                            name: jerryState.data.name,
+                            phone: jerryState.data.phone,
+                            email: jerryState.data.email === '—' ? '' : jerryState.data.email,
+                            company: jerryState.data.company === '—' ? '' : jerryState.data.company,
+                            category: jerryState.data.category,
+                            status: jerryState.data.status,
+                            createdAt: Date.now()
+                        };
+                        db.addLead(newLead);
+                        renderLeads();
+                        
+                        addAgentMsg(`✅ Done! Your lead has been created successfully.`);
+                        jerryState.step = 'wizard_finished';
+                        renderJerryStepOptions();
+                    } else if (actionId === 'wizard_edit_details') {
+                        jerryState.step = 'awaiting_name';
+                        addAgentMsg(`Let's edit the details. What's the lead's name?`);
+                        renderJerryStepOptions();
+                    }
+                }
+            }, 500);
+        }
+
+        function formatDateYYYYMMDD(date) {
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function submitJerryFollowUpSearch() {
+            const inp = document.getElementById('jerry-fu-search-input');
+            if (!inp) return;
+            const val = inp.value.trim();
+            if (!val) return;
+
+            addAgentMsg(val, true);
+
+            setTimeout(() => {
+                jerryState.data.followup_search_query = val;
+                const searchType = jerryState.data.followup_find_type;
+                const leads = db.getLeads();
+                let matchedLeads = [];
+                const query = val.toLowerCase();
+
+                if (searchType === 'fu_find_by_name') {
+                    matchedLeads = leads.filter(l => (l.name || '').toLowerCase().includes(query));
+                } else if (searchType === 'fu_find_by_phone') {
+                    matchedLeads = leads.filter(l => (l.phone || '').toLowerCase().includes(query));
+                } else if (searchType === 'fu_find_by_company') {
+                    matchedLeads = leads.filter(l => (l.company || '').toLowerCase().includes(query));
+                }
+
+                if (matchedLeads.length === 0) {
+                    addAgentMsg(`I couldn't find any matching leads. Let's try searching again.`);
+                    renderJerryStepOptions();
+                } else {
+                    jerryState.data.matched_leads = matchedLeads;
+                    jerryState.step = 'fu_select_lead';
+                    addAgentMsg(`I found these leads.`);
+                    renderJerryStepOptions();
+                }
+            }, 500);
+        }
+
+        function submitJerryFollowUpDate() {
+            const inp = document.getElementById('jerry-fu-date-input');
+            if (!inp || !inp.value) return;
+            const dateStr = inp.value;
+            
+            const d = new Date(dateStr);
+            const formattedDate = d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+            
+            addAgentMsg(formattedDate, true);
+            
+            setTimeout(() => {
+                jerryState.data.followup_remind_time = formattedDate;
+                jerryState.data.followup_remind_date_val = dateStr;
+                
+                jerryState.step = 'fu_message_choice';
+                addAgentMsg(`Would you like to add a reminder message?`);
+                renderJerryStepOptions();
+            }, 500);
+        }
+
+        function submitJerryFollowUpMsg() {
+            const inp = document.getElementById('jerry-fu-msg-input');
+            if (!inp) return;
+            const val = inp.value.trim();
+            if (!val) return;
+
+            addAgentMsg(val, true);
+
+            setTimeout(() => {
+                jerryState.data.followup_message = val;
+                jerryState.step = 'fu_confirm_create';
+                
+                const summaryHtml = `
+👤 Lead: ${jerryState.data.followup_lead_name}<br>
+🏢 Company: ${jerryState.data.followup_lead_company || '—'}<br>
+📅 Reminder: ${jerryState.data.followup_remind_time}<br>
+📝 Message: ${jerryState.data.followup_message}
+                `.trim();
+
+                addAgentMsg(`Please confirm your follow-up.<br><br>${summaryHtml}`);
+                renderJerryStepOptions();
+            }, 500);
+        }
+
+        function handleJerryFollowUp(actionId, label) {
+            addAgentMsg(label, true);
+
+            setTimeout(() => {
+                if (actionId === 'fu_opt_cancel') {
+                    addAgentMsg(`Follow-up scheduling cancelled.`);
+                    jerryState.step = 'idle';
+                    resetAgentOptions();
+                    return;
+                }
+
+                if (jerryState.step === 'fu_start') {
+                    if (actionId === 'fu_opt_find') {
+                        jerryState.step = 'fu_find_lead_type';
+                        addAgentMsg(`How would you like to find the lead?`);
+                        renderJerryStepOptions();
+                    } else if (actionId === 'fu_opt_stage') {
+                        jerryState.step = 'fu_browse_stage';
+                        addAgentMsg(`Which stage would you like to browse?`);
+                        renderJerryStepOptions();
+                    } else if (actionId === 'fu_opt_recent') {
+                        const leads = db.getLeads().sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+                        if (leads.length === 0) {
+                            addAgentMsg(`No leads found. Please create a lead first.`);
+                            jerryState.step = 'fu_start';
+                            renderJerryStepOptions();
+                        } else {
+                            jerryState.step = 'fu_recent_leads';
+                            addAgentMsg(`Select a recent lead.`);
+                            renderJerryStepOptions();
+                        }
+                    }
+                    return;
+                }
+
+                if (jerryState.step === 'fu_find_lead_type') {
+                    jerryState.data.followup_find_type = actionId;
+                    jerryState.step = 'fu_enter_search';
+                    addAgentMsg(`Enter your search.`);
+                    renderJerryStepOptions();
+                    return;
+                }
+
+                if (jerryState.step === 'fu_browse_stage') {
+                    if (actionId.startsWith('fu_stage_')) {
+                        const stageName = actionId.replace('fu_stage_', '');
+                        let matchedStatus = LeadStatus.NEW;
+                        const stageLower = stageName.toLowerCase();
+                        if (stageLower.includes('new')) matchedStatus = LeadStatus.NEW;
+                        else if (stageLower.includes('contacted')) matchedStatus = LeadStatus.CONTACTED;
+                        else if (stageLower.includes('follow')) matchedStatus = LeadStatus.FOLLOW_UP;
+                        else if (stageLower.includes('interest')) matchedStatus = LeadStatus.INTERESTED;
+                        else if (stageLower.includes('won')) matchedStatus = LeadStatus.WON;
+                        else if (stageLower.includes('lost')) matchedStatus = LeadStatus.LOST;
+
+                        const leadsInStage = db.getLeads().filter(l => l.status === matchedStatus);
+                        jerryState.data.leads_in_stage = leadsInStage;
+                        jerryState.data.view_more_limit = 3;
+
+                        jerryState.step = 'fu_select_lead_by_stage';
+                        addAgentMsg(`I found ${leadsInStage.length} ${matchedStatus} leads.`);
+                        renderJerryStepOptions();
+                    }
+                    return;
+                }
+
+                if (actionId === 'fu_view_more_stage') {
+                    jerryState.data.view_more_limit = (jerryState.data.view_more_limit || 3) + 5;
+                    renderJerryStepOptions();
+                    return;
+                }
+
+                if (actionId.startsWith('select_lead_')) {
+                    const leadId = actionId.replace('select_lead_', '');
+                    const lead = db.getLeads().find(l => l.id === leadId);
+                    if (lead) {
+                        jerryState.data.followup_lead_id = lead.id;
+                        jerryState.data.followup_lead_name = lead.name;
+                        jerryState.data.followup_lead_company = lead.company || '';
+                        jerryState.data.followup_lead_status = lead.status || '';
+
+                        jerryState.step = 'fu_remind_time';
+                        addAgentMsg(`You selected:<br><br>👤 ${lead.name}<br>🏢 ${lead.company || 'Private Entity'}<br>📌 ${lead.status}<br><br>When should I remind you?`);
+                        renderJerryStepOptions();
+                    }
+                    return;
+                }
+
+                if (jerryState.step === 'fu_remind_time') {
+                    if (actionId.startsWith('remind_')) {
+                        const type = actionId.replace('remind_', '');
+                        if (type === 'tomorrow') {
+                            jerryState.data.followup_remind_time = 'Tomorrow';
+                            const d = new Date(); d.setDate(d.getDate() + 1);
+                            jerryState.data.followup_remind_date_val = formatDateYYYYMMDD(d);
+                        } else if (type === '3days') {
+                            jerryState.data.followup_remind_time = 'In 3 Days';
+                            const d = new Date(); d.setDate(d.getDate() + 3);
+                            jerryState.data.followup_remind_date_val = formatDateYYYYMMDD(d);
+                        } else if (type === 'nextweek') {
+                            jerryState.data.followup_remind_time = 'Next Week';
+                            const d = new Date(); d.setDate(d.getDate() + 7);
+                            jerryState.data.followup_remind_date_val = formatDateYYYYMMDD(d);
+                        } else if (type === 'pickdate') {
+                            jerryState.step = 'fu_remind_pickdate_input';
+                            addAgentMsg(`Please pick a date:`);
+                            renderJerryStepOptions();
+                            return;
+                        }
+
+                        jerryState.step = 'fu_message_choice';
+                        addAgentMsg(`Would you like to add a reminder message?`);
+                        renderJerryStepOptions();
+                    }
+                    return;
+                }
+
+                if (jerryState.step === 'fu_message_choice') {
+                    if (actionId === 'msg_skip') {
+                        jerryState.data.followup_message = '—';
+                        jerryState.step = 'fu_confirm_create';
+                        
+                        const summaryHtml = `
+👤 Lead: ${jerryState.data.followup_lead_name}<br>
+🏢 Company: ${jerryState.data.followup_lead_company || '—'}<br>
+📅 Reminder: ${jerryState.data.followup_remind_time}<br>
+📝 Message: —
+                        `.trim();
+
+                        addAgentMsg(`Please confirm your follow-up.<br><br>${summaryHtml}`);
+                        renderJerryStepOptions();
+                    } else if (actionId === 'msg_add') {
+                        jerryState.step = 'fu_message_input';
+                        addAgentMsg(`Enter your reminder message.`);
+                        renderJerryStepOptions();
+                    }
+                    return;
+                }
+
+                if (jerryState.step === 'fu_confirm_create') {
+                    if (actionId === 'fu_confirm_yes') {
+                        const leads = db.getLeads();
+                        const lead = leads.find(l => l.id === jerryState.data.followup_lead_id);
+                        if (lead) {
+                            lead.status = LeadStatus.FOLLOW_UP;
+                            lead.followUpDate = jerryState.data.followup_remind_date_val;
+                            lead.followUpMsg = jerryState.data.followup_message === '—' ? '' : jerryState.data.followup_message;
+                            db.saveLeads(leads);
+                            
+                            db.addInteraction({
+                                id: crypto.randomUUID(),
+                                leadId: lead.id,
+                                type: 'Note',
+                                content: `Scheduled follow-up on ${jerryState.data.followup_remind_time}. Message: ${jerryState.data.followup_message}`,
+                                timestamp: Date.now()
+                            });
+
+                            renderLeads();
+                            renderDashboard();
+                            autoSync();
+                        }
+
+                        addAgentMsg(`✅ Follow-up created successfully`);
+                        jerryState.step = 'wizard_finished';
+                        renderJerryStepOptions();
+                    } else if (actionId === 'fu_confirm_edit') {
+                        jerryState.step = 'fu_start';
+                        addAgentMsg(`Let's start over to configure follow-up.`);
+                        renderJerryStepOptions();
+                    }
+                    return;
+                }
+            }, 500);
+        }
+
         function handleAgentQuery(id, label) {
             addAgentMsg(label, true);
             setTimeout(() => {
                 let r = "I'm checking on that for you...";
+                if (id === 'new_lead_start') {
+                    jerryState.step = 'awaiting_start';
+                    jerryState.data = { name: '', phone: '', email: '', company: '', category: '', status: '' };
+                    addAgentMsg(`👋 Let's create a new lead.`);
+                    renderJerryStepOptions();
+                    return;
+                }
+                if (id === 'schedule_followup_start') {
+                    jerryState.step = 'fu_start';
+                    jerryState.data = {
+                        followup_lead_id: '',
+                        followup_lead_name: '',
+                        followup_lead_company: '',
+                        followup_lead_status: '',
+                        followup_find_type: '',
+                        followup_search_query: '',
+                        followup_stage: '',
+                        followup_remind_time: '',
+                        followup_remind_date_val: '',
+                        followup_message_choice: '',
+                        followup_message: '',
+                        matched_leads: [],
+                        leads_in_stage: [],
+                        view_more_limit: 3
+                    };
+                    addAgentMsg(`👋 Let's schedule a follow-up.`);
+                    renderJerryStepOptions();
+                    return;
+                }
                 if(id === 'sum') {
                     const leads = db.getLeads();
                     r = `You currently have ${leads.length} total leads in your pipeline.`;
