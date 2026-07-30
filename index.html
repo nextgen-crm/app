@@ -392,6 +392,7 @@
                         this.saveCategories(filtered);
                     }
                 }
+                this.autoRegisterCategories();
             }
             load(key) { 
                 try {
@@ -403,7 +404,29 @@
             }
             save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
             getLeads() { return this.load(this.KEYS.LEADS); }
-            saveLeads(leads) { this.save(this.KEYS.LEADS, leads); }
+            saveLeads(leads) { 
+                this.save(this.KEYS.LEADS, leads); 
+                this.autoRegisterCategories();
+            }
+            autoRegisterCategories() {
+                const leads = this.getLeads();
+                const cats = this.getCategories();
+                let changed = false;
+                leads.forEach(l => {
+                    if (l && l.category) {
+                        const cName = String(l.category).trim();
+                        if (cName && !cats.some(c => c.id.toLowerCase() === cName.toLowerCase())) {
+                            const hue = Math.floor(Math.random() * 360);
+                            const randomColor = `hsl(${hue}, 75%, 45%)`;
+                            cats.push({ id: cName, color: randomColor });
+                            changed = true;
+                        }
+                    }
+                });
+                if (changed) {
+                    this.saveCategories(cats);
+                }
+            }
             getTasks() { return this.load(this.KEYS.TASKS); }
             saveTasks(tasks) { this.save(this.KEYS.TASKS, tasks); }
             getInteractions() { return this.load(this.KEYS.INTERACTIONS); }
