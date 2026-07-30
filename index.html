@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NextGen CRM | Team Dashboard</title>
+    <title>SoloCRM</title>
     
     <!-- Dependencies (Using CDNs for functionality) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -752,6 +752,574 @@
             }
         }
 
+        // Global Calendar State
+        let calendarView = 'month'; // 'month', 'week', 'day'
+        let calendarCurrentDate = new Date();
+        let calendarSelectedDate = new Date();
+        let calendarFilters = {
+            leads: true,
+            clients: true,
+            retention: true,
+            tasks: true
+        };
+
+        function changeCalendarView(view) {
+            calendarView = view;
+            renderCalendar();
+        }
+
+        function navigateCalendar(direction) {
+            if (calendarView === 'month') {
+                calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() + direction);
+            } else if (calendarView === 'week') {
+                calendarCurrentDate.setDate(calendarCurrentDate.getDate() + (direction * 7));
+            } else if (calendarView === 'day') {
+                calendarCurrentDate.setDate(calendarCurrentDate.getDate() + direction);
+            }
+            renderCalendar();
+        }
+
+        function setCalendarToday() {
+            calendarCurrentDate = new Date();
+            calendarSelectedDate = new Date();
+            renderCalendar();
+        }
+
+        function toggleCalendarFilter(category) {
+            calendarFilters[category] = !calendarFilters[category];
+            renderCalendar();
+        }
+
+        function selectCalendarDay(timestamp) {
+            calendarSelectedDate = new Date(timestamp);
+            renderCalendar();
+        }
+
+        function formatDateYYYYMMDD(date) {
+            const d = new Date(date);
+            const month = '' + (d.getMonth() + 1);
+            const day = '' + d.getDate();
+            const year = d.getFullYear();
+            return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+        }
+
+        function getCalendarEvents() {
+            const events = [];
+            try {
+                // 1. Lead Follow-ups
+                const leads = db.getLeads();
+                leads.forEach(l => {
+                    if (l.status === LeadStatus.FOLLOW_UP && l.followUpDate) {
+                        events.push({
+                            id: l.id,
+                            type: 'lead',
+                            title: l.name || 'Lead',
+                            subtitle: 'Lead Follow-up',
+                            phone: l.phone || '',
+                            company: l.company || '',
+                            dateStr: l.followUpDate,
+                            timeStr: '09:00',
+                            color: 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100',
+                            dotColor: 'bg-amber-500',
+                            icon: 'phone',
+                            clickAction: `openLeadModal('${l.id}')`
+                        });
+                    }
+                });
+
+                // 2. Client Stage Deadlines
+                const clients = db.getClients();
+                clients.forEach(c => {
+                    if (c.stages) {
+                        c.stages.forEach((s, idx) => {
+                            if (s.date) {
+                                events.push({
+                                    id: c.id,
+                                    type: 'client',
+                                    title: c.name || 'Client',
+                                    subtitle: `Stage ${idx+1}: ${s.name}`,
+                                    phone: c.phone || '',
+                                    company: c.company || '',
+                                    dateStr: s.date,
+                                    timeStr: '12:00',
+                                    color: s.completed ? 'bg-slate-50 text-slate-400 line-through border-slate-100' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100',
+                                    dotColor: s.completed ? 'bg-slate-300' : 'bg-emerald-500',
+                                    icon: 'briefcase',
+                                    clickAction: `openClientProfile('${c.id}')`
+                                });
+                            }
+                        });
+                    }
+                });
+
+                // 3. Retention Follow-ups
+                const followups = db.getFollowUps();
+                followups.forEach(f => {
+                    if (f.date) {
+                        const d = new Date(f.date);
+                        if (!isNaN(d.getTime())) {
+                            const dateStr = formatDateYYYYMMDD(d);
+                            events.push({
+                                id: f.id,
+                                type: 'retention',
+                                title: f.clientName || 'Client',
+                                subtitle: f.type || 'Lifecycle follow-up',
+                                phone: f.phone || '',
+                                company: f.company || '',
+                                dateStr: dateStr,
+                                timeStr: '10:00',
+                                color: f.completed ? 'bg-slate-50 text-slate-400 line-through border-slate-100' : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100',
+                                dotColor: f.completed ? 'bg-slate-300' : 'bg-indigo-500',
+                                icon: 'history',
+                                clickAction: `openTemplateSelector('${f.clientId}', '${f.type}', '${f.clientName}')`
+                            });
+                        }
+                    }
+                });
+
+                // 4. Tasks (with due dates)
+                const tasks = db.getTasks();
+                tasks.forEach(t => {
+                    const taskDate = t.dueDate ? new Date(t.dueDate) : null;
+                    if (taskDate && !isNaN(taskDate.getTime())) {
+                        const dateStr = formatDateYYYYMMDD(taskDate);
+                        events.push({
+                            id: t.id,
+                            type: 'task',
+                            title: t.title || 'Task',
+                            subtitle: 'Task Due',
+                            dateStr: dateStr,
+                            timeStr: '17:00',
+                            color: t.isCompleted ? 'bg-slate-50 text-slate-400 line-through border-slate-100' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200',
+                            dotColor: t.isCompleted ? 'bg-slate-300' : 'bg-slate-600',
+                            icon: 'check-square',
+                            clickAction: `location.hash='#tasks'`
+                        });
+                    }
+                });
+            } catch (e) {
+                console.error("Error gathering calendar events", e);
+            }
+            return events;
+        }
+
+        function getEventsForDateStr(dateStr) {
+            const allEvents = getCalendarEvents();
+            return allEvents.filter(e => {
+                if (e.dateStr !== dateStr) return false;
+                if (e.type === 'lead' && !calendarFilters.leads) return false;
+                if (e.type === 'client' && !calendarFilters.clients) return false;
+                if (e.type === 'retention' && !calendarFilters.retention) return false;
+                if (e.type === 'task' && !calendarFilters.tasks) return false;
+                return true;
+            });
+        }
+
+        function renderMonthView(year, month, events) {
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const numberOfDays = new Date(year, month + 1, 0).getDate();
+            const prevNumberOfDays = new Date(year, month, 0).getDate();
+            
+            let html = `
+                <div class="grid grid-cols-7 gap-1 md:gap-2 text-center text-xs font-bold text-slate-500 mb-2">
+                    <div><span class="hidden md:inline">Sunday</span><span class="md:hidden">Sun</span></div>
+                    <div><span class="hidden md:inline">Monday</span><span class="md:hidden">Mon</span></div>
+                    <div><span class="hidden md:inline">Tuesday</span><span class="md:hidden">Tue</span></div>
+                    <div><span class="hidden md:inline">Wednesday</span><span class="md:hidden">Wed</span></div>
+                    <div><span class="hidden md:inline">Thursday</span><span class="md:hidden">Thu</span></div>
+                    <div><span class="hidden md:inline">Friday</span><span class="md:hidden">Fri</span></div>
+                    <div><span class="hidden md:inline">Saturday</span><span class="md:hidden">Sat</span></div>
+                </div>
+                <div class="grid grid-cols-7 gap-1 md:gap-2 bg-slate-100 rounded-xl p-1 border border-slate-200">
+            `;
+
+            const todayDateStr = formatDateYYYYMMDD(new Date());
+            const selectedDateStr = formatDateYYYYMMDD(calendarSelectedDate);
+
+            // Padding cells from previous month
+            for (let i = firstDayIndex - 1; i >= 0; i--) {
+                const dayNum = prevNumberOfDays - i;
+                const prevMonthDate = new Date(year, month - 1, dayNum);
+                const dateStr = formatDateYYYYMMDD(prevMonthDate);
+                const dayEvents = getEventsForDateStr(dateStr);
+                
+                html += `
+                    <div onclick="selectCalendarDay(${prevMonthDate.getTime()})" class="bg-slate-50/50 text-slate-300 min-h-[50px] md:min-h-[100px] p-1.5 rounded-lg border border-slate-200/40 hover:bg-slate-100 transition-all cursor-pointer flex flex-col justify-between">
+                        <span class="text-[10px] md:text-xs font-bold">${dayNum}</span>
+                        <div class="flex flex-wrap gap-1 justify-center md:justify-start">
+                            ${dayEvents.map(e => `<span class="w-1.5 h-1.5 rounded-full ${e.dotColor}"></span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Days of current month
+            for (let day = 1; day <= numberOfDays; day++) {
+                const currentDayDate = new Date(year, month, day);
+                const dateStr = formatDateYYYYMMDD(currentDayDate);
+                const isToday = dateStr === todayDateStr;
+                const isSelected = dateStr === selectedDateStr;
+                const dayEvents = getEventsForDateStr(dateStr);
+                
+                const cellClass = isToday 
+                    ? 'bg-blue-50/50 border-blue-200 text-blue-700 font-extrabold shadow-sm ring-1 ring-blue-100' 
+                    : isSelected
+                        ? 'bg-indigo-50 border-indigo-200 ring-1 ring-indigo-100'
+                        : 'bg-white text-slate-700 border-slate-200/50 hover:bg-slate-50';
+
+                html += `
+                    <div onclick="selectCalendarDay(${currentDayDate.getTime()})" class="${cellClass} min-h-[60px] md:min-h-[110px] p-1.5 rounded-lg border transition-all cursor-pointer flex flex-col justify-between">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] md:text-sm font-bold">${day}</span>
+                            ${isToday ? `<span class="text-[8px] bg-blue-100 text-blue-600 px-1 py-0.5 rounded font-black uppercase">Today</span>` : ''}
+                        </div>
+                        
+                        <!-- PC Event Display -->
+                        <div class="hidden md:flex flex-col gap-1 overflow-y-auto max-h-[75px] mt-2">
+                            ${dayEvents.map(e => `
+                                <div onclick="event.stopPropagation(); ${e.clickAction}" class="px-2 py-1 text-[9px] font-bold rounded-md border flex items-center gap-1 leading-tight ${e.color} truncate" title="${e.title} - ${e.subtitle}">
+                                    <i data-lucide="${e.icon}" class="w-3 h-3 shrink-0"></i>
+                                    <span class="truncate">${e.title}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <!-- Mobile Event Display -->
+                        <div class="md:hidden flex flex-wrap gap-1 justify-center pb-1">
+                            ${dayEvents.map(e => `<span class="w-1.5 h-1.5 rounded-full ${e.dotColor}"></span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Padding cells from next month
+            const totalCells = firstDayIndex + numberOfDays;
+            const paddingNeeded = 42 - totalCells;
+            const nextMonthPadding = paddingNeeded >= 7 ? paddingNeeded - 7 : paddingNeeded;
+            
+            for (let i = 1; i <= nextMonthPadding; i++) {
+                const nextMonthDate = new Date(year, month + 1, i);
+                const dateStr = formatDateYYYYMMDD(nextMonthDate);
+                const dayEvents = getEventsForDateStr(dateStr);
+                
+                html += `
+                    <div onclick="selectCalendarDay(${nextMonthDate.getTime()})" class="bg-slate-50/50 text-slate-300 min-h-[50px] md:min-h-[100px] p-1.5 rounded-lg border border-slate-200/40 hover:bg-slate-100 transition-all cursor-pointer flex flex-col justify-between">
+                        <span class="text-[10px] md:text-xs font-bold">${i}</span>
+                        <div class="flex flex-wrap gap-1 justify-center md:justify-start">
+                            ${dayEvents.map(e => `<span class="w-1.5 h-1.5 rounded-full ${e.dotColor}"></span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+
+            // Agenda List for Selected Day
+            const selectedDateEvents = getEventsForDateStr(selectedDateStr);
+            const dateFormattedLong = calendarSelectedDate.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            html += `
+                <div class="mt-6 bg-slate-50 p-4 rounded-2xl border border-slate-150">
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.15em] mb-3 flex justify-between items-center">
+                        <span>Agenda: ${dateFormattedLong}</span>
+                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px] font-bold">${selectedDateEvents.length} Items</span>
+                    </h3>
+                    <div class="space-y-2.5">
+                        ${selectedDateEvents.length ? selectedDateEvents.map(e => `
+                            <div onclick="${e.clickAction}" class="flex items-center gap-3 p-3 bg-white hover:bg-slate-100/55 rounded-xl border border-slate-200 shadow-xs cursor-pointer transition-all active:scale-[0.99] group">
+                                <div class="p-2.5 rounded-lg ${e.color} border flex items-center justify-center shrink-0">
+                                    <i data-lucide="${e.icon}" class="w-4 h-4"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-slate-800 text-sm truncate">${e.title}</h4>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase bg-slate-100 px-1.5 py-0.5 rounded shrink-0">${e.timeStr}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 font-medium truncate mt-0.5">${e.subtitle} ${e.company ? `• <span class="font-bold text-slate-600">${e.company}</span>` : ''}</p>
+                                    ${e.phone ? `
+                                        <div class="flex items-center gap-2 mt-1.5">
+                                            <span class="text-[10px] font-semibold text-slate-400">Contact: ${e.phone}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-indigo-500 transition-all"></i>
+                            </div>
+                        `).join('') : '<p class="text-center text-slate-400 py-6 text-xs italic">No activities or deadlines scheduled for this day.</p>'}
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function renderWeekView(events) {
+            const startOfWeek = new Date(calendarCurrentDate);
+            const dayOfWeek = startOfWeek.getDay();
+            startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek); // Sunday
+
+            const todayDateStr = formatDateYYYYMMDD(new Date());
+
+            let desktopHtml = `<div class="hidden lg:grid lg:grid-cols-7 gap-3 bg-slate-100 rounded-2xl p-2.5 border border-slate-200">`;
+            let mobileHtml = `<div class="lg:hidden space-y-4">`;
+
+            for (let i = 0; i < 7; i++) {
+                const currentDate = new Date(startOfWeek);
+                currentDate.setDate(startOfWeek.getDate() + i);
+                const dateStr = formatDateYYYYMMDD(currentDate);
+                const isToday = dateStr === todayDateStr;
+                const dayEvents = getEventsForDateStr(dateStr);
+
+                const dayName = currentDate.toLocaleDateString([], { weekday: 'short' });
+                const dayNum = currentDate.getDate();
+
+                const colClass = isToday 
+                    ? 'bg-blue-50/50 border-blue-200 ring-2 ring-blue-100/50 shadow-xs' 
+                    : 'bg-white border-slate-200/50';
+
+                desktopHtml += `
+                    <div class="${colClass} p-3 rounded-xl border flex flex-col min-h-[300px] transition-all">
+                        <div class="text-center pb-2.5 border-b border-slate-100 mb-3 flex flex-col items-center">
+                            <span class="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">${dayName}</span>
+                            <span class="text-xl font-bold mt-0.5 ${isToday ? 'bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-sm' : 'text-slate-700'}">${dayNum}</span>
+                        </div>
+                        
+                        <div class="flex-1 space-y-2 overflow-y-auto max-h-[380px]">
+                            ${dayEvents.map(e => `
+                                <div onclick="${e.clickAction}" class="p-2.5 rounded-lg border text-xs font-bold transition-all hover:-translate-y-0.5 cursor-pointer shadow-xs ${e.color} flex flex-col gap-1.5 leading-tight" title="${e.title} - ${e.subtitle}">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[9px] font-black text-slate-400 uppercase">${e.timeStr}</span>
+                                        <i data-lucide="${e.icon}" class="w-3 h-3"></i>
+                                    </div>
+                                    <span class="truncate block font-bold text-slate-800">${e.title}</span>
+                                    <span class="text-[9px] text-slate-500 font-medium truncate block">${e.subtitle}</span>
+                                </div>
+                            `).join('')}
+                            ${!dayEvents.length ? '<p class="text-center text-slate-300 py-12 text-[10px] font-bold uppercase tracking-wider">Free</p>' : ''}
+                        </div>
+                    </div>
+                `;
+
+                const mobileCardClass = isToday
+                    ? 'bg-blue-50/30 border-blue-200 ring-1 ring-blue-100'
+                    : 'bg-white border-slate-200';
+
+                mobileHtml += `
+                    <div class="${mobileCardClass} p-4 rounded-xl border transition-all">
+                        <div class="flex items-center gap-3 border-b border-slate-100 pb-2.5 mb-3">
+                            <span class="text-lg font-black ${isToday ? 'text-blue-600' : 'text-slate-800'}">${dayNum}</span>
+                            <div class="flex-1 text-left">
+                                <p class="text-xs font-black text-slate-800">${currentDate.toLocaleDateString([], { weekday: 'long' })}</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">${currentDate.toLocaleDateString([], { month: 'short', year: 'numeric' })}</p>
+                            </div>
+                            ${isToday ? `<span class="text-[9px] bg-blue-100 text-blue-600 font-black px-2 py-0.5 rounded uppercase">Today</span>` : ''}
+                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-bold">${dayEvents.length} Events</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            ${dayEvents.map(e => `
+                                <div onclick="${e.clickAction}" class="flex items-center gap-3 p-3 bg-white border border-slate-150 rounded-xl hover:bg-slate-50 active:scale-95 cursor-pointer transition-all">
+                                    <div class="p-2 rounded-lg border ${e.color}">
+                                        <i data-lucide="${e.icon}" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between">
+                                            <h4 class="font-bold text-slate-800 text-sm truncate">${e.title}</h4>
+                                            <span class="text-[9px] font-bold text-slate-400 uppercase bg-slate-50 px-1.5 rounded">${e.timeStr}</span>
+                                        </div>
+                                        <p class="text-xs text-slate-500 mt-0.5 truncate">${e.subtitle}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            ${!dayEvents.length ? '<p class="text-left text-slate-400 italic text-xs py-1.5 pl-1">No events scheduled.</p>' : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            desktopHtml += `</div>`;
+            mobileHtml += `</div>`;
+
+            return desktopHtml + mobileHtml;
+        }
+
+        function renderDayView(events) {
+            const dateStr = formatDateYYYYMMDD(calendarCurrentDate);
+            const dayEvents = getEventsForDateStr(dateStr);
+            const timeSortedEvents = [...dayEvents].sort((a, b) => a.timeStr.localeCompare(b.timeStr));
+            const todayDateStr = formatDateYYYYMMDD(new Date());
+            const isToday = dateStr === todayDateStr;
+
+            const hoursList = [
+                { label: '09:00 AM', value: '09:00' },
+                { label: '10:00 AM', value: '10:00' },
+                { label: '11:00 AM', value: '11:00' },
+                { label: '12:00 PM', value: '12:00' },
+                { label: '01:00 PM', value: '13:00' },
+                { label: '02:00 PM', value: '14:00' },
+                { label: '03:00 PM', value: '15:00' },
+                { label: '04:00 PM', value: '16:00' },
+                { label: '05:00 PM', value: '17:00' },
+                { label: '06:00 PM', value: '18:00' }
+            ];
+
+            let html = `
+                <div class="bg-slate-50 rounded-2xl p-4 md:p-6 border border-slate-150 space-y-6">
+                    <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+                        <div class="text-left">
+                            <h3 class="text-base font-black text-slate-800">${calendarCurrentDate.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</h3>
+                            <p class="text-xs text-slate-400 mt-1 uppercase font-bold tracking-widest">${dayEvents.length} events active for this day</p>
+                        </div>
+                        ${isToday ? `<span class="text-xs bg-blue-100 text-blue-600 font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm border border-blue-50 animate-pulse">Today</span>` : ''}
+                    </div>
+
+                    <div class="relative pl-1 md:pl-4 space-y-1">
+                        <div class="absolute left-16 md:left-24 top-4 bottom-4 w-0.5 bg-slate-200"></div>
+
+                        ${hoursList.map(h => {
+                            const matchedEvents = timeSortedEvents.filter(e => e.timeStr === h.value);
+                            
+                            return `
+                                <div class="flex items-start gap-4 md:gap-8 group min-h-[70px]">
+                                    <div class="w-12 md:w-16 shrink-0 text-[10px] md:text-xs font-black text-slate-400 text-right py-2 tracking-widest uppercase group-hover:text-indigo-500 transition-colors">
+                                        ${h.label}
+                                    </div>
+                                    
+                                    <div class="relative z-10 w-4 h-4 rounded-full mt-2 border-4 border-slate-50 bg-slate-200 group-hover:bg-indigo-500 group-hover:border-indigo-100 shadow-xs shrink-0 transition-all"></div>
+                                    
+                                    <div class="flex-1 space-y-2 pb-6">
+                                        ${matchedEvents.map(e => `
+                                            <div onclick="${e.clickAction}" class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl hover:border-indigo-300 shadow-xs cursor-pointer transition-all active:scale-[0.99] group/card">
+                                                <div class="flex-1 min-w-0 flex items-start gap-3">
+                                                    <div class="p-2.5 rounded-xl border ${e.color} shrink-0 flex items-center justify-center">
+                                                        <i data-lucide="${e.icon}" class="w-4 h-4"></i>
+                                                    </div>
+                                                    <div class="min-w-0 text-left">
+                                                        <h4 class="font-extrabold text-slate-800 text-sm md:text-base leading-tight truncate group-hover/card:text-indigo-600 transition-colors">${e.title}</h4>
+                                                        <p class="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-2 truncate">
+                                                            <span>${e.subtitle}</span>
+                                                            ${e.company ? `• <span class="text-slate-700 font-bold">${e.company}</span>` : ''}
+                                                        </p>
+                                                        ${e.phone ? `
+                                                            <p class="text-[10px] text-indigo-500 font-bold uppercase mt-1.5 flex items-center gap-1">
+                                                                <i data-lucide="phone" class="w-3 h-3"></i> Phone: ${e.phone}
+                                                            </p>
+                                                        ` : ''}
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-3 self-end md:self-center shrink-0">
+                                                    <span class="text-[10px] bg-slate-100 text-slate-500 font-extrabold px-2 py-1 rounded-lg uppercase tracking-wider shrink-0">${e.timeStr}</span>
+                                                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover/card:text-indigo-500 group-hover/card:translate-x-1 transition-all"></i>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                        ${!matchedEvents.length ? '<div class="h-8 flex items-center"><p class="text-slate-300 font-semibold text-[10px] uppercase tracking-wider">Empty</p></div>' : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function renderCalendar() {
+            const container = document.getElementById('dashboard-calendar-container');
+            if (!container) return;
+
+            const events = getCalendarEvents();
+            const year = calendarCurrentDate.getFullYear();
+            const month = calendarCurrentDate.getMonth();
+
+            let activeDateStr = '';
+            if (calendarView === 'month') {
+                activeDateStr = calendarCurrentDate.toLocaleDateString([], { month: 'long', year: 'numeric' });
+            } else if (calendarView === 'week') {
+                const startOfWeek = new Date(calendarCurrentDate);
+                const dayOfWeek = startOfWeek.getDay();
+                startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
+                
+                const endOfWeek = new Date(startOfWeek);
+                endOfWeek.setDate(startOfWeek.getDate() + 6);
+                
+                activeDateStr = `${startOfWeek.toLocaleDateString([], { month: 'short', day: 'numeric' })} – ${endOfWeek.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}`;
+            } else if (calendarView === 'day') {
+                activeDateStr = calendarCurrentDate.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+            }
+
+            container.innerHTML = `
+                <div class="bg-white rounded-3xl border border-slate-200/80 p-5 md:p-8 shadow-md space-y-6 transition-all duration-300">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="text-left">
+                            <h2 class="font-extrabold text-xl md:text-2xl flex items-center gap-2.5 tracking-tight text-slate-800">
+                                <div class="p-2 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100 flex items-center justify-center">
+                                    <i data-lucide="calendar" class="w-5 h-5 md:w-6 md:h-6"></i>
+                                </div>
+                                Visual Calendar View
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-1 font-semibold">Real-time schedule of interactions, deadlines, and retention events</p>
+                        </div>
+                        
+                        <div class="flex bg-slate-100 p-1.5 rounded-2xl self-start md:self-center border border-slate-200/40 shadow-inner">
+                            <button onclick="changeCalendarView('month')" class="px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${calendarView === 'month' ? 'bg-white text-indigo-600 shadow-md' : 'text-slate-400 hover:text-slate-700'}">30 Days</button>
+                            <button onclick="changeCalendarView('week')" class="px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${calendarView === 'week' ? 'bg-white text-indigo-600 shadow-md' : 'text-slate-400 hover:text-slate-700'}">This Week</button>
+                            <button onclick="changeCalendarView('day')" class="px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${calendarView === 'day' ? 'bg-white text-indigo-600 shadow-md' : 'text-slate-400 hover:text-slate-700'}">One Day</button>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 self-end md:self-center">
+                            <button onclick="navigateCalendar(-1)" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 active:scale-95 transition-all text-slate-600" title="Previous">
+                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="setCalendarToday()" class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 active:scale-95 transition-all text-xs font-extrabold uppercase tracking-widest text-slate-600">Today</button>
+                            <button onclick="navigateCalendar(1)" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 active:scale-95 transition-all text-slate-600" title="Next">
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center gap-2.5 py-3 border-t border-b border-slate-100 text-xs text-slate-500 font-semibold bg-slate-50/50 px-3 rounded-2xl">
+                        <span class="font-extrabold text-slate-400 uppercase tracking-widest text-[9px] mr-1">Toggles:</span>
+                        <button onclick="toggleCalendarFilter('leads')" class="flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${calendarFilters.leads ? 'bg-amber-50 border-amber-200 text-amber-700 font-black' : 'border-slate-200 text-slate-400 bg-white hover:bg-slate-50'}">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> Leads New & Follow-ups
+                        </button>
+                        <button onclick="toggleCalendarFilter('clients')" class="flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${calendarFilters.clients ? 'bg-emerald-50 border-emerald-200 text-emerald-700 font-black' : 'border-slate-200 text-slate-400 bg-white hover:bg-slate-50'}">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Client Stage Deadlines
+                        </button>
+                        <button onclick="toggleCalendarFilter('retention')" class="flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${calendarFilters.retention ? 'bg-indigo-50 border-indigo-200 text-indigo-700 font-black' : 'border-slate-200 text-slate-400 bg-white hover:bg-slate-50'}">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span> Retention Lifecycle
+                        </button>
+                        <button onclick="toggleCalendarFilter('tasks')" class="flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${calendarFilters.tasks ? 'bg-slate-100 border-slate-250 text-slate-700 font-black' : 'border-slate-200 text-slate-400 bg-white hover:bg-slate-50'}">
+                            <span class="w-2 h-2 rounded-full bg-slate-500"></span> Tasks
+                        </button>
+                    </div>
+                    
+                    <div class="flex justify-between items-center bg-slate-900 text-white p-4 rounded-2xl shadow-sm">
+                        <span class="text-sm font-black uppercase tracking-widest text-slate-300 flex items-center gap-2">
+                            <i data-lucide="calendar-days" class="w-4 h-4 text-indigo-400"></i>
+                            ${activeDateStr}
+                        </span>
+                        <span class="text-[10px] bg-white/10 text-slate-100 font-black uppercase px-2.5 py-1 rounded-lg tracking-wider">
+                            ${calendarView === 'month' ? 'Month View' : calendarView === 'week' ? 'Week View' : 'Day View'}
+                        </span>
+                    </div>
+
+                    <div id="calendar-view-area" class="transition-all duration-300"></div>
+                </div>
+            `;
+
+            const viewArea = document.getElementById('calendar-view-area');
+            if (calendarView === 'month') {
+                viewArea.innerHTML = renderMonthView(year, month, events);
+            } else if (calendarView === 'week') {
+                viewArea.innerHTML = renderWeekView(events);
+            } else if (calendarView === 'day') {
+                viewArea.innerHTML = renderDayView(events);
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
         function renderDashboard() {
             try {
                 const leads = db.getLeads();
@@ -792,11 +1360,22 @@
 
                 const pendingFollowUps = [...retentionFollowups, ...leadFollowups].sort((a,b) => a.date - b.date);
                 
+                const currentUserJson = localStorage.getItem('currentUser');
+                let greetingName = "Admin User";
+                let greetingRole = "Administrator";
+                if (currentUserJson) {
+                    try {
+                        const cu = JSON.parse(currentUserJson);
+                        greetingName = cu.name || greetingName;
+                        greetingRole = cu.role || greetingRole;
+                    } catch(e) {}
+                }
+
                 document.getElementById('main-content').innerHTML = `
                     <div class="p-4 md:p-8 w-full max-w-[1800px] mx-auto space-y-8 pb-24 md:pb-12">
                         <div class="flex flex-col gap-1 text-center md:text-left transition-all">
-                            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight leading-tight"></h1>
-                            <p class="text-slate-400 text-[10px] md:text-xs uppercase tracking-widest font-bold opacity-80"></p>
+                            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight leading-tight">Welcome back, ${greetingName}</h1>
+                            <p class="text-slate-400 text-[10px] md:text-xs uppercase tracking-widest font-bold opacity-80">${greetingRole} Workspace</p>
                         </div>
 
                         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -912,7 +1491,12 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Visual Calendar Section -->
+                        <div id="dashboard-calendar-container" class="mt-8 animate-fade-in"></div>
                     </div>`;
+
+                renderCalendar();
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             } catch(e) { console.error("Dashboard render error", e); document.getElementById('main-content').innerHTML = '<div class="p-10 text-red-500">Error loading dashboard. Please refresh.</div>'; }
         }
