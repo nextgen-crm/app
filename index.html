@@ -455,10 +455,16 @@
                 }
             }
             addInteraction(interaction) {
+                if (!interaction.id) {
+                    interaction.id = 'INT-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+                }
                 const ints = this.getInteractions(); ints.push(interaction); this.save(this.KEYS.INTERACTIONS, ints);
                 const leads = this.getLeads(); const lead = leads.find(l => l.id === interaction.leadId);
                 if (lead) { 
                     lead.lastInteraction = interaction.timestamp; 
+                    lead.interactionCount = ints.filter(i => i.leadId === lead.id).length;
+                    const leadInts = ints.filter(i => i.leadId === lead.id).sort((a,b) => b.timestamp - a.timestamp);
+                    lead.lastNote = leadInts.find(i => i.type === 'Note')?.content || '';
                     this.saveLeads(leads); 
                     autoSync();
                 }
@@ -517,6 +523,13 @@
                     const restoredClients = cloudClients.map(unflattenClient);
                     db.save(db.KEYS.CLIENTS, restoredClients);
                 }
+
+                // Sync Interactions
+                try {
+                    const intRes = await fetch(GAS_DEPLOY_URL + "?sheet=Interactions");
+                    const ints = JSON.parse(await intRes.text());
+                    if (Array.isArray(ints)) db.save(db.KEYS.INTERACTIONS, ints);
+                } catch(e) {}
 
                 // 3. Sync FollowUps (Optional/Internal)
                 try {
@@ -585,7 +598,14 @@
                 const leadData = leads.map(l => {
                     const leadInts = interactions.filter(i => i.leadId === l.id).sort((a,b) => b.timestamp - a.timestamp);
                     const lastNote = leadInts.find(i => i.type === 'Note')?.content || '';
-                    return { ...l, interactionCount: leadInts.length, lastNote };
+                    const todayStart = new Date().setHours(0,0,0,0);
+                    const interactionCountToday = leadInts.filter(i => i.timestamp >= todayStart).length;
+                    return { 
+                        ...l, 
+                        interactionCount: leadInts.length, 
+                        interactionCountToday: interactionCountToday,
+                        lastNote 
+                    };
                 });
                 
                 // Batch all syncs
@@ -609,7 +629,8 @@
                         }) 
                     }),
                     fetch(GAS_DEPLOY_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ sheetName: "FollowUps", data: db.getFollowUps() }) }),
-                    fetch(GAS_DEPLOY_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ sheetName: "Templates", data: db.getTemplates() }) })
+                    fetch(GAS_DEPLOY_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ sheetName: "Templates", data: db.getTemplates() }) }),
+                    fetch(GAS_DEPLOY_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ sheetName: "Interactions", data: db.getInteractions() }) })
                 ]);
                 
                 if (!silent) alert("Production Sync Complete!");
@@ -1105,7 +1126,7 @@
                                             ${t.isCompleted ? '<i data-lucide="check" class="w-3.5 h-3.5"></i>' : ''}
                                         </button>
                                         <span class="flex-1 ${t.isCompleted ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${t.title}</span>
-                                        <button onclick="deleteTask('${t.id}')" class="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 transition-all">
+                                        <button onclick="deleteTask('${t.id}')" class="p-2 text-slate-400 hover:text-red-500 transition-all">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
                                     </div>
@@ -1832,7 +1853,10 @@
             
             window.pData.forEach(r => {
                 const findVal = (possibleKeys) => {
-                    const foundKey = Object.keys(r).find(k => possibleKeys.includes(k.trim().toLowerCase()));
+                    const foundKey = Object.keys(r).find(k => {
+                        const kl = k.trim().toLowerCase();
+                        return possibleKeys.some(pk => kl.includes(pk) || pk.includes(kl));
+                    });
                     return foundKey ? String(r[foundKey] || '').trim() : '';
                 };
 
@@ -1840,21 +1864,11 @@
                 const company = findVal(['company', 'company name', 'business', 'org', 'organization']);
                 const phone = findVal(['phone', 'phone number', 'mobile', 'mobile number', 'contact']);
                 const email = findVal(['email', 'email address']);
-                let rawCategory = findVal(['category', 'category name', 'tag', 'lead category']).trim();
-                let category = 'Education';
+                let rawCategory = findVal(['category', 'category name', 'tag', 'lead category', 'cat']).trim();
+                let category = rawCategory || 'Education';
 
                 if (rawCategory) {
-                    const lower = rawCategory.toLowerCase();
-                    if (lower.includes('packag')) {
-                        category = 'Packaging';
-                    } else if (lower.includes('food') || lower.includes('restaur') || lower.includes('cafe')) {
-                        category = 'Food Business';
-                    } else if (lower === 'education') {
-                        category = 'Education';
-                    } else {
-                        category = rawCategory;
-                        db.addCategory({ id: category, color: '#' + Math.floor(Math.random()*16777215).toString(16) });
-                    }
+                    db.addCategory({ id: category, color: '#' + Math.floor(Math.random()*16777215).toString(16) });
                 }
 
                 leads.push({ 
