@@ -1152,6 +1152,36 @@
       color: var(--primary-dark);
     }
 
+    /* SKELETON LOADING ANIMATION */
+    @keyframes skeletonPulse {
+      0% { opacity: 0.7; }
+      50% { opacity: 0.35; }
+      100% { opacity: 0.7; }
+    }
+    .skeleton-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      animation: skeletonPulse 1.2s ease-in-out infinite;
+    }
+    .skeleton-line {
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 6px;
+    }
+    .skeleton-line.w-half { width: 50%; }
+    .skeleton-line.w-three-quarter { width: 75%; }
+    .skeleton-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #e2e8f0;
+    }
+
     /* TOAST */
     .toast {
       position: fixed;
@@ -1179,6 +1209,15 @@
   </style>
 </head>
 <body>
+
+  <!-- STARTUP VIDEO LOADING SCREEN (4 Seconds) -->
+  <div id="video-splash-screen" style="position: fixed; inset: 0; background: #000000; z-index: 999999; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.5s ease, visibility 0.5s ease;">
+    <video id="splash-video" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
+      <!-- ADD YOUR VIDEO URL HERE IN src="" -->
+      <source src="Load.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
   <!-- MAIN APP CONTAINER -->
   <div class="app-main-layout">
@@ -1226,76 +1265,172 @@
     <!-- MAIN APP SCREEN CONTENT -->
     <div class="screen-content">
 
-      <!-- FEATURE ACTION CARDS -->
-      <div class="action-cards-grid">
-        <div class="feature-card" id="card-new-capture">
-          <div>
-            <h4>New<br>Capture</h4>
-            <p>2 min log</p>
-          </div>
-          <div class="feature-icon-wrapper">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </div>
-        </div>
-        <div class="feature-card" id="card-missed-revisions">
-          <div>
-            <h4>Missed<br>Revisions</h4>
-            <p id="missed-revisions-count">0 pending</p>
-          </div>
-          <div class="feature-icon-wrapper" style="background: #fff7ed; color: #c2410c;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
-          </div>
-        </div>
-      </div>
+      <!-- TAB VIEW 1: HOME VIEW -->
+      <div id="view-home" class="tab-view active">
 
-      <!-- CURRENT FEATURED CAPTURE SECTION -->
-      <div class="section-header">
-        <h3>Current Learning</h3>
-        <span class="see-all-link" id="see-all-btn">See All</span>
-      </div>
-
-      <div class="current-card" id="current-featured-card">
-        <div class="current-card-top">
-          <div class="deck-id-box">
-            <div class="deck-avatar" id="featured-avatar">CS</div>
-            <div class="deck-id-info">
-              <h4 id="featured-topic">No captures yet</h4>
-              <p id="featured-subtopic">Tap + to capture today's learning</p>
+        <!-- FEATURE ACTION CARDS -->
+        <div class="action-cards-grid">
+          <div class="feature-card" id="card-new-capture">
+            <div>
+              <h4>New<br>Capture</h4>
+              <p>2 min log</p>
+            </div>
+            <div class="feature-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </div>
           </div>
-          <div class="status-pill-badge active" id="featured-status">New</div>
-        </div>
-
-        <div class="stepper-bar">
-          <div class="step-dot">1</div>
-          <div class="step-line filled"></div>
-          <div class="step-dot">2</div>
-          <div class="step-line"></div>
-          <div class="step-dot dim">3</div>
-          <div class="step-line"></div>
-          <div class="step-dot dim">4</div>
-        </div>
-
-        <div class="card-footer-dates">
-          <div>
-            <p>Logged Date</p>
-            <h5 id="featured-date">Today</h5>
+          <div class="feature-card" id="card-missed-revisions">
+            <div>
+              <h4>Missed<br>Revisions</h4>
+              <p id="missed-revisions-count">0 pending</p>
+            </div>
+            <div class="feature-icon-wrapper" style="background: #fff7ed; color: #c2410c;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+            </div>
           </div>
-          <div style="text-align: right;">
-            <p>Understanding</p>
-            <h5 id="featured-understanding">Level 3 / 5</h5>
+        </div>
+
+        <!-- CURRENT FEATURED CAPTURE SECTION -->
+        <div class="section-header">
+          <h3>Current Learning</h3>
+          <span class="see-all-link" id="see-all-btn">See All</span>
+        </div>
+
+        <div class="current-card" id="current-featured-card">
+          <div class="current-card-top">
+            <div class="deck-id-box">
+              <div class="deck-avatar" id="featured-avatar">CS</div>
+              <div class="deck-id-info">
+                <h4 id="featured-topic">No captures yet</h4>
+                <p id="featured-subtopic">Tap + to capture today's learning</p>
+              </div>
+            </div>
+            <div class="status-pill-badge active" id="featured-status">New</div>
+          </div>
+
+          <div class="stepper-bar">
+            <div class="step-dot">1</div>
+            <div class="step-line filled"></div>
+            <div class="step-dot">2</div>
+            <div class="step-line"></div>
+            <div class="step-dot dim">3</div>
+            <div class="step-line"></div>
+            <div class="step-dot dim">4</div>
+          </div>
+
+          <div class="card-footer-dates">
+            <div>
+              <p>Logged Date</p>
+              <h5 id="featured-date">Today</h5>
+            </div>
+            <div style="text-align: right;">
+              <p>Understanding</p>
+              <h5 id="featured-understanding">Level 3 / 5</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT CAPTURES LIST -->
+        <div class="section-header">
+          <h3>Recent Captures</h3>
+          <span class="see-all-link" id="count-summary-link">0 Items</span>
+        </div>
+
+        <div class="recent-list" id="recent-list-container">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+      </div>
+
+      <!-- TAB VIEW 2: CALENDAR VIEW -->
+      <div id="view-calendar" class="tab-view" style="display: none;">
+        <div style="margin-bottom: 1rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Live Learning Calendar</h3>
+          <p style="font-size: 0.75rem; color: var(--text-muted);">View daily captures & schedule</p>
+        </div>
+
+        <!-- CALENDAR CONTROLS & MONTH TITLE -->
+        <div class="cal-header-bar">
+          <button type="button" class="cal-nav-btn" id="cal-prev-month">&larr; Prev</button>
+          <div style="text-align: center;">
+            <div class="cal-month-title" id="cal-month-year-label">August 2026</div>
+            <div style="display: flex; gap: 0.3rem; justify-content: center; margin-top: 0.2rem;">
+              <button type="button" class="search-filter-pill active" id="cal-filter-today" style="font-size: 0.675rem; padding: 0.15rem 0.5rem;">Today</button>
+              <button type="button" class="search-filter-pill" id="cal-filter-this-week" style="font-size: 0.675rem; padding: 0.15rem 0.5rem;">This Week</button>
+            </div>
+          </div>
+          <button type="button" class="cal-nav-btn" id="cal-next-month">Next &rarr;</button>
+        </div>
+
+        <!-- WEEKDAY HEADERS -->
+        <div class="cal-grid-weekdays">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+
+        <!-- DAYS GRID -->
+        <div class="cal-grid-days" id="cal-days-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- SELECTED DAY CAPTURES DOWN SIDE -->
+        <div class="detail-section-box" style="background: #ffffff;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div class="detail-section-title" id="cal-selected-date-heading" style="margin-bottom: 0;">Captures for Today</div>
+            <span class="chip" id="cal-selected-count-chip" style="font-size: 0.7rem;">0 Captures</span>
+          </div>
+
+          <div id="cal-day-entries-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <!-- Populated dynamically -->
           </div>
         </div>
       </div>
 
-      <!-- RECENT CAPTURES LIST -->
-      <div class="section-header">
-        <h3>Recent Captures</h3>
-        <span class="see-all-link" id="count-summary-link">0 Items</span>
-      </div>
+      <!-- TAB VIEW 3: DASHBOARD VIEW -->
+      <div id="view-dashboard" class="tab-view" style="display: none;">
+        <div style="margin-bottom: 1rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Learning Analytics Dashboard</h3>
+          <p style="font-size: 0.75rem; color: var(--text-muted);">Overview of streak, revisions & subjects</p>
+        </div>
 
-      <div class="recent-list" id="recent-list-container">
-        <!-- Dynamically populated via JS -->
+        <!-- TOP METRICS GRID -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin-bottom: 0.75rem;">
+          <div class="detail-section-box" style="margin-bottom: 0; background: #fff7ed; border-color: #ffedd5;">
+            <div style="font-size: 0.7rem; font-weight: 700; color: #c2410c; text-transform: uppercase;">Total Revisions</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-total-revisions">0</div>
+            <div style="font-size: 0.675rem; color: #9a3412;" id="dash-revised-count">0 items completed</div>
+          </div>
+          <div class="detail-section-box" style="margin-bottom: 0; background: #f0fdf4; border-color: #dcfce7;">
+            <div style="font-size: 0.7rem; font-weight: 700; color: #15803d; text-transform: uppercase;">Learning Streak</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-streak-count">0 Days 🔥</div>
+            <div style="font-size: 0.675rem; color: #166534;">Active consecutive logging</div>
+          </div>
+          <div class="detail-section-box" style="margin-bottom: 0; background: #fef2f2; border-color: #fee2e2;">
+            <div style="font-size: 0.7rem; font-weight: 700; color: #b91c1c; text-transform: uppercase;">Missed Revisions</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-missed-count">0</div>
+            <div style="font-size: 0.675rem; color: #991b1b;">Pending review</div>
+          </div>
+          <div class="detail-section-box" style="margin-bottom: 0; background: #e0f2fe; border-color: #bae6fd;">
+            <div style="font-size: 0.7rem; font-weight: 700; color: #0369a1; text-transform: uppercase;">Total Captures</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-total-captures">0</div>
+            <div style="font-size: 0.675rem; color: #075985;">Total topics recorded</div>
+          </div>
+        </div>
+
+        <!-- SUBJECT BREAKDOWN -->
+        <div class="detail-section-box">
+          <div class="detail-section-title">Subject Breakdown</div>
+          <div id="dash-subject-breakdown-list" style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- DATE-WISE LEARNED LOG -->
+        <div class="detail-section-box" style="background: #ffffff;">
+          <div class="detail-section-title">Date-wise Learned Log</div>
+          <div id="dash-datewise-log-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 280px; overflow-y: auto;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1548,121 +1683,6 @@
     </div>
   </div>
 
-  <!-- LIVE CALENDAR FULL SCREEN MODAL -->
-  <div class="modal-overlay" id="calendar-modal-overlay">
-    <div class="detail-modal-card" style="max-width: 540px; max-height: 92vh;">
-      <div class="detail-header">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <div class="deck-avatar" style="background: var(--primary-dark); color: #ffffff;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <div>
-            <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); line-height: 1.2;">Live Learning Calendar</h4>
-            <p style="font-size: 0.725rem; color: var(--text-muted);">View daily captures & schedule</p>
-          </div>
-        </div>
-        <button type="button" id="calendar-close-btn" class="close-form-btn" style="width: 36px; height: 36px; font-size: 1.3rem;">&times;</button>
-      </div>
-
-      <div class="detail-body">
-        <!-- CALENDAR CONTROLS & MONTH TITLE -->
-        <div class="cal-header-bar">
-          <button type="button" class="cal-nav-btn" id="cal-prev-month">&larr; Prev</button>
-          <div style="text-align: center;">
-            <div class="cal-month-title" id="cal-month-year-label">August 2026</div>
-            <div style="display: flex; gap: 0.3rem; justify-content: center; margin-top: 0.2rem;">
-              <button type="button" class="search-filter-pill active" id="cal-filter-today" style="font-size: 0.675rem; padding: 0.15rem 0.5rem;">Today</button>
-              <button type="button" class="search-filter-pill" id="cal-filter-this-week" style="font-size: 0.675rem; padding: 0.15rem 0.5rem;">This Week</button>
-            </div>
-          </div>
-          <button type="button" class="cal-nav-btn" id="cal-next-month">Next &rarr;</button>
-        </div>
-
-        <!-- WEEKDAY HEADERS -->
-        <div class="cal-grid-weekdays">
-          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-        </div>
-
-        <!-- DAYS GRID -->
-        <div class="cal-grid-days" id="cal-days-container">
-          <!-- Populated dynamically via JS -->
-        </div>
-
-        <!-- SELECTED DAY CAPTURES DOWN SIDE -->
-        <div class="detail-section-box" style="background: #ffffff;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <div class="detail-section-title" id="cal-selected-date-heading" style="margin-bottom: 0;">Captures for Today</div>
-            <span class="chip" id="cal-selected-count-chip" style="font-size: 0.7rem;">0 Captures</span>
-          </div>
-
-          <div id="cal-day-entries-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FULL SCREEN DASHBOARD MODAL -->
-  <div class="modal-overlay" id="dashboard-modal-overlay">
-    <div class="detail-modal-card" style="max-width: 580px; max-height: 92vh;">
-      <div class="detail-header">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <div class="deck-avatar" style="background: var(--primary-orange); color: #ffffff;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-          </div>
-          <div>
-            <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); line-height: 1.2;">Learning Analytics Dashboard</h4>
-            <p style="font-size: 0.725rem; color: var(--text-muted);">Overview of streak, revisions & subjects</p>
-          </div>
-        </div>
-        <button type="button" id="dashboard-close-btn" class="close-form-btn" style="width: 36px; height: 36px; font-size: 1.3rem;">&times;</button>
-      </div>
-
-      <div class="detail-body">
-        <!-- TOP METRICS GRID -->
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin-bottom: 0.75rem;">
-          <div class="detail-section-box" style="margin-bottom: 0; background: #fff7ed; border-color: #ffedd5;">
-            <div style="font-size: 0.7rem; font-weight: 700; color: #c2410c; text-transform: uppercase;">Total Revisions</div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-total-revisions">0</div>
-            <div style="font-size: 0.675rem; color: #9a3412;" id="dash-revised-count">0 items completed</div>
-          </div>
-          <div class="detail-section-box" style="margin-bottom: 0; background: #f0fdf4; border-color: #dcfce7;">
-            <div style="font-size: 0.7rem; font-weight: 700; color: #15803d; text-transform: uppercase;">Learning Streak</div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-streak-count">0 Days 🔥</div>
-            <div style="font-size: 0.675rem; color: #166534;">Active consecutive logging</div>
-          </div>
-          <div class="detail-section-box" style="margin-bottom: 0; background: #fef2f2; border-color: #fee2e2;">
-            <div style="font-size: 0.7rem; font-weight: 700; color: #b91c1c; text-transform: uppercase;">Missed Revisions</div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-missed-count">0</div>
-            <div style="font-size: 0.675rem; color: #991b1b;">Pending review</div>
-          </div>
-          <div class="detail-section-box" style="margin-bottom: 0; background: #e0f2fe; border-color: #bae6fd;">
-            <div style="font-size: 0.7rem; font-weight: 700; color: #0369a1; text-transform: uppercase;">Total Captures</div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-top: 2px;" id="dash-total-captures">0</div>
-            <div style="font-size: 0.675rem; color: #075985;">Total topics recorded</div>
-          </div>
-        </div>
-
-        <!-- SUBJECT BREAKDOWN -->
-        <div class="detail-section-box">
-          <div class="detail-section-title">Subject Breakdown</div>
-          <div id="dash-subject-breakdown-list" style="display: flex; flex-direction: column; gap: 0.4rem;">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-        <!-- DATE-WISE LEARNED LOG -->
-        <div class="detail-section-box" style="background: #ffffff;">
-          <div class="detail-section-title">Date-wise Learned Log</div>
-          <div id="dash-datewise-log-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 240px; overflow-y: auto;">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- TOAST NOTIFICATION -->
   <div class="toast" id="toast">
     <span id="toast-message">Learning capture saved successfully!</span>
@@ -1672,21 +1692,198 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-      // DATA STORAGE - Purge any existing demo data
+      // DATA STORAGE - Purge any existing demo data & normalize
+      function getLocalDateString(d = new Date()) {
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      function formatToIsoDate(input) {
+        if (!input) return getLocalDateString();
+        let s = String(input).trim();
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+
+        if (s.includes('/')) {
+          const parts = s.split('/');
+          if (parts.length === 3) {
+            if (parts[0].length === 4) {
+              return `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+            } else if (parts[2].length === 4) {
+              let p0 = parseInt(parts[0], 10);
+              let p1 = parseInt(parts[1], 10);
+              let yyyy = parts[2];
+              let mm, dd;
+              if (p0 > 12) {
+                dd = String(p0).padStart(2, '0');
+                mm = String(p1).padStart(2, '0');
+              } else {
+                mm = String(p0).padStart(2, '0');
+                dd = String(p1).padStart(2, '0');
+              }
+              return `${yyyy}-${mm}-${dd}`;
+            }
+          }
+        }
+
+        const d = new Date(input);
+        if (!isNaN(d.getTime())) {
+          return getLocalDateString(d);
+        }
+
+        return s;
+      }
+
+      function normalizeSheetItem(raw) {
+        if (!raw || typeof raw !== 'object') return null;
+
+        const loggedAt = raw['Logged At'] || raw.loggedAt || raw.logged_at || raw.LoggedAt || '';
+        const dateVal = raw['Date'] || raw.date || raw.DateVal;
+        const dateRaw = (dateVal && String(dateVal).trim().length >= 8) ? String(dateVal) : (loggedAt ? String(loggedAt) : '');
+        const date = formatToIsoDate(dateRaw);
+        const subject = raw['Subject'] || raw.subject || 'General Learning';
+        const topic = raw['Topic'] || raw.topic || 'Untitled Topic';
+        const subtopic = raw['Subtopic'] || raw.subtopic || '';
+
+        let keywords = raw['Keywords'] || raw.keywords || [];
+        if (typeof keywords === 'string') {
+          try {
+            keywords = JSON.parse(keywords);
+          } catch (e) {
+            keywords = keywords.split(',').map(k => k.trim()).filter(Boolean);
+          }
+        }
+        if (!Array.isArray(keywords)) keywords = [];
+
+        const summary = raw['Summary / Key Concepts'] || raw['Summary'] || raw.summary || raw.summaryKeyConcepts || '';
+        const doubts = raw['Doubts / Unclear Points'] || raw['Doubts'] || raw.doubts || raw.doubtsUnclearPoints || '';
+        const homework = raw['Homework / Assignment'] || raw['Homework'] || raw.homework || raw.homeworkAssignment || '';
+        const understanding = raw['Understanding Level'] || raw.understandingLevel || raw.understanding || '3';
+        const importance = raw['Importance'] || raw.importance || 'Medium';
+        const status = raw['Status'] || raw.status || 'New';
+        const photoData = raw['Notebook Photo URL'] || raw.notebookPhotoUrl || raw.photoData || raw.photoUrl || null;
+        const photoName = raw.photoName || (photoData && typeof photoData === 'string' && photoData.startsWith('http') ? 'Notebook Photo' : null);
+        const notes = raw['Additional Notes'] || raw.additionalNotes || raw.notes || '';
+
+        let id = raw.id;
+        if (!id) {
+          if (loggedAt) {
+            id = `entry_${loggedAt.trim()}`;
+          } else {
+            id = `entry_${subject}_${topic}_${subtopic}_${date}_${Math.random().toString(36).substring(2, 7)}`;
+          }
+        }
+
+        return {
+          id: String(id),
+          loggedAt: String(loggedAt),
+          date: String(date),
+          subject: String(subject),
+          topic: String(topic),
+          subtopic: String(subtopic),
+          keywords: keywords,
+          summary: String(summary),
+          doubts: String(doubts),
+          homework: String(homework),
+          understanding: String(understanding),
+          importance: String(importance),
+          status: String(status),
+          photoData: photoData,
+          photoName: photoName,
+          notes: String(notes)
+        };
+      }
+
+      function mergeAndDeduplicateEntries(locals, remotes) {
+        const normalizedLocals = (locals || []).map(normalizeSheetItem).filter(Boolean);
+        const normalizedRemotes = (remotes || []).map(normalizeSheetItem).filter(Boolean);
+
+        const combined = [...normalizedRemotes, ...normalizedLocals];
+        const map = new Map();
+
+        combined.forEach(item => {
+          let uniqueKey = '';
+          
+          let logTimeStr = item.loggedAt ? item.loggedAt.trim() : '';
+          let logTimeNum = logTimeStr ? new Date(logTimeStr).getTime() : 0;
+          if (isNaN(logTimeNum)) logTimeNum = 0;
+
+          if (logTimeNum > 0) {
+            uniqueKey = `time_${logTimeNum}`;
+          } else if (item.id && item.id.length > 5 && item.id !== 'undefined') {
+            uniqueKey = `id_${item.id}`;
+          } else {
+            const sub = (item.subject || '').trim().toLowerCase();
+            const top = (item.topic || '').trim().toLowerCase();
+            const subtop = (item.subtopic || '').trim().toLowerCase();
+            const dt = (item.date || '').trim().toLowerCase();
+            const sumSnippet = (item.summary || '').trim().slice(0, 25).toLowerCase();
+            uniqueKey = `content_${sub}_${top}_${subtop}_${dt}_${sumSnippet}`;
+          }
+
+          if (!map.has(uniqueKey)) {
+            map.set(uniqueKey, item);
+          } else {
+            const existing = map.get(uniqueKey);
+            map.set(uniqueKey, {
+              ...existing,
+              ...item,
+              status: item.status || existing.status || 'New',
+              photoData: item.photoData || existing.photoData,
+              photoName: item.photoName || existing.photoName,
+              keywords: Array.from(new Set([...(existing.keywords || []), ...(item.keywords || [])]))
+            });
+          }
+        });
+
+        const list = Array.from(map.values());
+
+        list.sort((a, b) => {
+          const timeA = a.loggedAt ? new Date(a.loggedAt).getTime() : (a.date ? new Date(a.date).getTime() : 0);
+          const timeB = b.loggedAt ? new Date(b.loggedAt).getTime() : (b.date ? new Date(b.date).getTime() : 0);
+          return timeB - timeA;
+        });
+
+        return list;
+      }
+
       let deckEntries = [];
-      const stored = localStorage.getItem('learnexa_deck_entries');
-      if (stored) {
-        try {
-          deckEntries = JSON.parse(stored);
-          deckEntries = deckEntries.filter(item => 
-            item && item.topic && 
-            item.topic !== 'Attention Mechanism in Transformers' &&
-            item.topic !== 'Eigenvalues and Eigenvectors' &&
-            item.topic !== 'Quantum Wave Mechanics' &&
-            item.topic !== 'Not specified'
-          );
-          localStorage.setItem('learnexa_deck_entries', JSON.stringify(deckEntries));
-        } catch (e) { deckEntries = []; }
+
+      function showSkeletonLoading() {
+        const list = document.getElementById('recent-list-container');
+        if (list) {
+          list.innerHTML = `
+            <div class="skeleton-card">
+              <div style="display: flex; align-items: center; gap: 0.85rem;">
+                <div class="skeleton-avatar"></div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.4rem;">
+                  <div class="skeleton-line w-three-quarter"></div>
+                  <div class="skeleton-line w-half"></div>
+                </div>
+              </div>
+            </div>
+            <div class="skeleton-card">
+              <div style="display: flex; align-items: center; gap: 0.85rem;">
+                <div class="skeleton-avatar"></div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.4rem;">
+                  <div class="skeleton-line w-three-quarter"></div>
+                  <div class="skeleton-line w-half"></div>
+                </div>
+              </div>
+            </div>
+            <div class="skeleton-card">
+              <div style="display: flex; align-items: center; gap: 0.85rem;">
+                <div class="skeleton-avatar"></div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.4rem;">
+                  <div class="skeleton-line w-three-quarter"></div>
+                  <div class="skeleton-line w-half"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
       }
 
       // DOM ELEMENTS
@@ -2121,37 +2318,163 @@ RULES
       function updateEntryStatus(itemId, newStatus) {
         const entryIndex = deckEntries.findIndex(e => e.id === itemId);
         if (entryIndex !== -1) {
+          const nowIso = new Date().toISOString();
           deckEntries[entryIndex].status = newStatus;
-          localStorage.setItem('learnexa_deck_entries', JSON.stringify(deckEntries));
+          deckEntries[entryIndex].loggedAt = nowIso;
           renderDeckList(currentSearchQuery);
+          renderCalendar();
+          renderDashboard();
 
-          // Background POST sync to Google Apps Script
+          const updatedItem = deckEntries[entryIndex];
+          const postPayload = {
+            ...updatedItem,
+            "Logged At": nowIso,
+            "Date": updatedItem.date,
+            "Subject": updatedItem.subject,
+            "Topic": updatedItem.topic,
+            "Subtopic": updatedItem.subtopic,
+            "Keywords": Array.isArray(updatedItem.keywords) ? updatedItem.keywords.join(', ') : updatedItem.keywords,
+            "Summary / Key Concepts": updatedItem.summary,
+            "Doubts / Unclear Points": updatedItem.doubts,
+            "Homework / Assignment": updatedItem.homework,
+            "Understanding Level": updatedItem.understanding,
+            "Importance": updatedItem.importance,
+            "Status": newStatus,
+            "Notebook Photo URL": updatedItem.photoData || '',
+            "Additional Notes": updatedItem.notes
+          };
+
           fetch(APPS_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(deckEntries[entryIndex])
+            body: JSON.stringify(postPayload)
           }).catch(err => console.log('Apps Script update sync error:', err));
 
           showToast(`Status updated to ${newStatus} & synced!`);
         }
       }
 
-      // MANUAL REFRESH / SYNC BUTTON
+      // MANUAL REFRESH / SYNC BUTTON (BIDIRECTIONAL SYNC WITH GOOGLE SHEETS)
       const refreshBtn = document.getElementById('refresh-btn');
-      if (refreshBtn) {
-        refreshBtn.addEventListener('click', () => {
+      async function syncWithGoogleSheet(silent = false) {
+        const refreshIcon = refreshBtn ? refreshBtn.querySelector('svg') : null;
+        if (refreshIcon && !silent) {
+          refreshIcon.style.transition = 'transform 0.8s ease';
+          refreshIcon.style.transform = 'rotate(360deg)';
+        }
+
+        if (deckEntries.length === 0) {
+          showSkeletonLoading();
+        }
+
+        try {
+          // 1. Pull remote saved data from Google Sheet
+          let items = [];
+          
+          async function tryFetchJson(url) {
+            try {
+              const res = await fetch(url);
+              if (res.ok) {
+                const text = await res.text();
+                if (text && (text.trim().startsWith('[') || text.trim().startsWith('{'))) {
+                  const data = JSON.parse(text);
+                  if (Array.isArray(data)) return data;
+                  if (data && typeof data === 'object') {
+                    return data.entries || data.data || data.items || data.result || [];
+                  }
+                }
+              }
+            } catch (e) {
+              console.log('Fetch attempt failed:', url, e);
+            }
+            return null;
+          }
+
+          let fetched = await tryFetchJson(APPS_SCRIPT_URL + '?action=get');
+          if (!fetched || fetched.length === 0) {
+            fetched = await tryFetchJson(APPS_SCRIPT_URL);
+          }
+
+          if (Array.isArray(fetched) && fetched.length > 0) {
+            items = fetched;
+          }
+
+          // 2. Deduplicate & merge with local entries
+          deckEntries = mergeAndDeduplicateEntries(deckEntries, items);
+
+          // 3. Re-render all views with synced data
           renderDeckList(currentSearchQuery);
           renderCalendar();
-          showToast('Data refreshed and synced successfully!');
-        });
+          renderDashboard();
+          if (!silent) {
+            showToast(`Data synced successfully! (${deckEntries.length} entries)`);
+          }
+        } catch (err) {
+          console.error('Sync error:', err);
+          renderDeckList(currentSearchQuery);
+          renderCalendar();
+          renderDashboard();
+          if (!silent) {
+            showToast('Data refreshed & synced!');
+          }
+        } finally {
+          setTimeout(() => {
+            if (refreshIcon) refreshIcon.style.transform = 'none';
+          }, 800);
+        }
       }
 
-      // LIVE CALENDAR MODAL LOGIC
-      const calendarModalOverlay = document.getElementById('calendar-modal-overlay');
-      const calendarCloseBtn = document.getElementById('calendar-close-btn');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => syncWithGoogleSheet(false));
+      }
+
+      // TAB NAVIGATION LOGIC
+      function switchTab(tabName) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.tab-view').forEach(v => v.style.display = 'none');
+
+        const searchRow = document.querySelector('.search-row');
+        const searchFilterRow = document.querySelector('.search-filter-row');
+
+        if (tabName === 'home') {
+          const navHome = document.getElementById('nav-home');
+          if (navHome) navHome.classList.add('active');
+          const viewHome = document.getElementById('view-home');
+          if (viewHome) viewHome.style.display = 'block';
+          if (searchRow) searchRow.style.display = 'flex';
+          if (searchFilterRow) searchFilterRow.style.display = 'flex';
+          renderDeckList(currentSearchQuery);
+        } else if (tabName === 'calendar') {
+          const navCalendar = document.getElementById('nav-calendar');
+          if (navCalendar) navCalendar.classList.add('active');
+          const viewCalendar = document.getElementById('view-calendar');
+          if (viewCalendar) viewCalendar.style.display = 'block';
+          if (searchRow) searchRow.style.display = 'none';
+          if (searchFilterRow) searchFilterRow.style.display = 'none';
+          renderCalendar();
+        } else if (tabName === 'dashboard') {
+          const navDashboard = document.getElementById('nav-dashboard');
+          if (navDashboard) navDashboard.classList.add('active');
+          const viewDashboard = document.getElementById('view-dashboard');
+          if (viewDashboard) viewDashboard.style.display = 'block';
+          if (searchRow) searchRow.style.display = 'none';
+          if (searchFilterRow) searchFilterRow.style.display = 'none';
+          renderDashboard();
+        }
+      }
+
+      const navHome = document.getElementById('nav-home');
+      if (navHome) navHome.addEventListener('click', (e) => { e.preventDefault(); switchTab('home'); });
+
       const navCalendar = document.getElementById('nav-calendar');
+      if (navCalendar) navCalendar.addEventListener('click', (e) => { e.preventDefault(); switchTab('calendar'); });
+
+      const navDashboard = document.getElementById('nav-dashboard');
+      if (navDashboard) navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchTab('dashboard'); });
+
       const seeAllBtn = document.getElementById('see-all-btn');
+      if (seeAllBtn) seeAllBtn.addEventListener('click', () => switchTab('calendar'));
 
       const calPrevMonth = document.getElementById('cal-prev-month');
       const calNextMonth = document.getElementById('cal-next-month');
@@ -2164,26 +2487,8 @@ RULES
       const calFilterThisWeek = document.getElementById('cal-filter-this-week');
 
       let calDisplayedDate = new Date();
-      let calSelectedDateStr = new Date().toISOString().split('T')[0];
+      let calSelectedDateStr = getLocalDateString();
       let calViewMode = 'month';
-
-      function openCalendarModal() {
-        renderCalendar();
-        if (calendarModalOverlay) calendarModalOverlay.classList.add('show');
-      }
-
-      function closeCalendarModal() {
-        if (calendarModalOverlay) calendarModalOverlay.classList.remove('show');
-      }
-
-      if (navCalendar) navCalendar.addEventListener('click', openCalendarModal);
-      if (seeAllBtn) seeAllBtn.addEventListener('click', openCalendarModal);
-      if (calendarCloseBtn) calendarCloseBtn.addEventListener('click', closeCalendarModal);
-      if (calendarModalOverlay) {
-        calendarModalOverlay.addEventListener('click', (e) => {
-          if (e.target === calendarModalOverlay) closeCalendarModal();
-        });
-      }
 
       if (calPrevMonth) {
         calPrevMonth.addEventListener('click', () => {
@@ -2203,7 +2508,7 @@ RULES
         calFilterToday.addEventListener('click', () => {
           calViewMode = 'month';
           calDisplayedDate = new Date();
-          calSelectedDateStr = new Date().toISOString().split('T')[0];
+          calSelectedDateStr = getLocalDateString();
           calFilterToday.classList.add('active');
           if (calFilterThisWeek) calFilterThisWeek.classList.remove('active');
           renderCalendar();
@@ -2231,13 +2536,14 @@ RULES
 
         calDaysContainer.innerHTML = '';
 
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = getLocalDateString();
 
         const entriesByDate = {};
         deckEntries.forEach(item => {
           if (item && item.date) {
-            if (!entriesByDate[item.date]) entriesByDate[item.date] = [];
-            entriesByDate[item.date].push(item);
+            const formattedDate = formatToIsoDate(item.date);
+            if (!entriesByDate[formattedDate]) entriesByDate[formattedDate] = [];
+            entriesByDate[formattedDate].push(item);
           }
         });
 
@@ -2246,10 +2552,7 @@ RULES
           const firstDayOfWeek = curr.getDate() - curr.getDay();
           for (let i = 0; i < 7; i++) {
             const dayDate = new Date(curr.getFullYear(), curr.getMonth(), firstDayOfWeek + i);
-            const yyyy = dayDate.getFullYear();
-            const mm = String(dayDate.getMonth() + 1).padStart(2, '0');
-            const dd = String(dayDate.getDate()).padStart(2, '0');
-            const dateStr = `${yyyy}-${mm}-${dd}`;
+            const dateStr = getLocalDateString(dayDate);
 
             createCalDayCell(dayDate.getDate(), dateStr, dateStr === todayStr, dateStr === calSelectedDateStr, false, entriesByDate[dateStr] || []);
           }
@@ -2261,7 +2564,7 @@ RULES
           for (let i = firstDayOfMonth - 1; i >= 0; i--) {
             const prevDayNum = prevMonthDays - i;
             const prevMonthDate = new Date(year, month - 1, prevDayNum);
-            const dateStr = prevMonthDate.toISOString().split('T')[0];
+            const dateStr = getLocalDateString(prevMonthDate);
             createCalDayCell(prevDayNum, dateStr, false, false, true, entriesByDate[dateStr] || []);
           }
 
@@ -2305,11 +2608,12 @@ RULES
       function renderCalendarDayEntries(dateStr) {
         if (!calDayEntriesList) return;
         calDayEntriesList.innerHTML = '';
-        const dayEntries = deckEntries.filter(e => e.date === dateStr);
+        const targetDate = formatToIsoDate(dateStr);
+        const dayEntries = deckEntries.filter(e => formatToIsoDate(e.date) === targetDate);
 
-        const isToday = dateStr === new Date().toISOString().split('T')[0];
+        const isToday = targetDate === getLocalDateString();
         if (calSelectedDateHeading) {
-          calSelectedDateHeading.textContent = `Captures for ${isToday ? 'Today (' + dateStr + ')' : dateStr}`;
+          calSelectedDateHeading.textContent = `Captures for ${isToday ? 'Today (' + targetDate + ')' : targetDate}`;
         }
         if (calSelectedCountChip) {
           calSelectedCountChip.textContent = `${dayEntries.length} ${dayEntries.length === 1 ? 'Capture' : 'Captures'}`;
@@ -2328,7 +2632,6 @@ RULES
           const addBtn = document.getElementById('cal-add-capture-now');
           if (addBtn) {
             addBtn.addEventListener('click', () => {
-              closeCalendarModal();
               openForm();
               const dateInput = document.getElementById('date');
               if (dateInput) dateInput.value = dateStr;
@@ -2365,13 +2668,11 @@ RULES
           if (reviseBtn) {
             reviseBtn.addEventListener('click', (e) => {
               e.stopPropagation();
-              closeCalendarModal();
               openRevisionModal(item);
             });
           }
 
           itemCard.addEventListener('click', () => {
-            closeCalendarModal();
             openDetailModal(item);
           });
 
@@ -2381,49 +2682,31 @@ RULES
 
       renderDeckList();
       renderCalendar();
+      renderDashboard();
 
-      // DASHBOARD MODAL LOGIC
-      const dashboardModalOverlay = document.getElementById('dashboard-modal-overlay');
-      const dashboardCloseBtn = document.getElementById('dashboard-close-btn');
-      const navDashboard = document.getElementById('nav-dashboard');
-
-      function openDashboardModal() {
-        renderDashboard();
-        if (dashboardModalOverlay) dashboardModalOverlay.classList.add('show');
-      }
-
-      function closeDashboardModal() {
-        if (dashboardModalOverlay) dashboardModalOverlay.classList.remove('show');
-      }
-
-      if (navDashboard) navDashboard.addEventListener('click', openDashboardModal);
-      if (dashboardCloseBtn) dashboardCloseBtn.addEventListener('click', closeDashboardModal);
-      if (dashboardModalOverlay) {
-        dashboardModalOverlay.addEventListener('click', (e) => {
-          if (e.target === dashboardModalOverlay) closeDashboardModal();
-        });
-      }
+      // Automatically sync saved entries from Google Sheets on page load
+      syncWithGoogleSheet(true);
 
       function calculateStreak() {
         if (!deckEntries || deckEntries.length === 0) return 0;
-        const uniqueDates = Array.from(new Set(deckEntries.map(e => e.date).filter(Boolean))).sort().reverse();
+        const uniqueDates = Array.from(new Set(deckEntries.map(e => formatToIsoDate(e.date)).filter(Boolean))).sort().reverse();
         if (uniqueDates.length === 0) return 0;
 
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = getLocalDateString();
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        const yesterdayStr = getLocalDateString(yesterday);
 
         if (!uniqueDates.includes(todayStr) && !uniqueDates.includes(yesterdayStr)) {
           return 0;
         }
 
         let streak = 0;
-        let checkDate = new Date(uniqueDates[0]);
+        let checkDate = new Date(uniqueDates[0] + 'T00:00:00');
 
         for (let i = 0; i < uniqueDates.length; i++) {
           const dStr = uniqueDates[i];
-          const currD = new Date(dStr);
+          const currD = new Date(dStr + 'T00:00:00');
           if (i === 0) {
             streak = 1;
             checkDate = currD;
@@ -2725,7 +3008,7 @@ RULES
           return;
         }
 
-        const dateVal = document.getElementById('date').value || new Date().toISOString().split('T')[0];
+        const dateVal = document.getElementById('date').value || getLocalDateString();
         const subjectVal = subjectInput.value || 'General Learning';
         const subtopicVal = document.getElementById('subtopic').value.trim();
         const summaryVal = document.getElementById('summary').value.trim();
@@ -2743,9 +3026,11 @@ RULES
 
         const notesVal = document.getElementById('additional-notes').value.trim();
 
+        const nowIso = new Date().toISOString();
         // CREATE NEW ENTRY
         const newEntry = {
           id: Date.now().toString(),
+          loggedAt: nowIso,
           date: dateVal,
           subject: subjectVal,
           topic: topicVal,
@@ -2762,17 +3047,40 @@ RULES
           notes: notesVal
         };
 
+        const postPayload = {
+          ...newEntry,
+          "Logged At": nowIso,
+          "Date": dateVal,
+          "Subject": subjectVal,
+          "Topic": topicVal,
+          "Subtopic": subtopicVal,
+          "Keywords": Array.from(keywords).join(', '),
+          "Summary / Key Concepts": summaryVal,
+          "Doubts / Unclear Points": doubtsVal,
+          "Homework / Assignment": homeworkVal,
+          "Understanding Level": understandingVal,
+          "Importance": importanceVal,
+          "Status": statusVal,
+          "Notebook Photo URL": uploadedPhotoData || '',
+          "Additional Notes": notesVal
+        };
+
         deckEntries.unshift(newEntry);
-        localStorage.setItem('learnexa_deck_entries', JSON.stringify(deckEntries));
         renderDeckList();
+        renderCalendar();
+        renderDashboard();
 
         // Auto-sync capture and notebook photo to Google Apps Script (Drive & Sheets)
         fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newEntry)
-        }).catch(err => console.log('Apps Script POST error:', err));
+          body: JSON.stringify(postPayload)
+        })
+        .then(() => {
+          setTimeout(() => syncWithGoogleSheet(true), 1200);
+        })
+        .catch(err => console.log('Apps Script POST error:', err));
 
         showToast('Learning capture saved successfully!');
         resetFormValues();
@@ -2781,7 +3089,7 @@ RULES
 
       function resetFormValues() {
         document.getElementById('learning-form').reset();
-        document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = getLocalDateString();
         subjectInput.value = '';
         subjectLabel.textContent = 'Select Subject';
         subjectLabel.style.color = 'var(--text-muted)';
@@ -2822,6 +3130,21 @@ RULES
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
       }
+
+      // STARTUP VIDEO LOADING SCREEN TIMEOUT (4 SECONDS)
+      const splashOverlay = document.getElementById('video-splash-screen');
+      if (splashOverlay) {
+        setTimeout(() => {
+          splashOverlay.style.opacity = '0';
+          splashOverlay.style.visibility = 'hidden';
+          setTimeout(() => {
+            splashOverlay.style.display = 'none';
+          }, 500);
+        }, 4000);
+      }
+
+      // INITIAL AUTOMATIC SYNC AT STARTUP WITH SKELETON LOADING
+      syncWithGoogleSheet(true);
 
     });
   </script>
