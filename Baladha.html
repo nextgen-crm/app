@@ -893,6 +893,14 @@
             </div>
           </div>
 
+          <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label">શેર ચૂકવણી સ્ટેટસ (Share Payment Status) *</label>
+            <select id="add-m-share-payment" class="form-select" required>
+              <option value="paid_now" selected>ચૂકવેલ - ₹૨૦,૦૦૦ પ્રતિ શેર હમણાં જમા કરો (Paid Now - Add to Balance)</option>
+              <option value="pay_later">બાકી - પછીથી ચૂકવશે (Pay Later - Share is Pending)</option>
+            </select>
+          </div>
+
           <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px; margin-top: 12px;">
             <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-add-member')">રદ કરો</button>
             <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px;">નોંધણી કરો</button>
@@ -920,6 +928,14 @@
           <div class="form-group">
             <label class="form-label">શેર હોલ્ડરનું નામ (Name on Share Certificate)</label>
             <input type="text" id="add-s-certname" class="form-input" placeholder="દા.ત. કુટુંબના સભ્યનું નામ (ખાલી મૂકતા સભ્યનું નામ ગણાશે)">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">શેર ચૂકવણી સ્ટેટસ (Share Payment Status) *</label>
+            <select id="add-s-payment" class="form-select" required>
+              <option value="paid_now" selected>ચૂકવેલ - ₹૨૦,૦૦૦ હમણાં જમા કરો (Paid Now - Add to Balance)</option>
+              <option value="pay_later">બાકી - પછીથી ચૂકવશે (Pay Later - Share is Pending)</option>
+            </select>
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px;">
@@ -1084,6 +1100,32 @@
     window.removeShareField = function(idx) {
       shareInputs.splice(idx, 1);
       renderShareFields();
+    };
+
+    window.payPendingShare = function(shareId) {
+      const sh = shares.find(s => s.id === shareId);
+      if (!sh) return;
+      const m = members.find(mem => mem.id === sh.memberId);
+      if (!m) return;
+      
+      const confirmPay = confirm(`${m.name} ના શેર (${sh.shareNumber}) માટે ₹૨૦,૦૦૦ ચૂકવણી જમા કરવી છે?`);
+      if (!confirmPay) return;
+      
+      sh.status = 'active';
+      
+      const todayStr = new Date().toISOString().split('T')[0];
+      transactions.push({
+        id: `t-${Date.now()}`,
+        date: todayStr,
+        type: 'other_income',
+        amount: 20000,
+        memberName: m.name,
+        description: `બાકી શેર પ્રમાણપત્ર ${sh.shareNumber} ની ચૂકવણી જમા`
+      });
+      
+      saveToLocalStorage();
+      renderAllViews();
+      alert(`શેર ${sh.shareNumber} માટે ₹૨૦,૦૦૦ ની ચૂકવણી સફળતાપૂર્વક જમા થઈ અને શેર સક્રિય થયો!`);
     };
 
     // Add dynamic share fields initializer after DOM loads
@@ -1329,6 +1371,7 @@
 
       listWrapper.innerHTML = filtered.map(m => {
         const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+        const mAllShares = shares.filter(s => s.memberId === m.id);
         const mSavings = getMemberSavings(m.id);
         const mLoan = getMemberLoanBalance(m.id);
         
@@ -1345,6 +1388,8 @@
 
         const isExpanded = !!expandedMemberIds[m.id];
 
+        const pendingCount = mAllShares.length - mShares.length;
+
         return `
           <div class="member-box" style="padding: 14px 16px; border: 1px solid #ece6e1; border-radius: 20px; background-color: #ffffff; cursor: pointer; transition: all 0.2s;" onclick="toggleMemberExpand('${m.id}')">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1355,7 +1400,7 @@
                 <div style="font-size: 11px; color: #8c847e; margin-top: 4px; display: flex; gap: 8px; align-items: center;">
                   <span>📞 ${m.phone || 'નથી'}</span>
                   <span style="width: 3px; height: 3px; background-color: #8c847e; border-radius: 50%;"></span>
-                  <span><b>${mShares.length} શેર</b></span>
+                  <span><b>${mShares.length} શેર એક્ટિવ</b>${pendingCount > 0 ? ` (<span style="color: #ea580c; font-weight: bold;">${pendingCount} પેન્ડિંગ</span>)` : ''}</span>
                   ${mLoan > 0 ? `
                     <span style="width: 3px; height: 3px; background-color: #8c847e; border-radius: 50%;"></span>
                     <span style="color: #8c584a; font-weight: bold;">બાકી લોન: ₹${mLoan.toLocaleString()}</span>
@@ -1364,7 +1409,7 @@
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <span class="certificate-pill">
-                  ${mShares.length} Certificate
+                  ${mShares.length} Active ${pendingCount > 0 ? ` (+${pendingCount} Pending)` : ''}
                 </span>
                 <span style="transform: rotate(${isExpanded ? '180deg' : '0deg'}); transition: transform 0.2s; color: #8c847e; display: flex; align-items: center;">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -1389,13 +1434,23 @@
                     શેર પ્રમાણપત્ર વિગત (Share Certificates)
                   </div>
                   <div class="space-y-1">
-                    ${mShares.map(sh => `
-                      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; background-color: #ffffff; padding: 6px 10px; border-radius: 10px; border: 1px solid #ece6e1;">
-                        <span style="font-weight: 800; color: #8c584a;">${sh.shareNumber}</span>
-                        <span style="color: #2d2522;">${sh.nameOnShare}</span>
-                        <span style="color: #82954b; font-weight: bold; background-color: rgba(130, 149, 75, 0.1); padding: 2px 6px; border-radius: 6px; font-size: 9px;">સક્રિય (₹20,000 મૂલ્ય)</span>
-                      </div>
-                    `).join('')}
+                    ${mAllShares.map(sh => {
+                      const isActive = sh.status === 'active';
+                      return `
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; background-color: #ffffff; padding: 6px 10px; border-radius: 10px; border: 1px solid #ece6e1;">
+                          <span style="font-weight: 800; color: #8c584a;">${sh.shareNumber}</span>
+                          <span style="color: #2d2522;">${sh.nameOnShare}</span>
+                          ${isActive ? `
+                            <span style="color: #82954b; font-weight: bold; background-color: rgba(130, 149, 75, 0.1); padding: 2px 6px; border-radius: 6px; font-size: 9px;">સક્રિય (₹20,000 મૂલ્ય)</span>
+                          ` : `
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                              <span style="color: #ea580c; font-weight: bold; background-color: rgba(234, 88, 12, 0.1); padding: 2px 6px; border-radius: 6px; font-size: 9px;">ચૂકવણી બાકી</span>
+                              <button onclick="payPendingShare('${sh.id}'); event.stopPropagation();" style="background-color: #eba338; color: #ffffff; border: none; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#d97706'" onmouseout="this.style.backgroundColor='#eba338'">ચૂકવો (Pay)</button>
+                            </div>
+                          `}
+                        </div>
+                      `;
+                    }).join('')}
                   </div>
                 </div>
 
@@ -2113,6 +2168,8 @@
       const name = document.getElementById('add-m-name').value.trim();
       const phone = document.getElementById('add-m-phone').value.trim();
       const nomineeName = document.getElementById('add-m-nominee').value.trim();
+      const payStatus = document.getElementById('add-m-share-payment').value;
+      const isPaid = payStatus === 'paid_now';
 
       if (!name) {
         alert('કૃપા કરીને સભ્યનું નામ ભરો!');
@@ -2144,12 +2201,29 @@
           shareNumber: `S-${maxShareNum + idx + 1}`,
           nameOnShare: val,
           activationDate: new Date().toISOString().split('T')[0],
-          status: 'active'
+          status: isPaid ? 'active' : 'pending'
         });
       });
 
+      if (isPaid) {
+        // Add transaction to main balance: ₹20,000 per share
+        const totalShareCost = certInputs.length * 20000;
+        transactions.push({
+          id: `t-${Date.now()}-share-init`,
+          date: new Date().toISOString().split('T')[0],
+          type: 'other_income',
+          amount: totalShareCost,
+          memberName: name,
+          description: `નવી સભ્ય નોંધણી શેર ખરીદી ચુકવણી જમા (કુલ શેર: ${certInputs.length})`
+        });
+      }
+
       saveToLocalStorage();
-      alert('સભ્ય સફળતાપૂર્વક ઉમેરાયા!');
+      if (isPaid) {
+        alert(`સભ્ય સફળતાપૂર્વક ઉમેરાયા અને કુલ શેર ચૂકવણી રકમ ₹${(certInputs.length * 20000).toLocaleString()} મુખ્ય સિલકમાં જમા થઈ!`);
+      } else {
+        alert('સભ્ય સફળતાપૂર્વક ઉમેરાયા! શેર ચૂકવણી બાકી હોવાથી શેર પેન્ડિંગ રહેશે.');
+      }
       
       // Reset
       document.getElementById('form-add-member').reset();
@@ -2163,6 +2237,8 @@
       e.preventDefault();
       const memberId = document.getElementById('add-s-member').value;
       const certname = document.getElementById('add-s-certname').value.trim();
+      const payStatus = document.getElementById('add-s-payment').value;
+      const isPaid = payStatus === 'paid_now';
 
       if (!memberId) {
         alert('સભ્ય પસંદ કરો!');
@@ -2177,17 +2253,34 @@
         return num > max ? num : max;
       }, 1000);
 
+      const newShareNum = `S-${maxShareNum + 1}`;
       shares.push({
         id: `s-${Date.now()}`,
         memberId,
-        shareNumber: `S-${maxShareNum + 1}`,
+        shareNumber: newShareNum,
         nameOnShare: finalName,
         activationDate: new Date().toISOString().split('T')[0],
-        status: 'active'
+        status: isPaid ? 'active' : 'pending'
       });
 
+      if (isPaid) {
+        // Add ₹20,000 transaction to main balance
+        transactions.push({
+          id: `t-${Date.now()}-share-buy`,
+          date: new Date().toISOString().split('T')[0],
+          type: 'other_income',
+          amount: 20000,
+          memberName: m.name,
+          description: `નવો શેર પ્રમાણપત્ર ${newShareNum} ખરીદી ચૂકવણી જમા`
+        });
+      }
+
       saveToLocalStorage();
-      alert('નવો શેર પ્રમાણપત્ર સફળતાપૂર્વક જમા થયો!');
+      if (isPaid) {
+        alert(`નવો શેર પ્રમાણપત્ર ${newShareNum} સફળતાપૂર્વક ખરીદ્યો અને ₹૨૦,૦૦૦ મુખ્ય સિલકમાં જમા થયા!`);
+      } else {
+        alert(`નવો શેર પ્રમાણપત્ર ${newShareNum} સફળતાપૂર્વક નોંધાયો! ચૂકવણી બાકી હોવાથી શેર પેન્ડિંગ રહેશે.`);
+      }
       document.getElementById('form-add-share').reset();
       closeModal('modal-add-share');
       renderAllViews();
