@@ -1,0 +1,2585 @@
+
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BCS મોબાઇલ એપ - બલાઢા ક્રેડિટ સોસાયટી</title>
+  <style>
+    /* Reset & Base styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    body {
+      background-color: #f7f4f1; /* Premium matte light beige background */
+      color: #2d2522; /* Cozy soft charcoal charcoal text */
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    
+    /* Device Container - styled to fit actual phone screens with no outer border/curves/shadow */
+    #app-root {
+      width: 100%;
+      max-width: 500px;
+      background-color: #ffffff; /* Clean white canvas for content */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      border-left: 1px solid #e6dfda;
+      border-right: 1px solid #e6dfda;
+    }
+
+    /* Header styling */
+    header {
+      background: #f7f4f1;
+      border-bottom: 1px solid #e6dfda;
+      color: #2d2522;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-heart {
+      background-color: rgba(235, 163, 56, 0.15);
+      padding: 6px;
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #eba338;
+    }
+    .header-title h1 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #2d2522;
+      letter-spacing: -0.01em;
+    }
+    .header-title p {
+      font-size: 10px;
+      color: #8c847e;
+      margin-top: 2px;
+    }
+    .trust-balance-badge {
+      text-align: right;
+      background-color: #ffffff;
+      border: 1px solid #ece6e1;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+    .trust-balance-lbl {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #8c847e;
+      font-weight: 800;
+    }
+    .trust-balance-val {
+      font-size: 13px;
+      font-weight: 900;
+      color: #eba338;
+    }
+
+    /* Content view wrapper */
+    main {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      padding-bottom: 90px;
+    }
+
+    /* Tab Buttons & Bottom Nav */
+    nav {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      background-color: #ffffff;
+      border-top: 1px solid #ece6e1;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+      z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom, 4px);
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #8c847e;
+      cursor: pointer;
+      height: 100%;
+      transition: all 0.2s;
+      gap: 4px;
+    }
+    .nav-btn.active {
+      color: #eba338; /* Gold/Mustard accent color from mockup */
+      font-weight: bold;
+    }
+    .nav-btn svg {
+      stroke: currentColor;
+    }
+    .nav-btn span {
+      font-size: 9px;
+      white-space: nowrap;
+    }
+
+    /* Utilities */
+    .space-y-4 > * + * { margin-top: 16px; }
+    .space-y-3 > * + * { margin-top: 12px; }
+    .space-y-2 > * + * { margin-top: 8px; }
+    .hidden { display: none !important; }
+    
+    /* Cards & Panels */
+    .card {
+      background-color: #ffffff;
+      border: 1px solid #ece6e1;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: none;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #2d2522;
+    }
+    .card-subtitle {
+      font-size: 11px;
+      color: #8c847e;
+    }
+
+    /* Alerts */
+    .alert-amber {
+      background-color: #fffbf5;
+      border: 1px solid #fef3c7;
+      padding: 16px;
+      border-radius: 16px;
+      color: #8c584a;
+    }
+    .alert-title {
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .alert-body {
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* Stat Blocks Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .stat-box {
+      background-color: #ffffff;
+      border: 1px solid #ece6e1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: none;
+    }
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .stat-lbl {
+      font-size: 10px;
+      font-weight: bold;
+      color: #8c847e;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .stat-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+    .bg-emerald-light { background-color: rgba(130, 149, 75, 0.12); color: #82954b; }
+    .bg-blue-light { background-color: rgba(235, 163, 56, 0.12); color: #eba338; }
+    .bg-amber-light { background-color: rgba(140, 88, 74, 0.12); color: #8c584a; }
+    .bg-purple-light { background-color: rgba(130, 149, 75, 0.08); color: #708a50; }
+    
+    .stat-val {
+      font-size: 17px;
+      font-weight: 900;
+      margin-top: 8px;
+    }
+    .stat-val.emerald { color: #82954b; }
+    .stat-val.blue { color: #eba338; }
+    .stat-val.amber { color: #8c584a; }
+    .stat-val.purple { color: #708a50; }
+
+    .stat-desc {
+      font-size: 9px;
+      color: #8c847e;
+      margin-top: 2px;
+    }
+
+    /* Inputs & Forms */
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: bold;
+      color: #8c847e;
+      margin-bottom: 4px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ece6e1;
+      border-radius: 10px;
+      font-size: 12px;
+      outline: none;
+      background-color: #ffffff;
+      color: #2d2522;
+    }
+    .form-input:focus {
+      border-color: #eba338;
+      background-color: #ffffff;
+    }
+    .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ece6e1;
+      border-radius: 10px;
+      font-size: 12px;
+      outline: none;
+      background-color: #ffffff;
+      color: #2d2522;
+      cursor: pointer;
+    }
+
+    /* Range inputs */
+    .slider-range {
+      width: 100%;
+      height: 6px;
+      background-color: #ece6e1;
+      border-radius: 4px;
+      outline: none;
+      accent-color: #eba338;
+      margin-top: 4px;
+    }
+
+    /* Calculator rows */
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #8c847e;
+      padding-top: 6px;
+    }
+    .calc-total {
+      border-top: 1px solid #ece6e1;
+      padding-top: 8px;
+      margin-top: 8px;
+      font-weight: bold;
+      font-size: 11px;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.2s;
+      border: none;
+    }
+    .btn-gradient {
+      background-color: #eba338; /* Matte premium Gold/Mustard */
+      color: #ffffff;
+    }
+    .btn-gradient:hover {
+      background-color: #df9429;
+    }
+    .btn-secondary {
+      background-color: #ffffff;
+      border: 1px solid #ece6e1;
+      color: #8c847e;
+    }
+    .btn-secondary:hover {
+      background-color: #f7f4f1;
+    }
+    .btn-dark {
+      background-color: #8c584a; /* Terracotta matte brown from mockup */
+      color: #ffffff;
+    }
+    .btn-dark:hover {
+      background-color: #794a3d;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(45,37,34,0.4);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 200;
+    }
+    .modal {
+      background-color: #ffffff;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(45, 37, 34, 0.15);
+      border: 1px solid #ece6e1;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      background: #f7f4f1;
+      border-bottom: 1px solid #ece6e1;
+      color: #2d2522;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header-blue {
+      background: #f7f4f1;
+    }
+    .modal-header-dark {
+      background: #f7f4f1;
+    }
+    .modal-header h3 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #2d2522;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: #8c847e;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .modal-body {
+      padding: 20px;
+    }
+
+    /* Segmented Control Buttons */
+    .segmented-control {
+      background-color: #f2ebe9;
+      padding: 4px;
+      border-radius: 14px;
+      display: flex;
+      gap: 4px;
+      border: 1px solid #ece6e1;
+    }
+    .segment-btn {
+      flex: 1;
+      padding: 8px;
+      background: none;
+      border: none;
+      font-size: 11px;
+      font-weight: bold;
+      color: #8c847e;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .segment-btn.active {
+      background-color: #8c584a; /* Terracotta brown from mockup emotions bar */
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(45,37,34,0.06);
+    }
+
+    /* Member List Cards */
+    .member-box {
+      border: 1px solid #ece6e1;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background-color: #ffffff;
+      box-shadow: none;
+    }
+    .member-box:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* Double Progress Bar Stack */
+    .progress-stack {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid #ece6e1;
+    }
+    .progress-container {
+      width: 100%;
+      background-color: #ece6e1;
+      height: 8px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .progress-bar-secured {
+      height: 100%;
+      background: #82954b; /* Sage/Olive green from mockup */
+      border-radius: 6px;
+    }
+    .progress-bar-unsecured {
+      height: 100%;
+      background: #8d4f40; /* Terracotta brown/red from mockup */
+      border-radius: 6px;
+    }
+    .progress-bar-full {
+      height: 100%;
+      background: #eba338;
+      border-radius: 6px;
+    }
+
+    /* Dynamic Certificate Label */
+    .certificate-pill {
+      background-color: rgba(235, 163, 56, 0.1);
+      border: none;
+      color: #eba338;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    /* Payment Log Mini List */
+    .payment-log-container {
+      background-color: #ffffff;
+      border: 1px solid #ece6e1;
+      border-radius: 12px;
+      padding: 6px 12px;
+      max-height: 140px;
+      overflow-y: auto;
+      font-size: 10px;
+    }
+    .payment-log-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #f0eae5;
+      padding: 6px 0;
+    }
+    .payment-log-row:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-root">
+    
+    <!-- Dynamic Header -->
+    <header>
+      <div class="header-logo">
+        <div class="header-heart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="header-title">
+          <h1>બલાઢા ક્રેડિટ સોસાયટી</h1>
+          <p>શ્રી બલાઢા મિત્ર મંડળ</p>
+        </div>
+      </div>
+      <div class="trust-balance-badge">
+        <div class="trust-balance-lbl">ટ્રસ્ટ ભંડોળ સિલક</div>
+        <div class="trust-balance-val" id="top-cash-balance">₹1,50,000</div>
+      </div>
+    </header>
+
+    <!-- Core Viewport -->
+    <main id="main-content">
+      
+      <!-- TAB 1: DASHBOARD VIEW -->
+      <div id="view-dashboard" class="space-y-4">
+        
+        <!-- Onboarding Alert when 0 members exist -->
+        <div id="onboarding-alert" class="alert-amber">
+          <div class="alert-title">
+            <span>📢 એપમાં હાલ કોઈ ડેટા નથી! (0 Data Screen)</span>
+          </div>
+          <div class="alert-body">
+            બલાઢા ક્રેડિટ સોસાયટી એપમાં તમારું સ્વાગત છે. શરૂ કરવા માટે નીચે આપેલા <b>"સભ્યો / શેર"</b> ટેબ પર ક્લિક કરો અને નવો સભ્ય તેમજ તેમના શેર (શેર દીઠ કિંમત ₹૨૦,૦૦૦) રજીસ્ટર કરો!
+          </div>
+        </div>
+
+        <!-- Financial Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-header">
+              <span class="stat-lbl">રોકડ સિલક / Cash</span>
+              <span class="stat-icon bg-emerald-light">🏛️</span>
+            </div>
+            <div class="stat-val emerald" id="stat-cash">₹1,50,000</div>
+            <div class="stat-desc">લોન આપવા માટેની સિલક</div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-header">
+              <span class="stat-lbl">ચાલુ લોન / Loans</span>
+              <span class="stat-icon bg-blue-light">💳</span>
+            </div>
+            <div class="stat-val blue" id="stat-loans">₹0</div>
+            <div class="stat-desc">બહાર ફરેલા લોન નાણાં</div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-header">
+              <span class="stat-lbl">બચત ફાળો / Savings</span>
+              <span class="stat-icon bg-amber-light">🪙</span>
+            </div>
+            <div class="stat-val amber" id="stat-savings">₹0</div>
+            <div class="stat-desc">માસિક ₹૫૦ ના ફાળામાંથી</div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-header">
+              <span class="stat-lbl">કુલ શેર / Shares</span>
+              <span class="stat-icon bg-purple-light">👥</span>
+            </div>
+            <div class="stat-val purple" id="stat-shares">0 શેર</div>
+            <div class="stat-desc" id="stat-members-lbl">કુલ સભ્યો: 0</div>
+          </div>
+        </div>
+
+        <!-- Loan limit & Share Calculator -->
+        <div class="card space-y-3">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div style="font-size: 18px;">🧮</div>
+            <div>
+              <h4 class="card-title">શેર અને લોન ક્ષમતા કેલ્ક્યુલેટર</h4>
+              <p class="card-subtitle">નિયમ મુજબ કેટલા શેર પર કેટલી લોન મળે?</p>
+            </div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #4b5563; margin-bottom: 4px;">
+              <span>શેરની સંખ્યા (Owned Shares):</span>
+              <span style="color: #b45309; font-weight: 900;" id="calc-shares-count">2 શેર (Shares)</span>
+            </div>
+            <input type="range" id="calc-range" class="slider-range" min="1" max="10" value="2">
+          </div>
+
+          <div style="background-color: #f9fafb; padding: 12px; border-radius: 8px; border: 1px solid #f3f4f6; margin-top: 8px;" class="space-y-2">
+            <div class="calc-row">
+              <span>માસિક સેવિંગ્સ ફાળો:</span>
+              <strong id="calc-monthly">₹100 / મહિને</strong>
+            </div>
+            <div class="calc-row">
+              <span>વાર્ષિક બચત (₹૬૦૦ શેરદીઠ):</span>
+              <strong id="calc-yearly">₹1200 / વર્ષે</strong>
+            </div>
+            <div class="calc-row calc-total">
+              <span style="color: #374151;">મહત્તમ ભલામણ કરેલ લોન લિમિટ (Recommended limit):</span>
+              <strong style="color: #2563eb; font-size: 12px;" id="calc-loan-limit">₹50,000</strong>
+            </div>
+            <div class="calc-row">
+              <span>કુલ શેર મૂડી સુરક્ષિત કિંમત (Asset Value @ ₹20,000/Share):</span>
+              <strong style="color: #7c3aed;" id="calc-asset-value">₹40,000</strong>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <!-- TAB 2: MEMBERS & SHARES VIEW -->
+      <div id="view-members" class="space-y-4 hidden">
+        
+        <!-- Sub tabs for Members & Shares -->
+        <div class="segmented-control" style="margin-bottom: 12px;">
+          <button class="segment-btn active" id="subtab-members-list-btn">👤 સભ્યોની યાદી (Members List)</button>
+          <button class="segment-btn" id="subtab-yearly-savings-btn">📅 વાર્ષિક બચત ટ્રેકર (Yearly Savings)</button>
+        </div>
+
+        <!-- SUBTAB 1: MEMBERS LIST VIEW -->
+        <div id="members-list-container" class="space-y-4">
+          <!-- Search & Actions -->
+          <div class="card space-y-3">
+            <input type="text" id="member-search" class="form-input" placeholder="સભ્યનું નામ, ફોન અથવા નોમિની શોધો...">
+            
+            <div style="display: flex; gap: 8px;">
+              <button id="btn-open-share-modal" class="btn btn-secondary" style="flex: 1;">+ સભ્ય માટે નવો શેર ઉમેરો</button>
+            </div>
+
+            <button id="btn-open-member-modal" class="btn btn-gradient">+ નવા સભ્ય રજીસ્ટર કરો (Register Member)</button>
+          </div>
+
+          <!-- Members Group List -->
+          <div id="members-list-wrapper" class="space-y-3">
+            <!-- Members list injected here dynamically -->
+          </div>
+        </div>
+
+        <!-- SUBTAB 2: YEARLY SAVINGS TRACKER VIEW -->
+        <div id="yearly-savings-container" class="space-y-4 hidden">
+          <div class="card space-y-3">
+            <div style="display: flex; gap: 8px; align-items: center; justify-content: space-between;">
+              <h4 class="card-title">📅 વાર્ષિક બચત ટ્રેકર</h4>
+              <div>
+                <select id="yearly-savings-year-select" class="form-select" style="padding: 4px 8px; font-size: 11px; width: 100px; height: 32px; border-radius: 6px;">
+                  <option value="2026" selected>2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                </select>
+              </div>
+            </div>
+            <p class="card-subtitle" style="margin-top: 2px;">દરેક સક્રિય શેર દીઠ વાર્ષિક ₹૬૦૦ બચત લક્ષ્ય</p>
+            <input type="text" id="yearly-savings-search" class="form-input" placeholder="સભ્યનું નામ અથવા ફોન શોધો...">
+          </div>
+
+          <!-- Yearly Savings List Wrapper -->
+          <div id="yearly-savings-list-wrapper" class="space-y-3">
+            <!-- Yearly rows injected here dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 3: MONTHLY LEDGER VIEW -->
+      <div id="view-ledger" class="space-y-4 hidden">
+        
+        <!-- Sub tabs Segmented control -->
+        <div class="segmented-control">
+          <button class="segment-btn active" id="subtab-ledger-btn">માસિક નોંધણી (Ledger)</button>
+          <button class="segment-btn" id="subtab-daily-btn">દૈનિક હિસાબ (Daily Log)</button>
+        </div>
+
+        <!-- Ledger Form Section -->
+        <div id="ledger-form-wrapper" class="space-y-4">
+          <div class="card space-y-3">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+              <div>
+                <label class="form-label">મહિનો અને વર્ષ</label>
+                <input type="month" id="ledger-month-picker" class="form-input">
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; background-color: #f9fafb; padding: 8px; border-radius: 8px; border: 1px solid #f3f4f6;">
+              <span style="color: #6b7280;">સ્ટેટસ:</span>
+              <span id="ledger-save-status" style="font-weight: bold; color: #b45309;">⚠️ ડ્રાફ્ટ બાકી</span>
+            </div>
+          </div>
+
+          <!-- List of shares input cards -->
+          <form id="ledger-entry-form" class="space-y-3">
+            <div id="ledger-cards-list" class="space-y-3">
+              <!-- Render cards dynamically -->
+            </div>
+            
+            <div style="position: sticky; bottom: 80px; background: rgba(255,255,255,0.95); padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; gap: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <span style="font-size: 9px; color: #6b7280; line-height: 1.2;">નિયમ મુજબ ₹૫૦ અને લોન હપ્તા જમા થશે.</span>
+              <button type="submit" class="btn btn-gradient" style="width: auto; padding: 10px 24px;">સેવ કરો (Save)</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Daily Transactions Log -->
+        <div id="daily-tx-wrapper" class="space-y-4 hidden">
+          <div class="card space-y-2">
+            <input type="text" id="tx-search-box" class="form-input" placeholder="સભ્ય અથવા હેતુ શોધો...">
+            <select id="tx-type-select" class="form-select">
+              <option value="all">📊 તમામ પ્રકારના વ્યવહારો</option>
+              <option value="savings">માસિક બચત જમા (Savings)</option>
+              <option value="loan_disbursal">નવી લોન આપેલ (Disbursals)</option>
+              <option value="loan_repayment">લોન હપ્તા જમા (Repayments)</option>
+              <option value="interest_payment">વ્યાજ જમા (Interest)</option>
+              <option value="other_income">ટ્રસ્ટ ભંડોળ જમા (Capital In)</option>
+              <option value="other_expense">ખર્ચ વિગત (Expenses Out)</option>
+            </select>
+          </div>
+
+          <div id="tx-cards-list" class="space-y-2">
+            <!-- Dynamic tx cards -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 4: LOAN BOOK VIEW -->
+      <div id="view-loans" class="space-y-4 hidden">
+        
+        <!-- Actions Panel -->
+        <div class="card space-y-3">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div style="font-size: 18px;">💳</div>
+            <div>
+              <h4 class="card-title">લોન ખાતા અને ધિરાણ પત્રક</h4>
+              <p class="card-subtitle">લોન આપો અને સીધા જમા હપ્તા લોગ કરો</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button id="btn-open-repay-modal" class="btn btn-dark">← હપ્તો જમા કરો</button>
+            <button id="btn-open-disburse-modal" class="btn btn-gradient" style="background: #2563eb;">+ નવી લોન આપો</button>
+          </div>
+        </div>
+
+        <!-- Active loans -->
+        <div class="space-y-3">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px;">
+            <span style="font-weight: 900; font-size: 12px; color: #1f2937;" id="active-loans-lbl">ચાલુ ધિરાણ લોન પત્રક (0)</span>
+            <span style="font-size: 9px; color: #047857; background-color: #ecfdf5; padding: 2px 8px; border-radius: 9999px; font-weight: bold; border: 1px solid #d1fae5;">વ્યાજ મુક્ત પણ મંજૂર કરી શકાય</span>
+          </div>
+
+          <div id="active-loans-list" class="space-y-3">
+            <!-- Active loan cards dynamically generated -->
+          </div>
+        </div>
+
+        <!-- Settled loans -->
+        <div class="space-y-2 hidden" id="settled-loans-section">
+          <span style="font-weight: bold; font-size: 10px; color: #6b7280; padding: 0 4px;" id="settled-loans-lbl">ભૂતકાળનો સારો રેકોર્ડ (0)</span>
+          <div id="settled-loans-list" class="space-y-2">
+            <!-- Settled items here -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 5: BACKUP & SETTINGS VIEW -->
+      <div id="view-backup" class="space-y-4 hidden">
+        
+        <!-- File management card -->
+        <div class="card space-y-3">
+          <div>
+            <h4 class="card-title">બેકઅપ અને સુરક્ષા ટૂલ્સ</h4>
+            <p class="card-subtitle">ભવિષ્યની સુરક્ષા માટે તમારો બધો ડેટા ડાઉનલોડ કરી રાખો.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button id="btn-export-json" class="btn btn-dark">📥 ડાઉનલોડ બેકઅપ</button>
+            <label class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; width: 100%;">
+              📤 બેકઅપ અપલોડ
+              <input type="file" id="import-json-file" accept=".json" style="display: none;">
+            </label>
+          </div>
+
+          <div id="import-error-div" style="font-size: 10px; color: #dc2626; font-weight: bold;" class="hidden"></div>
+
+          <div style="border-top: 1px solid #e5e7eb; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 10px; color: #9ca3af;">એપ સાફ કરીને કોરી કરવી છે?</span>
+            <button id="btn-reset-db" style="padding: 4px 10px; background-color: #fef2f2; border: 1px solid #fee2e2; color: #b91c1c; font-size: 9px; font-weight: 900; border-radius: 6px; cursor: pointer;">તમામ ડેટા સાફ કરો</button>
+          </div>
+        </div>
+
+        <!-- Individual Statement Picker -->
+        <div class="card space-y-3">
+          <div>
+            <h4 class="card-title">સભ્યોનું વ્યક્તિગત સ્ટેટમેન્ટ</h4>
+            <p class="card-subtitle">કોઈપણ સભ્યના ખાતાનો આખો હિસાબ પ્રિન્ટ કરો.</p>
+          </div>
+          <select id="statement-member-select" class="form-select">
+            <option value="">-- સભ્યનું ખાતું પસંદ કરો --</option>
+          </select>
+        </div>
+
+        <!-- Report center preview -->
+        <div class="card space-y-3">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f3f4f6; padding-bottom: 8px;">
+            <div>
+              <h4 class="card-title">રીપોર્ટ અને પ્રિન્ટ સેન્ટર</h4>
+              <p class="card-subtitle">નીચે આપેલ પત્રકનો પ્રિન્ટ મેળવો</p>
+            </div>
+            <button id="btn-print-report" class="btn btn-gradient" style="width: auto; padding: 6px 12px; font-size: 10px;">🖨️ પ્રિન્ટ રિપોર્ટ</button>
+          </div>
+
+          <div id="printable-trust-report" style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; max-height: 250px; overflow-y: auto;">
+            <!-- Render print preview dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation Dock -->
+    <nav>
+      <button class="nav-btn active" id="nav-btn-dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>ડેશબોર્ડ</span>
+      </button>
+      <button class="nav-btn" id="nav-btn-members">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>સભ્યો / શેર</span>
+      </button>
+      <button class="nav-btn" id="nav-btn-ledger">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>માસિક બુક</span>
+      </button>
+      <button class="nav-btn" id="nav-btn-loans">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <span>લોન બુક</span>
+      </button>
+      <button class="nav-btn" id="nav-btn-backup">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>રીપોર્ટ/સેટિંગ</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- MODAL 1: REGISTER MEMBER WITH SHARES -->
+  <div class="modal-backdrop hidden" id="modal-add-member">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>નવા સભ્યની નોંધણી (New Member)</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-member')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-add-member" class="space-y-3">
+          <div class="form-group">
+            <label class="form-label">સભ્યનું નામ * (Full Name)</label>
+            <input type="text" id="add-m-name" class="form-input" required placeholder="દા.ત. રમેશભાઈ મણિલાલ પટેલ">
+          </div>
+          <div class="form-group">
+            <label class="form-label">મોબાઈલ નંબર (Phone Number)</label>
+            <input type="tel" id="add-m-phone" class="form-input" placeholder="૯૭xxxxxxxx">
+          </div>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label class="form-label" style="margin-bottom: 0;">વારસદારનું નામ (Nominee Name)</label>
+              <button type="button" onclick="document.getElementById('add-m-nominee').value = 'નથી'" style="background: #f2ebe9; border: 1px solid #ece6e1; color: #8c584a; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; cursor: pointer;">વારસદાર નથી</button>
+            </div>
+            <input type="text" id="add-m-nominee" class="form-input" placeholder="દા.ત. સુનીતાબેન રમેશભાઈ પટેલ">
+          </div>
+          
+          <div style="border-top: 1px solid #f3f4f6; padding-top: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span class="form-label" style="margin: 0;">શેર ખરીદી (₹૫૦ માસિક બચત)</span>
+              <button type="button" id="btn-add-share-field" style="background: none; border: none; color: #dc2626; font-size: 10px; font-weight: bold; cursor: pointer;">+ બીજો શેર ઉમેરો</button>
+            </div>
+            <div id="add-member-shares-list" class="space-y-2" style="max-height: 100px; overflow-y: auto;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 9px; font-weight: bold; color: #9ca3af; background-color: #f3f4f6; padding: 4px 6px; border-radius: 4px;">શેર ૧</span>
+                <input type="text" class="form-input share-cert-name" placeholder="શેર હોલ્ડર નામ (ખાલી રાખતા સભ્યનું નામ ગણાશે)">
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px; margin-top: 12px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-add-member')">રદ કરો</button>
+            <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px;">નોંધણી કરો</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: BUY SHARE FOR EXISTING -->
+  <div class="modal-backdrop hidden" id="modal-add-share">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>નવો શેર ખરીદો (Buy Share)</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-share')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-add-share" class="space-y-3">
+          <div class="form-group">
+            <label class="form-label">કયા સભ્ય માટે નવો શેર ખરીદવો છે? *</label>
+            <select id="add-s-member" class="form-select" required>
+              <!-- Options loaded dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">શેર હોલ્ડરનું નામ (Name on Share Certificate)</label>
+            <input type="text" id="add-s-certname" class="form-input" placeholder="દા.ત. કુટુંબના સભ્યનું નામ (ખાલી મૂકતા સભ્યનું નામ ગણાશે)">
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-add-share')">રદ કરો</button>
+            <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px;">શેર જમા કરો</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: DISBURSE LOAN -->
+  <div class="modal-backdrop hidden" id="modal-disburse">
+    <div class="modal">
+      <div class="modal-header modal-header-blue">
+        <h3>નવી લોન મંજૂર કરો (Give Loan)</h3>
+        <button class="modal-close" onclick="closeModal('modal-disburse')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-disburse" class="space-y-3">
+          <div class="form-group">
+            <label class="form-label">લોન લેનાર સભ્ય પસંદ કરો *</label>
+            <select id="disburse-member" class="form-select" required>
+              <option value="">-- સભ્ય શોધો --</option>
+            </select>
+          </div>
+          
+          <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 10px; border-radius: 8px; font-size: 10px; display: none;" class="space-y-1" id="disburse-info-box">
+            <div style="display: flex; justify-content: space-between;">
+              <span>સભ્યના સક્રિય શેર:</span>
+              <strong id="disburse-shares-cnt">0 શેર</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>શેર મૂડી ગેરંટી કિંમત (@₹20,000):</span>
+              <strong style="color: #7c3aed;" id="disburse-shares-value">₹0</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>ભલામણ કરેલ સુરક્ષિત લિમિટ:</span>
+              <strong style="color: #2563eb;" id="disburse-limit-val">₹0</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>ચાલુ લોન સ્ટેટસ:</span>
+              <strong id="disburse-status-val">✅ નવો કોરો ખાતો</strong>
+            </div>
+            <div style="font-size: 8px; color: #d97706; padding-top: 4px; font-weight: bold; line-height: 1.2;">
+              ⚠️ સૂચના: એડમિન ભલામણ કરેલી લિમિટ કરતાં વધારે લોન આપી શકે છે (નિયમ હળવો કર્યો છે).
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">લોન રકમ (₹) * [Disburse Amount]</label>
+            <input type="number" id="disburse-amount" class="form-input" required min="1">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">લોન વ્યાજ દર (Interest policy) *</label>
+            <select id="disburse-rate" class="form-select">
+              <option value="0">0% વ્યાજ વગર (Interest-Free)</option>
+              <option value="0.5">0.5% સાદું વ્યાજ</option>
+              <option value="1" selected>1.0% માસિક વ્યાજ (Standard)</option>
+              <option value="1.5">1.5% માસિક વ્યાજ</option>
+              <option value="2">2.0% માસિક વ્યાજ</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">ચુકવણી તારીખ *</label>
+            <input type="date" id="disburse-date" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">લોન આપવાનો હેતુ (Purpose)</label>
+            <input type="text" id="disburse-purpose" class="form-input" required placeholder="દા.ત. ઘર ખર્ચ, તબીબી સેવા">
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: 10px; color: #047857; background-color: #ecfdf5; padding: 8px; border-radius: 8px; border: 1px solid #d1fae5;">
+            <span>સોસાયટી ભંડોળ રોકડ:</span>
+            <strong id="disburse-trust-cash">₹1,50,000</strong>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px; margin-top: 12px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-disburse')">રદ કરો</button>
+            <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px; background: #2563eb;">ચુકવણી મંજૂર કરો</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: QUICK DIRECT REPAYMENT -->
+  <div class="modal-backdrop hidden" id="modal-repay">
+    <div class="modal">
+      <div class="modal-header modal-header-dark">
+        <h3>લોન હપ્તો રૂબરૂ જમા લો (Repay Loan)</h3>
+        <button class="modal-close" onclick="closeModal('modal-repay')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-repay" class="space-y-3">
+          <div class="form-group">
+            <label class="form-label">સક્રિય લોન ખાતું પસંદ કરો *</label>
+            <select id="repay-loan-select" class="form-select" required>
+              <option value="">-- લોન ખાતું પસંદ કરો --</option>
+            </select>
+          </div>
+
+          <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 8px; border-radius: 8px; font-size: 10px; display: none; justify-content: space-between; align-items: center;" id="repay-info-box">
+            <span style="color: #6b7280;">કુલ બાકી લોન રકમ:</span>
+            <strong style="color: #dc2626; font-size: 12px;" id="repay-outstanding-val">₹0</strong>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">મુદ્દલ પરત રકમ (₹) [Principal]</label>
+            <input type="number" id="repay-principal" class="form-input" min="0" placeholder="જો માત્ર વ્યાજ ભરતા હોવ તો ૦ લખો">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">વ્યાજ જમા રકમ (₹) [Interest]</label>
+            <input type="number" id="repay-interest" class="form-input" min="0" placeholder="જો વ્યાજ મુક્ત હોય તો ૦ લખો">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">જમા મળેલ તારીખ *</label>
+            <input type="date" id="repay-date" class="form-input" required>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px; margin-top: 12px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-repay')">રદ કરો</button>
+            <button type="submit" class="btn btn-dark" style="width: auto; padding: 8px 24px;">જમા કરો</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- GLOBAL DATA STATE ---
+    let members = [];
+    let shares = [];
+    let loans = [];
+    let monthlyEntries = [];
+    let transactions = [];
+    let expandedMemberIds = {};
+    let shareInputs = [''];
+
+    window.toggleMemberExpand = function(memberId) {
+      expandedMemberIds[memberId] = !expandedMemberIds[memberId];
+      renderMembers();
+    };
+
+    window.renderShareFields = function() {
+      const container = document.getElementById('add-member-shares-list');
+      if (!container) return;
+      container.innerHTML = shareInputs.map((val, idx) => `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 9px; font-weight: bold; color: #8c847e; background-color: #f2ebe9; padding: 4px 6px; border-radius: 4px;">શેર ${idx + 1}</span>
+          <input type="text" class="form-input share-cert-name" value="${val}" oninput="shareInputs[${idx}] = this.value" placeholder="શેર હોલ્ડર નામ (ખાલી રાખતા સભ્યનું નામ ગણાશે)" style="margin-bottom: 0;">
+          ${idx > 0 ? `<button type="button" onclick="removeShareField(${idx})" style="background: none; border: none; color: #8c584a; font-size: 12px; font-weight: bold; cursor: pointer; padding: 0 4px;">✕</button>` : ''}
+        </div>
+      `).join('');
+    };
+
+    window.removeShareField = function(idx) {
+      shareInputs.splice(idx, 1);
+      renderShareFields();
+    };
+
+    // Add dynamic share fields initializer after DOM loads
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnAddShare = document.getElementById('btn-add-share-field');
+      if (btnAddShare) {
+        btnAddShare.addEventListener('click', () => {
+          shareInputs.push('');
+          renderShareFields();
+        });
+      }
+    });
+
+    // Keys
+    const DB_KEYS = {
+      members: 'bcs_members_v3',
+      shares: 'bcs_shares_v3',
+      loans: 'bcs_loans_v3',
+      entries: 'bcs_entries_v3',
+      transactions: 'bcs_transactions_v3'
+    };
+
+    // Load initial empty database or retrieve saved data
+    function initDatabase() {
+      const savedMembers = localStorage.getItem(DB_KEYS.members);
+      const savedShares = localStorage.getItem(DB_KEYS.shares);
+      const savedLoans = localStorage.getItem(DB_KEYS.loans);
+      const savedEntries = localStorage.getItem(DB_KEYS.entries);
+      const savedTransactions = localStorage.getItem(DB_KEYS.transactions);
+
+      if (savedMembers && savedShares && savedLoans && savedEntries && savedTransactions) {
+        members = JSON.parse(savedMembers);
+        shares = JSON.parse(savedShares);
+        loans = JSON.parse(savedLoans);
+        monthlyEntries = JSON.parse(savedEntries);
+        transactions = JSON.parse(savedTransactions);
+      } else {
+        // Absolute blank slate, but with 150000 starting Trust deposit
+        members = [];
+        shares = [];
+        loans = [];
+        monthlyEntries = [];
+        transactions = [{
+          id: 't-1',
+          date: new Date().toISOString().split('T')[0],
+          type: 'other_income',
+          amount: 150000,
+          memberName: 'બલાઢા ટ્રસ્ટ (Trust Fund)',
+          homeAddress: 'મુખ્ય ઓફિસ',
+          description: 'શરૂઆતની સેવિંગ્સ મૂડી (Starting Capital Deposit)'
+        }];
+        saveToLocalStorage();
+      }
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem(DB_KEYS.members, JSON.stringify(members));
+      localStorage.setItem(DB_KEYS.shares, JSON.stringify(shares));
+      localStorage.setItem(DB_KEYS.loans, JSON.stringify(loans));
+      localStorage.setItem(DB_KEYS.entries, JSON.stringify(monthlyEntries));
+      localStorage.setItem(DB_KEYS.transactions, JSON.stringify(transactions));
+    }
+
+    // --- RE-CALCULATORS ---
+    function calculateTrustBalance() {
+      let balance = 0;
+      transactions.forEach(t => {
+        if (t.type === 'savings' || t.type === 'loan_repayment' || t.type === 'interest_payment' || t.type === 'other_income') {
+          balance += t.amount;
+        } else if (t.type === 'loan_disbursal' || t.type === 'other_expense') {
+          balance -= t.amount;
+        }
+      });
+      return balance;
+    }
+
+    // Get Member specific analytics
+    function getMemberSavings(memberId) {
+      return monthlyEntries
+        .filter(entry => entry.memberId === memberId)
+        .reduce((sum, entry) => sum + entry.savingsPaid, 0);
+    }
+
+    function getMemberLoanBalance(memberId) {
+      return loans
+        .filter(loan => loan.memberId === memberId && loan.status === 'active')
+        .reduce((sum, loan) => sum + loan.currentBalance, 0);
+    }
+
+    function getMemberTransactions(memberName) {
+      return transactions.filter(t => t.memberName === memberName);
+    }
+
+    // --- VIEWPORT RENDERING & NAVIGATION ---
+    const TABS = ['dashboard', 'members', 'ledger', 'loans', 'backup'];
+    let activeTab = 'dashboard';
+
+    function setTab(tabName) {
+      activeTab = tabName;
+      TABS.forEach(t => {
+        const viewEl = document.getElementById(`view-${t}`);
+        const btnEl = document.getElementById(`nav-btn-${t}`);
+        if (t === tabName) {
+          viewEl.classList.remove('hidden');
+          btnEl.classList.add('active');
+        } else {
+          viewEl.classList.add('hidden');
+          btnEl.classList.remove('active');
+        }
+      });
+      renderAllViews();
+    }
+
+    // Add click listeners to bottom nav buttons
+    TABS.forEach(t => {
+      document.getElementById(`nav-btn-${t}`).addEventListener('click', () => setTab(t));
+    });
+
+    // Members subtab state and event listeners
+    let membersSubTab = 'list';
+    document.getElementById('subtab-members-list-btn').addEventListener('click', () => {
+      membersSubTab = 'list';
+      document.getElementById('subtab-members-list-btn').classList.add('active');
+      document.getElementById('subtab-yearly-savings-btn').classList.remove('active');
+      document.getElementById('members-list-container').classList.remove('hidden');
+      document.getElementById('yearly-savings-container').classList.add('hidden');
+      renderMembers();
+    });
+
+    document.getElementById('subtab-yearly-savings-btn').addEventListener('click', () => {
+      membersSubTab = 'yearly';
+      document.getElementById('subtab-members-list-btn').classList.remove('active');
+      document.getElementById('subtab-yearly-savings-btn').classList.add('active');
+      document.getElementById('members-list-container').classList.add('hidden');
+      document.getElementById('yearly-savings-container').classList.remove('hidden');
+      renderMembers();
+    });
+
+    // Yearly savings search & year filter listeners
+    document.getElementById('yearly-savings-search').addEventListener('input', renderMembers);
+    document.getElementById('yearly-savings-year-select').addEventListener('change', renderMembers);
+
+    // Modal helpers
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      if (id === 'modal-disburse') {
+        renderDisburseModalOptions();
+      } else if (id === 'modal-repay') {
+        renderRepayModalOptions();
+      } else if (id === 'modal-add-share') {
+        renderAddShareModalOptions();
+      }
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // --- RENDER FUNCTIONS ---
+    function renderAllViews() {
+      const trustCash = calculateTrustBalance();
+      
+      // Update header cash badges
+      document.getElementById('top-cash-balance').textContent = `₹${trustCash.toLocaleString('en-IN')}`;
+      document.getElementById('disburse-trust-cash').textContent = `₹${trustCash.toLocaleString('en-IN')}`;
+
+      // Call view-specific renderers
+      if (activeTab === 'dashboard') renderDashboard(trustCash);
+      else if (activeTab === 'members') renderMembers();
+      else if (activeTab === 'ledger') renderLedger();
+      else if (activeTab === 'loans') renderLoans(trustCash);
+      else if (activeTab === 'backup') renderBackup();
+    }
+
+    // Dashboard Screen
+    function renderDashboard(trustCash) {
+      const totalOutstanding = loans.reduce((sum, l) => sum + (l.status === 'active' ? l.currentBalance : 0), 0);
+      const totalSavings = monthlyEntries.reduce((sum, e) => sum + e.savingsPaid, 0);
+      const activeShares = shares.filter(s => s.status === 'active').length;
+      const activeMembers = members.filter(m => m.status === 'active').length;
+
+      // Toggle onboarding banner
+      const onboardingAlert = document.getElementById('onboarding-alert');
+      if (activeMembers === 0) {
+        onboardingAlert.classList.remove('hidden');
+      } else {
+        onboardingAlert.classList.add('hidden');
+      }
+
+      // Update metrics
+      document.getElementById('stat-cash').textContent = `₹${trustCash.toLocaleString('en-IN')}`;
+      document.getElementById('stat-loans').textContent = `₹${totalOutstanding.toLocaleString('en-IN')}`;
+      document.getElementById('stat-savings').textContent = `₹${totalSavings.toLocaleString('en-IN')}`;
+      document.getElementById('stat-shares').textContent = `${activeShares} શેર`;
+      document.getElementById('stat-members-lbl').textContent = `કુલ સભ્યો: ${activeMembers}`;
+
+      // Re-run inline slider calculator logic
+      updateSliderCalculator();
+    }
+
+    // Inline Calculator Slider
+    const calcRange = document.getElementById('calc-range');
+    calcRange.addEventListener('input', updateSliderCalculator);
+
+    function updateSliderCalculator() {
+      const shVal = parseInt(calcRange.value) || 1;
+      document.getElementById('calc-shares-count').textContent = `${shVal} શેર (Shares)`;
+      document.getElementById('calc-monthly').textContent = `₹${shVal * 50} / મહિને`;
+      document.getElementById('calc-yearly').textContent = `₹${shVal * 600} / વર્ષે`;
+      document.getElementById('calc-loan-limit').textContent = `₹${(shVal * 25000).toLocaleString('en-IN')}`;
+      document.getElementById('calc-asset-value').textContent = `₹${(shVal * 20000).toLocaleString('en-IN')}`;
+    }
+
+    // Members Screen
+    function renderMembers() {
+      if (membersSubTab === 'yearly') {
+        renderYearlySavingsCollector();
+        return;
+      }
+
+      const query = document.getElementById('member-search').value.toLowerCase();
+
+      // Filter members list
+      const activeMembers = members.filter(m => m.status === 'active');
+      const filtered = activeMembers.filter(m => {
+        const matchesQuery = m.name.toLowerCase().includes(query) || 
+                             (m.phone && m.phone.includes(query)) ||
+                             (m.nomineeName && m.nomineeName.toLowerCase().includes(query));
+        return matchesQuery;
+      });
+
+      const listWrapper = document.getElementById('members-list-wrapper');
+
+      if (filtered.length === 0) {
+        listWrapper.innerHTML = `
+          <div style="background-color: #ffffff; border: 1px solid #ece6e1; border-radius: 20px; padding: 24px; text-align: center; color: #8c847e;">
+            <div style="font-size: 24px; margin-bottom: 6px;">👥</div>
+            <p style="font-size: 12px; font-weight: bold; color: #2d2522;">કોઈ સભ્યો મળ્યા નથી (No Members)</p>
+            <p style="font-size: 10px; margin-top: 2px;">ઉપર ક્લિક કરીને નવો સભ્ય રજીસ્ટર કરો.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listWrapper.innerHTML = filtered.map(m => {
+        const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+        const mSavings = getMemberSavings(m.id);
+        const mLoan = getMemberLoanBalance(m.id);
+        
+        // Asset calculations (₹20,000 per share value)
+        const shareValue = mShares.length * 20000;
+        const remainingUnsecured = Math.max(0, mLoan - shareValue);
+
+        // Share guarantee ratio vs full loan
+        const shareRatio = mLoan > 0 ? Math.min(100, Math.round((shareValue / mLoan) * 100)) : 0;
+        const unsecuredRatio = mLoan > 0 ? Math.min(100, Math.round((remainingUnsecured / mLoan) * 100)) : 0;
+
+        // Payment Logs
+        const myLogs = getMemberTransactions(m.name);
+
+        const isExpanded = !!expandedMemberIds[m.id];
+
+        return `
+          <div class="member-box" style="padding: 14px 16px; border: 1px solid #ece6e1; border-radius: 20px; background-color: #ffffff; cursor: pointer; transition: all 0.2s;" onclick="toggleMemberExpand('${m.id}')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="font-size: 14px; font-weight: 800; color: #2d2522; display: flex; align-items: center; gap: 6px;">
+                  <span style="color: #eba338; font-size: 14px;">👤</span> ${m.name}
+                </h4>
+                <div style="font-size: 11px; color: #8c847e; margin-top: 4px; display: flex; gap: 8px; align-items: center;">
+                  <span>📞 ${m.phone || 'નથી'}</span>
+                  <span style="width: 3px; height: 3px; background-color: #8c847e; border-radius: 50%;"></span>
+                  <span><b>${mShares.length} શેર</b></span>
+                  ${mLoan > 0 ? `
+                    <span style="width: 3px; height: 3px; background-color: #8c847e; border-radius: 50%;"></span>
+                    <span style="color: #8c584a; font-weight: bold;">બાકી લોન: ₹${mLoan.toLocaleString()}</span>
+                  ` : ''}
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="certificate-pill">
+                  ${mShares.length} Certificate
+                </span>
+                <span style="transform: rotate(${isExpanded ? '180deg' : '0deg'}); transition: transform 0.2s; color: #8c847e; display: flex; align-items: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- COLLAPSIBLE DETAILS PANEL (Only shown when expanded) -->
+            ${isExpanded ? `
+              <div style="margin-top: 14px; border-top: 1px solid #f0eae5; padding-top: 12px;" onclick="event.stopPropagation()">
+                
+                <!-- Nominee & Status Bar -->
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8c847e; margin-bottom: 12px; background-color: #fcfbf9; padding: 8px 12px; border-radius: 10px; border: 1px solid #ece6e1;">
+                  <span>💝 વારસદાર: <b>${m.nomineeName || 'નથી'}</b></span>
+                  <span>સ્ટેટસ: <span style="color: #82954b; font-weight: bold;">✓ સક્રિય સભ્ય</span></span>
+                </div>
+
+                <!-- Share certificates -->
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 10px; font-weight: 800; color: #8c847e; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                    શેર પ્રમાણપત્ર વિગત (Share Certificates)
+                  </div>
+                  <div class="space-y-1">
+                    ${mShares.map(sh => `
+                      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; background-color: #ffffff; padding: 6px 10px; border-radius: 10px; border: 1px solid #ece6e1;">
+                        <span style="font-weight: 800; color: #8c584a;">${sh.shareNumber}</span>
+                        <span style="color: #2d2522;">${sh.nameOnShare}</span>
+                        <span style="color: #82954b; font-weight: bold; background-color: rgba(130, 149, 75, 0.1); padding: 2px 6px; border-radius: 6px; font-size: 9px;">સક્રિય (₹20,000 મૂલ્ય)</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+
+                <!-- Double Progress Bar Visual Charts for Loans & Shares -->
+                ${mLoan > 0 ? (() => {
+                  const memberActiveLoans = loans.filter(l => l.memberId === m.id && l.status === 'active');
+                  const totalPrincipal = memberActiveLoans.reduce((sum, l) => sum + l.principalAmount, 0);
+                  const totalPaid = Math.max(0, totalPrincipal - mLoan);
+                  const paidPercent = totalPrincipal > 0 ? Math.round((totalPaid / totalPrincipal) * 100) : 0;
+                  const remainingMinusShare = Math.max(0, mLoan - shareValue);
+                  const unsecuredPercent = mLoan > 0 ? Math.max(0, Math.round((remainingMinusShare / mLoan) * 100)) : 0;
+
+                  return `
+                  <div style="margin-bottom: 12px; border-top: 1px dashed #f0eae5; padding-top: 10px;">
+                    <span style="font-size: 10px; font-weight: 800; color: #8c847e; display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                      📊 લોન જોખમ વિશ્લેષણ (Loan Risk Breakdown)
+                    </span>
+                    
+                    <div class="space-y-3" style="background-color: #fcfbf9; padding: 10px; border-radius: 12px; border: 1px solid #ece6e1;">
+                      <!-- Bar 1: Total Loan Paid vs Remaining -->
+                      <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #82954b; font-weight: bold; margin-bottom: 3px;">
+                          <span>૧. ચૂકવેલ લોન અને બાકી દેવું (Paid vs Remaining):</span>
+                          <span>ચૂકવેલ: ₹${totalPaid.toLocaleString()} (${paidPercent}%) | બાકી: ₹${mLoan.toLocaleString()}</span>
+                        </div>
+                        <div class="progress-container">
+                          <div class="progress-bar-secured" style="width: ${paidPercent}%"></div>
+                        </div>
+                      </div>
+
+                      <!-- Bar 2: Paid, Remaining & Unsecured Excess -->
+                      <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #eba338; font-weight: bold; margin-bottom: 3px;">
+                          <span>૨. ચૂકવેલ, બાકી અને શેર બાદ વધતી અસુરક્ષિત રકમ:</span>
+                          <span>ચૂકવેલ: ₹${totalPaid.toLocaleString()} | બાકી: ₹${mLoan.toLocaleString()} | શેર ગેરંટી: ₹${shareValue.toLocaleString()} | અસુરક્ષિત: ₹${remainingMinusShare.toLocaleString()}</span>
+                        </div>
+                        <div class="progress-container">
+                          <div class="progress-bar-unsecured" style="width: ${unsecuredPercent}%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  `;
+                })() : ''}
+
+                <!-- Metric boxes -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; font-size: 11px; margin-bottom: 12px;">
+                  <div style="background-color: #fffbf5; padding: 8px 6px; border-radius: 12px; border: 1px solid #fef3c7;">
+                    <span style="font-size: 8px; color: #8c847e; display: block; text-transform: uppercase; font-weight: bold; margin-bottom: 2px;">જમા સેવિંગ્સ</span>
+                    <strong style="color: #eba338; font-size: 12px;">₹${mSavings}</strong>
+                  </div>
+                  <div style="background-color: ${mLoan > 0 ? '#fdf5f3' : '#fcfbf9'}; padding: 8px 6px; border-radius: 12px; border: 1px solid ${mLoan > 0 ? '#fddbd3' : '#ece6e1'};">
+                    <span style="font-size: 8px; color: #8c847e; display: block; text-transform: uppercase; font-weight: bold; margin-bottom: 2px;">ચાલુ લોન દેવું</span>
+                    <strong style="color: ${mLoan > 0 ? '#8d4f40' : '#8c847e'}; font-size: 12px;">₹${mLoan}</strong>
+                  </div>
+                  <div style="background-color: #f7f9f6; padding: 8px 6px; border-radius: 12px; border: 1px solid #d1fae5;">
+                    <span style="font-size: 8px; color: #8c847e; display: block; text-transform: uppercase; font-weight: bold; margin-bottom: 2px;">શેર ગેરંટી</span>
+                    <strong style="color: #82954b; font-size: 12px;">₹${shareValue}</strong>
+                  </div>
+                </div>
+
+                <!-- Member Transaction Logs / Payment Log -->
+                <div>
+                  <span style="font-size: 10px; font-weight: 800; color: #8c847e; display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    📜 સભ્યનું પેમેન્ટ લોગ (Payment History)
+                  </span>
+                  <div class="payment-log-container">
+                    ${myLogs.length === 0 ? `
+                      <div style="color: #8c847e; text-align: center; padding: 8px; font-style: italic; font-size: 10px;">કોઈ હપ્તા કે બચત ટ્રાન્ઝેક્શન લોગ નથી.</div>
+                    ` : myLogs.map(t => `
+                      <div class="payment-log-row">
+                        <span style="color: #2d2522;">${t.description}</span>
+                        <strong style="color: ${t.type === 'loan_disbursal' || t.type === 'other_expense' ? '#8d4f40' : '#82954b'};">
+                          ${t.type === 'loan_disbursal' || t.type === 'other_expense' ? '-' : '+'}₹${t.amount.toLocaleString()}
+                        </strong>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderYearlySavingsCollector() {
+      const selectedYear = document.getElementById('yearly-savings-year-select').value;
+      const query = document.getElementById('yearly-savings-search').value.toLowerCase();
+
+      // Filter active members
+      const activeMembers = members.filter(m => m.status === 'active');
+      const filtered = activeMembers.filter(m => {
+        return m.name.toLowerCase().includes(query) || (m.phone && m.phone.includes(query));
+      });
+
+      const trackerWrapper = document.getElementById('yearly-savings-list-wrapper');
+
+      if (filtered.length === 0) {
+        trackerWrapper.innerHTML = `
+          <div style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; color: #9ca3af;">
+            <div style="font-size: 24px; margin-bottom: 6px;">📅</div>
+            <p style="font-size: 12px; font-weight: bold; color: #4b5563;">કોઈ સભ્યો મળ્યા નથી (No Members)</p>
+          </div>
+        `;
+        return;
+      }
+
+      trackerWrapper.innerHTML = filtered.map(m => {
+        const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+        
+        // Target: ₹600 per active share for this year
+        const targetSavings = mShares.length * 600;
+
+        // How much has been paid for this year?
+        const paidThisYear = monthlyEntries
+          .filter(e => e.memberId === m.id && e.monthCode.startsWith(selectedYear))
+          .reduce((sum, e) => sum + e.savingsPaid, 0);
+
+        const remainingSavings = Math.max(0, targetSavings - paidThisYear);
+
+        return `
+          <div class="member-box" style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="font-size: 12px; color: #111827;">${m.name}</strong>
+                <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">
+                  સક્રિય શેર: <b>${mShares.length} શેર</b> | લક્ષ્ય: ₹${targetSavings.toLocaleString()}
+                </div>
+              </div>
+              <span class="certificate-pill" style="background-color: ${remainingSavings === 0 ? '#ecfdf5' : '#fffbeb'}; border-color: ${remainingSavings === 0 ? '#d1fae5' : '#fef3c7'}; color: ${remainingSavings === 0 ? '#047857' : '#b45309'};">
+                ${remainingSavings === 0 ? '✅ વર્ષ પૂર્ણ' : `બાકી: ₹${remainingSavings.toLocaleString()}`}
+              </span>
+            </div>
+
+            <!-- Ledger Status details -->
+            <div style="display: flex; justify-content: space-between; font-size: 10px; background-color: #f9fafb; padding: 6px 10px; border-radius: 6px; border: 1px solid #f3f4f6;">
+              <span style="color: #4b5563;">ચાલુ વર્ષ બચત ભરેલ: <b>₹${paidThisYear.toLocaleString()}</b></span>
+              <span style="color: #dc2626;">બાકી લિમિટ: <b>₹${remainingSavings.toLocaleString()}</b></span>
+            </div>
+
+            <!-- Action buttons: Tick & Save full ₹600 and Custom savings -->
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+              <!-- Tick & Save Button -->
+              <button onclick="saveYearlySavings('${m.id}', ${remainingSavings})" class="btn btn-dark" style="flex: 2; padding: 6px 10px; font-size: 10px; border-radius: 6px; height: auto;" ${remainingSavings === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                ${remainingSavings > 0 ? `✓ ₹${remainingSavings.toLocaleString()} જમા કરો (Tick & Save)` : '✓ પૂર્ણ બચત ભરેલ છે'}
+              </button>
+
+              <!-- Custom Button/Input -->
+              <div style="display: flex; gap: 4px; flex: 1.5; align-items: center;">
+                <input type="number" id="custom-sav-${m.id}" class="form-input" placeholder="₹૫૦..." style="padding: 4px 6px; font-size: 10px; border-radius: 6px; text-align: right; height: 28px;">
+                <button onclick="saveCustomYearlySavings('${m.id}')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 10px; border-radius: 6px; height: 28px; background-color: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db;">
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.saveYearlySavings = function(memberId, amount) {
+      if (amount <= 0) return;
+      const selectedYear = document.getElementById('yearly-savings-year-select').value;
+      const m = members.find(mem => mem.id === memberId);
+      const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
+      if (!m || mShares.length === 0) return;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      monthlyEntries.push({
+        id: `me-${Date.now()}`,
+        monthCode: `${selectedYear}-12`,
+        memberId: memberId,
+        shareId: mShares[0].id,
+        savingsPaid: amount,
+        interestPaid: 0,
+        principalRepaid: 0,
+        datePaid: todayStr,
+        notes: `${selectedYear} ની વાર્ષિક બચત (Tick & Save)`
+      });
+
+      transactions.push({
+        id: `t-${Date.now()}`,
+        date: todayStr,
+        type: 'savings',
+        amount: amount,
+        memberName: m.name,
+        description: `${selectedYear} ની કુલ બાકી વાર્ષિક બચત કલેક્શન જમા`
+      });
+
+      saveToLocalStorage();
+      renderAllViews();
+      alert(`${m.name} માટે વાર્ષિક બચત ₹${amount.toLocaleString()} સફળતાપૂર્વક જમા કરવામાં આવી!`);
+    };
+
+    window.saveCustomYearlySavings = function(memberId) {
+      const selectedYear = document.getElementById('yearly-savings-year-select').value;
+      const valInput = document.getElementById('custom-sav-' + memberId);
+      const amount = parseFloat(valInput.value) || 0;
+      if (amount <= 0) {
+        alert('કૃપા કરીને સાચી બચત રકમ દાખલ કરો!');
+        return;
+      }
+
+      const m = members.find(mem => mem.id === memberId);
+      const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
+      if (!m || mShares.length === 0) return;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      monthlyEntries.push({
+        id: `me-${Date.now()}`,
+        monthCode: `${selectedYear}-12`,
+        memberId: memberId,
+        shareId: mShares[0].id,
+        savingsPaid: amount,
+        interestPaid: 0,
+        principalRepaid: 0,
+        datePaid: todayStr,
+        notes: `${selectedYear} ની બચત (કસ્ટમ હપ્તો)`
+      });
+
+      transactions.push({
+        id: `t-${Date.now()}`,
+        date: todayStr,
+        type: 'savings',
+        amount: amount,
+        memberName: m.name,
+        description: `${selectedYear} ની વાર્ષિક બચત પેટે કસ્ટમ જમા`
+      });
+
+      saveToLocalStorage();
+      valInput.value = '';
+      renderAllViews();
+      alert(`${m.name} માટે બચત ફાળો ₹${amount.toLocaleString()} સફળતાપૂર્વક જમા કરવામાં આવી!`);
+    };
+
+    // Monthly Ledger Tab Controls & Cards
+    let ledgerTab = 'monthly';
+    document.getElementById('subtab-ledger-btn').addEventListener('click', () => {
+      ledgerTab = 'monthly';
+      document.getElementById('subtab-ledger-btn').classList.add('active');
+      document.getElementById('subtab-daily-btn').classList.remove('active');
+      document.getElementById('ledger-form-wrapper').classList.remove('hidden');
+      document.getElementById('daily-tx-wrapper').classList.add('hidden');
+      renderLedger();
+    });
+
+    document.getElementById('subtab-daily-btn').addEventListener('click', () => {
+      ledgerTab = 'daily';
+      document.getElementById('subtab-ledger-btn').classList.remove('active');
+      document.getElementById('subtab-daily-btn').classList.add('active');
+      document.getElementById('ledger-form-wrapper').classList.add('hidden');
+      document.getElementById('daily-tx-wrapper').classList.remove('hidden');
+      renderDailyLogs();
+    });
+
+    // Populate ledger picker default
+    const ledgerMonthPicker = document.getElementById('ledger-month-picker');
+    if (!ledgerMonthPicker.value) {
+      const d = new Date();
+      ledgerMonthPicker.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
+    ledgerMonthPicker.addEventListener('change', renderLedger);
+
+    // Temp keypress input state dictionaries
+    let tempSavings = {};
+    let tempPrincipal = {};
+    let tempInterest = {};
+    let tempNotes = {};
+
+    function renderLedger() {
+      const selectedMonth = ledgerMonthPicker.value;
+
+      // Check month state status
+      const savedForMonth = monthlyEntries.some(e => e.monthCode === selectedMonth);
+      const statusLbl = document.getElementById('ledger-save-status');
+      if (savedForMonth) {
+        statusLbl.innerHTML = `✅ જમા થયેલ છે (${selectedMonth})`;
+        statusLbl.style.color = '#047857';
+      } else {
+        statusLbl.innerHTML = `⚠️ ડ્રાફ્ટ બાકી (${selectedMonth})`;
+        statusLbl.style.color = '#b45309';
+      }
+
+      const activeShares = shares.filter(s => s.status === 'active');
+      const rows = activeShares.map(sh => {
+        const m = members.find(mem => mem.id === sh.memberId);
+        const activeLoan = m ? loans.find(l => l.memberId === m.id && l.status === 'active') : null;
+        const autoInterest = activeLoan ? Math.round(activeLoan.currentBalance * 0.01) : 0;
+        const existingEntry = monthlyEntries.find(e => e.monthCode === selectedMonth && e.shareId === sh.id);
+
+        return { sh, m, activeLoan, autoInterest, existingEntry };
+      }).filter(row => !!row.m);
+
+      const cardsContainer = document.getElementById('ledger-cards-list');
+      if (rows.length === 0) {
+        cardsContainer.innerHTML = `
+          <div style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; color: #9ca3af;">
+            <div style="font-size: 24px; margin-bottom: 6px;">🪙</div>
+            <p style="font-size: 12px; font-weight: bold; color: #4b5563;">કોઈ સક્રિય શેર મળ્યા નથી (No Shares)</p>
+            <p style="font-size: 10px; margin-top: 2px;">શરૂ કરવા માટે સભ્યો અને શેર ઉમેરો.</p>
+          </div>
+        `;
+        return;
+      }
+
+      cardsContainer.innerHTML = rows.map(({ sh, m, activeLoan, autoInterest, existingEntry }) => {
+        const sav = tempSavings[sh.id] !== undefined ? tempSavings[sh.id] : (existingEntry ? existingEntry.savingsPaid : '50');
+        const pri = tempPrincipal[sh.id] !== undefined ? tempPrincipal[sh.id] : (existingEntry ? existingEntry.principalRepaid : '');
+        const inte = tempInterest[sh.id] !== undefined ? tempInterest[sh.id] : (existingEntry ? existingEntry.interestPaid : (activeLoan ? autoInterest : ''));
+        const rem = tempNotes[sh.id] !== undefined ? tempNotes[sh.id] : (existingEntry ? existingEntry.notes : '');
+
+        return `
+          <div class="card space-y-3" style="position: relative;" id="ledger-card-${sh.id}">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div>
+                <h5 style="font-weight: 800; font-size: 11px; color: #111827;">${sh.nameOnShare}</h5>
+                <p style="font-size: 9px; color: #6b7280; margin-top: 2px;">
+                  શેર નં: <b style="color: #b45309;">${sh.shareNumber}</b> | સભ્ય: ${m.name}
+                </p>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 8px;">
+              <div>
+                <label class="form-label" style="font-size: 8px;">બચત ફાળો (₹)</label>
+                <input type="number" class="form-input" required value="${sav}" oninput="updateLedgerVal('${sh.id}', 'savings', this.value)" style="font-weight: 900; color: #b45309; text-align: right;">
+              </div>
+              
+              <div>
+                <label class="form-label" style="font-size: 8px;">લોન મુદ્દલ પરત (₹) ${activeLoan ? `[બાકી: ₹${activeLoan.currentBalance}]` : ''}</label>
+                ${activeLoan ? `
+                  <input type="number" class="form-input" min="0" max="${activeLoan.currentBalance}" placeholder="મહત્તમ: ${activeLoan.currentBalance}" value="${pri}" oninput="updateLedgerVal('${sh.id}', 'principal', this.value)" style="font-weight: bold; color: #2563eb; text-align: right;">
+                ` : `
+                  <div style="font-size: 9px; color: #9ca3af; font-style: italic; background-color: #f9fafb; text-align: center; padding: 6px; border: 1px solid #f3f4f6; border-radius: 6px;">ચાલુ લોન નથી</div>
+                `}
+              </div>
+            </div>
+
+            ${activeLoan ? `
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 4px;">
+                <div>
+                  <label class="form-label" style="font-size: 8px;">વ્યાજ ચુકવણી (₹) ${activeLoan.interestRate === 0 ? '(0% વ્યાજ)' : ''}</label>
+                  <input type="number" class="form-input" min="0" placeholder="${autoInterest}" value="${inte}" oninput="updateLedgerVal('${sh.id}', 'interest', this.value)" style="font-weight: bold; color: #7c3aed; text-align: right;">
+                  ${activeLoan.interestRate > 0 ? `<span style="font-size: 7px; color: #9ca3af; display: block; margin-top: 2px;">માસિક ${activeLoan.interestRate}% વ્યાજ</span>` : ''}
+                </div>
+                <div>
+                  <label class="form-label" style="font-size: 8px;">નોંધ (Remarks / Reason)</label>
+                  <input type="text" class="form-input" placeholder="રીમાર્કસ..." value="${rem}" oninput="updateLedgerVal('${sh.id}', 'notes', this.value)">
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateLedgerVal(shareId, type, val) {
+      if (type === 'savings') tempSavings[shareId] = val;
+      else if (type === 'principal') tempPrincipal[shareId] = val;
+      else if (type === 'interest') tempInterest[shareId] = val;
+      else if (type === 'notes') tempNotes[shareId] = val;
+    }
+
+    // Ledger form submission overrides
+    document.getElementById('ledger-entry-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const selectedMonth = ledgerMonthPicker.value;
+
+      const isSaved = monthlyEntries.some(e => e.monthCode === selectedMonth);
+      if (isSaved) {
+        if (!confirm('આ મહિનાની એન્ટ્રીઓ પહેલેથી જમા થયેલ છે. ફરી સેવ કરવાથી જુનો ડેટા બદલાઈ જશે. શું તમે આગળ વધવા માંગો છો?')) {
+          return;
+        }
+      }
+
+      // Read active shares rows
+      const activeShares = shares.filter(s => s.status === 'active');
+      const rows = activeShares.map(sh => {
+        const m = members.find(mem => mem.id === sh.memberId);
+        const activeLoan = m ? loans.find(l => l.memberId === m.id && l.status === 'active') : null;
+        const autoInterest = activeLoan ? Math.round(activeLoan.currentBalance * 0.01) : 0;
+        const existingEntry = monthlyEntries.find(e => e.monthCode === selectedMonth && e.shareId === sh.id);
+
+        return { sh, m, activeLoan, autoInterest, existingEntry };
+      }).filter(row => !!row.m);
+
+      // Clear existing entries for this month matching filtered rows
+      const matchedShareIds = rows.map(r => r.sh.id);
+      monthlyEntries = monthlyEntries.filter(entry => {
+        const isSelectedMonth = entry.monthCode === selectedMonth;
+        const isMatchedShare = matchedShareIds.includes(entry.shareId);
+        return !(isSelectedMonth && isMatchedShare);
+      });
+
+      // Generate new entries
+      const todayStr = new Date().toISOString().split('T')[0];
+      const newEntries = [];
+
+      rows.forEach((row, idx) => {
+        const shareId = row.sh.id;
+        const memberId = row.sh.memberId;
+
+        const savings = parseFloat(tempSavings[shareId] !== undefined ? tempSavings[shareId] : (row.existingEntry ? row.existingEntry.savingsPaid : 50)) || 0;
+        const principal = parseFloat(tempPrincipal[shareId] !== undefined ? tempPrincipal[shareId] : (row.existingEntry ? row.existingEntry.principalRepaid : 0)) || 0;
+        const interest = parseFloat(tempInterest[shareId] !== undefined ? tempInterest[shareId] : (row.existingEntry ? row.existingEntry.interestPaid : (row.activeLoan ? row.autoInterest : 0))) || 0;
+        const notes = tempNotes[shareId] !== undefined ? tempNotes[shareId] : (row.existingEntry ? row.existingEntry.notes : '');
+
+        newEntries.push({
+          id: `me-${Date.now()}-${idx}`,
+          monthCode: selectedMonth,
+          memberId,
+          shareId,
+          savingsPaid: savings,
+          interestPaid: interest,
+          principalRepaid: Math.min(principal, row.activeLoan ? row.activeLoan.currentBalance : 0),
+          datePaid: todayStr,
+          notes
+        });
+
+        // Update active loan balances
+        if (row.activeLoan && principal > 0) {
+          const matchingLoan = loans.find(l => l.id === row.activeLoan.id);
+          if (matchingLoan) {
+            matchingLoan.currentBalance = Math.max(0, matchingLoan.currentBalance - principal);
+            if (matchingLoan.currentBalance === 0) {
+              matchingLoan.status = 'repaid';
+            }
+          }
+        }
+
+        // Record transactions for principal, interest, savings
+        const memberName = row.m.name;
+
+        if (savings > 0) {
+          transactions.push({
+            id: `t-${Date.now()}-sav-${idx}`,
+            date: todayStr,
+            type: 'savings',
+            amount: savings,
+            memberName,
+            description: `${selectedMonth} મહિનાની માસિક બચત ફાળો જમા`
+          });
+        }
+
+        if (principal > 0) {
+          transactions.push({
+            id: `t-${Date.now()}-rep-${idx}`,
+            date: todayStr,
+            type: 'loan_repayment',
+            amount: principal,
+            memberName,
+            description: `લોન મુદ્દલ પરત મળી - માસિક હપ્તો નોંધણી (${selectedMonth})`
+          });
+        }
+
+        if (interest > 0) {
+          transactions.push({
+            id: `t-${Date.now()}-int-${idx}`,
+            date: todayStr,
+            type: 'interest_payment',
+            amount: interest,
+            memberName,
+            description: `લોન વ્યાજ જમા મળ્યું - માસિક હપ્તો નોંધણી (${selectedMonth})`
+          });
+        }
+      });
+
+      monthlyEntries = [...monthlyEntries, ...newEntries];
+      
+      // Clear inputs cache
+      tempSavings = {};
+      tempPrincipal = {};
+      tempInterest = {};
+      tempNotes = {};
+
+      saveToLocalStorage();
+      alert(`એન્ટ્રીઓ સફળતાપૂર્વક સેવ થઈ ગઈ! (${selectedMonth})`);
+      renderAllViews();
+    });
+
+    // Daily Transaction Logs List
+    const txSearchBox = document.getElementById('tx-search-box');
+    const txTypeSelect = document.getElementById('tx-type-select');
+
+    txSearchBox.addEventListener('input', renderDailyLogs);
+    txTypeSelect.addEventListener('change', renderDailyLogs);
+
+    function renderDailyLogs() {
+      const q = txSearchBox.value.toLowerCase();
+      const typeF = txTypeSelect.value;
+
+      const filteredTx = transactions.filter(t => {
+        const matchesQuery = t.memberName.toLowerCase().includes(q) || 
+                             t.description.toLowerCase().includes(q);
+        const matchesType = typeF === 'all' || t.type === typeF;
+        return matchesQuery && matchesType;
+      }).sort((a,b) => b.date.localeCompare(a.date));
+
+      const container = document.getElementById('tx-cards-list');
+      if (filteredTx.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: #9ca3af; font-style: italic; padding: 24px; font-size: 11px;">કોઈ ટ્રાન્ઝેક્શન નોંધ મળેલ નથી.</div>`;
+        return;
+      }
+
+      container.innerHTML = filteredTx.map(t => {
+        const isExp = t.type === 'loan_disbursal' || t.type === 'other_expense';
+        const sign = isExp ? '-' : '+';
+        const color = isExp ? '#dc2626' : '#059669';
+
+        const typesGuj = {
+          savings: 'બચત જમા',
+          loan_disbursal: 'લોન ચુકવણી',
+          loan_repayment: 'લોન પરત',
+          interest_payment: 'વ્યાજ જમા',
+          other_income: 'ટ્રસ્ટ ભંડોળ',
+          other_expense: 'મંડળી ખર્ચ',
+        };
+
+        return `
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-weight: bold; font-size: 11px; color: #111827;">${t.memberName}</span>
+                <span style="font-size: 8px; color: #6b7280; background-color: #f3f4f6; padding: 1px 4px; border-radius: 4px; font-weight: bold;">
+                  ${typesGuj[t.type] || t.type}
+                </span>
+              </div>
+              <p style="font-size: 10px; color: #4b5563; margin-top: 4px;">${t.description}</p>
+              <p style="font-size: 8px; color: #9ca3af; margin-top: 2px;">
+                તારીખ: ${new Date(t.date).toLocaleDateString('gu-IN')}
+              </p>
+            </div>
+            <strong style="color: ${color}; font-size: 13px;">${sign}₹${t.amount.toLocaleString()}</strong>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Loans Book Screen
+    function renderLoans(trustCash) {
+      const activeL = loans.filter(l => l.status === 'active');
+      const settledL = loans.filter(l => l.status === 'repaid');
+
+      document.getElementById('active-loans-lbl').textContent = `ચાલુ ધિરાણ લોન પત્રક (${activeL.length})`;
+      
+      const activeList = document.getElementById('active-loans-list');
+      if (activeL.length === 0) {
+        activeList.innerHTML = `<div style="text-align: center; color: #9ca3af; font-style: italic; padding: 24px; font-size: 11px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;">કોઈ સભ્યની લોન ચાલુ નથી. નવી લોન આપવા માટે ઉપર ક્લિક કરો!</div>`;
+      } else {
+        activeList.innerHTML = activeL.map(l => {
+          const m = members.find(mem => mem.id === l.memberId);
+          const mShares = shares.filter(s => s.memberId === l.memberId && s.status === 'active');
+          
+          // Asset calculations (₹20,000 per share)
+          const shareValue = mShares.length * 20000;
+          const remainingUnsecured = Math.max(0, l.currentBalance - shareValue);
+
+          // Ratios relative to active current loan balance
+          const totalBal = l.currentBalance || 1;
+          const shareRatio = Math.min(100, Math.round((shareValue / totalBal) * 100));
+          const unsecuredRatio = Math.min(100, Math.round((remainingUnsecured / totalBal) * 100));
+
+          return `
+            <div class="card space-y-2.5">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <h4 style="font-weight: 900; font-size: 13px; color: #111827;">${m ? m.name : 'Unknown'}</h4>
+                  <p style="font-size: 9px; color: #6b7280; margin-top: 2px;">ફોન: ${m ? m.phone : 'N/A'}</p>
+                </div>
+                <span class="certificate-pill" style="background-color: ${l.interestRate === 0 ? '#ecfdf5' : '#fffbeb'}; border-color: ${l.interestRate === 0 ? '#d1fae5' : '#fef3c7'}; color: ${l.interestRate === 0 ? '#047857' : '#b45309'};">
+                  ${l.interestRate === 0 ? 'વ્યાજ વગર' : `${l.interestRate}% વ્યાજ`}
+                </span>
+              </div>
+
+              <!-- Metrics -->
+              <div style="background-color: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #f3f4f6; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10px;">
+                <div>
+                  <span style="color: #6b7280; display: block;">મંજૂર લોન મુદ્દલ:</span>
+                  <strong style="color: #374151;">₹${l.principalAmount.toLocaleString()}</strong>
+                </div>
+                <div>
+                  <span style="color: #6b7280; display: block;">હાલનું બાકી દેવું:</span>
+                  <strong style="color: #dc2626;">₹${l.currentBalance.toLocaleString()}</strong>
+                </div>
+              </div>
+
+              <!-- Double Progress Chart Stack as requested -->
+              <div class="progress-stack space-y-2">
+                ${(() => {
+                  const totalPaid = Math.max(0, l.principalAmount - l.currentBalance);
+                  const paidPercent = l.principalAmount > 0 ? Math.round((totalPaid / l.principalAmount) * 100) : 0;
+                  const remainingMinusShare = Math.max(0, l.currentBalance - shareValue);
+                  const unsecuredPercent = l.currentBalance > 0 ? Math.max(0, Math.round((remainingMinusShare / l.currentBalance) * 100)) : 0;
+
+                  return `
+                  <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 8px; color: #059669; font-weight: bold;">
+                      <span>૧. કુલ ચૂકવેલ લોન અને બાકી દેવું (Paid vs Remaining):</span>
+                      <span>ચૂકવેલ: ₹${totalPaid.toLocaleString()} (${paidPercent}%) | બાકી: ₹${l.currentBalance.toLocaleString()}</span>
+                    </div>
+                    <div class="progress-container">
+                      <div class="progress-bar-secured" style="width: ${paidPercent}%"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 8px; color: #d97706; font-weight: bold;">
+                      <span>૨. ચૂકવેલ, બાકી અને શેર બાદ વધતી અસુરક્ષિત રકમ (Paid, Remaining & Unsecured):</span>
+                      <span>ચૂકવેલ: ₹${totalPaid.toLocaleString()} | બાકી: ₹${l.currentBalance.toLocaleString()} | શેર જામીનગીરી: ₹${shareValue.toLocaleString()} | અસુરક્ષિત: ₹${remainingMinusShare.toLocaleString()}</span>
+                    </div>
+                    <div class="progress-container">
+                      <div class="progress-bar-unsecured" style="width: ${unsecuredPercent}%"></div>
+                    </div>
+                  </div>
+                  `;
+                })()}
+              </div>
+
+              <div style="font-size: 9px; color: #4b5563;" class="space-y-1">
+                <div>🎯 <b>લોન હેતુ:</b> ${l.purpose}</div>
+                <div>📅 <b>મંજૂર તારીખ:</b> ${new Date(l.disburseDate).toLocaleDateString('gu-IN')}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Settled loans history lists
+      const settledSec = document.getElementById('settled-loans-section');
+      const settledList = document.getElementById('settled-loans-list');
+      document.getElementById('settled-loans-lbl').textContent = `ભૂતકાળનો સારો રેકોર્ડ (${settledL.length})`;
+
+      if (settledL.length === 0) {
+        settledSec.classList.add('hidden');
+      } else {
+        settledSec.classList.remove('hidden');
+        settledList.innerHTML = settledL.map(l => {
+          const m = members.find(mem => mem.id === l.memberId);
+          return `
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center; opacity: 0.8; padding: 10px;">
+              <div>
+                <span style="font-weight: bold; font-size: 11px; color: #4b5563;">${m ? m.name : 'Unknown'}</span>
+                <p style="font-size: 9px; color: #9ca3af; margin-top: 2px;">${l.purpose} | ₹${l.principalAmount.toLocaleString()} પૂરી ચૂકતે</p>
+              </div>
+              <span class="certificate-pill" style="background-color: #ecfdf5; color: #047857; font-size: 8px;">ચૂકતે</span>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // Modal populate dropdown utilities
+    function renderDisburseModalOptions() {
+      const select = document.getElementById('disburse-member');
+      select.innerHTML = '<option value="">-- સભ્ય શોધો --</option>' + 
+        members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+    }
+
+    function renderRepayModalOptions() {
+      const select = document.getElementById('repay-loan-select');
+      const activeL = loans.filter(l => l.status === 'active');
+      select.innerHTML = '<option value="">-- લોન ખાતું પસંદ કરો --</option>' + 
+        activeL.map(l => {
+          const m = members.find(mem => mem.id === l.memberId);
+          return `<option value="${l.id}">${m ? m.name : 'Unknown'} - દેવું: ₹${l.currentBalance} (${l.purpose})</option>`;
+        }).join('');
+    }
+
+    function renderAddShareModalOptions() {
+      const select = document.getElementById('add-s-member');
+      select.innerHTML = '<option value="">-- સભ્ય પસંદ કરો --</option>' + 
+        members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+    }
+
+    // Interactive disburse selector statistics listener
+    document.getElementById('disburse-member').addEventListener('change', (e) => {
+      const memberId = e.target.value;
+      const infoBox = document.getElementById('disburse-info-box');
+      if (!memberId) {
+        infoBox.style.display = 'none';
+        return;
+      }
+
+      infoBox.style.display = 'block';
+      const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
+      const shareVal = mShares.length * 20000;
+      const limit = mShares.length * 25000;
+      const hasActive = loans.some(l => l.memberId === memberId && l.status === 'active');
+
+      document.getElementById('disburse-shares-cnt').textContent = `${mShares.length} શેર`;
+      document.getElementById('disburse-shares-value').textContent = `₹${shareVal.toLocaleString()}`;
+      document.getElementById('disburse-limit-val').textContent = `₹${limit.toLocaleString('en-IN')}`;
+      document.getElementById('disburse-status-val').textContent = hasActive ? '⚠️ પહેલેથી બાકી દેવું ચાલુ છે' : '✅ નવો કોરો ખાતો';
+    });
+
+    document.getElementById('repay-loan-select').addEventListener('change', (e) => {
+      const loanId = e.target.value;
+      const infoBox = document.getElementById('repay-info-box');
+      if (!loanId) {
+        infoBox.style.display = 'none';
+        return;
+      }
+      infoBox.style.display = 'flex';
+      const targetLoan = loans.find(l => l.id === loanId);
+      document.getElementById('repay-outstanding-val').textContent = `₹${targetLoan ? targetLoan.currentBalance.toLocaleString('en-IN') : '0'}`;
+    });
+
+    // Forms handling
+    document.getElementById('form-add-member').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('add-m-name').value.trim();
+      const phone = document.getElementById('add-m-phone').value.trim();
+      const nomineeName = document.getElementById('add-m-nominee').value.trim();
+
+      if (!name) {
+        alert('કૃપા કરીને સભ્યનું નામ ભરો!');
+        return;
+      }
+
+      const newMemberId = `m-${Date.now()}`;
+      members.push({
+        id: newMemberId,
+        name,
+        phone,
+        nomineeName,
+        createdAt: new Date().toISOString().split('T')[0],
+        status: 'active'
+      });
+
+      // Retrieve share input elements names
+      const certInputs = document.querySelectorAll('.share-cert-name');
+      const maxShareNum = shares.reduce((max, s) => {
+        const num = parseInt(s.shareNumber.replace('S-', '')) || 1000;
+        return num > max ? num : max;
+      }, 1000);
+
+      certInputs.forEach((input, idx) => {
+        const val = input.value.trim() || `${name} (શેર ${idx + 1})`;
+        shares.push({
+          id: `s-${Date.now()}-${idx}`,
+          memberId: newMemberId,
+          shareNumber: `S-${maxShareNum + idx + 1}`,
+          nameOnShare: val,
+          activationDate: new Date().toISOString().split('T')[0],
+          status: 'active'
+        });
+      });
+
+      saveToLocalStorage();
+      alert('સભ્ય સફળતાપૂર્વક ઉમેરાયા!');
+      
+      // Reset
+      document.getElementById('form-add-member').reset();
+      shareInputs = [''];
+      renderShareFields();
+      closeModal('modal-add-member');
+      renderAllViews();
+    });
+
+    document.getElementById('form-add-share').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const memberId = document.getElementById('add-s-member').value;
+      const certname = document.getElementById('add-s-certname').value.trim();
+
+      if (!memberId) {
+        alert('સભ્ય પસંદ કરો!');
+        return;
+      }
+
+      const m = members.find(mem => mem.id === memberId);
+      const finalName = certname || m.name;
+
+      const maxShareNum = shares.reduce((max, s) => {
+        const num = parseInt(s.shareNumber.replace('S-', '')) || 1000;
+        return num > max ? num : max;
+      }, 1000);
+
+      shares.push({
+        id: `s-${Date.now()}`,
+        memberId,
+        shareNumber: `S-${maxShareNum + 1}`,
+        nameOnShare: finalName,
+        activationDate: new Date().toISOString().split('T')[0],
+        status: 'active'
+      });
+
+      saveToLocalStorage();
+      alert('નવો શેર પ્રમાણપત્ર સફળતાપૂર્વક જમા થયો!');
+      document.getElementById('form-add-share').reset();
+      closeModal('modal-add-share');
+      renderAllViews();
+    });
+
+    document.getElementById('form-disburse').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const memberId = document.getElementById('disburse-member').value;
+      const amount = parseFloat(document.getElementById('disburse-amount').value) || 0;
+      const rate = parseFloat(document.getElementById('disburse-rate').value) || 0;
+      const date = document.getElementById('disburse-date').value;
+      const purpose = document.getElementById('disburse-purpose').value.trim() || 'વ્યક્તિગત લોન';
+
+      const trustCash = calculateTrustBalance();
+      const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
+      const limit = mShares.length * 25000;
+
+      if (amount > trustCash) {
+        alert(`ભૂલ! ટ્રસ્ટ ભંડોળમાં પૂરતી સિલક નથી. હાલ ઉપલબ્ધ: ₹${trustCash.toLocaleString()}`);
+        return;
+      }
+
+      // Check if they exceed the recommended limit (Inform but do not block admin override!)
+      if (amount > limit) {
+        if (!confirm(`સૂચના: ભલામણ કરેલી સુરક્ષિત મર્યાદા ₹${limit.toLocaleString()} છે. પરંતુ એડમિન ઓવરરાઈડ સક્રિય હોવાથી લોન મંજૂર કરી શકાય છે. આગળ વધવું છે?`)) {
+          return;
+        }
+      }
+
+      const newLoanId = `l-${Date.now()}`;
+      loans.push({
+        id: newLoanId,
+        memberId,
+        principalAmount: amount,
+        currentBalance: amount,
+        interestRate: rate,
+        disburseDate: date,
+        purpose,
+        status: 'active'
+      });
+
+      const b = members.find(mem => mem.id === memberId);
+      transactions.push({
+        id: `t-${Date.now()}`,
+        date,
+        type: 'loan_disbursal',
+        amount,
+        memberName: b ? b.name : 'Unknown',
+        description: `નવી લોન મંજૂર: ${purpose} (${rate === 0 ? 'વ્યાજ વગર' : rate + '% વ્યાજ'})`
+      });
+
+      saveToLocalStorage();
+      alert('લોન ચુકવણી સફળતાપૂર્વક મંજૂર થઈ ગઈ!');
+      document.getElementById('form-disburse').reset();
+      document.getElementById('disburse-info-box').style.display = 'none';
+      closeModal('modal-disburse');
+      renderAllViews();
+    });
+
+    document.getElementById('form-repay').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const loanId = document.getElementById('repay-loan-select').value;
+      const principal = parseFloat(document.getElementById('repay-principal').value) || 0;
+      const interest = parseFloat(document.getElementById('repay-interest').value) || 0;
+      const date = document.getElementById('repay-date').value;
+
+      if (!loanId) {
+        alert('લોન પસંદ કરો!');
+        return;
+      }
+
+      const targetLoan = loans.find(l => l.id === loanId);
+      if (!targetLoan) return;
+
+      if (principal > targetLoan.currentBalance) {
+        alert(`ભૂલ! પરત હપ્તો બાકી દેવું (₹${targetLoan.currentBalance}) થી મોટો ન હોઈ શકે.`);
+        return;
+      }
+
+      targetLoan.currentBalance = Math.max(0, targetLoan.currentBalance - principal);
+      if (targetLoan.currentBalance === 0) {
+        targetLoan.status = 'repaid';
+      }
+
+      const borrower = members.find(mem => mem.id === targetLoan.memberId);
+      const bName = borrower ? borrower.name : 'Unknown';
+
+      if (principal > 0) {
+        transactions.push({
+          id: `t-${Date.now()}-qrep`,
+          date,
+          type: 'loan_repayment',
+          amount: principal,
+          memberName: bName,
+          description: `રૂબરૂ લોન મુદ્દલ પરત હપ્તો જમા (${targetLoan.purpose})`
+        });
+      }
+
+      if (interest > 0) {
+        transactions.push({
+          id: `t-${Date.now()}-qint`,
+          date,
+          type: 'interest_payment',
+          amount: interest,
+          memberName: bName,
+          description: `રૂબરૂ લોન વ્યાજ જમા (${targetLoan.purpose})`
+        });
+      }
+
+      saveToLocalStorage();
+      alert('હપ્તો સફળતાપૂર્વક જમા મળ્યો!');
+      document.getElementById('form-repay').reset();
+      document.getElementById('repay-info-box').style.display = 'none';
+      closeModal('modal-repay');
+      renderAllViews();
+    });
+
+    // Backup & Statement Reporting Screen
+    const statementSelect = document.getElementById('statement-member-select');
+    statementSelect.addEventListener('change', renderBackupReportPreview);
+
+    function renderBackup() {
+      // Load selector options
+      const currVal = statementSelect.value;
+      statementSelect.innerHTML = '<option value="">-- સભ્યનું ખાતું પસંદ કરો --</option>' + 
+        members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+      statementSelect.value = currVal;
+
+      renderBackupReportPreview();
+    }
+
+    function renderBackupReportPreview() {
+      const selectedMemberId = statementSelect.value;
+      const preview = document.getElementById('printable-trust-report');
+
+      if (!selectedMemberId) {
+        // Render Overall general summary stats
+        const activeM = members.filter(m => m.status === 'active').length;
+        const activeS = shares.filter(s => s.status === 'active').length;
+        const totalSavings = monthlyEntries.reduce((sum, e) => sum + e.savingsPaid, 0);
+        const totalOutstanding = loans.reduce((sum, l) => sum + (l.status === 'active' ? l.currentBalance : 0), 0);
+        const cashBalance = calculateTrustBalance();
+
+        preview.innerHTML = `
+          <div style="font-size: 11px; line-height: 1.6;" id="print-area-element">
+            <div style="border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px;">❤️</span>
+              <div>
+                <strong style="font-size: 12px; display: block;">બલાઢા ક્રેડિટ સોસાયટી</strong>
+                <span style="font-size: 9px; color: #6b7280;">General Balance Sheet Ledger</span>
+              </div>
+            </div>
+
+            <div style="background-color: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 10px;" class="space-y-1.5">
+              <div style="display: flex; justify-content: space-between;">
+                <span>કુલ રજીસ્ટર્ડ સભ્યો:</span>
+                <strong>${activeM} સભ્યો</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>કુલ એક્ટિવ શેર:</span>
+                <strong>${activeS} શેર</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>હાલની રોકડ બેંક સિલક:</span>
+                <strong style="color: #059669;">₹${cashBalance.toLocaleString()}</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>બહાર ફરેલી લોન લિમિટ:</span>
+                <strong style="color: #dc2626;">₹${totalOutstanding.toLocaleString()}</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 11px; border-top: 1px solid #ddd; padding-top: 8px;">
+              <span>કુલ સોસાયટી મૂલ્ય (Total Asset Value):</span>
+              <span style="color: #b45309;">₹${(cashBalance + totalOutstanding).toLocaleString()}</span>
+            </div>
+          </div>
+        `;
+      } else {
+        // Render individual detailed statement
+        const member = members.find(m => m.id === selectedMemberId);
+        if (!member) return;
+
+        const mShares = shares.filter(s => s.memberId === member.id && s.status === 'active');
+        const mLoans = loans.filter(l => l.memberId === member.id);
+        const mSavings = monthlyEntries.filter(e => e.memberId === member.id);
+
+        const totalSaved = mSavings.reduce((sum, e) => sum + e.savingsPaid, 0);
+        const totalInterest = mSavings.reduce((sum, e) => sum + e.interestPaid, 0);
+        const outstanding = mLoans.reduce((sum, l) => sum + (l.status === 'active' ? l.currentBalance : 0), 0);
+
+        preview.innerHTML = `
+          <div style="font-size: 11px; line-height: 1.5;" id="print-area-element">
+            <div style="border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 10px;">
+              <strong style="font-size: 12px; display: block;">બલાઢા ક્રેડિટ સોસાયટી</strong>
+              <span style="font-size: 9px; color: #6b7280;">સભ્યનું વ્યક્તિગત લેજર સ્ટેટમેન્ટ</span>
+            </div>
+
+            <div style="background-color: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 10px; font-size: 10px;" class="space-y-1">
+              <div><b>સભ્યનું નામ:</b> ${member.name}</div>
+              <div><b>નોમિની:</b> ${member.nomineeName || 'નથી'}</div>
+              <div><b>ફોન:</b> ${member.phone || 'N/A'}</div>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+              <span style="font-weight: bold; display: block; font-size: 9px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">નોંધાયેલા શેર પ્રમાણપત્ર (${mShares.length})</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                ${mShares.map(sh => `<span style="font-size: 8px; font-weight: bold; background-color: #f3f4f6; border: 1px solid #e5e7eb; padding: 2px 6px; border-radius: 4px;">${sh.shareNumber} (${sh.nameOnShare})</span>`).join('')}
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; font-size: 10px; margin-bottom: 10px;">
+              <div style="background-color: #fffbeb; padding: 6px; border-radius: 6px; border: 1px solid #fef3c7;">
+                <span style="display:block; font-size:8px; color: #9ca3af;">કુલ બચત</span>
+                <strong style="color: #b45309;">₹${totalSaved}</strong>
+              </div>
+              <div style="background-color: #faf5ff; padding: 6px; border-radius: 6px; border: 1px solid #f3e8ff;">
+                <span style="display:block; font-size:8px; color: #9ca3af;">કુલ વ્યાજ</span>
+                <strong style="color: #7c3aed;">₹${totalInterest}</strong>
+              </div>
+              <div style="background-color: #fef2f2; padding: 6px; border-radius: 6px; border: 1px solid #fee2e2;">
+                <span style="display:block; font-size:8px; color: #9ca3af;">બાકી લોન</span>
+                <strong style="color: #dc2626;">₹${outstanding}</strong>
+              </div>
+            </div>
+
+            <span style="font-weight: bold; display: block; font-size: 9px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">માસિક બુક જમા લોગ</span>
+            <table style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>મહિનો</th>
+                  <th>શેર</th>
+                  <th style="text-align: right;">બચત (₹)</th>
+                  <th style="text-align: right;">મુદ્દલ (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${mSavings.length === 0 ? `<tr><td colspan="4" style="text-align: center; color: #9ca3af; font-style: italic;">કોઈ હપ્તા રેકોર્ડ મળ્યા નથી.</td></tr>` : mSavings.map(e => `
+                  <tr>
+                    <td style="font-weight: bold;">${e.monthCode}</td>
+                    <td>${shares.find(s => s.id === e.shareId)?.shareNumber || 'N/A'}</td>
+                    <td style="text-align: right; font-weight: bold; color: #b45309;">₹${e.savingsPaid}</td>
+                    <td style="text-align: right; color: #2563eb;">₹${e.principalRepaid}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    // Print utility triggers
+    document.getElementById('btn-print-report').addEventListener('click', () => {
+      const pArea = document.getElementById('print-area-element');
+      if (!pArea) return;
+
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>BCS Report Print</title>
+            <style>
+              body { background: white !important; color: black !important; padding: 30px !important; font-family: system-ui, sans-serif !important; }
+              table { border-collapse: collapse !important; width: 100% !important; margin-top: 12px; }
+              th, td { border: 1px solid #e5e7eb !important; padding: 8px !important; font-size: 11px !important; }
+              th { background-color: #f3f4f6 !important; }
+            </style>
+          </head>
+          <body>
+            ${pArea.outerHTML}
+            <script>
+              window.onload = function() {
+                window.print();
+                setTimeout(() => { window.close(); }, 500);
+              };
+            <\/script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    });
+
+    // Reset whole database to 0 records (Absolute clean launch slate)
+    document.getElementById('btn-reset-db').addEventListener('click', () => {
+      if (confirm('ચેતવણી! શું તમે એપનો તમામ ડેટા (સભ્યો, શેર, લોન અને વ્યવહારો) કાયમી માટે ડીલીટ કરીને શરૂઆતથી ૦ કરવા માંગો છો? આ ક્રિયા પાછી મેળવી શકાશે નહીં.')) {
+        localStorage.removeItem(DB_KEYS.members);
+        localStorage.removeItem(DB_KEYS.shares);
+        localStorage.removeItem(DB_KEYS.loans);
+        localStorage.removeItem(DB_KEYS.entries);
+        localStorage.removeItem(DB_KEYS.transactions);
+
+        members = [];
+        shares = [];
+        loans = [];
+        monthlyEntries = [];
+        transactions = [{
+          id: 't-1',
+          date: new Date().toISOString().split('T')[0],
+          type: 'other_income',
+          amount: 150000,
+          memberName: 'બલાઢા ટ્રસ્ટ (Trust Fund)',
+          homeAddress: 'મુખ્ય ઓફિસ',
+          description: 'શરૂઆતની સેવિંગ્સ મૂડી (Starting Capital Deposit)'
+        }];
+
+        saveToLocalStorage();
+        alert('ડેટાબેઝ સફળતાપૂર્વક શૂન્ય (0) થયો છે!');
+        renderAllViews();
+      }
+    });
+
+    // Export as JSON back-up
+    document.getElementById('btn-export-json').addEventListener('click', () => {
+      const payloadStr = "data:text/json;charset=utf-8," + encodeURIComponent(
+        JSON.stringify({
+          members,
+          shares,
+          loans,
+          monthlyEntries,
+          transactions,
+          exportDate: new Date().toISOString()
+        }, null, 2)
+      );
+      const dl = document.createElement('a');
+      dl.setAttribute("href", payloadStr);
+      dl.setAttribute("download", `baladha_credit_society_backup_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(dl);
+      dl.click();
+      dl.remove();
+    });
+
+    // Import from JSON back-up
+    document.getElementById('import-json-file').addEventListener('change', (e) => {
+      const errorDiv = document.getElementById('import-error-div');
+      errorDiv.classList.add('hidden');
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const parsed = JSON.parse(event.target.result);
+          if (!parsed.members || !parsed.shares || !parsed.loans || !parsed.monthlyEntries || !parsed.transactions) {
+            errorDiv.textContent = 'ભૂલ! આ ફાઈલ સાચો બેકઅપ ડેટા નથી.';
+            errorDiv.classList.remove('hidden');
+            return;
+          }
+
+          members = parsed.members;
+          shares = parsed.shares;
+          loans = parsed.loans;
+          monthlyEntries = parsed.monthlyEntries;
+          transactions = parsed.transactions;
+
+          saveToLocalStorage();
+          alert('બેકઅપ સફળતાપૂર્વક પુનઃસ્થાપિત થયો!');
+          renderAllViews();
+        } catch(err) {
+          errorDiv.textContent = 'ફાઇલ ખોલવામાં ક્ષતિ આવી. યોગ્ય JSON પસંદ કરો.';
+          errorDiv.classList.remove('hidden');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Modal open listeners
+    document.getElementById('btn-open-member-modal').addEventListener('click', () => {
+      shareInputs = [''];
+      renderShareFields();
+      openModal('modal-add-member');
+    });
+    document.getElementById('btn-open-share-modal').addEventListener('click', () => {
+      openModal('modal-add-share');
+    });
+    document.getElementById('btn-open-disburse-modal').addEventListener('click', () => {
+      document.getElementById('form-disburse').reset();
+      const picker = document.getElementById('disburse-date');
+      picker.value = new Date().toISOString().split('T')[0];
+      openModal('modal-disburse');
+    });
+    document.getElementById('btn-open-repay-modal').addEventListener('click', () => {
+      document.getElementById('form-repay').reset();
+      const picker = document.getElementById('repay-date');
+      picker.value = new Date().toISOString().split('T')[0];
+      openModal('modal-repay');
+    });
+
+    // Init logic
+    initDatabase();
+    renderAllViews();
+  </script>
+
+</body>
+</html>
