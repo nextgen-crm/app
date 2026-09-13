@@ -642,7 +642,7 @@
           <span id="lang-toggle-text">ENG</span>
         </button>
         <div class="trust-balance-badge">
-          <div class="trust-balance-lbl" id="top-trust-lbl" data-gu="ટ્રસ્ટ ભંડોળ સિલક" data-en="Trust Balance">ટ્રસ્ટ ભંડોળ સિલક</div>
+          <div class="trust-balance-lbl" id="top-trust-lbl" data-gu="સોસાયટી મુખ્ય ફંડ" data-en="Society Main Fund">સોસાયટી મુખ્ય ફંડ</div>
           <div class="trust-balance-val" id="top-cash-balance">₹1,50,000</div>
         </div>
       </div>
@@ -668,11 +668,11 @@
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px;">
           <div class="stat-box">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span data-gu="રોકડ સિલક / Cash" data-en="Cash Balance" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">રોકડ સિલક / Cash</span>
+              <span data-gu="સોસાયટી મુખ્ય ફંડ / Main Fund" data-en="Society Main Fund" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી મુખ્ય ફંડ / Main Fund</span>
               <span style="display: inline-block; width: 6px; height: 6px; background-color: #059669; border-radius: 50%;"></span>
             </div>
             <div style="font-size: 17px; font-weight: 800; color: #059669; margin-top: 4px;" id="stat-cash">₹0</div>
-            <div data-gu="લોન આપવા માટેની સિલક" data-en="Available Loan Fund" style="font-size: 9px; color: #64748b; margin-top: 2px;">લોન આપવા માટેની સિલક</div>
+            <div data-gu="બેંક ૧ + બેંક ૨ કુલ સિલક" data-en="Bank 1 + Bank 2 Total Fund" style="font-size: 9px; color: #64748b; margin-top: 2px;">બેંક ૧ + બેંક ૨ કુલ સિલક</div>
           </div>
 
           <div class="stat-box">
@@ -703,31 +703,44 @@
           </div>
         </div>
 
-        <!-- Restructured Bank & Cash Details Panel -->
+        <!-- Current Share Value Admin Editable Card (Dashboard Middle) -->
+        <div class="card" style="margin-bottom: 12px; background: #ffffff; border: 1px solid #e2e8f0;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span data-gu="વર્તમાન શેર મૂલ્ય (Current Share Value)" data-en="Current Share Value" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">વર્તમાન શેર મૂલ્ય (Current Share Value)</span>
+                <span style="font-size: 8.5px; background-color: #eff6ff; color: #2563eb; font-weight: 700; padding: 1px 5px; border-radius: 4px; border: 1px solid #dbeafe;">Admin</span>
+              </div>
+              <div style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 3px;" id="dash-current-share-val">₹20,000</div>
+              <div style="font-size: 9px; color: #64748b; margin-top: 2px;" id="dash-total-equity-lbl">કુલ સુરક્ષિત શેર મૂડી: ₹0</div>
+            </div>
+            <button type="button" onclick="editCurrentShareValue()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 10.5px; border-radius: 6px; height: auto; display: inline-flex; align-items: center; gap: 4px; background-color: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1;">
+              ✏️ <span data-gu="શેર ભાવ બદલો" data-en="Edit Value">શેર ભાવ બદલો</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Restructured Bank Details Panel -->
         <div class="card" style="margin-bottom: 12px;">
-          <h4 data-gu="તિજોરી અને બેંક ખાતા વિગત (Bank & Cash Details)" data-en="Bank & Vault Balance Sheet" style="font-size: 10px; font-weight: 700; color: #475569; margin-top: 0; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
-            તિજોરી અને બેંક ખાતા વિગત (Bank & Cash Details)
+          <h4 data-gu="સોસાયટી બેંક ખાતા વિગત (Bank Balance Sheet)" data-en="Society Bank Balance Sheet" style="font-size: 10px; font-weight: 700; color: #475569; margin-top: 0; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+            સોસાયટી બેંક ખાતા વિગત (Bank Balance Sheet)
           </h4>
           
           <!-- Hero Main Balance of the Society -->
           <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 12px;">
-            <span data-gu="સોસાયટી કુલ મુખ્ય સિલક (Trust Main Balance)" data-en="Total Society Fund" style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી કુલ મુખ્ય સિલક (Trust Main Balance)</span>
+            <span data-gu="સોસાયટી કુલ મુખ્ય સિલક (SBI બેંક 1 + BOB બેંક 2)" data-en="Society Main Fund (Bank 1 + Bank 2)" style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી કુલ મુખ્ય સિલક (SBI બેંક 1 + BOB બેંક 2)</span>
             <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-top: 2px;" id="dash-trust-main-bal">₹0</div>
           </div>
 
-          <!-- Downside Grid showing Bank 1, Bank 2 and Cash in Hand -->
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 8px; text-align: center;">
-              <span data-gu="SBI બેંક 1" data-en="SBI Bank 1" style="font-size: 8px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">SBI બેંક 1</span>
-              <div style="font-size: 11px; font-weight: 800; color: #2563eb;" id="dash-bank1-bal">₹0</div>
+          <!-- Downside Grid showing Bank 1 and Bank 2 -->
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
+              <span data-gu="SBI બેંક 1 (State Bank)" data-en="SBI Bank 1" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">SBI બેંક 1 (State Bank)</span>
+              <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank1-bal">₹0</div>
             </div>
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 8px; text-align: center;">
-              <span data-gu="BOB બેંક 2" data-en="BOB Bank 2" style="font-size: 8px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOB બેંક 2</span>
-              <div style="font-size: 11px; font-weight: 800; color: #2563eb;" id="dash-bank2-bal">₹0</div>
-            </div>
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 8px; text-align: center;">
-              <span data-gu="તિજોરી રોકડ" data-en="Vault Cash" style="font-size: 8px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">તિજોરી રોકડ</span>
-              <div style="font-size: 11px; font-weight: 800; color: #059669;" id="dash-cash-bal">₹0</div>
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
+              <span data-gu="BOB બેંક 2 (Baroda Bank)" data-en="BOB Bank 2" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOB બેંક 2 (Baroda Bank)</span>
+              <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank2-bal">₹0</div>
             </div>
           </div>
         </div>
@@ -837,7 +850,7 @@
             <div style="display: flex; gap: 8px; align-items: center; justify-content: space-between;">
               <h4 class="card-title" style="display: flex; align-items: center; gap: 6px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #111827;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>વાર્ષિક બચત ટ્રેકર</h4>
               <div>
-                <select id="yearly-savings-year-select" class="form-select" style="padding: 4px 8px; font-size: 11px; width: 100px; height: 32px; border-radius: 6px;">
+                <select id="yearly-savings-year-select" class="form-select" style="padding: 4px 8px; font-size: 11px; width: 100px; height: 32px; border-radius: 6px;" onchange="renderYearlySavingsCollector()">
                   <option value="2026" selected>2026</option>
                   <option value="2027">2027</option>
                   <option value="2028">2028</option>
@@ -845,8 +858,15 @@
                 </select>
               </div>
             </div>
-            <p class="card-subtitle" style="margin-top: 2px;">દરેક સક્રિય શેર દીઠ વાર્ષિક ₹૬૦૦ બચત લક્ષ્ય</p>
-            <input type="text" id="yearly-savings-search" class="form-input" placeholder="સભ્યનું નામ અથવા ફોન શોધો...">
+            <p class="card-subtitle" style="margin-top: 2px;">દરેક સક્રિય શેર દીઠ વાર્ષિક ₹૬૦૦ (માસિક ₹૫૦) બચત લક્ષ્ય</p>
+            
+            <!-- Quick Filter for Pending only vs All -->
+            <div class="segmented-control" style="margin: 0;">
+              <button type="button" class="segment-btn active" id="filter-all-savings-btn" onclick="setYearlySavingsFilter('all')">બધા સભ્યો (All)</button>
+              <button type="button" class="segment-btn" id="filter-pending-savings-btn" onclick="setYearlySavingsFilter('pending')"><span style="color:#ef4444; font-weight: bold;">🔔</span> બાકી સભ્યો (Pending)</button>
+            </div>
+
+            <input type="text" id="yearly-savings-search" class="form-input" placeholder="સભ્યનું નામ અથવા ફોન શોધો..." oninput="renderYearlySavingsCollector()">
           </div>
 
           <!-- Yearly Savings List Wrapper -->
@@ -1417,21 +1437,44 @@
           </div>
 
           <div class="form-group" style="margin-top: 10px;">
-            <label class="form-label">લોન ચૂકવણી પદ્ધતિ (Disbursement Mode) *</label>
-            <select id="disburse-payment-mode" class="form-select" required>
-              <option value="રોકડ" selected>રોકડ (Cash)</option>
-              <option value="ઓનલાઈન - ખાતાથી ખાતામાં">ઓનલાઈન - ખાતાથી ખાતામાં (Online - Account Transfer)</option>
+            <label class="form-label">લોન ચૂકવણી બેંક (Disbursement Bank Account) *</label>
+            <select id="disburse-payment-mode" class="form-select" required onchange="updateDisburseBankDisplay()">
+              <option value="Bank 1" selected>SBI બેંક 1 (State Bank of India)</option>
+              <option value="Bank 2">BOB બેંક 2 (Bank of Baroda)</option>
             </select>
           </div>
 
           <div style="display: flex; justify-content: space-between; font-size: 10px; color: #047857; background-color: #ecfdf5; padding: 8px; border-radius: 8px; border: 1px solid #d1fae5;">
-            <span>સોસાયટી ભંડોળ રોકડ:</span>
-            <strong id="disburse-trust-cash">₹1,50,000</strong>
+            <span id="disburse-bank-lbl">SBI બેંક 1 ઉપલબ્ધ સિલક:</span>
+            <strong id="disburse-trust-cash">₹75,000</strong>
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px; margin-top: 12px;">
             <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-disburse')">રદ કરો</button>
             <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px; background: #2563eb;">ચુકવણી મંજૂર કરો</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT CURRENT SHARE VALUE -->
+  <div class="modal-backdrop hidden" id="modal-edit-share-val">
+    <div class="modal" style="max-width: 440px;">
+      <div class="modal-header modal-header-blue">
+        <h3 data-gu="શેર મૂલ્ય સેટિંગ્સ (Share Value Settings)" data-en="Share Value Settings">શેર મૂલ્ય સેટિંગ્સ (Share Value Settings)</h3>
+        <button class="modal-close" onclick="closeModal('modal-edit-share-val')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-edit-share-val" class="space-y-3" onsubmit="handleSaveShareValue(event)">
+          <div class="form-group">
+            <label class="form-label" data-gu="વર્તમાન શેરદીઠ મૂડી મૂલ્ય (₹) *" data-en="Current Share Value (₹) *">વર્તમાન શેરદીઠ મૂડી મૂલ્ય (₹) *</label>
+            <input type="number" id="input-edit-share-val" class="form-input" required min="1000" step="500" placeholder="20000" style="font-size: 16px; font-weight: bold; color: #2563eb;">
+            <p style="font-size: 9px; color: #64748b; margin-top: 4px;" data-gu="આ મૂલ્ય બદલવાથી ડેશબોર્ડ, લોન ગેરંટી, અને સભ્યોની શેર એસેટ કેલ્ક્યુલેશન આપમેળે અપડેટ થશે." data-en="Updating this will automatically recalculate asset values, loan guarantees and dashboard metrics.">આ મૂલ્ય બદલવાથી ડેશબોર્ડ, લોન ગેરંટી, અને સભ્યોની શેર એસેટ કેલ્ક્યુલેશન આપમેળે અપડેટ થશે.</p>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-edit-share-val')">રદ કરો</button>
+            <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px; background: #2563eb;">સેવ કરો (Update)</button>
           </div>
         </form>
       </div>
@@ -1480,10 +1523,10 @@
           </div>
 
           <div class="form-group" style="margin-top: 10px;">
-            <label class="form-label">ચુકવણી પદ્ધતિ (Repayment Mode) *</label>
+            <label class="form-label">જમા લેનાર બેંક ખાતું (Bank Account) *</label>
             <select id="repay-payment-mode" class="form-select" required>
-              <option value="રોકડ" selected>રોકડ (Cash)</option>
-              <option value="ઓનલાઈન - ખાતાથી ખાતામાં">ઓનલાઈન - ખાતાથી ખાતામાં (Online - Account Transfer)</option>
+              <option value="ઓનલાઈન (Bank 1)" selected>SBI બેંક 1 (State Bank of India)</option>
+              <option value="ઓનલાઈન (Bank 2)">BOB બેંક 2 (Bank of Baroda)</option>
             </select>
           </div>
 
@@ -1534,7 +1577,8 @@
       const m = members.find(mem => mem.id === sh.memberId);
       if (!m) return;
       
-      const confirmPay = confirm(`${m.name} ના શેર (${sh.shareNumber}) માટે ₹૨૦,૦૦૦ ચૂકવણી જમા કરવી છે?`);
+      const curShareVal = getCurrentShareValue();
+      const confirmPay = confirm(`${m.name} ના શેર (${sh.shareNumber}) માટે ₹${curShareVal.toLocaleString('en-IN')} ચૂકવણી જમા કરવી છે?`);
       if (!confirmPay) return;
       
       sh.status = 'active';
@@ -1544,14 +1588,15 @@
         id: `t-${Date.now()}`,
         date: todayStr,
         type: 'other_income',
-        amount: 20000,
+        amount: curShareVal,
         memberName: m.name,
+        paymentMode: 'ઓનલાઈન (Bank 1)',
         description: `બાકી શેર પ્રમાણપત્ર ${sh.shareNumber} ની ચૂકવણી જમા`
       });
       
       saveToLocalStorage();
       renderAllViews();
-      alert(`શેર ${sh.shareNumber} માટે ₹૨૦,૦૦૦ ની ચૂકવણી સફળતાપૂર્વક જમા થઈ અને શેર સક્રિય થયો!`);
+      alert(`શેર ${sh.shareNumber} માટે ₹${curShareVal.toLocaleString('en-IN')} ની ચૂકવણી સફળતાપૂર્વક જમા થઈ અને શેર સક્રિય થયો!`);
     };
 
     window.openLoanMathModal = function(loanId) {
@@ -1560,7 +1605,7 @@
       const m = members.find(mem => mem.id === l.memberId);
       if (!m) return;
       const mShares = shares.filter(s => s.memberId === l.memberId && s.status === 'active');
-      const shareValue = mShares.length * 20000;
+      const shareValue = mShares.length * getCurrentShareValue();
       const mSavings = getMemberSavings(l.memberId);
 
       // 1. Calculate Monthly Interest (Vyaj added in center)
@@ -1727,7 +1772,43 @@
       shares: 'bcs_shares_v3',
       loans: 'bcs_loans_v3',
       entries: 'bcs_entries_v3',
-      transactions: 'bcs_transactions_v3'
+      transactions: 'bcs_transactions_v3',
+      shareValue: 'bcs_share_value_v3'
+    };
+
+    function getCurrentShareValue() {
+      const saved = localStorage.getItem(DB_KEYS.shareValue);
+      if (saved) {
+        const parsed = parseFloat(saved);
+        if (!isNaN(parsed) && parsed > 0) return parsed;
+      }
+      return 20000;
+    }
+
+    function setCurrentShareValue(val) {
+      const num = parseFloat(val) || 20000;
+      localStorage.setItem(DB_KEYS.shareValue, num.toString());
+      renderAllViews();
+    }
+
+    window.editCurrentShareValue = function() {
+      const cur = getCurrentShareValue();
+      const input = document.getElementById('input-edit-share-val');
+      if (input) input.value = cur;
+      openModal('modal-edit-share-val');
+    };
+
+    window.handleSaveShareValue = function(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('input-edit-share-val');
+      const val = parseFloat(input.value);
+      if (!val || val <= 0) {
+        alert('કૃપા કરીને સાચી શેર કિંમત દાખલ કરો!');
+        return;
+      }
+      setCurrentShareValue(val);
+      closeModal('modal-edit-share-val');
+      alert(`શેર મૂલ્ય સફળતાપૂર્વક ₹${val.toLocaleString('en-IN')} સેટ કરવામાં આવ્યું!`);
     };
 
     // Load initial empty database or retrieve saved data
@@ -1744,21 +1825,61 @@
         loans = JSON.parse(savedLoans);
         monthlyEntries = JSON.parse(savedEntries);
         transactions = JSON.parse(savedTransactions);
+
+        // Auto migrate initial single 150k demo transaction if present
+        if (transactions.length === 1 && transactions[0].id === 't-1' && transactions[0].amount === 150000) {
+          transactions = [
+            {
+              id: 't-1',
+              date: transactions[0].date || new Date().toISOString().split('T')[0],
+              type: 'other_income',
+              amount: 75000,
+              memberName: 'બલાઢા ટ્રસ્ટ (SBI Bank 1)',
+              paymentMode: 'ઓનલાઈન (Bank 1)',
+              homeAddress: 'મુખ્ય ઓફિસ',
+              description: 'શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)'
+            },
+            {
+              id: 't-2',
+              date: transactions[0].date || new Date().toISOString().split('T')[0],
+              type: 'other_income',
+              amount: 75000,
+              memberName: 'બલાઢા ટ્રસ્ટ (BOB Bank 2)',
+              paymentMode: 'ઓનલાઈન (Bank 2)',
+              homeAddress: 'મુખ્ય ઓફિસ',
+              description: 'શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)'
+            }
+          ];
+          saveToLocalStorage();
+        }
       } else {
-        // Absolute blank slate, but with 150000 starting Trust deposit
+        // Absolute blank slate, with 1.5 lakh demo split equally into SBI Bank 1 (₹75,000) and BOB Bank 2 (₹75,000)
         members = [];
         shares = [];
         loans = [];
         monthlyEntries = [];
-        transactions = [{
-          id: 't-1',
-          date: new Date().toISOString().split('T')[0],
-          type: 'other_income',
-          amount: 150000,
-          memberName: 'બલાઢા ટ્રસ્ટ (Trust Fund)',
-          homeAddress: 'મુખ્ય ઓફિસ',
-          description: 'શરૂઆતની સેવિંગ્સ મૂડી (Starting Capital Deposit)'
-        }];
+        transactions = [
+          {
+            id: 't-1',
+            date: new Date().toISOString().split('T')[0],
+            type: 'other_income',
+            amount: 75000,
+            memberName: 'બલાઢા ટ્રસ્ટ (SBI Bank 1)',
+            paymentMode: 'ઓનલાઈન (Bank 1)',
+            homeAddress: 'મુખ્ય ઓફિસ',
+            description: 'શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)'
+          },
+          {
+            id: 't-2',
+            date: new Date().toISOString().split('T')[0],
+            type: 'other_income',
+            amount: 75000,
+            memberName: 'બલાઢા ટ્રસ્ટ (BOB Bank 2)',
+            paymentMode: 'ઓનલાઈન (Bank 2)',
+            homeAddress: 'મુખ્ય ઓફિસ',
+            description: 'શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)'
+          }
+        ];
         saveToLocalStorage();
       }
     }
@@ -1773,15 +1894,8 @@
 
     // --- RE-CALCULATORS ---
     function calculateTrustBalance() {
-      let balance = 0;
-      transactions.forEach(t => {
-        if (t.type === 'savings' || t.type === 'loan_repayment' || t.type === 'interest_payment' || t.type === 'other_income') {
-          balance += t.amount;
-        } else if (t.type === 'loan_disbursal' || t.type === 'other_expense') {
-          balance -= t.amount;
-        }
-      });
-      return balance;
+      const b = calculateBankBalances();
+      return b.bank1 + b.bank2;
     }
 
     // Get Member specific analytics
@@ -1901,7 +2015,7 @@
       
       // Update header cash badges
       document.getElementById('top-cash-balance').textContent = `₹${trustCash.toLocaleString('en-IN')}`;
-      document.getElementById('disburse-trust-cash').textContent = `₹${trustCash.toLocaleString('en-IN')}`;
+      updateDisburseBankDisplay();
 
       // Call view-specific renderers
       if (activeTab === 'dashboard') renderDashboard(trustCash);
@@ -1912,7 +2026,6 @@
     }
 
     function calculateBankBalances() {
-      let cash = 0;
       let bank1 = 0;
       let bank2 = 0;
 
@@ -1921,33 +2034,46 @@
         const isIncome = (t.type === 'savings' || t.type === 'loan_repayment' || t.type === 'interest_payment' || t.type === 'other_income');
         const isExpense = (t.type === 'loan_disbursal' || t.type === 'other_expense');
         
-        const mode = t.paymentMode || 'રોકડ';
+        const mode = (t.paymentMode || t.disbursedFromBank || '').toLowerCase();
         
         if (isIncome) {
-          if (mode.includes('Bank 1')) {
-            bank1 += amt;
-          } else if (mode.includes('Bank 2')) {
+          if (mode.includes('bank 2') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
             bank2 += amt;
-          } else if (mode.includes('ઓનલાઈન')) {
-            bank1 += amt;
           } else {
-            cash += amt;
+            // Default / Bank 1 / SBI
+            bank1 += amt;
           }
         } else if (isExpense) {
-          if (mode.includes('Bank 1')) {
-            bank1 -= amt;
-          } else if (mode.includes('Bank 2')) {
+          if (mode.includes('bank 2') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
             bank2 -= amt;
-          } else if (mode.includes('ઓનલાઈન')) {
-            bank1 -= amt;
           } else {
-            cash -= amt;
+            // Default / Bank 1 / SBI
+            bank1 -= amt;
           }
         }
       });
 
-      return { cash, bank1, bank2 };
+      return { bank1, bank2, total: bank1 + bank2 };
     }
+
+    window.updateDisburseBankDisplay = function() {
+      const modeEl = document.getElementById('disburse-payment-mode');
+      if (!modeEl) return;
+      const selectedBank = modeEl.value;
+      const balances = calculateBankBalances();
+      const isBank2 = (selectedBank === 'Bank 2' || selectedBank.includes('Bank 2') || selectedBank.includes('BOB'));
+      const currentBankBal = isBank2 ? balances.bank2 : balances.bank1;
+      const bankName = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+      
+      const lblEl = document.getElementById('disburse-bank-lbl');
+      if (lblEl) {
+        lblEl.textContent = `${bankName} ઉપલબ્ધ સિલક:`;
+      }
+      const cashEl = document.getElementById('disburse-trust-cash');
+      if (cashEl) {
+        cashEl.textContent = `₹${currentBankBal.toLocaleString('en-IN')}`;
+      }
+    };
 
     // Global Language State
     let currentLang = localStorage.getItem('baladha_lang') || 'guj';
@@ -2029,11 +2155,6 @@
         bank2BalEl.textContent = `₹${balances.bank2.toLocaleString('en-IN')}`;
       }
 
-      const cashBalEl = document.getElementById('dash-cash-bal');
-      if (cashBalEl) {
-        cashBalEl.textContent = `₹${balances.cash.toLocaleString('en-IN')}`;
-      }
-
       // Calculate Revenue & Expenses
       const totalInterestCollected = transactions
         .filter(t => t.type === 'interest_payment')
@@ -2047,7 +2168,8 @@
         .filter(t => t.type === 'other_expense')
         .reduce((sum, t) => sum + t.amount, 0);
 
-      const netProfit = (totalInterestCollected + totalDonations) - totalExpenses;
+      // Net Profit = Collected Interest - Society Expenses (as requested by user)
+      const netProfit = totalInterestCollected - totalExpenses;
 
       const totalInterestEl = document.getElementById('dash-total-interest');
       if (totalInterestEl) {
@@ -2069,6 +2191,17 @@
         netProfitEl.textContent = `₹${netProfit.toLocaleString('en-IN')}`;
       }
 
+      // Display dynamic current share value in middle dashboard card
+      const curShareVal = getCurrentShareValue();
+      const currentShareValEl = document.getElementById('dash-current-share-val');
+      if (currentShareValEl) {
+        currentShareValEl.textContent = `₹${curShareVal.toLocaleString('en-IN')}`;
+      }
+      const totalEquityLbl = document.getElementById('dash-total-equity-lbl');
+      if (totalEquityLbl) {
+        totalEquityLbl.textContent = `કુલ સુરક્ષિત શેર મૂડી: ₹${(activeShares * curShareVal).toLocaleString('en-IN')}`;
+      }
+
       // Re-run inline slider calculator logic
       updateSliderCalculator();
     }
@@ -2079,6 +2212,7 @@
 
     function updateSliderCalculator() {
       const shVal = parseInt(calcRange.value) || 1;
+      const curShareVal = getCurrentShareValue();
       if (currentLang === 'eng') {
         document.getElementById('calc-shares-count').textContent = `${shVal} Share(s)`;
         document.getElementById('calc-monthly').textContent = `₹${shVal * 50} / Month`;
@@ -2089,7 +2223,7 @@
         document.getElementById('calc-yearly').textContent = `₹${shVal * 600} / વર્ષે`;
       }
       document.getElementById('calc-loan-limit').textContent = `₹${(shVal * 25000).toLocaleString('en-IN')}`;
-      document.getElementById('calc-asset-value').textContent = `₹${(shVal * 20000).toLocaleString('en-IN')}`;
+      document.getElementById('calc-asset-value').textContent = `₹${(shVal * curShareVal).toLocaleString('en-IN')}`;
     }
 
     // Members Screen
@@ -2100,6 +2234,7 @@
       }
 
       const query = document.getElementById('member-search').value.toLowerCase();
+      const curShareVal = getCurrentShareValue();
 
       // Filter members list
       const activeMembers = members.filter(m => m.status === 'active');
@@ -2131,8 +2266,8 @@
         const mSavings = getMemberSavings(m.id);
         const mLoan = getMemberLoanBalance(m.id);
         
-        // Asset calculations (₹20,000 per share value)
-        const shareValue = mShares.length * 20000;
+        // Asset calculations (dynamic per share value)
+        const shareValue = mShares.length * curShareVal;
         const remainingUnsecured = Math.max(0, mLoan - shareValue);
 
         // Share guarantee ratio vs full loan
@@ -2305,15 +2440,43 @@
       }).join('');
     }
 
+    let yearlySavingsFilter = 'all';
+
+    window.setYearlySavingsFilter = function(filter) {
+      yearlySavingsFilter = filter;
+      const allBtn = document.getElementById('filter-all-savings-btn');
+      const pendingBtn = document.getElementById('filter-pending-savings-btn');
+      if (allBtn) allBtn.classList.toggle('active', filter === 'all');
+      if (pendingBtn) pendingBtn.classList.toggle('active', filter === 'pending');
+      renderYearlySavingsCollector();
+    };
+
     function renderYearlySavingsCollector() {
       const selectedYear = document.getElementById('yearly-savings-year-select').value;
       const query = document.getElementById('yearly-savings-search').value.toLowerCase();
 
+      // Current calendar month check (for ₹50/month pending calculation)
+      const isCurrentCalYear = (new Date().getFullYear().toString() === selectedYear);
+      const curMonthIdx = isCurrentCalYear ? (new Date().getMonth() + 1) : 12;
+
       // Filter active members
       const activeMembers = members.filter(m => m.status === 'active');
-      const filtered = activeMembers.filter(m => {
+      let filtered = activeMembers.filter(m => {
         return m.name.toLowerCase().includes(query) || (m.phone && m.phone.includes(query));
       });
+
+      if (yearlySavingsFilter === 'pending') {
+        filtered = filtered.filter(m => {
+          const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+          const targetSavings = mShares.length * 600;
+          const paidThisYear = monthlyEntries
+            .filter(e => e.memberId === m.id && e.monthCode.startsWith(selectedYear))
+            .reduce((sum, e) => sum + e.savingsPaid, 0);
+          const remainingSavings = Math.max(0, targetSavings - paidThisYear);
+          const expectedUpToNow = mShares.length * 50 * curMonthIdx;
+          return remainingSavings > 0 || paidThisYear < expectedUpToNow;
+        });
+      }
 
       const trackerWrapper = document.getElementById('yearly-savings-list-wrapper');
 
@@ -2323,7 +2486,7 @@
             <div style="margin-bottom: 8px; display: flex; justify-content: center; color: #9ca3af;">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
             </div>
-            <p style="font-size: 12px; font-weight: 600; color: #4b5563;">કોઈ સભ્યો મળ્યા નથી (No Members)</p>
+            <p style="font-size: 12px; font-weight: 600; color: #4b5563;">કોઈ સભ્યો મળ્યા નથી (No Members Found)</p>
           </div>
         `;
         return;
@@ -2341,14 +2504,22 @@
           .reduce((sum, e) => sum + e.savingsPaid, 0);
 
         const remainingSavings = Math.max(0, targetSavings - paidThisYear);
+        
+        // Month-wise ₹50 check
+        const expectedUpToNow = mShares.length * 50 * curMonthIdx;
+        const isMonthPending = paidThisYear < expectedUpToNow;
+        const thisMonthPendingAmt = mShares.length * 50;
 
         return `
-          <div class="member-box" style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <div class="member-box" style="padding: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid ${isMonthPending ? '#fecaca' : '#e5e7eb'}; background-color: ${isMonthPending ? '#fffafa' : '#ffffff'};">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <strong style="font-size: 12px; color: #111827;">${m.name}</strong>
+                <strong style="font-size: 12px; color: #111827; display: flex; align-items: center; gap: 5px;">
+                  ${m.name}
+                  ${isMonthPending ? '<span style="color: #ef4444; font-size: 13px;" title="ચાલુ મહિનાની બચત બાકી છે">🔔</span>' : ''}
+                </strong>
                 <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">
-                  સક્રિય શેર: <b>${mShares.length} શેર</b> | લક્ષ્ય: ₹${targetSavings.toLocaleString()}
+                  સક્રિય શેર: <b>${mShares.length} શેર</b> | વાર્ષિક લક્ષ્ય: ₹${targetSavings.toLocaleString()}
                 </div>
               </div>
               <span class="certificate-pill" style="background-color: ${remainingSavings === 0 ? '#ecfdf5' : '#fffbeb'}; border-color: ${remainingSavings === 0 ? '#d1fae5' : '#fef3c7'}; color: ${remainingSavings === 0 ? '#047857' : '#b45309'}; display: inline-flex; align-items: center; gap: 4px;">
@@ -2356,25 +2527,50 @@
               </span>
             </div>
 
+            <!-- Red alert banner for current month pending -->
+            ${isMonthPending ? `
+              <div style="display: flex; justify-content: space-between; align-items: center; background-color: #fef2f2; border: 1px solid #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 9.5px; color: #dc2626;">
+                <span style="font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                  <span>🔔</span> ચાલુ માસ બચત બાકી (Pending ₹50/Month)
+                </span>
+                <span style="font-weight: 800;">બાકી: ₹${thisMonthPendingAmt.toLocaleString()}</span>
+              </div>
+            ` : ''}
+
             <!-- Ledger Status details -->
             <div style="display: flex; justify-content: space-between; font-size: 10px; background-color: #f9fafb; padding: 6px 10px; border-radius: 6px; border: 1px solid #f3f4f6;">
               <span style="color: #4b5563;">ચાલુ વર્ષ બચત ભરેલ: <b>₹${paidThisYear.toLocaleString()}</b></span>
-              <span style="color: #dc2626;">બાકી લિમિટ: <b>₹${remainingSavings.toLocaleString()}</b></span>
+              <span style="color: #dc2626;">કુલ બાકી લિમિટ: <b>₹${remainingSavings.toLocaleString()}</b></span>
             </div>
 
-            <!-- Action buttons: Tick & Save full ₹600 and Custom savings -->
-            <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+            <!-- Action controls: Bank Select, Tick & Save full ₹600/remaining, and Custom ₹50+ savings -->
+            <div style="display: flex; align-items: flex-end; gap: 6px; margin-top: 4px; flex-wrap: wrap;">
+              <!-- Bank Selector -->
+              <div style="display: flex; flex-direction: column; gap: 2px; flex: 1.2; min-width: 95px;">
+                <label style="font-size: 8px; font-weight: bold; color: #475569;">જમા બેંક:</label>
+                <select id="sav-bank-${m.id}" class="form-select" style="padding: 3px 6px; font-size: 9.5px; border-radius: 6px; height: 30px;">
+                  <option value="Bank 1" selected>SBI બેંક 1</option>
+                  <option value="Bank 2">BOB બેંક 2</option>
+                </select>
+              </div>
+
               <!-- Tick & Save Button -->
-              <button onclick="saveYearlySavings('${m.id}', ${remainingSavings})" class="btn btn-dark" style="flex: 2; padding: 6px 10px; font-size: 10px; border-radius: 6px; height: auto;" ${remainingSavings === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
-                ${remainingSavings > 0 ? `✓ ₹${remainingSavings.toLocaleString()} જમા કરો (Tick & Save)` : '✓ પૂર્ણ બચત ભરેલ છે'}
-              </button>
+              <div style="display: flex; flex-direction: column; gap: 2px; flex: 2; min-width: 130px;">
+                <label style="font-size: 8px; font-weight: bold; color: #475569;">વાર્ષિક બચત જમા:</label>
+                <button onclick="saveYearlySavings('${m.id}', ${remainingSavings})" class="btn btn-dark" style="padding: 6px 8px; font-size: 9.5px; border-radius: 6px; height: 30px; display: flex; align-items: center; justify-content: center; width: 100%;" ${remainingSavings === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                  ${remainingSavings > 0 ? `✓ ₹${remainingSavings.toLocaleString()} (Tick & Save)` : '✓ પૂર્ણ ભરેલ'}
+                </button>
+              </div>
 
               <!-- Custom Button/Input -->
-              <div style="display: flex; gap: 4px; flex: 1.5; align-items: center;">
-                <input type="number" id="custom-sav-${m.id}" class="form-input" placeholder="₹૫૦..." style="padding: 4px 6px; font-size: 10px; border-radius: 6px; text-align: right; height: 28px;">
-                <button onclick="saveCustomYearlySavings('${m.id}')" class="btn btn-secondary" style="padding: 4px 10px; font-size: 10px; border-radius: 6px; height: 28px; background-color: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db;">
-                  +
-                </button>
+              <div style="display: flex; flex-direction: column; gap: 2px; flex: 1.5; min-width: 100px;">
+                <label style="font-size: 8px; font-weight: bold; color: #475569;">કસ્ટમ બચત:</label>
+                <div style="display: flex; gap: 3px; align-items: center;">
+                  <input type="number" id="custom-sav-${m.id}" class="form-input" placeholder="₹50..." style="padding: 3px 6px; font-size: 9.5px; border-radius: 6px; text-align: right; height: 30px; margin: 0; width: 65px;">
+                  <button onclick="saveCustomYearlySavings('${m.id}')" class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; font-weight: bold; border-radius: 6px; height: 30px; background-color: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1;">
+                    +
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -2389,6 +2585,12 @@
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
       if (!m || mShares.length === 0) return;
 
+      const bankSel = document.getElementById('sav-bank-' + memberId);
+      const chosenBank = bankSel ? bankSel.value : 'Bank 1';
+      const isBank2 = (chosenBank === 'Bank 2' || chosenBank.includes('Bank 2') || chosenBank.includes('BOB') || chosenBank.includes('બેંક ૨') || chosenBank.includes('બેંક 2'));
+      const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
+      const bankName = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+
       const todayStr = new Date().toISOString().split('T')[0];
       monthlyEntries.push({
         id: `me-${Date.now()}`,
@@ -2399,7 +2601,7 @@
         interestPaid: 0,
         principalRepaid: 0,
         datePaid: todayStr,
-        notes: `${selectedYear} ની વાર્ષિક બચત (Tick & Save)`
+        notes: `${selectedYear} ની વાર્ષિક બચત [${bankName}] (Tick & Save)`
       });
 
       transactions.push({
@@ -2408,12 +2610,13 @@
         type: 'savings',
         amount: amount,
         memberName: m.name,
-        description: `${selectedYear} ની કુલ બાકી વાર્ષિક બચત કલેક્શન જમા`
+        paymentMode: payMode,
+        description: `${selectedYear} ની વાર્ષિક બચત કલેક્શન [${bankName} માં જમા]`
       });
 
       saveToLocalStorage();
       renderAllViews();
-      alert(`${m.name} માટે વાર્ષિક બચત ₹${amount.toLocaleString()} સફળતાપૂર્વક જમા કરવામાં આવી!`);
+      alert(`${m.name} માટે વાર્ષિક બચત ₹${amount.toLocaleString()} સફળતાપૂર્વક ${bankName} માં જમા કરવામાં આવી!`);
     };
 
     window.saveCustomYearlySavings = function(memberId) {
@@ -2429,6 +2632,12 @@
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
       if (!m || mShares.length === 0) return;
 
+      const bankSel = document.getElementById('sav-bank-' + memberId);
+      const chosenBank = bankSel ? bankSel.value : 'Bank 1';
+      const isBank2 = (chosenBank === 'Bank 2' || chosenBank.includes('Bank 2') || chosenBank.includes('BOB') || chosenBank.includes('બેંક ૨') || chosenBank.includes('બેંક 2'));
+      const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
+      const bankName = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+
       const todayStr = new Date().toISOString().split('T')[0];
       monthlyEntries.push({
         id: `me-${Date.now()}`,
@@ -2439,7 +2648,7 @@
         interestPaid: 0,
         principalRepaid: 0,
         datePaid: todayStr,
-        notes: `${selectedYear} ની બચત (કસ્ટમ હપ્તો)`
+        notes: `${selectedYear} ની બચત [${bankName}] (કસ્ટમ હપ્તો)`
       });
 
       transactions.push({
@@ -2448,13 +2657,14 @@
         type: 'savings',
         amount: amount,
         memberName: m.name,
-        description: `${selectedYear} ની વાર્ષિક બચત પેટે કસ્ટમ જમા`
+        paymentMode: payMode,
+        description: `${selectedYear} ની વાર્ષિક બચત પેટે કસ્ટમ જમા [${bankName}]`
       });
 
       saveToLocalStorage();
       valInput.value = '';
       renderAllViews();
-      alert(`${m.name} માટે બચત ફાળો ₹${amount.toLocaleString()} સફળતાપૂર્વક જમા કરવામાં આવી!`);
+      alert(`${m.name} માટે બચત ફાળો ₹${amount.toLocaleString()} સફળતાપૂર્વક ${bankName} માં જમા કરવામાં આવી!`);
     };
 
     // Monthly Ledger Tab Controls & Cards
@@ -3253,6 +3463,7 @@
       const purpose = document.getElementById('disburse-purpose').value.trim() || 'વ્યક્તિગત લોન';
       const witness1 = document.getElementById('disburse-witness1').value;
       const witness2 = document.getElementById('disburse-witness2').value;
+      const selectedBank = document.getElementById('disburse-payment-mode').value;
 
       if (!memberId) {
         alert('કૃપા કરીને લોન લેનાર સભ્ય પસંદ કરો!');
@@ -3269,18 +3480,22 @@
         return;
       }
 
-      const trustCash = calculateTrustBalance();
+      const balances = calculateBankBalances();
+      const isBank2 = (selectedBank === 'Bank 2' || selectedBank.includes('Bank 2') || selectedBank.includes('BOB'));
+      const selectedBankBal = isBank2 ? balances.bank2 : balances.bank1;
+      const bankTitle = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
       const limit = mShares.length * 25000;
 
-      if (amount > trustCash) {
-        alert(`ભૂલ! ટ્રસ્ટ ભંડોળમાં પૂરતી સિલક નથી. હાલ ઉપલબ્ધ: ₹${trustCash.toLocaleString()}`);
+      if (amount > selectedBankBal) {
+        alert(`ભૂલ! ${bankTitle} માં પૂરતી સિલક નથી. હાલ ઉપલબ્ધ: ₹${selectedBankBal.toLocaleString('en-IN')}`);
         return;
       }
 
       // Check if they exceed the recommended limit (Inform but do not block admin override!)
       if (amount > limit) {
-        if (!confirm(`સૂચના: ભલામણ કરેલી સુરક્ષિત મર્યાદા ₹${limit.toLocaleString()} છે. પરંતુ એડમિન ઓવરરાઈડ સક્રિય હોવાથી લોન મંજૂર કરી શકાય છે. આગળ વધવું છે?`)) {
+        if (!confirm(`સૂચના: ભલામણ કરેલી સુરક્ષિત મર્યાદા ₹${limit.toLocaleString('en-IN')} છે. પરંતુ એડમિન ઓવરરાઈડ સક્રિય હોવાથી લોન મંજૂર કરી શકાય છે. આગળ વધવું છે?`)) {
           return;
         }
       }
@@ -3296,11 +3511,12 @@
         purpose,
         witness1,
         witness2,
+        disbursedFromBank: isBank2 ? 'Bank 2' : 'Bank 1',
         status: 'active'
       });
 
       const b = members.find(mem => mem.id === memberId);
-      const payMode = document.getElementById('disburse-payment-mode').value;
+      const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
       transactions.push({
         id: `t-${Date.now()}`,
         date,
@@ -3308,11 +3524,11 @@
         amount,
         memberName: b ? b.name : 'Unknown',
         paymentMode: payMode,
-        description: `નવી લોન મંજૂર: ${purpose} (${rate === 0 ? 'વ્યાજ વગર' : rate + '% વ્યાજ'})`
+        description: `નવી લોન ચૂકવણી: ${purpose} [${bankTitle} માંથી કપાત] (${rate === 0 ? 'વ્યાજ વગર' : rate + '% વ્યાજ'})`
       });
 
       saveToLocalStorage();
-      alert('લોન ચુકવણી સફળતાપૂર્વક મંજૂર થઈ ગઈ!');
+      alert(`લોન ₹${amount.toLocaleString('en-IN')} ${bankTitle} માંથી સફળતાપૂર્વક ચૂકવાઈ અને કપાત થઈ!`);
       document.getElementById('form-disburse').reset();
       document.getElementById('disburse-info-box').style.display = 'none';
       closeModal('modal-disburse');
@@ -3562,15 +3778,28 @@
         shares = [];
         loans = [];
         monthlyEntries = [];
-        transactions = [{
-          id: 't-1',
-          date: new Date().toISOString().split('T')[0],
-          type: 'other_income',
-          amount: 150000,
-          memberName: 'બલાઢા ટ્રસ્ટ (Trust Fund)',
-          homeAddress: 'મુખ્ય ઓફિસ',
-          description: 'શરૂઆતની સેવિંગ્સ મૂડી (Starting Capital Deposit)'
-        }];
+        transactions = [
+          {
+            id: 't-1',
+            date: new Date().toISOString().split('T')[0],
+            type: 'other_income',
+            amount: 75000,
+            memberName: 'બલાઢા ટ્રસ્ટ (SBI Bank 1)',
+            paymentMode: 'ઓનલાઈન (Bank 1)',
+            homeAddress: 'મુખ્ય ઓફિસ',
+            description: 'શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)'
+          },
+          {
+            id: 't-2',
+            date: new Date().toISOString().split('T')[0],
+            type: 'other_income',
+            amount: 75000,
+            memberName: 'બલાઢા ટ્રસ્ટ (BOB Bank 2)',
+            paymentMode: 'ઓનલાઈન (Bank 2)',
+            homeAddress: 'મુખ્ય ઓફિસ',
+            description: 'શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)'
+          }
+        ];
 
         saveToLocalStorage();
         alert('ડેટાબેઝ સફળતાપૂર્વક શૂન્ય (0) થયો છે!');
