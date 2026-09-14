@@ -124,12 +124,23 @@
       color: var(--text-main);
     }
 
+    /* Main App Shell Layout */
+    #app-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      width: 100%;
+    }
+
     /* Content view wrapper */
     main {
       flex: 1;
+      display: flex;
+      flex-direction: column;
       padding: 16px;
       overflow-y: auto;
-      padding-bottom: 90px;
+      padding-bottom: 24px;
     }
 
     /* Tab Buttons & Bottom Nav */
@@ -138,6 +149,7 @@
       bottom: 0;
       left: 0;
       right: 0;
+      margin-top: auto;
       height: 68px;
       background-color: #ffffff;
       border-top: 1px solid var(--border-main);
@@ -146,6 +158,7 @@
       align-items: center;
       z-index: 100;
       padding-bottom: env(safe-area-inset-bottom, 2px);
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
     }
     .nav-btn {
       background: none;
@@ -626,42 +639,58 @@
     
     <!-- 0. LOGIN VIEW -->
     <div id="view-login" style="padding: 24px 14px; max-width: 440px; margin: 0 auto; min-height: 85vh; display: flex; flex-direction: column; justify-content: center;">
+      <!-- Top Language Toggle Button for Login Screen -->
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+        <button id="login-lang-toggle-btn" type="button" onclick="toggleLanguage()" style="background: #ffffff; border: 1px solid #e2e8f0; padding: 5px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; cursor: pointer; color: #1e293b; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #2563eb;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span class="lang-toggle-text">ENG</span>
+        </button>
+      </div>
+
       <!-- Logo & Title -->
       <div style="text-align: center; margin-bottom: 24px;">
         <div style="width: 58px; height: 58px; background: linear-gradient(135deg, #1d4ed8, #2563eb); color: #ffffff; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(37,99,235,0.3);">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </div>
-        <h2 style="font-size: 21px; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.3px;">બલાઢા ક્રેડિટ સોસાયટી</h2>
-        <p style="font-size: 11.5px; color: #64748b; margin: 4px 0 0 0; font-weight: 600;">શ્રી બલાઢા મિત્ર મંડળ</p>
+        <h2 style="font-size: 21px; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.3px;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h2>
+        <p style="font-size: 11.5px; color: #64748b; margin: 4px 0 0 0; font-weight: 600;" data-gu="શ્રી બલાઢા મિત્ર મંડળ" data-en="Shree Baladha Mitra Mandal">શ્રી બલાઢા મિત્ર મંડળ</p>
       </div>
 
       <!-- Login Card -->
       <div class="card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
         <!-- Mode Switcher -->
         <div class="segmented-control" style="margin-bottom: 18px;">
-          <button type="button" class="segment-btn active" id="btn-tab-member-login" onclick="switchLoginMode('member')">
-            👤 સભ્ય લોગીન (Member)
+          <button type="button" class="segment-btn active" id="btn-tab-member-login" onclick="switchLoginMode('member')" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-gu="સભ્ય લોગીન (Member)" data-en="Member Login">સભ્ય લોગીન (Member)</span>
           </button>
-          <button type="button" class="segment-btn" id="btn-tab-admin-login" onclick="switchLoginMode('admin')">
-            🔐 એડમિન લોગીન (Admin)
+          <button type="button" class="segment-btn" id="btn-tab-admin-login" onclick="switchLoginMode('admin')" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span data-gu="એડમિન લોગીન (Admin)" data-en="Admin Login">એડમિન લોગીન (Admin)</span>
           </button>
         </div>
 
         <!-- 1. MEMBER LOGIN FORM -->
         <form id="form-member-login" onsubmit="handleMemberLogin(event)" class="space-y-3">
           <div class="form-group">
-            <label class="form-label" style="font-weight: 700; color: #1e293b;">નોંધાયેલ મોબાઈલ નંબર (Mobile Number) *</label>
-            <input type="tel" id="input-member-login-phone" class="form-input" required placeholder="દા.ત. 9876543210" style="font-size: 16px; font-weight: 700; color: #0f172a; letter-spacing: 0.5px;" autofocus>
-            <p style="font-size: 9.5px; color: #64748b; margin-top: 4px;">
-              💡 સોસાયટીમાં નોંધાયેલ તમારો 10 આંકડાનો મોબાઈલ નંબર દાખલ કરીને સીધા તમારા ખાતામાં લોગિન કરો.
-            </p>
+            <label class="form-label" style="font-weight: 700; color: #1e293b;" data-gu="નોંધાયેલ મોબાઈલ નંબર (Mobile Number) *" data-en="Registered Mobile Number *">નોંધાયેલ મોબાઈલ નંબર (Mobile Number) *</label>
+            <input type="tel" id="input-member-login-phone" class="form-input" required placeholder="દા.ત. 9876543210" data-gu-placeholder="દા.ત. 9876543210" data-en-placeholder="e.g. 9876543210" style="font-size: 16px; font-weight: 700; color: #0f172a; letter-spacing: 0.5px;" autofocus>
+            <div style="display: flex; align-items: flex-start; gap: 5px; margin-top: 4px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <p style="font-size: 9.5px; color: #64748b; margin: 0;" data-gu="સોસાયટીમાં નોંધાયેલ તમારો 10 આંકડાનો મોબાઈલ નંબર દાખલ કરીને સીધા તમારા ખાતામાં લોગિન કરો." data-en="Enter your registered 10-digit mobile number to view your personal account.">
+                સોસાયટીમાં નોંધાયેલ તમારો 10 આંકડાનો મોબાઈલ નંબર દાખલ કરીને સીધા તમારા ખાતામાં લોગિન કરો.
+              </p>
+            </div>
           </div>
 
-          <div id="login-member-error" class="hidden" style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 600;">
-            ⚠️ આ મોબાઈલ નંબર સોસાયટીમાં નોંધાયેલ નથી! કૃપા કરીને સાચો નંબર નાખો અથવા એડમિનનો સંપર્ક કરો.
+          <div id="login-member-error" class="hidden" style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="login-member-error-text" data-gu="આ મોબાઈલ નંબર સોસાયટીમાં નોંધાયેલ નથી! કૃપા કરીને સાચો નંબર નાખો અથવા એડમિનનો સંપર્ક કરો." data-en="This mobile number is not registered! Please enter a valid number or contact Admin.">
+              આ મોબાઈલ નંબર સોસાયટીમાં નોંધાયેલ નથી! કૃપા કરીને સાચો નંબર નાખો અથવા એડમિનનો સંપર્ક કરો.
+            </span>
           </div>
 
-          <button type="submit" class="btn btn-gradient" style="background: #2563eb; width: 100%; padding: 12px; font-size: 13px; font-weight: 700; margin-top: 6px;">
+          <button type="submit" class="btn btn-gradient" style="background: #2563eb; width: 100%; padding: 12px; font-size: 13px; font-weight: 700; margin-top: 6px;" data-gu="સભ્ય ખાતું ખોલો (Login) →" data-en="Open Member Account (Login) →">
             સભ્ય ખાતું ખોલો (Login) →
           </button>
         </form>
@@ -669,23 +698,29 @@
         <!-- 2. ADMIN LOGIN FORM -->
         <form id="form-admin-login" onsubmit="handleAdminLogin(event)" class="space-y-3 hidden">
           <div class="form-group">
-            <label class="form-label" style="font-weight: 700; color: #1e293b;">એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *</label>
-            <input type="text" id="input-admin-login-user" class="form-input" required placeholder="મોબાઈલ અથવા admin" value="admin" style="font-size: 13px; font-weight: 600;">
+            <label class="form-label" style="font-weight: 700; color: #1e293b;" data-gu="એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *" data-en="Admin Mobile / Username *">એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *</label>
+            <input type="text" id="input-admin-login-user" class="form-input" required placeholder="મોબાઈલ અથવા admin" data-gu-placeholder="મોબાઈલ અથવા admin" data-en-placeholder="Mobile or admin" value="admin" style="font-size: 13px; font-weight: 600;">
           </div>
 
           <div class="form-group">
-            <label class="form-label" style="font-weight: 700; color: #1e293b;">એડમિન પાસવર્ડ (Password) *</label>
-            <input type="password" id="input-admin-login-pass" class="form-input" required placeholder="પાસવર્ડ દાખલ કરો" style="font-size: 14px;">
-            <p style="font-size: 8.5px; color: #64748b; margin-top: 3px;">
-              🔑 ડિફોલ્ટ પાસવર્ડ: <b>admin@123</b>
-            </p>
+            <label class="form-label" style="font-weight: 700; color: #1e293b;" data-gu="એડમિન પાસવર્ડ (Password) *" data-en="Admin Password *">એડમિન પાસવર્ડ (Password) *</label>
+            <input type="password" id="input-admin-login-pass" class="form-input" required placeholder="પાસવર્ડ દાખલ કરો" data-gu-placeholder="પાસવર્ડ દાખલ કરો" data-en-placeholder="Enter Password" style="font-size: 14px;">
+            <div style="display: flex; align-items: center; gap: 5px; margin-top: 4px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3"/></svg>
+              <p style="font-size: 8.5px; color: #64748b; margin: 0;">
+                ડિફોલ્ટ પાસવર્ડ: <b>admin@123</b>
+              </p>
+            </div>
           </div>
 
-          <div id="login-admin-error" class="hidden" style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 600;">
-            ⚠️ ખોટો પાસવર્ડ! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો (admin@123).
+          <div id="login-admin-error" class="hidden" style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="login-admin-error-text" data-gu="ખોટો પાસવર્ડ! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો (admin@123)." data-en="Incorrect password! Please enter the correct password (admin@123).">
+              ખોટો પાસવર્ડ! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો (admin@123).
+            </span>
           </div>
 
-          <button type="submit" class="btn btn-gradient" style="background: #0f172a; width: 100%; padding: 12px; font-size: 13px; font-weight: 700; margin-top: 6px;">
+          <button type="submit" class="btn btn-gradient" style="background: #0f172a; width: 100%; padding: 12px; font-size: 13px; font-weight: 700; margin-top: 6px;" data-gu="એડમિન પોર્ટલ લોગીન (Admin Login) →" data-en="Admin Portal Login →">
             એડમિન પોર્ટલ લોગીન (Admin Login) →
           </button>
         </form>
@@ -706,22 +741,25 @@
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <!-- Language Switcher Button -->
-          <button id="lang-toggle-btn" onclick="toggleLanguage()" style="background: #ffffff; border: 1px solid #e5e7eb; padding: 5px 8px; border-radius: 8px; font-size: 10px; font-weight: 600; cursor: pointer; color: #374151; display: flex; align-items: center; gap: 4px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02);" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='#ffffff'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #6b7280;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <!-- Clean Single Menu Button with Hamburger Bars Icon -->
+          <button id="btn-open-side-menu" onclick="openSideMenu()" title="મેનૂ (Menu)" style="background: #ffffff; border: 1px solid #e2e8f0; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; color: #1e293b; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='#ffffff'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+
+          <!-- Language Switcher Button (Preserved for language toggle & JS bindings) -->
+          <button id="lang-toggle-btn" onclick="toggleLanguage()" class="hidden" style="display: none;">
             <span id="lang-toggle-text">ENG</span>
           </button>
-          
-          <!-- Admin Trust Balance Badge -->
-          <div class="trust-balance-badge" id="trust-balance-badge">
+
+          <!-- Hidden Admin Trust Balance & Member Header tags (preserved for JS selectors without UI clutter) -->
+          <div class="trust-balance-badge hidden" id="trust-balance-badge" style="display: none;">
             <div class="trust-balance-lbl" id="top-trust-lbl" data-gu="સોસાયટી મુખ્ય ફંડ" data-en="Society Main Fund">સોસાયટી મુખ્ય ફંડ</div>
             <div class="trust-balance-val" id="top-cash-balance">₹1,50,000</div>
           </div>
 
-          <!-- Member Header Badge -->
-          <div class="trust-balance-badge hidden" id="member-header-badge" style="background-color: #eff6ff; border-color: #bfdbfe;">
+          <div class="trust-balance-badge hidden" id="member-header-badge" style="display: none;">
             <div class="trust-balance-lbl" style="color: #1e40af; font-size: 8px;">સભ્ય ખાતું</div>
-            <div class="trust-balance-val" id="member-header-name" style="color: #1d4ed8; font-size: 11px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">સભ્ય</div>
+            <div class="trust-balance-val" id="member-header-name" style="color: #1d4ed8; font-size: 11px;">સભ્ય</div>
           </div>
         </div>
       </header>
@@ -896,47 +934,42 @@
           <!-- MEMBER PERSONAL DASHBOARD CONTAINER (Visible only when Member is logged in) -->
           <div id="member-dashboard-content" class="space-y-4 hidden">
             <!-- Member Profile Banner -->
-            <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; border: none; padding: 16px; border-radius: 14px; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div>
-                  <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;">સભ્ય પ્રોફાઇલ</span>
-                  <h3 style="font-size: 18px; font-weight: 800; margin: 6px 0 2px 0;" id="mem-dash-name">સભ્ય નામ</h3>
-                  <p style="font-size: 10.5px; opacity: 0.9; margin: 0;" id="mem-dash-phone">મોબાઈલ: -</p>
-                  <p style="font-size: 9.5px; opacity: 0.8; margin: 2px 0 0 0;" id="mem-dash-nominee">વારસદાર: -</p>
-                </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
-                  <span style="font-size: 10px; background: rgba(255,255,255,0.25); font-weight: 700; padding: 4px 10px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.4);">
+            <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; border: none; padding: 18px 20px; border-radius: 14px; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
+              <div>
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                  <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" data-gu="સભ્ય પ્રોફાઇલ" data-en="MEMBER PROFILE">સભ્ય પ્રોફાઇલ</span>
+                  <span style="font-size: 9.5px; background: rgba(16,185,129,0.25); border: 1px solid rgba(255,255,255,0.4); color: #a7f3d0; font-weight: 700; padding: 2px 8px; border-radius: 9999px;" data-gu="સક્રિય સભ્ય ✓" data-en="Active Member ✓">
                     સક્રિય સભ્ય ✓
                   </span>
-                  <button type="button" onclick="logoutUser()" style="background: rgba(239,68,68,0.3); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; padding: 4px 10px; border-radius: 6px; font-size: 9.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                    <span>🚪</span> લૉગઆઉટ
-                  </button>
                 </div>
+                <h3 style="font-size: 19px; font-weight: 800; margin: 0 0 4px 0;" id="mem-dash-name">સભ્ય નામ</h3>
+                <p style="font-size: 11px; opacity: 0.9; margin: 0;" id="mem-dash-phone">મોબાઈલ: -</p>
+                <p style="font-size: 10px; opacity: 0.8; margin: 2px 0 0 0;" id="mem-dash-nominee">વારસદાર: -</p>
               </div>
             </div>
 
             <!-- Member Personal Stats Grid -->
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
               <div class="stat-box">
-                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;">મારા સક્રિય શેર</span>
+                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;" data-gu="મારા સક્રિય શેર" data-en="MY ACTIVE SHARES">મારા સક્રિય શેર</span>
                 <div style="font-size: 18px; font-weight: 800; color: #0f172a; margin-top: 4px;" id="mem-dash-shares-count">0 શેર</div>
                 <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;" id="mem-dash-shares-cert">પ્રમાણપત્ર નં: -</div>
               </div>
 
               <div class="stat-box">
-                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;">શેર એસેટ મૂલ્ય</span>
+                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;" data-gu="શેર એસેટ મૂલ્ય" data-en="SHARE ASSET VALUE">શેર એસેટ મૂલ્ય</span>
                 <div style="font-size: 18px; font-weight: 800; color: #059669; margin-top: 4px;" id="mem-dash-share-value">₹0</div>
-                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">મૂડી રોકાણ એસેટ</div>
+                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;" data-gu="મૂડી રોકાણ એસેટ" data-en="Capital Investment">મૂડી રોકાણ એસેટ</div>
               </div>
 
               <div class="stat-box">
-                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;">કુલ જમા બચત</span>
+                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;" data-gu="કુલ જમા બચત" data-en="TOTAL SAVINGS PAID">કુલ જમા બચત</span>
                 <div style="font-size: 18px; font-weight: 800; color: #059669; margin-top: 4px;" id="mem-dash-total-savings">₹0</div>
-                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">માસિક બચત થાપણ</div>
+                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;" data-gu="માસિક બચત થાપણ" data-en="Monthly Savings Deposit">માસિક બચત થાપણ</div>
               </div>
 
               <div class="stat-box">
-                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;">બાકી લોન રકમ</span>
+                <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;" data-gu="બાકી લોન રકમ" data-en="OUTSTANDING LOAN">બાકી લોન રકમ</span>
                 <div style="font-size: 18px; font-weight: 800; color: #dc2626; margin-top: 4px;" id="mem-dash-loan-balance">₹0</div>
                 <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;" id="mem-dash-loan-rate">વ્યાજ દર: 0%</div>
               </div>
@@ -946,26 +979,26 @@
             <div class="card" id="mem-dash-savings-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <h4 style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 5px;">
-                  <span>📅</span> વાર્ષિક બચત સ્થિતિ (<span id="mem-dash-current-year">2026</span>)
+                  <span>📅</span> <span data-gu="વાર્ષિક બચત સ્થિતિ" data-en="Yearly Savings Status">વાર્ષિક બચત સ્થિતિ</span> (<span id="mem-dash-current-year">2026</span>)
                 </h4>
                 <span id="mem-dash-savings-status-badge" class="certificate-pill" style="background: #ecfdf5; color: #047857; border-color: #d1fae5;">
                   નિયમિત
                 </span>
               </div>
-              <div id="mem-dash-savings-alert" class="hidden" style="background: #fef2f2; border: 1px solid #fee2e2; padding: 6px 10px; border-radius: 8px; font-size: 9.5px; color: #dc2626; margin-bottom: 8px; font-weight: 600;">
+              <div id="mem-dash-savings-alert" class="hidden" style="background: #fef2f2; border: 1px solid #fee2e2; padding: 6px 10px; border-radius: 8px; font-size: 9.5px; color: #dc2626; margin-bottom: 8px; font-weight: 600;" data-gu="🔔 ચાલુ માસની બચત (₹૫૦ પ્રતિ શેર) ભરવાની બાકી છે!" data-en="🔔 Current month's savings (₹50 per share) is pending!">
                 🔔 ચાલુ માસની બચત (₹૫૦ પ્રતિ શેર) ભરવાની બાકી છે!
               </div>
               <div style="display: flex; justify-content: space-between; font-size: 10px; background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <span>ચાલુ વર્ષે ભરેલ: <b id="mem-dash-savings-paid" style="color: #059669;">₹0</b></span>
-                <span>વાર્ષિક લક્ષ્ય: <b id="mem-dash-savings-target">₹600</b></span>
-                <span>બાકી લિમિટ: <b id="mem-dash-savings-pending" style="color: #dc2626;">₹0</b></span>
+                <span><span data-gu="ચાલુ વર્ષે ભરેલ:" data-en="Paid this year:">ચાલુ વર્ષે ભરેલ:</span> <b id="mem-dash-savings-paid" style="color: #059669;">₹0</b></span>
+                <span><span data-gu="વાર્ષિક લક્ષ્ય:" data-en="Yearly Target:">વાર્ષિક લક્ષ્ય:</span> <b id="mem-dash-savings-target">₹600</b></span>
+                <span><span data-gu="બાકી લિમિટ:" data-en="Pending Limit:">બાકી લિમિટ:</span> <b id="mem-dash-savings-pending" style="color: #dc2626;">₹0</b></span>
               </div>
             </div>
 
             <!-- Member's Loan Book Card -->
             <div class="card" id="mem-dash-loan-card">
               <h4 style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0 0 8px 0; display: flex; align-items: center; gap: 5px;">
-                <span>💳</span> મારી લોન વિગત (My Loan Details)
+                <span>💳</span> <span data-gu="મારી લોન વિગત" data-en="My Loan Details">મારી લોન વિગત</span>
               </h4>
               <div id="mem-dash-loan-details-box">
                 <!-- Injected dynamically -->
@@ -976,7 +1009,7 @@
             <div class="card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px;">
                 <h4 style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 5px;">
-                  <span>📖</span> મારી પાસબુક (Payment History)
+                  <span>📖</span> <span data-gu="મારી પાસબુક (વ્યવહાર હિસાબ)" data-en="My Passbook (Payment History)">મારી પાસબુક (વ્યવહાર હિસાબ)</span>
                 </h4>
                 <span style="font-size: 9px; color: #64748b;" id="mem-dash-tx-count">0 વ્યવહારો</span>
               </div>
@@ -1432,6 +1465,68 @@
           <button type="submit" class="btn btn-gradient" style="flex: 2; background-color: #2563eb;" id="btn-submit-unified">વ્યવહાર સેવ કરો</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- SIDE PROFILE & NAVIGATION DRAWER -->
+  <div id="side-drawer-backdrop" class="modal-backdrop hidden" onclick="closeSideMenu()" style="z-index: 9999; background: rgba(15,23,42,0.5); backdrop-filter: blur(3px);">
+    <div id="side-drawer" onclick="event.stopPropagation()" style="position: fixed; top: 0; right: 0; bottom: 0; width: 300px; max-width: 86vw; background: #ffffff; box-shadow: -6px 0 28px rgba(0,0,0,0.18); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 18px; overflow-y: auto;">
+      <div>
+        <!-- Top Title Bar with Close Button -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">
+              <span id="side-drawer-avatar-icon" style="display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+            </div>
+            <div>
+              <h4 style="font-size: 13.5px; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.2;">બલાઢા મિત્ર મંડળ</h4>
+              <span style="font-size: 10px; color: #64748b; font-weight: 600;" id="side-drawer-role-lbl">સભ્ય પોર્ટલ</span>
+            </div>
+          </div>
+          <button onclick="closeSideMenu()" style="background: #f1f5f9; border: none; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 700; color: #475569; display: flex; align-items: center; justify-content: center; transition: all 0.15s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">✕</button>
+        </div>
+
+        <!-- User Profile Card -->
+        <div style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+          <div style="font-size: 9px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;" id="side-drawer-card-tag" data-gu="લૉગિન સભ્ય" data-en="LOGGED IN USER">લૉગિન સભ્ય</div>
+          <h3 style="font-size: 15.5px; font-weight: 800; color: #0f172a; margin: 0 0 4px 0;" id="side-drawer-user-name">સભ્ય નામ</h3>
+          <p style="font-size: 11px; color: #475569; margin: 0 0 3px 0;" id="side-drawer-user-phone">મોબાઈલ: -</p>
+          <p style="font-size: 10.5px; color: #64748b; margin: 0 0 8px 0;" id="side-drawer-user-nominee">વારસદાર: -</p>
+          <span style="font-size: 9.5px; background: #ecfdf5; color: #047857; font-weight: 700; padding: 3px 9px; border-radius: 9999px; border: 1px solid #a7f3d0; display: inline-block;" id="side-drawer-status-badge" data-gu="સક્રિય સભ્ય ✓" data-en="Active Member ✓">
+            સક્રિય સભ્ય ✓
+          </span>
+        </div>
+
+        <!-- Navigation Links inside Side Menu -->
+        <div style="margin-bottom: 14px;">
+          <div style="font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-left: 4px;" data-gu="મેનૂ નેવિગેશન" data-en="MENU NAVIGATION">મેનૂ નેવિગેશન</div>
+          
+          <div class="space-y-1" id="side-drawer-nav-items">
+            <!-- Populated dynamically based on Admin vs Member -->
+          </div>
+        </div>
+
+        <!-- Language Switcher in Drawer -->
+        <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: 8px;">
+          <button onclick="toggleLanguage();" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: #ffffff; border: 1px solid #e2e8f0; padding: 10px 12px; border-radius: 9px; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; transition: all 0.2s;" onmouseover="this.style.borderColor='#cbd5e1'" onmouseout="this.style.borderColor='#e2e8f0'">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span data-gu="ભાષા બદલો (Language)" data-en="Switch Language">ભાષા બદલો (Language)</span>
+            </span>
+            <span class="lang-toggle-text" style="font-weight: 800; color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 6px; border: 1px solid #dbeafe;">ENG</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Prominent Logout Button -->
+      <div style="border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 16px;">
+        <button onclick="closeSideMenu(); logoutUser();" class="btn" style="width: 100%; background-color: #dc2626; color: #ffffff; padding: 12px; font-size: 12.5px; font-weight: 700; border-radius: 9px; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(220,38,38,0.22); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#b91c1c'" onmouseout="this.style.backgroundColor='#dc2626'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span data-gu="લૉગઆઉટ કરો (Logout)" data-en="Logout Account">લૉગઆઉટ કરો (Logout)</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -2130,7 +2225,7 @@
 
       if (!cleaned) {
         if (memberErr) {
-          memberErr.textContent = '⚠️ કૃપા કરીને તમારો 10 આંકડાનો મોબાઈલ નંબર દાખલ કરો.';
+          memberErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>કૃપા કરીને તમારો 10 આંકડાનો મોબાઈલ નંબર દાખલ કરો.</span>`;
           memberErr.classList.remove('hidden');
         }
         return;
@@ -2155,7 +2250,7 @@
         applyAuth();
       } else {
         if (memberErr) {
-          memberErr.innerHTML = `⚠️ મોબાઈલ નંબર <b>${rawPhone}</b> સોસાયટીમાં નોંધાયેલ નથી! કૃપા કરીને સાચો નંબર નાખો અથવા એડમિનનો સંપર્ક કરો.`;
+          memberErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>મોબાઈલ નંબર <b>${rawPhone}</b> સોસાયટીમાં નોંધાયેલ નથી! કૃપા કરીને સાચો નંબર નાખો અથવા એડમિનનો સંપર્ક કરો.</span>`;
           memberErr.classList.remove('hidden');
         }
       }
@@ -2178,10 +2273,101 @@
         applyAuth();
       } else {
         if (adminErr) {
-          adminErr.innerHTML = '⚠️ ખોટો પાસવર્ડ! કૃપા કરીને સાચો એડમિન પાસવર્ડ દાખલ કરો (admin@123).';
+          adminErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>ખોટો પાસવર્ડ! કૃપા કરીને સાચો એડમિન પાસવર્ડ દાખલ કરો (admin@123).</span>`;
           adminErr.classList.remove('hidden');
         }
       }
+    };
+
+    window.openSideMenu = function() {
+      const drawer = document.getElementById('side-drawer-backdrop');
+      if (drawer) drawer.classList.remove('hidden');
+
+      const isGuj = currentLang === 'guj';
+      const nameEl = document.getElementById('side-drawer-user-name');
+      const phoneEl = document.getElementById('side-drawer-user-phone');
+      const nomEl = document.getElementById('side-drawer-user-nominee');
+      const roleLbl = document.getElementById('side-drawer-role-lbl');
+      const avatarIcon = document.getElementById('side-drawer-avatar-icon');
+      const cardTag = document.getElementById('side-drawer-card-tag');
+      const statusBadge = document.getElementById('side-drawer-status-badge');
+      const navContainer = document.getElementById('side-drawer-nav-items');
+
+      if (currentAuthUser && currentAuthUser.role === 'member') {
+        const m = members.find(mem => mem.id === currentAuthUser.memberId || mem.phone === currentAuthUser.phone || mem.name === currentAuthUser.memberName);
+        if (nameEl) nameEl.textContent = currentAuthUser.memberName;
+        if (phoneEl) phoneEl.textContent = isGuj ? `મોબાઈલ: ${currentAuthUser.phone || (m && m.phone) || 'નથી'}` : `Mobile: ${currentAuthUser.phone || (m && m.phone) || 'N/A'}`;
+        if (nomEl) nomEl.textContent = isGuj ? `વારસદાર: ${(m && m.nomineeName) || 'નથી'}` : `Nominee: ${(m && m.nomineeName) || 'N/A'}`;
+        if (roleLbl) roleLbl.textContent = isGuj ? 'સભ્ય પોર્ટલ' : 'Member Portal';
+        if (avatarIcon) avatarIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+        if (cardTag) cardTag.textContent = isGuj ? 'લૉગિન સભ્ય' : 'LOGGED IN MEMBER';
+        if (statusBadge) {
+          statusBadge.textContent = isGuj ? 'સક્રિય સભ્ય ✓' : 'Active Member ✓';
+          statusBadge.style.background = '#ecfdf5';
+          statusBadge.style.color = '#047857';
+          statusBadge.style.borderColor = '#a7f3d0';
+        }
+
+        if (navContainer) {
+          navContainer.innerHTML = `
+            <button onclick="closeSideMenu(); setTab('dashboard');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              <span>${isGuj ? 'મારું ડેશબોર્ડ' : 'My Dashboard'}</span>
+            </button>
+            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-savings-card'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+              <span>${isGuj ? 'મારા શેર અને બચત' : 'My Shares & Savings'}</span>
+            </button>
+            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-loan-card'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+              <span>${isGuj ? 'મારી લોન વિગત' : 'My Loan Details'}</span>
+            </button>
+            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-passbook-list'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+              <span>${isGuj ? 'મારી પાસબુક સ્ટેટમેન્ટ' : 'My Passbook Entries'}</span>
+            </button>
+          `;
+        }
+      } else {
+        if (nameEl) nameEl.textContent = isGuj ? 'શ્રી બલાઢા મિત્ર મંડળ' : 'Shree Baladha Mitra Mandal';
+        if (phoneEl) phoneEl.textContent = isGuj ? 'રોલ: મુખ્ય સુપર એડમિન' : 'Role: Super Admin';
+        if (nomEl) nomEl.textContent = isGuj ? 'સત્તા: સંપૂર્ણ વહીવટી એક્સેસ' : 'Access: Full Management';
+        if (roleLbl) roleLbl.textContent = isGuj ? 'એડમિન પેનલ' : 'Admin Panel';
+        if (avatarIcon) avatarIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+        if (cardTag) cardTag.textContent = isGuj ? 'એડમિન કંટ્રોલ' : 'ADMIN CONTROL';
+        if (statusBadge) {
+          statusBadge.textContent = isGuj ? 'સંપૂર્ણ એક્સેસ ✓' : 'Full Access ✓';
+          statusBadge.style.background = '#eff6ff';
+          statusBadge.style.color = '#1d4ed8';
+          statusBadge.style.borderColor = '#bfdbfe';
+        }
+
+        if (navContainer) {
+          navContainer.innerHTML = `
+            <button onclick="closeSideMenu(); setTab('dashboard');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              <span>${isGuj ? 'મુખ્ય ડેશબોર્ડ' : 'Main Dashboard'}</span>
+            </button>
+            <button onclick="closeSideMenu(); setTab('members');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>${isGuj ? 'સભ્યો અને શેર' : 'Members & Shares'}</span>
+            </button>
+            <button onclick="closeSideMenu(); setTab('ledger');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+              <span>${isGuj ? 'ચોપડા અને નાણાકીય હિસાબ' : 'Books & Financial Ledger'}</span>
+            </button>
+            <button onclick="closeSideMenu(); setTab('backup');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span>${isGuj ? 'સેટિંગ્સ અને બેકઅપ' : 'Settings & Backup'}</span>
+            </button>
+          `;
+        }
+      }
+    };
+
+    window.closeSideMenu = function() {
+      const drawer = document.getElementById('side-drawer-backdrop');
+      if (drawer) drawer.classList.add('hidden');
     };
 
     window.logoutUser = function() {
@@ -2191,6 +2377,7 @@
       if (memberPhoneInp) memberPhoneInp.value = '';
       const adminPassInp = document.getElementById('input-admin-login-pass');
       if (adminPassInp) adminPassInp.value = '';
+      closeSideMenu();
       applyAuth();
     };
 
@@ -2446,11 +2633,10 @@
     }
 
     function applyLanguage() {
-      const btn = document.getElementById('lang-toggle-btn');
-      const text = document.getElementById('lang-toggle-text');
-      if (btn && text) {
+      // Update toggle buttons text
+      document.querySelectorAll('.lang-toggle-text, #lang-toggle-text').forEach(text => {
         text.textContent = currentLang === 'guj' ? 'ENG' : 'ગુજરાતી';
-      }
+      });
       
       // Update all elements with data-gu and data-en
       document.querySelectorAll('[data-gu]').forEach(el => {
@@ -2482,22 +2668,23 @@
       const activeLoan = loans.find(l => l.memberId === m.id && l.status === 'active');
       const currentLoanBal = activeLoan ? activeLoan.currentBalance : 0;
       const loanRate = activeLoan ? activeLoan.interestRate : 0;
+      const isGuj = currentLang === 'guj';
 
       // 1. Profile Banner
       const nameEl = document.getElementById('mem-dash-name');
       if (nameEl) nameEl.textContent = m.name;
       const phoneEl = document.getElementById('mem-dash-phone');
-      if (phoneEl) phoneEl.textContent = `મોબાઈલ: ${m.phone || 'નથી'}`;
+      if (phoneEl) phoneEl.textContent = isGuj ? `મોબાઈલ: ${m.phone || 'નથી'}` : `Mobile: ${m.phone || 'N/A'}`;
       const nomEl = document.getElementById('mem-dash-nominee');
-      if (nomEl) nomEl.textContent = `વારસદાર (Nominee): ${m.nomineeName || 'નથી'}`;
+      if (nomEl) nomEl.textContent = isGuj ? `વારસદાર (Nominee): ${m.nomineeName || 'નથી'}` : `Nominee: ${m.nomineeName || 'N/A'}`;
 
       // 2. Stats Grid
       const shCountEl = document.getElementById('mem-dash-shares-count');
-      if (shCountEl) shCountEl.textContent = `${mShares.length} શેર`;
+      if (shCountEl) shCountEl.textContent = isGuj ? `${mShares.length} શેર` : `${mShares.length} Shares`;
       const shCertEl = document.getElementById('mem-dash-shares-cert');
       if (shCertEl) {
-        const certNos = mShares.map(s => s.certificateNumber).filter(Boolean).join(', ');
-        shCertEl.textContent = certNos ? `સર્ટિ: ${certNos}` : `કુલ શેર: ${mShares.length}`;
+        const certNos = mShares.map(s => s.shareNumber || s.certificateNumber).filter(Boolean).join(', ');
+        shCertEl.textContent = certNos ? (isGuj ? `સર્ટિ: ${certNos}` : `Cert: ${certNos}`) : (isGuj ? `કુલ શેર: ${mShares.length}` : `Total Shares: ${mShares.length}`);
       }
       const shValEl = document.getElementById('mem-dash-share-value');
       if (shValEl) shValEl.textContent = `₹${totalShareAssetVal.toLocaleString('en-IN')}`;
@@ -2506,7 +2693,11 @@
       const loanBalEl = document.getElementById('mem-dash-loan-balance');
       if (loanBalEl) loanBalEl.textContent = `₹${currentLoanBal.toLocaleString('en-IN')}`;
       const loanRateEl = document.getElementById('mem-dash-loan-rate');
-      if (loanRateEl) loanRateEl.textContent = activeLoan ? `વ્યાજ દર: ${loanRate}% (${loanRate === 0 ? '0% વ્યાજમુક્ત' : 'માસિક ૧%'})` : 'ચાલુ લોન નથી';
+      if (loanRateEl) {
+        loanRateEl.textContent = activeLoan 
+          ? (isGuj ? `વ્યાજ દર: ${loanRate}% (${loanRate === 0 ? '0% વ્યાજમુક્ત' : 'માસિક ૧%'})` : `Rate: ${loanRate}% (${loanRate === 0 ? '0% Interest-free' : '1% Monthly'})`) 
+          : (isGuj ? 'ચાલુ લોન નથી' : 'No active loan');
+      }
 
       // 3. Yearly Savings Tracker
       const curYear = new Date().getFullYear().toString();
@@ -2530,12 +2721,12 @@
           badgeEl.style.background = '#fef2f2';
           badgeEl.style.color = '#dc2626';
           badgeEl.style.borderColor = '#fee2e2';
-          badgeEl.textContent = '🔔 માસિક પેન્ડિંગ (Pending)';
+          badgeEl.textContent = isGuj ? '🔔 માસિક પેન્ડિંગ (Pending)' : '🔔 Monthly Pending';
         } else {
           badgeEl.style.background = '#ecfdf5';
           badgeEl.style.color = '#047857';
           badgeEl.style.borderColor = '#d1fae5';
-          badgeEl.textContent = '✓ નિયમિત (Regular)';
+          badgeEl.textContent = isGuj ? '✓ નિયમિત (Regular)' : '✓ Regular';
         }
       }
       if (alertEl) {
@@ -2561,28 +2752,33 @@
             ? Math.min(100, Math.round(((activeLoan.principalAmount - activeLoan.currentBalance) / activeLoan.principalAmount) * 100))
             : 0;
 
+          const w1Member = members.find(mem => mem.id === activeLoan.witness1);
+          const w2Member = members.find(mem => mem.id === activeLoan.witness2);
+          const w1Name = w1Member ? w1Member.name : (activeLoan.witness1 || '-');
+          const w2Name = w2Member ? w2Member.name : (activeLoan.witness2 || '-');
+
           loanBox.innerHTML = `
             <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-size: 11px; font-weight: 700; color: #1e293b;">
-                  લોન નંબર: #${activeLoan.id}
+                  ${isGuj ? `લોન નંબર: #${activeLoan.id}` : `Loan ID: #${activeLoan.id}`}
                 </span>
                 <span style="font-size: 9.5px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 6px;">
-                  ${activeLoan.interestRate === 0 ? '0% વ્યાજમુક્ત લોન' : '1% માસિક વ્યાજ'}
+                  ${activeLoan.interestRate === 0 ? (isGuj ? '0% વ્યાજમુક્ત લોન' : '0% Interest-free Loan') : (isGuj ? '1% માસિક વ્યાજ' : '1% Monthly Interest')}
                 </span>
               </div>
 
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 10px;">
                 <div style="background: #ffffff; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">મંજૂર લોન</span>
+                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'મંજૂર લોન' : 'Sanctioned'}</span>
                   <strong style="font-size: 11px; color: #0f172a;">₹${activeLoan.principalAmount.toLocaleString('en-IN')}</strong>
                 </div>
                 <div style="background: #ffffff; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">ભરેલ મુદ્દલ</span>
+                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'ભરેલ મુદ્દલ' : 'Principal Paid'}</span>
                   <strong style="font-size: 11px; color: #059669;">₹${(activeLoan.principalAmount - activeLoan.currentBalance).toLocaleString('en-IN')}</strong>
                 </div>
                 <div style="background: #ffffff; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">ચાલુ બાકી</span>
+                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'ચાલુ બાકી' : 'Balance'}</span>
                   <strong style="font-size: 11px; color: #dc2626;">₹${activeLoan.currentBalance.toLocaleString('en-IN')}</strong>
                 </div>
               </div>
@@ -2590,8 +2786,8 @@
               <!-- Progress -->
               <div style="margin-bottom: 8px;">
                 <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; margin-bottom: 3px;">
-                  <span>પરત ચુકવણી પ્રગતિ</span>
-                  <span><b>${progressPercent}%</b> ચૂકતે</span>
+                  <span>${isGuj ? 'પરત ચુકવણી પ્રગતિ' : 'Repayment Progress'}</span>
+                  <span><b>${progressPercent}%</b> ${isGuj ? 'ચૂકતે' : 'Paid'}</span>
                 </div>
                 <div style="background: #e2e8f0; height: 6px; border-radius: 9999px; overflow: hidden;">
                   <div style="background: #2563eb; height: 100%; width: ${progressPercent}%; border-radius: 9999px;"></div>
@@ -2599,16 +2795,21 @@
               </div>
 
               <div style="display: flex; justify-content: space-between; font-size: 9px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 6px;">
-                <span>મંજૂર તારીખ: ${activeLoan.disburseDate || '-'}</span>
-                <span>બેંક: ${activeLoan.disbursedFromBank || 'SBI Bank 1'}</span>
+                <span>${isGuj ? `મંજૂર તારીખ: ${activeLoan.disburseDate || '-'}` : `Disbursed: ${activeLoan.disburseDate || '-'}`}</span>
+                <span>${isGuj ? `હેતુ: ${activeLoan.purpose || 'વ્યક્તિગત લોન'}` : `Purpose: ${activeLoan.purpose || 'Personal Loan'}`}</span>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #334155; background: #ffffff; padding: 6px 8px; border-radius: 6px; border: 1px solid #e2e8f0; margin-top: 6px;">
+                <span><b>${isGuj ? 'સાક્ષી ૧:' : 'Witness 1:'}</b> ${w1Name}</span>
+                <span><b>${isGuj ? 'સાક્ષી ૨:' : 'Witness 2:'}</b> ${w2Name}</span>
               </div>
             </div>
           `;
         } else {
           loanBox.innerHTML = `
             <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 16px; text-align: center; color: #64748b;">
-              <p style="font-size: 11px; font-weight: 600; color: #059669; margin: 0 0 4px 0;">✓ હાલ કોઈ બાકી લોન નથી</p>
-              <p style="font-size: 9px; color: #94a3b8; margin: 0;">તમારું ખાતું સંપૂર્ણપણે ક્લીયર છે. મહત્તમ શેર લિમિટ: ₹${(mShares.length * 25000).toLocaleString('en-IN')}</p>
+              <p style="font-size: 11px; font-weight: 600; color: #059669; margin: 0 0 4px 0;">${isGuj ? '✓ હાલ કોઈ બાકી લોન નથી' : '✓ No outstanding loans'}</p>
+              <p style="font-size: 9px; color: #94a3b8; margin: 0;">${isGuj ? `તમારું ખાતું સંપૂર્ણપણે ક્લીયર છે. મહત્તમ શેર લિમિટ: ₹${(mShares.length * 25000).toLocaleString('en-IN')}` : `Your account is completely clear. Max share loan limit: ₹${(mShares.length * 25000).toLocaleString('en-IN')}`}</p>
             </div>
           `;
         }
@@ -2617,24 +2818,24 @@
       // 5. Personal Passbook / Payment History
       const txList = getMemberTransactions(m.name);
       const txCountEl = document.getElementById('mem-dash-tx-count');
-      if (txCountEl) txCountEl.textContent = `${txList.length} વ્યવહારો`;
+      if (txCountEl) txCountEl.textContent = isGuj ? `${txList.length} વ્યવહારો` : `${txList.length} Transactions`;
 
       const passbookEl = document.getElementById('mem-dash-passbook-list');
       if (passbookEl) {
         if (txList.length === 0) {
           passbookEl.innerHTML = `
             <div style="text-align: center; padding: 16px; color: #94a3b8; font-size: 10.5px;">
-              હજુ સુધી કોઈ વ્યવહાર નોંધાયેલ નથી.
+              ${isGuj ? 'હજુ સુધી કોઈ વ્યવહાર નોંધાયેલ નથી.' : 'No transactions recorded yet.'}
             </div>
           `;
         } else {
           const typesGuj = {
-            savings: 'બચત જમા',
-            loan_disbursal: 'લોન ચુકવણી',
-            loan_repayment: 'લોન પરત',
-            interest_payment: 'વ્યાજ જમા',
-            other_income: 'ટ્રસ્ટ ભંડોળ',
-            other_expense: 'મંડળી ખર્ચ',
+            savings: isGuj ? 'બચત જમા' : 'Savings Deposit',
+            loan_disbursal: isGuj ? 'લોન ચુકવણી' : 'Loan Disbursed',
+            loan_repayment: isGuj ? 'લોન પરત' : 'Loan Repayment',
+            interest_payment: isGuj ? 'વ્યાજ જમા' : 'Interest Paid',
+            other_income: isGuj ? 'ટ્રસ્ટ ભંડોળ' : 'Trust Fund',
+            other_expense: isGuj ? 'મંડળી ખર્ચ' : 'Society Expense',
           };
 
           passbookEl.innerHTML = txList.map(t => {
@@ -2652,7 +2853,7 @@
                     <span style="font-size: 8px; color: #64748b;">${t.paymentMode || ''}</span>
                   </div>
                   <div style="font-size: 9.5px; color: #334155; margin-top: 3px;">${t.description || '-'}</div>
-                  <div style="font-size: 8px; color: #94a3b8; margin-top: 2px;">તારીખ: ${t.date || '-'}</div>
+                  <div style="font-size: 8px; color: #94a3b8; margin-top: 2px;">${isGuj ? 'તારીખ: ' : 'Date: '}${t.date || '-'}</div>
                 </div>
                 <strong style="color: ${color}; font-size: 12px;">${sign}₹${(t.amount || 0).toLocaleString('en-IN')}</strong>
               </div>
