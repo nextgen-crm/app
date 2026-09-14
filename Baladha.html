@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="gu">
 <head>
@@ -649,11 +648,11 @@
 
       <!-- Logo & Title -->
       <div style="text-align: center; margin-bottom: 24px;">
-        <div style="width: 58px; height: 58px; background: linear-gradient(135deg, #1d4ed8, #2563eb); color: #ffffff; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(37,99,235,0.3);">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px;">
+          <img id="login-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
         </div>
         <h2 style="font-size: 21px; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.3px;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h2>
-        <p style="font-size: 11.5px; color: #64748b; margin: 4px 0 0 0; font-weight: 600;" data-gu="શ્રી બલાઢા મિત્ર મંડળ" data-en="Shree Baladha Mitra Mandal">શ્રી બલાઢા મિત્ર મંડળ</p>
       </div>
 
       <!-- Login Card -->
@@ -732,12 +731,8 @@
       <!-- Dynamic Header -->
       <header>
         <div class="header-logo">
-          <div class="header-heart">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
           <div class="header-title">
-            <h1>બલાઢા ક્રેડિટ સોસાયટી</h1>
-            <p>શ્રી બલાઢા મિત્ર મંડળ</p>
+            <h1 style="font-size: 15.5px; font-weight: 800; color: var(--text-main); margin: 0; line-height: 1.2;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h1>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
@@ -1474,14 +1469,11 @@
       <div>
         <!-- Top Title Bar with Close Button -->
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 16px;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">
-              <span id="side-drawer-avatar-icon" style="display: flex; align-items: center; justify-content: center;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </span>
-            </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+            <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
+            <img id="menu-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
             <div>
-              <h4 style="font-size: 13.5px; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.2;">બલાઢા મિત્ર મંડળ</h4>
+              <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.2;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h4>
               <span style="font-size: 10px; color: #64748b; font-weight: 600;" id="side-drawer-role-lbl">સભ્ય પોર્ટલ</span>
             </div>
           </div>
@@ -2329,7 +2321,7 @@
           `;
         }
       } else {
-        if (nameEl) nameEl.textContent = isGuj ? 'શ્રી બલાઢા મિત્ર મંડળ' : 'Shree Baladha Mitra Mandal';
+        if (nameEl) nameEl.textContent = isGuj ? 'બલાઢા ક્રેડિટ સોસાયટી' : 'Baladha Credit Society';
         if (phoneEl) phoneEl.textContent = isGuj ? 'રોલ: મુખ્ય સુપર એડમિન' : 'Role: Super Admin';
         if (nomEl) nomEl.textContent = isGuj ? 'સત્તા: સંપૂર્ણ વહીવટી એક્સેસ' : 'Access: Full Management';
         if (roleLbl) roleLbl.textContent = isGuj ? 'એડમિન પેનલ' : 'Admin Panel';
