@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="gu">
 <head>
@@ -633,6 +634,13 @@
   </style>
 </head>
 <body>
+
+  <!-- VIDEO SPLASH SCREEN (Plays ngavidwbg.webm for 3s at startup before opening app) -->
+  <div id="video-splash-screen" style="position: fixed; inset: 0; z-index: 999999; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease;">
+    <div style="width: 100%; max-width: 480px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <video id="splash-video-element" src="ngavidwbg.webm" autoplay muted playsinline preload="auto" style="width: 100%; max-height: 75vh; object-fit: contain; pointer-events: none; border-radius: 12px;"></video>
+    </div>
+  </div>
 
   <div id="app-root">
     
@@ -1500,7 +1508,7 @@
         </div>
 
         <!-- User Profile Card -->
-        <div style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+        <div id="side-drawer-profile-card" style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); display: none;">
           <div style="font-size: 9px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;" id="side-drawer-card-tag" data-gu="લૉગિન સભ્ય" data-en="LOGGED IN USER">લૉગિન સભ્ય</div>
           <h3 style="font-size: 15.5px; font-weight: 800; color: #0f172a; margin: 0 0 4px 0;" id="side-drawer-user-name">સભ્ય નામ</h3>
           <p style="font-size: 11px; color: #475569; margin: 0 0 3px 0;" id="side-drawer-user-phone">મોબાઈલ: -</p>
@@ -2317,8 +2325,10 @@
       const cardTag = document.getElementById('side-drawer-card-tag');
       const statusBadge = document.getElementById('side-drawer-status-badge');
       const navContainer = document.getElementById('side-drawer-nav-items');
+      const profileCard = document.getElementById('side-drawer-profile-card');
 
       if (currentAuthUser && currentAuthUser.role === 'member') {
+        if (profileCard) profileCard.style.display = 'block';
         const m = members.find(mem => mem.id === currentAuthUser.memberId || mem.phone === currentAuthUser.phone || mem.name === currentAuthUser.memberName);
         if (nameEl) nameEl.textContent = currentAuthUser.memberName;
         if (phoneEl) phoneEl.textContent = isGuj ? `મોબાઈલ: ${currentAuthUser.phone || (m && m.phone) || 'નથી'}` : `Mobile: ${currentAuthUser.phone || (m && m.phone) || 'N/A'}`;
@@ -2354,18 +2364,8 @@
           `;
         }
       } else {
-        if (nameEl) nameEl.textContent = isGuj ? 'બલાઢા ક્રેડિટ સોસાયટી' : 'Baladha Credit Society';
-        if (phoneEl) phoneEl.textContent = isGuj ? 'રોલ: મુખ્ય સુપર એડમિન' : 'Role: Super Admin';
-        if (nomEl) nomEl.textContent = isGuj ? 'સત્તા: સંપૂર્ણ વહીવટી એક્સેસ' : 'Access: Full Management';
+        if (profileCard) profileCard.style.display = 'none';
         if (roleLbl) roleLbl.textContent = isGuj ? 'એડમિન પેનલ' : 'Admin Panel';
-        if (avatarIcon) avatarIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
-        if (cardTag) cardTag.textContent = isGuj ? 'એડમિન કંટ્રોલ' : 'ADMIN CONTROL';
-        if (statusBadge) {
-          statusBadge.textContent = isGuj ? 'સંપૂર્ણ એક્સેસ ✓' : 'Full Access ✓';
-          statusBadge.style.background = '#eff6ff';
-          statusBadge.style.color = '#1d4ed8';
-          statusBadge.style.borderColor = '#bfdbfe';
-        }
 
         if (navContainer) {
           navContainer.innerHTML = `
@@ -5784,6 +5784,42 @@
     initDatabase();
     applyLanguage();
     applyAuth();
+
+    // Startup Video Loading Screen Controller (3.5s duration with last frame pause hold)
+    (function initVideoSplashScreen() {
+      const splashScreen = document.getElementById('video-splash-screen');
+      const splashVid = document.getElementById('splash-video-element');
+      if (!splashScreen) return;
+
+      let dismissed = false;
+      const startTime = Date.now();
+      const TOTAL_DURATION = 3500; // 3.5 seconds total screen duration
+
+      function dismissSplash() {
+        if (dismissed) return;
+        dismissed = true;
+        splashScreen.style.opacity = '0';
+        splashScreen.style.visibility = 'hidden';
+        setTimeout(() => {
+          if (splashScreen.parentNode) {
+            splashScreen.parentNode.removeChild(splashScreen);
+          }
+        }, 600);
+      }
+
+      if (splashVid) {
+        splashVid.play().catch(() => {});
+        splashVid.addEventListener('ended', () => {
+          // Pause and hold on the last frame for remaining time or at least 500ms
+          const elapsed = Date.now() - startTime;
+          const remaining = Math.max(500, TOTAL_DURATION - elapsed);
+          setTimeout(dismissSplash, remaining);
+        });
+      }
+
+      // Automatically transition after 3.5 seconds
+      setTimeout(dismissSplash, TOTAL_DURATION);
+    })();
   </script>
 
 </body>
