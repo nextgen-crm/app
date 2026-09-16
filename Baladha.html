@@ -650,7 +650,7 @@
       <div style="text-align: center; margin-bottom: 24px;">
         <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px;">
-          <img id="login-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
+          <img id="login-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
         </div>
         <h2 style="font-size: 21px; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.3px;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h2>
       </div>
@@ -1169,9 +1169,15 @@
 
         <!-- Active loans -->
         <div class="space-y-3">
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px; gap: 6px; flex-wrap: wrap;">
             <span style="font-weight: 900; font-size: 12px; color: #1f2937;" id="active-loans-lbl">ચાલુ ધિરાણ લોન પત્રક (0)</span>
-            <span style="font-size: 9px; color: #047857; background-color: #ecfdf5; padding: 2px 8px; border-radius: 9999px; font-weight: bold; border: 1px solid #d1fae5;">વ્યાજ મુક્ત પણ મંજૂર કરી શકાય</span>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button id="btn-loan-report-pdf" onclick="generateLoansCustomPdfReport()" style="display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: #ffffff; border: none; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#1d4ed8'" onmouseout="this.style.backgroundColor='#2563eb'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                📄 રિપોર્ટ (PDF)
+              </button>
+              <span style="font-size: 9px; color: #047857; background-color: #ecfdf5; padding: 2px 8px; border-radius: 9999px; font-weight: bold; border: 1px solid #d1fae5;">વ્યાજ મુક્ત પણ મંજૂર કરી શકાય</span>
+            </div>
           </div>
 
           <div id="active-loans-list" class="space-y-3">
@@ -1463,6 +1469,19 @@
     </div>
   </div>
 
+  <!-- MODAL: LOAN INTEREST & EMI CALCULATION BREAKDOWN -->
+  <div class="modal-backdrop hidden" id="modal-loan-math">
+    <div class="modal" style="max-width: 480px;">
+      <div class="modal-header modal-header-blue">
+        <h3 id="loan-math-title">લોન વ્યાજ અને EMI વિગત</h3>
+        <button class="modal-close" onclick="closeModal('modal-loan-math')">✕</button>
+      </div>
+      <div class="modal-body" id="loan-math-body">
+        <!-- Dynamically injected loan math breakdown -->
+      </div>
+    </div>
+  </div>
+
   <!-- SIDE PROFILE & NAVIGATION DRAWER -->
   <div id="side-drawer-backdrop" class="modal-backdrop hidden" onclick="closeSideMenu()" style="z-index: 9999; background: rgba(15,23,42,0.5); backdrop-filter: blur(3px);">
     <div id="side-drawer" onclick="event.stopPropagation()" style="position: fixed; top: 0; right: 0; bottom: 0; width: 300px; max-width: 86vw; background: #ffffff; box-shadow: -6px 0 28px rgba(0,0,0,0.18); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 18px; overflow-y: auto;">
@@ -1471,7 +1490,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 16px;">
           <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
             <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
-            <img id="menu-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
+            <img id="menu-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
             <div>
               <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.2;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h4>
               <span style="font-size: 10px; color: #64748b; font-weight: 600;" id="side-drawer-role-lbl">સભ્ય પોર્ટલ</span>
@@ -1772,9 +1791,23 @@
             </select>
           </div>
 
-          <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 8px; border-radius: 8px; font-size: 10px; display: none; justify-content: space-between; align-items: center;" id="repay-info-box">
-            <span style="color: #6b7280;">કુલ બાકી લોન રકમ:</span>
-            <strong style="color: #dc2626; font-size: 12px;" id="repay-outstanding-val">₹0</strong>
+          <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 10px; border-radius: 8px; font-size: 10px; display: none; flex-direction: column; gap: 4px;" id="repay-info-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: #6b7280;">કુલ બાકી મુદ્દલ:</span>
+              <strong style="color: #dc2626; font-size: 12px;" id="repay-outstanding-val">₹0</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: #4b5563;">ચાલુ માસનું વ્યાજ (૧%):</span>
+              <strong style="color: #2563eb; font-size: 11px;" id="repay-monthly-int-val">₹0</strong>
+            </div>
+            <div style="display: none; justify-content: space-between; align-items: center;" id="repay-overdue-box">
+              <span style="color: #b91c1c;" id="repay-overdue-lbl">બાકી રહેલું વ્યાજ:</span>
+              <strong style="color: #dc2626; font-size: 11px;" id="repay-overdue-int-val">₹0</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e5e7eb; padding-top: 4px; margin-top: 2px;">
+              <span style="color: #111827; font-weight: 700;">કુલ ચૂકવવાપાત્ર રકમ:</span>
+              <strong style="color: #b91c1c; font-size: 12px; font-weight: 800;" id="repay-total-due-val">₹0</strong>
+            </div>
           </div>
 
           <div class="form-group" style="background-color: #eff6ff; border: 1px solid #dbeafe; padding: 10px; border-radius: 8px;">
@@ -2449,8 +2482,245 @@
     }
 
     function getMemberTransactions(memberName) {
-      return transactions.filter(t => t.memberName === memberName);
+      return transactions.filter(t => t.memberName === memberName).slice().reverse();
     }
+
+    // --- AUTOMATED MONTHLY INTEREST & EMI SCHEDULE CALCULATOR ---
+    function calculateLoanInterestSchedule(loan, memberName) {
+      if (!loan) {
+        return {
+          monthlyInterest: 0,
+          thisMonthInterestPaid: 0,
+          nextMonthInterest: 0,
+          pendingInterest: 0,
+          unpaidMonths: 0,
+          isThisMonthEmiPaid: false,
+          totalDueWithInterest: 0,
+          monthsElapsed: 0,
+          rate: 0,
+          currentMonthCode: '',
+          disburseMonthCode: '',
+          totalInterestPaid: 0
+        };
+      }
+      const rate = loan.interestRate !== undefined ? loan.interestRate : 1.0;
+      const principal = loan.currentBalance || 0;
+      const nextMonthInterest = rate > 0 ? Math.round(principal * (rate / 100)) : 0;
+      const monthlyInterest = nextMonthInterest;
+
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth() + 1;
+      const currentMonthCode = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
+
+      let disburseYear = currentYear;
+      let disburseMonth = currentMonth;
+      if (loan.disburseDate) {
+        const parts = loan.disburseDate.split('-');
+        if (parts.length >= 2) {
+          disburseYear = parseInt(parts[0], 10);
+          disburseMonth = parseInt(parts[1], 10);
+        }
+      }
+      const disburseMonthCode = `${disburseYear}-${String(disburseMonth).padStart(2, '0')}`;
+
+      // Total months elapsed from disbursal to current date
+      let monthsElapsed = (currentYear - disburseYear) * 12 + (currentMonth - disburseMonth);
+      if (monthsElapsed < 0) monthsElapsed = 0;
+
+      // Find payments made for this loan
+      const mName = memberName || (members.find(m => m.id === loan.memberId)?.name) || '';
+      const loanRepayTx = transactions.filter(t => 
+        (t.type === 'loan_repayment' || t.type === 'interest_payment') &&
+        (t.memberName === mName || (loan.memberId && t.memberId === loan.memberId)) &&
+        (!loan.disburseDate || t.date >= loan.disburseDate)
+      );
+
+      // Check payments for the current month
+      const thisMonthTx = loanRepayTx.filter(t => t.date && t.date.startsWith(currentMonthCode));
+      const thisMonthEntries = monthlyEntries.filter(e => 
+        e.memberId === loan.memberId && 
+        e.monthCode === currentMonthCode && 
+        ((e.principalPaid && e.principalPaid > 0) || (e.interestPaid && e.interestPaid > 0))
+      );
+      const isThisMonthEmiPaid = thisMonthTx.length > 0 || thisMonthEntries.length > 0;
+
+      // Find interest specifically paid this current month
+      const thisMonthIntTx = loanRepayTx.filter(t => t.type === 'interest_payment' && t.date && t.date.startsWith(currentMonthCode));
+      const thisMonthEntryInt = monthlyEntries.filter(e => e.memberId === loan.memberId && e.monthCode === currentMonthCode && e.interestPaid > 0);
+      const thisMonthInterestPaid = Math.max(
+        thisMonthIntTx.reduce((s, t) => s + t.amount, 0),
+        thisMonthEntryInt.reduce((s, e) => s + (e.interestPaid || 0), 0)
+      );
+
+      // Calculate total interest paid overall
+      let totalInterestPaid = loan.totalInterestPaid || 0;
+      const mIntTx = transactions.filter(t => 
+        t.type === 'interest_payment' && 
+        t.memberName === mName && 
+        (!loan.disburseDate || t.date >= loan.disburseDate)
+      );
+      const mIntEntries = monthlyEntries.filter(e => 
+        e.memberId === loan.memberId && 
+        e.interestPaid > 0 && 
+        (!loan.disburseDate || e.datePaid >= loan.disburseDate)
+      );
+      const txIntSum = mIntTx.reduce((s, t) => s + t.amount, 0);
+      const entryIntSum = mIntEntries.reduce((s, e) => s + e.interestPaid, 0);
+      totalInterestPaid = Math.max(totalInterestPaid, txIntSum, entryIntSum);
+
+      // Total expected interest over elapsed months
+      const totalExpectedInterest = rate > 0 ? monthlyInterest * monthsElapsed : 0;
+      let pendingInterest = rate > 0 ? Math.max(0, totalExpectedInterest - totalInterestPaid) : 0;
+
+      let unpaidMonths = 0;
+      if (rate > 0 && monthlyInterest > 0) {
+        unpaidMonths = Math.ceil(pendingInterest / monthlyInterest);
+        if (!isThisMonthEmiPaid && unpaidMonths === 0 && monthsElapsed >= 1) {
+          unpaidMonths = 1;
+          pendingInterest = monthlyInterest;
+        }
+      }
+
+      const totalDueWithInterest = principal + pendingInterest;
+
+      return {
+        monthlyInterest,
+        thisMonthInterestPaid,
+        nextMonthInterest,
+        pendingInterest,
+        unpaidMonths,
+        isThisMonthEmiPaid,
+        totalDueWithInterest,
+        monthsElapsed,
+        rate,
+        currentMonthCode,
+        disburseMonthCode,
+        totalInterestPaid
+      };
+    }
+
+    window.openLoanMathModal = function(loanId) {
+      const loan = loans.find(l => l.id === loanId);
+      if (!loan) return;
+      const m = members.find(mem => mem.id === loan.memberId);
+      const mName = m ? m.name : 'Unknown';
+      const isGuj = currentLang === 'guj';
+      const intSched = calculateLoanInterestSchedule(loan, mName);
+
+      const titleEl = document.getElementById('loan-math-title');
+      if (titleEl) titleEl.textContent = isGuj ? `${mName} - લોન વ્યાજ અને EMI વિગત` : `${mName} - Loan Interest & EMI Breakdown`;
+
+      const bodyEl = document.getElementById('loan-math-body');
+      if (bodyEl) {
+        bodyEl.innerHTML = `
+          <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px;" class="space-y-3">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 13px; font-weight: 700; color: #1e293b;">${mName}</span>
+                <span style="font-size: 10px; color: #64748b; display: block;">${loan.purpose || 'લોન ખાતું'} (#${loan.id})</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 3px 8px; border-radius: 6px;">
+                ${intSched.rate === 0 ? '0% વ્યાજમુક્ત' : `${intSched.rate}% માસિક વ્યાજ`}
+              </span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10.5px;">
+              <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="color: #64748b; font-size: 9px; display: block;">મંજૂર લોન તારીખ</span>
+                <strong style="color: #1e293b;">${loan.disburseDate || '-'}</strong>
+              </div>
+              <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="color: #64748b; font-size: 9px; display: block;">ચાલુ તારીખ / માસ</span>
+                <strong style="color: #1e293b;">${new Date().toLocaleDateString('gu-IN')} (${intSched.currentMonthCode})</strong>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
+              <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 9px; color: #64748b; display: block;">મૂળ લોન</span>
+                <strong style="font-size: 11px; color: #0f172a;">₹${loan.principalAmount.toLocaleString('en-IN')}</strong>
+              </div>
+              <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 9px; color: #64748b; display: block;">ભરેલ મુદ્દલ</span>
+                <strong style="font-size: 11px; color: #059669;">₹${(loan.principalAmount - loan.currentBalance).toLocaleString('en-IN')}</strong>
+              </div>
+              <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="font-size: 9px; color: #64748b; display: block;">બાકી મુદ્દલ</span>
+                <strong style="font-size: 11px; color: #dc2626;">₹${loan.currentBalance.toLocaleString('en-IN')}</strong>
+              </div>
+            </div>
+
+            <!-- Auto interest calculation box -->
+            <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 12px;" class="space-y-2">
+              <!-- This Month Section -->
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #dbeafe; padding-bottom: 6px;">
+                <div>
+                  <span style="font-size: 11px; font-weight: 700; color: #1e40af;">
+                    ${isGuj ? 'ચાલુ માસ વ્યાજ (This Month)' : 'This Month Interest'}
+                  </span>
+                  <div style="font-size: 9px; color: #3b82f6;">
+                    ${intSched.isThisMonthEmiPaid 
+                      ? `જમા મળેલ વ્યાજ: ₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString('en-IN')}` 
+                      : `ચૂકવવાપાત્ર વ્યાજ: ₹${intSched.monthlyInterest.toLocaleString('en-IN')}`}
+                  </div>
+                </div>
+                <div>
+                  ${intSched.isThisMonthEmiPaid 
+                    ? '<span style="background: #ecfdf5; color: #047857; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0;">✓ EMI જમા થયેલ છે (Done)</span>'
+                    : '<span style="background: #fef2f2; color: #dc2626; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecaca;">🔔 EMI બાકી છે (Pending)</span>'}
+                </div>
+              </div>
+
+              <!-- Next Month Section -->
+              <div style="background: #ffffff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 10.5px; font-weight: 700; color: #0284c7;">
+                    ${isGuj ? 'આવતા માસનું વ્યાજ (Next Month Interest)' : 'Next Month Expected Interest'}
+                  </span>
+                  <strong style="font-size: 12px; color: #0369a1;">₹${intSched.nextMonthInterest.toLocaleString('en-IN')} / માસ</strong>
+                </div>
+                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">
+                  હાલની બાકી મુદ્દલ રકમ ₹${loan.currentBalance.toLocaleString('en-IN')} પર ${intSched.rate}% લેખે આવતા મહિને ₹${intSched.nextMonthInterest} વ્યાજ થશે.
+                </div>
+              </div>
+
+              ${intSched.pendingInterest > 0 ? `
+                <div style="background: #ffffff; border: 1px solid #fca5a5; border-radius: 8px; padding: 8px; margin-top: 6px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 10px; color: #991b1b; font-weight: 600;">⚠️ બાકી વ્યાજ (${intSched.unpaidMonths} માસ):</span>
+                    <strong style="font-size: 12px; color: #dc2626;">+₹${intSched.pendingInterest.toLocaleString('en-IN')}</strong>
+                  </div>
+                  <p style="font-size: 8.5px; color: #b91c1c; margin: 2px 0 0 0;">
+                    ${intSched.unpaidMonths} મહિનાથી હપ્તો ભરેલ ન હોવાથી વ્યાજ ઉમેરાયેલ છે (₹${intSched.monthlyInterest} × ${intSched.unpaidMonths} = ₹${intSched.pendingInterest}).
+                  </p>
+                </div>
+              ` : ''}
+
+              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #bfdbfe; padding-top: 8px; margin-top: 6px;">
+                <span style="font-size: 11px; font-weight: 800; color: #0f172a;">કુલ ચૂકવવાપાત્ર રકમ (મુદ્દલ + વ્યાજ):</span>
+                <strong style="font-size: 13px; font-weight: 900; color: #b91c1c;">₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+              <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeModal('modal-loan-math')">બંધ કરો</button>
+              <button type="button" class="btn btn-dark" style="flex: 1;" onclick="closeModal('modal-loan-math'); openDirectRepayForLoan('${loan.id}')">હપ્તો જમા કરો</button>
+            </div>
+          </div>
+        `;
+      }
+      openModal('modal-loan-math');
+    };
+
+    window.openDirectRepayForLoan = function(loanId) {
+      const selectEl = document.getElementById('repay-loan-select');
+      if (selectEl) {
+        selectEl.value = loanId;
+        selectEl.dispatchEvent(new Event('change'));
+      }
+      openModal('modal-repay');
+    };
 
     // --- VIEWPORT RENDERING & NAVIGATION ---
     const TABS = ['dashboard', 'members', 'ledger', 'backup'];
@@ -2658,9 +2928,10 @@
       const totalShareAssetVal = mShares.length * curShareVal;
       const totalSavingsPaid = getMemberSavings(m.id);
       const activeLoan = loans.find(l => l.memberId === m.id && l.status === 'active');
-      const currentLoanBal = activeLoan ? activeLoan.currentBalance : 0;
-      const loanRate = activeLoan ? activeLoan.interestRate : 0;
       const isGuj = currentLang === 'guj';
+      const intSched = activeLoan ? calculateLoanInterestSchedule(activeLoan, m.name) : null;
+      const currentLoanBal = activeLoan ? activeLoan.currentBalance : 0;
+      const loanRate = activeLoan ? (activeLoan.interestRate !== undefined ? activeLoan.interestRate : 1.0) : 0;
 
       // 1. Profile Banner
       const nameEl = document.getElementById('mem-dash-name');
@@ -2686,9 +2957,13 @@
       if (loanBalEl) loanBalEl.textContent = `₹${currentLoanBal.toLocaleString('en-IN')}`;
       const loanRateEl = document.getElementById('mem-dash-loan-rate');
       if (loanRateEl) {
-        loanRateEl.textContent = activeLoan 
-          ? (isGuj ? `વ્યાજ દર: ${loanRate}% (${loanRate === 0 ? '0% વ્યાજમુક્ત' : 'માસિક ૧%'})` : `Rate: ${loanRate}% (${loanRate === 0 ? '0% Interest-free' : '1% Monthly'})`) 
-          : (isGuj ? 'ચાલુ લોન નથી' : 'No active loan');
+        if (activeLoan && intSched) {
+          loanRateEl.textContent = isGuj 
+            ? `વ્યાજ: ₹${intSched.monthlyInterest}/માસ (${loanRate === 0 ? '0% વ્યાજમુક્ત' : '૧%'})` 
+            : `Int: ₹${intSched.monthlyInterest}/mo (${loanRate === 0 ? '0% Free' : '1%'})`;
+        } else {
+          loanRateEl.textContent = isGuj ? 'ચાલુ લોન નથી' : 'No active loan';
+        }
       }
 
       // 3. Yearly Savings Tracker
@@ -2739,7 +3014,7 @@
       // 4. Loan details card
       const loanBox = document.getElementById('mem-dash-loan-details-box');
       if (loanBox) {
-        if (activeLoan) {
+        if (activeLoan && intSched) {
           const progressPercent = activeLoan.principalAmount > 0 
             ? Math.min(100, Math.round(((activeLoan.principalAmount - activeLoan.currentBalance) / activeLoan.principalAmount) * 100))
             : 0;
@@ -2750,33 +3025,80 @@
           const w2Name = w2Member ? w2Member.name : (activeLoan.witness2 || '-');
 
           loanBox.innerHTML = `
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 11px; font-weight: 700; color: #1e293b;">
-                  ${isGuj ? `લોન નંબર: #${activeLoan.id}` : `Loan ID: #${activeLoan.id}`}
-                </span>
-                <span style="font-size: 9.5px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 6px;">
-                  ${activeLoan.interestRate === 0 ? (isGuj ? '0% વ્યાજમુક્ત લોન' : '0% Interest-free Loan') : (isGuj ? '1% માસિક વ્યાજ' : '1% Monthly Interest')}
-                </span>
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;" class="space-y-3">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 11px; font-weight: 700; color: #1e293b;">
+                    ${isGuj ? `લોન નંબર: #${activeLoan.id}` : `Loan ID: #${activeLoan.id}`}
+                  </span>
+                  <span style="font-size: 9px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 2px 6px; border-radius: 4px;">
+                    ${activeLoan.interestRate === 0 ? (isGuj ? '0% વ્યાજમુક્ત' : '0% Free') : (isGuj ? '૧% માસિક વ્યાજ' : '1% Monthly')}
+                  </span>
+                </div>
+                <div>
+                  ${intSched.isThisMonthEmiPaid 
+                    ? `<span style="font-size: 8.5px; font-weight: 700; color: #047857; background: #ecfdf5; padding: 2px 8px; border-radius: 6px; border: 1px solid #a7f3d0; display: inline-flex; align-items: center; gap: 4px;">✓ ${isGuj ? 'ચાલુ માસ EMI જમા' : 'This Month EMI Done'}</span>`
+                    : `<span style="font-size: 8.5px; font-weight: 700; color: #dc2626; background: #fef2f2; padding: 2px 8px; border-radius: 6px; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 4px;">🔔 ${isGuj ? 'ચાલુ માસ EMI બાકી' : 'This Month EMI Pending'}</span>`}
+                </div>
               </div>
 
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 10px;">
-                <div style="background: #ffffff; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'મંજૂર લોન' : 'Sanctioned'}</span>
+              <!-- 5 Stat Grid -->
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; text-align: left;">
+                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'મંજૂર મૂળ લોન' : 'Sanctioned Loan'}</span>
                   <strong style="font-size: 11px; color: #0f172a;">₹${activeLoan.principalAmount.toLocaleString('en-IN')}</strong>
                 </div>
-                <div style="background: #ffffff; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
                   <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'ભરેલ મુદ્દલ' : 'Principal Paid'}</span>
                   <strong style="font-size: 11px; color: #059669;">₹${(activeLoan.principalAmount - activeLoan.currentBalance).toLocaleString('en-IN')}</strong>
                 </div>
-                <div style="background: #ffffff; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'ચાલુ બાકી' : 'Balance'}</span>
+                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'બાકી મુદ્દલ' : 'Principal Balance'}</span>
                   <strong style="font-size: 11px; color: #dc2626;">₹${activeLoan.currentBalance.toLocaleString('en-IN')}</strong>
+                </div>
+                <div style="background: #eff6ff; padding: 8px; border-radius: 6px; border: 1px solid #bfdbfe;">
+                  <span style="font-size: 8px; color: #1e40af; display: block;">${isGuj ? `ચાલુ માસ વ્યાજ (${intSched.currentMonthCode})` : `This Month Interest (${intSched.currentMonthCode})`}</span>
+                  <strong style="font-size: 11px; color: #1d4ed8;">₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString('en-IN')}</strong>
+                  <span style="font-size: 7px; display: block; color: ${intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: 700;">
+                    ${intSched.isThisMonthEmiPaid ? '✓ જમા થયેલ' : '🔔 બાકી છે'}
+                  </span>
+                </div>
+                <div style="background: #f0f9ff; padding: 8px; border-radius: 6px; border: 1px solid #bae6fd; grid-column: span 2;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 8.5px; color: #0369a1; font-weight: 600;">${isGuj ? 'આવતા માસનું વ્યાજ (બાકી મુદ્દલ પર ૧%):' : 'Next Month Interest (1% on Balance):'}</span>
+                    <strong style="font-size: 11.5px; color: #0284c7;">₹${intSched.nextMonthInterest.toLocaleString('en-IN')} / માસ</strong>
+                  </div>
                 </div>
               </div>
 
+              <!-- Overdue Interest & Total Due Alert -->
+              ${intSched.pendingInterest > 0 ? `
+                <div style="background: #fff5f5; border: 1.5px solid #fecaca; border-radius: 8px; padding: 10px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 9.5px; font-weight: 700; color: #b91c1c;">
+                      ⚠️ ${isGuj ? `પાછલા ${intSched.unpaidMonths} મહિનાથી હપ્તો બાકી છે` : `${intSched.unpaidMonths} Months EMI Overdue`}
+                    </span>
+                    <strong style="font-size: 11px; color: #dc2626;">+₹${intSched.pendingInterest.toLocaleString('en-IN')} વ્યાજ</strong>
+                  </div>
+                  <p style="font-size: 8px; color: #991b1b; margin: 3px 0 0 0;">
+                    ${isGuj 
+                      ? `માસિક ₹${intSched.monthlyInterest} લેખે ${intSched.unpaidMonths} માસનું બાકી વ્યાજ લોનમાં ઉમેરાયેલ છે.` 
+                      : `Monthly interest of ₹${intSched.monthlyInterest} for ${intSched.unpaidMonths} months added to outstanding.`}
+                  </p>
+                  <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #fca5a5; padding-top: 6px; margin-top: 6px;">
+                    <span style="font-size: 10px; font-weight: 700; color: #111827;">${isGuj ? 'કુલ ચૂકવવાપાત્ર રકમ (મુદ્દલ + વ્યાજ):' : 'Total Due (Principal + Interest):'}</span>
+                    <strong style="font-size: 12px; font-weight: 900; color: #b91c1c;">₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}</strong>
+                  </div>
+                </div>
+              ` : `
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px 10px; font-size: 9px;">
+                  <span style="color: #166534; font-weight: 600;">${isGuj ? 'કુલ બાકી લોન રકમ:' : 'Total Outstanding:'}</span>
+                  <strong style="color: #15803d; font-size: 11px;">₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}</strong>
+                </div>
+              `}
+
               <!-- Progress -->
-              <div style="margin-bottom: 8px;">
+              <div>
                 <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; margin-bottom: 3px;">
                   <span>${isGuj ? 'પરત ચુકવણી પ્રગતિ' : 'Repayment Progress'}</span>
                   <span><b>${progressPercent}%</b> ${isGuj ? 'ચૂકતે' : 'Paid'}</span>
@@ -2786,12 +3108,12 @@
                 </div>
               </div>
 
-              <div style="display: flex; justify-content: space-between; font-size: 9px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 6px;">
+              <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 6px;">
                 <span>${isGuj ? `મંજૂર તારીખ: ${activeLoan.disburseDate || '-'}` : `Disbursed: ${activeLoan.disburseDate || '-'}`}</span>
                 <span>${isGuj ? `હેતુ: ${activeLoan.purpose || 'વ્યક્તિગત લોન'}` : `Purpose: ${activeLoan.purpose || 'Personal Loan'}`}</span>
               </div>
 
-              <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #334155; background: #ffffff; padding: 6px 8px; border-radius: 6px; border: 1px solid #e2e8f0; margin-top: 6px;">
+              <div style="display: flex; justify-content: space-between; font-size: 8px; color: #334155; background: #ffffff; padding: 6px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
                 <span><b>${isGuj ? 'સાક્ષી ૧:' : 'Witness 1:'}</b> ${w1Name}</span>
                 <span><b>${isGuj ? 'સાક્ષી ૨:' : 'Witness 2:'}</b> ${w2Name}</span>
               </div>
@@ -3852,6 +4174,10 @@
         let grandPaid = 0;
         let grandBalance = 0;
         let grandInterest = 0;
+        let grandThisMonthInt = 0;
+        let grandNextMonthInt = 0;
+        let grandPendingInt = 0;
+        let grandTotalDue = 0;
         let grandLastEmi = 0;
 
         const rows = activeL.map(l => {
@@ -3861,6 +4187,7 @@
           const shareValue = mShares.length * 20000;
           const totalPaid = Math.max(0, l.principalAmount - l.currentBalance);
           const totalInterestPaid = getLoanTotalInterest(l);
+          const intSched = calculateLoanInterestSchedule(l, m ? m.name : '');
 
           grandShares += mShares.length;
           grandSavings += mSavings;
@@ -3869,6 +4196,10 @@
           grandPaid += totalPaid;
           grandBalance += l.currentBalance;
           grandInterest += totalInterestPaid;
+          grandThisMonthInt += (intSched.thisMonthInterestPaid || (intSched.isThisMonthEmiPaid ? intSched.monthlyInterest : 0));
+          grandNextMonthInt += intSched.nextMonthInterest;
+          grandPendingInt += intSched.pendingInterest;
+          grandTotalDue += intSched.totalDueWithInterest;
 
           // Find last EMI payment transaction for this member
           const mName = m ? m.name : '';
@@ -3904,7 +4235,7 @@
             <tr onclick="openLoanMathModal('${l.id}')" style="border-bottom: 1px solid #e5e7eb; cursor: pointer; transition: background-color 0.15s;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='#ffffff'">
               <td style="padding: 6px 4px; text-align: left; font-weight: 600; color: #111827; font-size: 8.5px;">
                 <div>${m ? m.name : 'Unknown'}</div>
-                <div style="font-size: 7px; color: #6b7280; font-weight: normal; margin-top: 1px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${l.purpose}</div>
+                <div style="font-size: 7px; color: #6b7280; font-weight: normal; margin-top: 1px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${l.purpose || 'લોન'}</div>
               </td>
               <td style="padding: 6px 4px; text-align: center; font-weight: 600; color: #2563eb; font-size: 8.5px;">
                 ${mShares.length}
@@ -3921,8 +4252,21 @@
               <td style="padding: 6px 4px; text-align: right; color: #dc2626; font-weight: 900; font-size: 8.5px;">
                 ${l.currentBalance.toLocaleString()}
               </td>
-              <td style="padding: 6px 4px; text-align: right; color: #2563eb; font-weight: bold; font-size: 8.5px;">
-                ${totalInterestPaid.toLocaleString()}
+              <td style="padding: 6px 4px; text-align: center; white-space: nowrap; font-size: 8px;">
+                <div style="color: ${intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: bold; font-size: 8.5px;">₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString()}</div>
+                ${intSched.isThisMonthEmiPaid 
+                  ? '<span style="color: #047857; background-color: #ecfdf5; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #a7f3d0; display: inline-block; margin-top: 1px;">✓ જમા</span>'
+                  : `<span style="color: #dc2626; background-color: #fef2f2; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #fecaca; display: inline-block; margin-top: 1px;">🔔 ${intSched.unpaidMonths > 1 ? intSched.unpaidMonths + 'M બાકી' : 'બાકી'}</span>`}
+              </td>
+              <td style="padding: 6px 4px; text-align: center; white-space: nowrap; font-size: 8px;">
+                <div style="color: #2563eb; font-weight: 800; font-size: 8.5px;">₹${intSched.nextMonthInterest.toLocaleString()}</div>
+                <span style="color: #6b7280; font-size: 6.5px; display: block;">૧% (${intSched.rate}%)</span>
+              </td>
+              <td style="padding: 6px 4px; text-align: right; white-space: nowrap; font-size: 8px;">
+                ${intSched.pendingInterest > 0 
+                  ? `<div style="color: #dc2626; font-weight: 700; font-size: 7.5px;">+₹${intSched.pendingInterest.toLocaleString()} (${intSched.unpaidMonths}M)</div>` 
+                  : '<div style="color: #059669; font-size: 7.5px;">-</div>'}
+                <div style="color: #111827; font-weight: 800; font-size: 8.5px;">₹${intSched.totalDueWithInterest.toLocaleString()}</div>
               </td>
               <td style="padding: 6px 4px; text-align: right; color: #111827; font-weight: bold; font-size: 8.5px;">
                 ${lastTx ? lastTx.amount.toLocaleString() : '-'}
@@ -3938,8 +4282,8 @@
         }).join('');
 
         activeList.innerHTML = `
-          <div style="background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.01); width: 100%; overflow: hidden;">
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 8.5px; table-layout: auto;">
+          <div style="background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.01); width: 100%; overflow-x: auto;">
+            <table style="width: 100%; min-width: 720px; border-collapse: collapse; text-align: left; font-size: 8.5px; table-layout: auto;">
               <thead>
                 <tr style="background-color: #f9fafb; border-bottom: 2px solid #e5e7eb; color: #4b5563; font-weight: 600;">
                   <th style="padding: 8px 4px; text-align: left; font-weight: 600;">સભ્યનું નામ</th>
@@ -3947,8 +4291,10 @@
                   <th style="padding: 8px 4px; text-align: right; font-weight: 600;">બચત/મૂલ્ય (₹)</th>
                   <th style="padding: 8px 4px; text-align: right; font-weight: 600;">લોન (₹)</th>
                   <th style="padding: 8px 4px; text-align: right; font-weight: 600;">જમા (₹)</th>
-                  <th style="padding: 8px 4px; text-align: right; font-weight: 600;">બાકી (₹)</th>
-                  <th style="padding: 8px 4px; text-align: right; font-weight: 600; color: #2563eb;">કુલ વ્યાજ (₹)</th>
+                  <th style="padding: 8px 4px; text-align: right; font-weight: 600;">બાકી મુદ્દલ (₹)</th>
+                  <th style="padding: 8px 4px; text-align: center; font-weight: 600; color: #047857;">ચાલુ માસ વ્યાજ & EMI</th>
+                  <th style="padding: 8px 4px; text-align: center; font-weight: 600; color: #2563eb;">આવતા માસ વ્યાજ (₹)</th>
+                  <th style="padding: 8px 4px; text-align: right; font-weight: 600; color: #b91c1c;">બાકી વ્યાજ / કુલ દેવું (₹)</th>
                   <th style="padding: 8px 4px; text-align: right; font-weight: 600;">છેલ્લી EMI (₹)</th>
                   <th style="padding: 8px 4px; text-align: center; font-weight: 600;">તારીખ</th>
                   <th style="padding: 8px 4px; text-align: center; font-weight: 600;">સમય</th>
@@ -3965,7 +4311,9 @@
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #111827;">${grandLoan.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #059669;">${grandPaid.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #dc2626;">${grandBalance.toLocaleString()}</td>
-                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #2563eb;">${grandInterest.toLocaleString()}</td>
+                  <td style="padding: 8px 4px; text-align: center; font-weight: 700; color: #047857;">₹${grandThisMonthInt.toLocaleString()}</td>
+                  <td style="padding: 8px 4px; text-align: center; font-weight: 700; color: #2563eb;">₹${grandNextMonthInt.toLocaleString()}/માસ</td>
+                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #b91c1c;">₹${grandTotalDue.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #111827;">${grandLastEmi > 0 ? grandLastEmi.toLocaleString() : '-'}</td>
                   <td colspan="2" style="padding: 8px 4px; text-align: center; color: #6b7280; font-weight: normal;">-</td>
                 </tr>
@@ -3998,6 +4346,298 @@
         }).join('');
       }
     }
+
+    window.generateLoansCustomPdfReport = function() {
+      const filterPreset = document.getElementById('loans-filter-preset') ? document.getElementById('loans-filter-preset').value : 'all';
+      const customMonthVal = document.getElementById('loans-filter-custom-month') ? document.getElementById('loans-filter-custom-month').value : '';
+
+      const activeL = loans.filter(l => {
+        if (l.status !== 'active') return false;
+        if (!l.disburseDate) return true;
+        const dateParts = l.disburseDate.split('-');
+        if (dateParts.length < 2) return true;
+
+        const loanYear = parseInt(dateParts[0]);
+        const loanMonth = parseInt(dateParts[1]);
+
+        const today = new Date();
+        const currentYearNum = today.getFullYear();
+        const currentMonthNum = today.getMonth() + 1;
+
+        if (filterPreset === 'all') {
+          return true;
+        } else if (filterPreset === 'current_month') {
+          return loanYear === currentYearNum && loanMonth === currentMonthNum;
+        } else if (filterPreset === 'last_month') {
+          let lastMonthNum = currentMonthNum - 1;
+          let targetYear = currentYearNum;
+          if (lastMonthNum === 0) {
+            lastMonthNum = 12;
+            targetYear = currentYearNum - 1;
+          }
+          return loanYear === targetYear && loanMonth === lastMonthNum;
+        } else if (filterPreset === 'current_year') {
+          return loanYear === currentYearNum;
+        } else if (filterPreset === 'last_year') {
+          return loanYear === currentYearNum - 1;
+        } else if (filterPreset === 'custom') {
+          if (!customMonthVal) return true;
+          const customParts = customMonthVal.split('-');
+          if (customParts.length >= 2) {
+            const customYear = parseInt(customParts[0]);
+            const customMonth = parseInt(customParts[1]);
+            return loanYear === customYear && loanMonth === customMonth;
+          }
+        }
+        return true;
+      });
+
+      const today = new Date();
+      const todayFormatted = today.toLocaleDateString('gu-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+      let grandShares = 0;
+      let grandLoan = 0;
+      let grandInterest = 0;
+      let grandPaid = 0;
+      let grandBalance = 0;
+
+      const rowsHtml = activeL.map(l => {
+        const m = members.find(mem => mem.id === l.memberId);
+        const mShares = shares.filter(s => s.memberId === l.memberId && s.status === 'active');
+        const intSched = calculateLoanInterestSchedule(l, m ? m.name : '');
+        const loanInterest = intSched.thisMonthInterestPaid || intSched.monthlyInterest || Math.round((l.currentBalance * (l.interestRate || 1)) / 100);
+        const totalPaid = Math.max(0, l.principalAmount - l.currentBalance);
+
+        grandShares += mShares.length;
+        grandLoan += l.principalAmount;
+        grandInterest += loanInterest;
+        grandPaid += totalPaid;
+        grandBalance += l.currentBalance;
+
+        return `
+          <tr style="border-bottom: 1px solid #e2e8f0; font-size: 11.5px;">
+            <td style="padding: 9px 12px; text-align: left; font-weight: 600; color: #1e293b;">
+              <div style="font-size: 12px; font-weight: 700; color: #0f172a;">${m ? m.name : 'Unknown'}</div>
+              ${l.purpose ? `<span style="font-size: 9.5px; color: #64748b; display: block; font-weight: normal; margin-top: 1px;">${l.purpose}</span>` : ''}
+            </td>
+            <td style="padding: 9px 10px; text-align: center; font-weight: 700; color: #2563eb; font-size: 12px;">
+              ${mShares.length}
+            </td>
+            <td style="padding: 9px 12px; text-align: right; font-weight: 600; color: #0f172a; font-variant-numeric: tabular-nums;">
+              ₹${l.principalAmount.toLocaleString('en-IN')}
+            </td>
+            <td style="padding: 9px 12px; text-align: right; font-weight: 700; color: #2563eb; font-variant-numeric: tabular-nums;">
+              ₹${loanInterest.toLocaleString('en-IN')}
+            </td>
+            <td style="padding: 9px 12px; text-align: right; font-weight: 700; color: #059669; font-variant-numeric: tabular-nums;">
+              ₹${totalPaid.toLocaleString('en-IN')}
+            </td>
+            <td style="padding: 9px 12px; text-align: right; font-weight: 800; color: #dc2626; font-variant-numeric: tabular-nums;">
+              ₹${l.currentBalance.toLocaleString('en-IN')}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        alert('કૃપા કરીને પોપ-અપ વિન્ડોને મંજૂરી આપો (Please allow popup window for PDF generation).');
+        return;
+      }
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="gu">
+        <head>
+          <meta charset="UTF-8">
+          <title>બલાઢા ક્રેડિટ સોસાયટી - લોન રિપોર્ટ</title>
+          <style>
+            @page {
+              size: A4 portrait;
+              margin: 12mm 14mm;
+            }
+            * {
+              box-sizing: border-box;
+            }
+            body {
+              font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Gujarati', sans-serif;
+              color: #0f172a;
+              background: #ffffff;
+              padding: 24px 28px;
+              margin: 0 auto;
+              max-width: 920px;
+            }
+            .header-box {
+              text-align: center;
+              border-bottom: 2.5px solid #0f172a;
+              padding-bottom: 12px;
+              margin-bottom: 18px;
+            }
+            .society-title {
+              font-size: 22px;
+              font-weight: 900;
+              color: #0f172a;
+              margin: 0 0 4px 0;
+              letter-spacing: 0.5px;
+            }
+            .report-title {
+              font-size: 14px;
+              font-weight: 700;
+              color: #2563eb;
+              margin-bottom: 4px;
+            }
+            .report-date {
+              font-size: 11.5px;
+              color: #475569;
+              font-weight: 500;
+            }
+            .table-container {
+              width: 100%;
+              overflow: hidden;
+              border-radius: 8px;
+              border: 1px solid #cbd5e1;
+              margin-top: 10px;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th {
+              background-color: #f1f5f9;
+              color: #0f172a;
+              font-size: 11.5px;
+              font-weight: 800;
+              padding: 10px 12px;
+              border-bottom: 1.5px solid #cbd5e1;
+              border-right: 1px solid #e2e8f0;
+              text-align: center;
+            }
+            th:last-child {
+              border-right: none;
+            }
+            td {
+              border-bottom: 1px solid #e2e8f0;
+              border-right: 1px solid #f1f5f9;
+              font-size: 11.5px;
+            }
+            td:last-child {
+              border-right: none;
+            }
+            tbody tr:nth-child(even) {
+              background-color: #fcfcfd;
+            }
+            tfoot tr {
+              background-color: #f8fafc;
+              border-top: 2px solid #0f172a;
+            }
+            tfoot td {
+              border-top: 2px solid #0f172a;
+              border-right: 1px solid #e2e8f0;
+              padding: 11px 12px;
+              font-weight: 800;
+            }
+            tfoot td:last-child {
+              border-right: none;
+            }
+            .footer-line {
+              margin-top: 24px;
+              display: flex;
+              justify-content: flex-end;
+              align-items: center;
+              border-top: 1px solid #cbd5e1;
+              padding-top: 12px;
+              font-size: 11px;
+              color: #475569;
+              font-style: italic;
+              font-weight: 600;
+            }
+            .no-print-bar {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 18px;
+              padding: 10px 16px;
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              border-radius: 8px;
+            }
+            .print-btn {
+              background: #2563eb;
+              color: #ffffff;
+              border: none;
+              padding: 7px 16px;
+              border-radius: 6px;
+              font-weight: 700;
+              font-size: 12px;
+              cursor: pointer;
+            }
+            @media print {
+              .no-print-bar {
+                display: none !important;
+              }
+              body {
+                padding: 10px 16px !important;
+                max-width: 100% !important;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="no-print-bar">
+            <span style="font-size: 12.5px; font-weight: 600; color: #334155;">📄 બલાઢા ક્રેડિટ સોસાયટી - લોન રિપોર્ટ</span>
+            <button class="print-btn" onclick="window.print()">🖨️ સેવ / પ્રિન્ટ PDF (Print PDF)</button>
+          </div>
+
+          <div class="header-box">
+            <div class="society-title">બલાઢા ક્રેડિટ સોસાયટી</div>
+            <div class="report-title">ચાલુ ધિરાણ લોન પત્રક (Active Loans Report)</div>
+            <div class="report-date">તારીખ: ${todayFormatted}</div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left; width: 30%;">સભ્યનું નામ</th>
+                  <th style="width: 10%;">શેર</th>
+                  <th style="text-align: right; width: 15%;">લોન (₹)</th>
+                  <th style="text-align: right; width: 15%;">વ્યાજ (₹)</th>
+                  <th style="text-align: right; width: 15%;">જમા (₹)</th>
+                  <th style="text-align: right; width: 15%;">બાકી મુદ્દલ (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml.length > 0 ? rowsHtml : `<tr><td colspan="6" style="text-align: center; padding: 24px; color: #94a3b8; font-style: italic;">કોઈ સભ્યની લોન ચાલુ નથી.</td></tr>`}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td style="text-align: left; color: #0f172a;">કુલ સરવાળો (Total)</td>
+                  <td style="text-align: center; color: #2563eb;">${grandShares}</td>
+                  <td style="text-align: right; color: #0f172a;">₹${grandLoan.toLocaleString('en-IN')}</td>
+                  <td style="text-align: right; color: #2563eb;">₹${grandInterest.toLocaleString('en-IN')}</td>
+                  <td style="text-align: right; color: #059669;">₹${grandPaid.toLocaleString('en-IN')}</td>
+                  <td style="text-align: right; color: #dc2626;">₹${grandBalance.toLocaleString('en-IN')}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="footer-line">
+            <span>Report generated by NextGen</span>
+          </div>
+
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 300);
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+    };
 
     // Modal populate dropdown utilities
     function renderDisburseModalOptions() {
@@ -4055,13 +4695,35 @@
     document.getElementById('repay-loan-select').addEventListener('change', (e) => {
       const loanId = e.target.value;
       const infoBox = document.getElementById('repay-info-box');
+      const overdueBox = document.getElementById('repay-overdue-box');
       if (!loanId) {
         infoBox.style.display = 'none';
         return;
       }
       infoBox.style.display = 'flex';
       const targetLoan = loans.find(l => l.id === loanId);
-      document.getElementById('repay-outstanding-val').textContent = `₹${targetLoan ? targetLoan.currentBalance.toLocaleString('en-IN') : '0'}`;
+      if (!targetLoan) return;
+
+      const m = members.find(mem => mem.id === targetLoan.memberId);
+      const intSched = calculateLoanInterestSchedule(targetLoan, m ? m.name : '');
+
+      document.getElementById('repay-outstanding-val').textContent = `₹${targetLoan.currentBalance.toLocaleString('en-IN')}`;
+      document.getElementById('repay-monthly-int-val').textContent = `₹${intSched.monthlyInterest.toLocaleString('en-IN')}`;
+
+      if (intSched.pendingInterest > 0) {
+        if (overdueBox) {
+          overdueBox.style.display = 'flex';
+          const overdueLbl = document.getElementById('repay-overdue-lbl');
+          if (overdueLbl) overdueLbl.textContent = `બાકી વ્યાજ (${intSched.unpaidMonths} માસ):`;
+          const overdueVal = document.getElementById('repay-overdue-int-val');
+          if (overdueVal) overdueVal.textContent = `+₹${intSched.pendingInterest.toLocaleString('en-IN')}`;
+        }
+      } else {
+        if (overdueBox) overdueBox.style.display = 'none';
+      }
+
+      const totalDueEl = document.getElementById('repay-total-due-val');
+      if (totalDueEl) totalDueEl.textContent = `₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}`;
 
       // Reset total EMI and principal/interest fields
       const emiInput = document.getElementById('repay-total-emi');
@@ -4082,8 +4744,12 @@
         const targetLoan = loans.find(l => l.id === loanId);
         if (!targetLoan) return;
 
-        const rate = targetLoan.interestRate !== undefined ? targetLoan.interestRate : 1.0;
-        const interestAmt = Math.min(totalVal, Math.round(targetLoan.currentBalance * (rate / 100)));
+        const m = members.find(mem => mem.id === targetLoan.memberId);
+        const intSched = calculateLoanInterestSchedule(targetLoan, m ? m.name : '');
+
+        // Auto split: first prioritize total pending/monthly interest, rest is principal
+        const targetInterest = intSched.pendingInterest > 0 ? intSched.pendingInterest : intSched.monthlyInterest;
+        const interestAmt = Math.min(totalVal, targetInterest);
         const principalAmt = Math.max(0, totalVal - interestAmt);
 
         document.getElementById('repay-interest').value = interestAmt;
