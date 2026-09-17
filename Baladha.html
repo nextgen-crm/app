@@ -13,10 +13,10 @@
       --bg-subtle: #f8fafc;
       --border-main: #e2e8f0;
       --border-subtle: #f1f5f9;
-      --text-main: #0f172a;
+      --text-main: #383644;
       --text-muted: #64748b;
       --text-secondary: #334155;
-      --primary: #1e293b;
+      --primary: #383644;
       --primary-blue: #2563eb;
       --success: #059669;
       --success-bg: #f0fdf4;
@@ -211,7 +211,7 @@
     }
     .nav-btn-plus:hover {
       transform: scale(1.06);
-      background-color: #1e293b;
+      background-color: #383644;
       box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
     }
     .nav-btn-plus:active {
@@ -457,7 +457,7 @@
       color: #ffffff;
     }
     .btn-dark:hover {
-      background-color: #1e293b;
+      background-color: #383644;
     }
 
     /* Modals */
@@ -648,7 +648,7 @@
     <div id="view-login" style="padding: 24px 14px; max-width: 440px; margin: 0 auto; min-height: 85vh; display: flex; flex-direction: column; justify-content: center;">
       <!-- Top Language Toggle Button for Login Screen -->
       <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
-        <button id="login-lang-toggle-btn" type="button" onclick="toggleLanguage()" style="background: #ffffff; border: 1px solid #e2e8f0; padding: 5px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; cursor: pointer; color: #1e293b; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s;">
+        <button id="login-lang-toggle-btn" type="button" onclick="toggleLanguage()" style="background: #ffffff; border: 1px solid #e2e8f0; padding: 5px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; cursor: pointer; color: #383644; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s;">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #2563eb;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <span class="lang-toggle-text">ENG</span>
         </button>
@@ -660,7 +660,7 @@
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px;">
           <img id="login-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
         </div>
-        <h2 style="font-size: 21px; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.3px;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h2>
+        <h2 style="font-size: 21px; font-weight: 800; color: #383644; margin: 0; letter-spacing: -0.3px;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h2>
       </div>
 
       <!-- Login Card -->
@@ -680,8 +680,8 @@
         <!-- 1. MEMBER LOGIN FORM -->
         <form id="form-member-login" onsubmit="handleMemberLogin(event)" class="space-y-3">
           <div class="form-group">
-            <label class="form-label" style="font-weight: 700; color: #1e293b;" data-gu="નોંધાયેલ મોબાઈલ નંબર (Mobile Number) *" data-en="Registered Mobile Number *">નોંધાયેલ મોબાઈલ નંબર (Mobile Number) *</label>
-            <input type="tel" id="input-member-login-phone" class="form-input" required placeholder="દા.ત. 9876543210" data-gu-placeholder="દા.ત. 9876543210" data-en-placeholder="e.g. 9876543210" style="font-size: 16px; font-weight: 700; color: #0f172a; letter-spacing: 0.5px;" autofocus>
+            <label class="form-label" style="font-weight: 700; color: #383644;" data-gu="નોંધાયેલ મોબાઈલ નંબર (Mobile Number) *" data-en="Registered Mobile Number *">નોંધાયેલ મોબાઈલ નંબર (Mobile Number) *</label>
+            <input type="tel" id="input-member-login-phone" class="form-input" required placeholder="દા.ત. 9876543210" data-gu-placeholder="દા.ત. 9876543210" data-en-placeholder="e.g. 9876543210" style="font-size: 16px; font-weight: 700; color: #383644; letter-spacing: 0.5px;" autofocus>
             <div style="display: flex; align-items: flex-start; gap: 5px; margin-top: 4px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
               <p style="font-size: 9.5px; color: #64748b; margin: 0;" data-gu="સોસાયટીમાં નોંધાયેલ તમારો 10 આંકડાનો મોબાઈલ નંબર દાખલ કરીને સીધા તમારા ખાતામાં લોગિન કરો." data-en="Enter your registered 10-digit mobile number to view your personal account.">
@@ -705,12 +705,12 @@
         <!-- 2. ADMIN LOGIN FORM -->
         <form id="form-admin-login" onsubmit="handleAdminLogin(event)" class="space-y-3 hidden">
           <div class="form-group">
-            <label class="form-label" style="font-weight: 700; color: #1e293b;" data-gu="એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *" data-en="Admin Mobile / Username *">એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *</label>
+            <label class="form-label" style="font-weight: 700; color: #383644;" data-gu="એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *" data-en="Admin Mobile / Username *">એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *</label>
             <input type="text" id="input-admin-login-user" class="form-input" required placeholder="મોબાઈલ અથવા admin" data-gu-placeholder="મોબાઈલ અથવા admin" data-en-placeholder="Mobile or admin" value="admin" style="font-size: 13px; font-weight: 600;">
           </div>
 
           <div class="form-group">
-            <label class="form-label" style="font-weight: 700; color: #1e293b;" data-gu="એડમિન પાસવર્ડ (Password) *" data-en="Admin Password *">એડમિન પાસવર્ડ (Password) *</label>
+            <label class="form-label" style="font-weight: 700; color: #383644;" data-gu="એડમિન પાસવર્ડ (Password) *" data-en="Admin Password *">એડમિન પાસવર્ડ (Password) *</label>
             <input type="password" id="input-admin-login-pass" class="form-input" required placeholder="પાસવર્ડ દાખલ કરો" data-gu-placeholder="પાસવર્ડ દાખલ કરો" data-en-placeholder="Enter Password" style="font-size: 14px;">
             <div style="display: flex; align-items: center; gap: 5px; margin-top: 4px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3"/></svg>
@@ -727,7 +727,7 @@
             </span>
           </div>
 
-          <button type="submit" class="btn btn-gradient" style="background: #0f172a; width: 100%; padding: 12px; font-size: 13px; font-weight: 700; margin-top: 6px;" data-gu="એડમિન પોર્ટલ લોગીન (Admin Login) →" data-en="Admin Portal Login →">
+          <button type="submit" class="btn btn-gradient" style="background: #383644; width: 100%; padding: 12px; font-size: 13px; font-weight: 700; margin-top: 6px;" data-gu="એડમિન પોર્ટલ લોગીન (Admin Login) →" data-en="Admin Portal Login →">
             એડમિન પોર્ટલ લોગીન (Admin Login) →
           </button>
         </form>
@@ -745,7 +745,7 @@
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <!-- Clean Single Menu Button with Hamburger Bars Icon -->
-          <button id="btn-open-side-menu" onclick="openSideMenu()" title="મેનૂ (Menu)" style="background: #ffffff; border: 1px solid #e2e8f0; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; color: #1e293b; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='#ffffff'">
+          <button id="btn-open-side-menu" onclick="openSideMenu()" title="મેનૂ (Menu)" style="background: #ffffff; border: 1px solid #e2e8f0; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; color: #383644; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='#ffffff'">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
 
@@ -817,9 +817,9 @@
               <div class="stat-box">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                   <span data-gu="કુલ શેર / Shares" data-en="Total Shares" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">કુલ શેર / Shares</span>
-                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #0f172a; border-radius: 50%;"></span>
+                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #383644; border-radius: 50%;"></span>
                 </div>
-                <div style="font-size: 17px; font-weight: 800; color: #0f172a; margin-top: 4px;" id="stat-shares">0 શેર</div>
+                <div style="font-size: 17px; font-weight: 800; color: #383644; margin-top: 4px;" id="stat-shares">0 શેર</div>
                 <div style="font-size: 9px; color: #64748b; margin-top: 2px;" id="stat-members-lbl">કુલ સભ્યો: 0</div>
               </div>
             </div>
@@ -832,10 +832,10 @@
                     <span data-gu="વર્તમાન શેર મૂલ્ય (Current Share Value)" data-en="Current Share Value" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">વર્તમાન શેર મૂલ્ય (Current Share Value)</span>
                     <span style="font-size: 8.5px; background-color: #eff6ff; color: #2563eb; font-weight: 700; padding: 1px 5px; border-radius: 4px; border: 1px solid #dbeafe;">Admin</span>
                   </div>
-                  <div style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 3px;" id="dash-current-share-val">₹20,000</div>
+                  <div style="font-size: 20px; font-weight: 800; color: #383644; margin-top: 3px;" id="dash-current-share-val">₹20,000</div>
                   <div style="font-size: 9px; color: #64748b; margin-top: 2px;" id="dash-total-equity-lbl">કુલ સુરક્ષિત શેર મૂડી: ₹0</div>
                 </div>
-                <button type="button" onclick="editCurrentShareValue()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 10.5px; border-radius: 6px; height: auto; display: inline-flex; align-items: center; gap: 4px; background-color: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1;">
+                <button type="button" onclick="editCurrentShareValue()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 10.5px; border-radius: 6px; height: auto; display: inline-flex; align-items: center; gap: 4px; background-color: #f8fafc; color: #383644; border: 1px solid #cbd5e1;">
                   ✏️ <span data-gu="શેર ભાવ બદલો" data-en="Edit Value">શેર ભાવ બદલો</span>
                 </button>
               </div>
@@ -850,7 +850,7 @@
               <!-- Hero Main Balance of the Society -->
               <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 12px;">
                 <span data-gu="સોસાયટી કુલ મુખ્ય સિલક (SBI બેંક 1 + BOB બેંક 2)" data-en="Society Main Fund (Bank 1 + Bank 2)" style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી કુલ મુખ્ય સિલક (SBI બેંક 1 + BOB બેંક 2)</span>
-                <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-top: 2px;" id="dash-trust-main-bal">₹0</div>
+                <div style="font-size: 22px; font-weight: 800; color: #383644; margin-top: 2px;" id="dash-trust-main-bal">₹0</div>
               </div>
 
               <!-- Downside Grid showing Bank 1 and Bank 2 -->
@@ -955,7 +955,7 @@
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
               <div class="stat-box">
                 <span style="font-size: 9.5px; color: #475569; font-weight: 700; text-transform: uppercase;" data-gu="મારા સક્રિય શેર" data-en="MY ACTIVE SHARES">મારા સક્રિય શેર</span>
-                <div style="font-size: 18px; font-weight: 800; color: #0f172a; margin-top: 4px;" id="mem-dash-shares-count">0 શેર</div>
+                <div style="font-size: 18px; font-weight: 800; color: #383644; margin-top: 4px;" id="mem-dash-shares-count">0 શેર</div>
                 <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;" id="mem-dash-shares-cert">પ્રમાણપત્ર નં: -</div>
               </div>
 
@@ -981,7 +981,7 @@
             <!-- Member's Yearly Savings Card -->
             <div class="card" id="mem-dash-savings-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h4 style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 5px;">
+                <h4 style="font-size: 11px; font-weight: 700; color: #383644; margin: 0; display: flex; align-items: center; gap: 5px;">
                   <span>📅</span> <span data-gu="વાર્ષિક બચત સ્થિતિ" data-en="Yearly Savings Status">વાર્ષિક બચત સ્થિતિ</span> (<span id="mem-dash-current-year">2026</span>)
                 </h4>
                 <span id="mem-dash-savings-status-badge" class="certificate-pill" style="background: #ecfdf5; color: #047857; border-color: #d1fae5;">
@@ -1000,7 +1000,7 @@
 
             <!-- Member's Loan Book Card -->
             <div class="card" id="mem-dash-loan-card">
-              <h4 style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0 0 8px 0; display: flex; align-items: center; gap: 5px;">
+              <h4 style="font-size: 11px; font-weight: 700; color: #383644; margin: 0 0 8px 0; display: flex; align-items: center; gap: 5px;">
                 <span>💳</span> <span data-gu="મારી લોન વિગત" data-en="My Loan Details">મારી લોન વિગત</span>
               </h4>
               <div id="mem-dash-loan-details-box">
@@ -1011,7 +1011,7 @@
             <!-- Member's Personal Passbook / Payment History -->
             <div class="card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px;">
-                <h4 style="font-size: 11px; font-weight: 700; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 5px;">
+                <h4 style="font-size: 11px; font-weight: 700; color: #383644; margin: 0; display: flex; align-items: center; gap: 5px;">
                   <span>📖</span> <span data-gu="મારી પાસબુક (વ્યવહાર હિસાબ)" data-en="My Passbook (Payment History)">મારી પાસબુક (વ્યવહાર હિસાબ)</span>
                 </h4>
                 <span style="font-size: 9px; color: #64748b;" id="mem-dash-tx-count">0 વ્યવહારો</span>
@@ -1056,7 +1056,7 @@
         <div id="yearly-savings-container" class="space-y-4 hidden">
           <div class="card space-y-3">
             <div style="display: flex; gap: 8px; align-items: center; justify-content: space-between;">
-              <h4 class="card-title" style="display: flex; align-items: center; gap: 6px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #111827;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>વાર્ષિક બચત ટ્રેકર</h4>
+              <h4 class="card-title" style="display: flex; align-items: center; gap: 6px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #383644;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>વાર્ષિક બચત ટ્રેકર</h4>
               <div>
                 <select id="yearly-savings-year-select" class="form-select" style="padding: 4px 8px; font-size: 11px; width: 100px; height: 32px; border-radius: 6px;" onchange="renderYearlySavingsCollector()">
                   <option value="2026" selected>2026</option>
@@ -1157,7 +1157,7 @@
 
         <!-- Filter Panel for Loans -->
         <div class="card space-y-2" style="background-color: #f9fafb; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px;">
-          <div style="font-size: 10px; font-weight: 600; color: #111827; display: flex; align-items: center; gap: 4px;">
+          <div style="font-size: 10px; font-weight: 600; color: #383644; display: flex; align-items: center; gap: 4px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #6b7280; display:inline-block;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> લોન તારીખ ફિલ્ટર (Filter Loans by Period)
           </div>
           <div style="display: grid; grid-template-columns: 1fr; gap: 8px; align-items: center;" id="loans-filter-grid">
@@ -1178,7 +1178,7 @@
         <!-- Active loans -->
         <div class="space-y-3">
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px; gap: 6px; flex-wrap: wrap;">
-            <span style="font-weight: 900; font-size: 12px; color: #1f2937;" id="active-loans-lbl">ચાલુ ધિરાણ લોન પત્રક (0)</span>
+            <span style="font-weight: 900; font-size: 12px; color: #383644;" id="active-loans-lbl">ચાલુ ધિરાણ લોન પત્રક (0)</span>
             <div style="display: flex; align-items: center; gap: 6px;">
               <button id="btn-loan-report-pdf" onclick="generateLoansCustomPdfReport()" style="display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: #ffffff; border: none; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#1d4ed8'" onmouseout="this.style.backgroundColor='#2563eb'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -1304,9 +1304,9 @@
   <div class="modal-fullscreen-backdrop hidden" id="modal-unified-transaction">
     <div class="modal-fullscreen-header">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #111827;"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="10" x2="12" y2="14"/><path d="M8 12h8"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #383644;"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="10" x2="12" y2="14"/><path d="M8 12h8"/></svg>
         <div>
-          <h3 style="font-weight: 600; font-size: 13px; color: #111827; margin: 0;">નવો સોસાયટી વ્યવહાર (Transaction Entry)</h3>
+          <h3 style="font-weight: 600; font-size: 13px; color: #383644; margin: 0;">નવો સોસાયટી વ્યવહાર (Transaction Entry)</h3>
           <p style="font-size: 9px; color: #6b7280; margin: 2px 0 0 0;">બલાઢા મિત્ર મંડળ નાણાકીય પત્રક</p>
         </div>
       </div>
@@ -1500,7 +1500,7 @@
             <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
             <img id="menu-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
             <div>
-              <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.2;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h4>
+              <h4 style="font-size: 13px; font-weight: 800; color: #383644; margin: 0; line-height: 1.2;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h4>
               <span style="font-size: 10px; color: #64748b; font-weight: 600;" id="side-drawer-role-lbl">સભ્ય પોર્ટલ</span>
             </div>
           </div>
@@ -1510,7 +1510,7 @@
         <!-- User Profile Card -->
         <div id="side-drawer-profile-card" style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); display: none;">
           <div style="font-size: 9px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;" id="side-drawer-card-tag" data-gu="લૉગિન સભ્ય" data-en="LOGGED IN USER">લૉગિન સભ્ય</div>
-          <h3 style="font-size: 15.5px; font-weight: 800; color: #0f172a; margin: 0 0 4px 0;" id="side-drawer-user-name">સભ્ય નામ</h3>
+          <h3 style="font-size: 15.5px; font-weight: 800; color: #383644; margin: 0 0 4px 0;" id="side-drawer-user-name">સભ્ય નામ</h3>
           <p style="font-size: 11px; color: #475569; margin: 0 0 3px 0;" id="side-drawer-user-phone">મોબાઈલ: -</p>
           <p style="font-size: 10.5px; color: #64748b; margin: 0 0 8px 0;" id="side-drawer-user-nominee">વારસદાર: -</p>
           <span style="font-size: 9.5px; background: #ecfdf5; color: #047857; font-weight: 700; padding: 3px 9px; border-radius: 9999px; border: 1px solid #a7f3d0; display: inline-block;" id="side-drawer-status-badge" data-gu="સક્રિય સભ્ય ✓" data-en="Active Member ✓">
@@ -1529,7 +1529,7 @@
 
         <!-- Language Switcher in Drawer -->
         <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: 8px;">
-          <button onclick="toggleLanguage();" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: #ffffff; border: 1px solid #e2e8f0; padding: 10px 12px; border-radius: 9px; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; transition: all 0.2s;" onmouseover="this.style.borderColor='#cbd5e1'" onmouseout="this.style.borderColor='#e2e8f0'">
+          <button onclick="toggleLanguage();" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: #ffffff; border: 1px solid #e2e8f0; padding: 10px 12px; border-radius: 9px; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; transition: all 0.2s;" onmouseover="this.style.borderColor='#cbd5e1'" onmouseout="this.style.borderColor='#e2e8f0'">
             <span style="display: flex; align-items: center; gap: 8px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               <span data-gu="ભાષા બદલો (Language)" data-en="Switch Language">ભાષા બદલો (Language)</span>
@@ -1668,6 +1668,64 @@
       </div>
       <div class="modal-body">
         <form id="form-disburse" class="space-y-3">
+          
+          <!-- 1. LOAN TYPE SELECTION (Regular vs Special Loan) -->
+          <div class="form-group">
+            <label class="form-label" style="font-weight: 700; color: #383644;">લોનનો પ્રકાર (Loan Type) *</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;">
+              <label id="loan-type-reg-lbl" onclick="handleLoanTypeSelect('regular')" style="display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px; border: 2px solid #2563eb; background: #eff6ff; border-radius: 9px; cursor: pointer; font-size: 12px; font-weight: 700; color: #1d4ed8; text-align: center; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                <input type="radio" name="disburse_loan_type" id="disburse-type-regular" value="regular" checked style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span>સામાન્ય લોન (Regular)</span>
+              </label>
+              <label id="loan-type-spec-lbl" onclick="handleLoanTypeSelect('special')" style="display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px; border: 1.5px solid #cbd5e1; background: #ffffff; border-radius: 9px; cursor: pointer; font-size: 12px; font-weight: 700; color: #64748b; text-align: center; transition: all 0.2s;">
+                <input type="radio" name="disburse_loan_type" id="disburse-type-special" value="special" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <span>વિશેષ લોન (Special)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2. SPECIAL LOAN EXTRA LIMITS OPTIONS (Shown when Special is selected) -->
+          <div id="disburse-special-options-box" style="display: none; background: #faf5ff; border: 1.5px solid #d8b4fe; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(147, 51, 234, 0.05);">
+            <div style="font-size: 11px; font-weight: 800; color: #6b21a8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <span>વિશેષ લોન કેટેગરી અને એક્સ્ટ્રા લિમિટ્સ:</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 7px;">
+              <label id="spec-opt-business" onclick="handleSpecialCategorySelect('business')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #ffffff; border: 2px solid #9333ea; border-radius: 8px; cursor: pointer; font-size: 11.5px; transition: all 0.2s;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <input type="radio" name="special_loan_category" id="radio-spec-biz" value="business" checked style="accent-color: #9333ea;">
+                  <div style="width: 22px; height: 22px; border-radius: 6px; background: #f3e8ff; display: flex; align-items: center; justify-content: center; color: #7e22ce; flex-shrink: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                  </div>
+                  <strong style="color: #383644;">વેપાર / ધંધો (Business)</strong>
+                </div>
+                <span style="font-weight: 800; color: #7e22ce; background: #f3e8ff; padding: 3px 8px; border-radius: 6px; font-size: 10.5px; border: 1px solid #e9d5ff;">મર્યાદા: ₹5,00,000</span>
+              </label>
+              <label id="spec-opt-abroad" onclick="handleSpecialCategorySelect('abroad')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 11.5px; transition: all 0.2s;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <input type="radio" name="special_loan_category" id="radio-spec-abroad" value="abroad" style="accent-color: #9333ea;">
+                  <div style="width: 22px; height: 22px; border-radius: 6px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #475569; flex-shrink: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  </div>
+                  <strong style="color: #383644;">વિદેશ (Abroad / Foreign)</strong>
+                </div>
+                <span style="font-weight: 800; color: #7e22ce; background: #f3e8ff; padding: 3px 8px; border-radius: 6px; font-size: 10.5px; border: 1px solid #e9d5ff;">મર્યાદા: ₹5,00,000</span>
+              </label>
+              <label id="spec-opt-education" onclick="handleSpecialCategorySelect('education')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 11.5px; transition: all 0.2s;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <input type="radio" name="special_loan_category" id="radio-spec-edu" value="education" style="accent-color: #9333ea;">
+                  <div style="width: 22px; height: 22px; border-radius: 6px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #475569; flex-shrink: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                  </div>
+                  <strong style="color: #383644;">સ્થાનિક શિક્ષણ (Local Education)</strong>
+                </div>
+                <span style="font-weight: 800; color: #7e22ce; background: #f3e8ff; padding: 3px 8px; border-radius: 6px; font-size: 10.5px; border: 1px solid #e9d5ff;">મર્યાદા: ₹2,00,000</span>
+              </label>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="form-label">લોન લેનાર સભ્ય પસંદ કરો *</label>
             <select id="disburse-member" class="form-select" required>
@@ -1685,7 +1743,7 @@
               <strong style="color: #7c3aed;" id="disburse-shares-value">₹0</strong>
             </div>
             <div style="display: flex; justify-content: space-between;">
-              <span>ભલામણ કરેલ સુરક્ષિત લિમિટ:</span>
+              <span id="disburse-limit-lbl">ભલામણ કરેલ સુરક્ષિત લિમિટ:</span>
               <strong style="color: #2563eb;" id="disburse-limit-val">₹0</strong>
             </div>
             <div style="display: flex; justify-content: space-between;">
@@ -1704,14 +1762,11 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">લોન વ્યાજ દર (Interest policy) *</label>
-            <select id="disburse-rate" class="form-select">
-              <option value="0">0% વ્યાજ વગર (Interest-Free)</option>
-              <option value="0.5">0.5% સાદું વ્યાજ</option>
-              <option value="1" selected>1.0% માસિક વ્યાજ (Standard)</option>
-              <option value="1.5">1.5% માસિક વ્યાજ</option>
-              <option value="2">2.0% માસિક વ્યાજ</option>
-            </select>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="form-label">લોન વ્યાજ દર % (Interest Rate % - Manual Entry) *</label>
+              <span style="font-size: 9px; color: #64748b;">(મેન્યુઅલ / વિકલ્પ)</span>
+            </div>
+            <input type="number" id="disburse-rate" class="form-input" required min="0" max="100" step="any" value="1.0" placeholder="1.0" style="font-weight: 700; color: #2563eb;">
           </div>
 
           <div class="form-group">
@@ -1720,8 +1775,8 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">લોન આપવાનો હેતુ (Purpose)</label>
-            <input type="text" id="disburse-purpose" class="form-input" required placeholder="દા.ત. ઘર ખર્ચ, તબીબી સેવા">
+            <label class="form-label">લોન આપવાનો હેતુ (Purpose) *</label>
+            <input type="text" id="disburse-purpose" class="form-input" required placeholder="દા.ત. સામાન્ય અંગત લોન, ઘર ખર્ચ, તબીબી સેવા" value="સામાન્ય લોન">
           </div>
 
           <div class="form-group">
@@ -1800,8 +1855,12 @@
           </div>
 
           <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 10px; border-radius: 8px; font-size: 10px; display: none; flex-direction: column; gap: 4px;" id="repay-info-box">
+            <div style="display: none; justify-content: space-between; align-items: center; background: #faf5ff; padding: 4px 8px; border-radius: 6px; border: 1px solid #e9d5ff; margin-bottom: 2px;" id="repay-member-total-box">
+              <span style="color: #6b21a8; font-weight: 700;">સભ્યનું કુલ તમામ લોન બાકી:</span>
+              <strong style="color: #7e22ce; font-size: 11px; font-weight: 800;" id="repay-member-total-val">₹0</strong>
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="color: #6b7280;">કુલ બાકી મુદ્દલ:</span>
+              <span style="color: #6b7280;">આ લોનનું બાકી મુદ્દલ:</span>
               <strong style="color: #dc2626; font-size: 12px;" id="repay-outstanding-val">₹0</strong>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1813,7 +1872,7 @@
               <strong style="color: #dc2626; font-size: 11px;" id="repay-overdue-int-val">₹0</strong>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e5e7eb; padding-top: 4px; margin-top: 2px;">
-              <span style="color: #111827; font-weight: 700;">કુલ ચૂકવવાપાત્ર રકમ:</span>
+              <span style="color: #383644; font-weight: 700;">કુલ ચૂકવવાપાત્ર રકમ:</span>
               <strong style="color: #b91c1c; font-size: 12px; font-weight: 800;" id="repay-total-due-val">₹0</strong>
             </div>
           </div>
@@ -1924,11 +1983,16 @@
       const shareValue = mShares.length * getCurrentShareValue();
       const mSavings = getMemberSavings(l.memberId);
 
+      const memberActiveLoans = loans.filter(item => item.memberId === l.memberId && item.status === 'active');
+      const memberTotalLoanBal = memberActiveLoans.reduce((sum, item) => sum + item.currentBalance, 0);
+      const hasMultiLoans = memberActiveLoans.length > 1;
+      const thisLoanIndex = memberActiveLoans.findIndex(item => item.id === l.id) + 1;
+
       // 1. Calculate Monthly Interest (Vyaj added in center)
       const disDate = new Date(l.disburseDate);
       const today = new Date();
       const monthsDiff = Math.max(1, (today.getFullYear() - disDate.getFullYear()) * 12 + today.getMonth() - disDate.getMonth());
-      const ratePerMonth = l.interestRate || 1.0;
+      const ratePerMonth = l.interestRate !== undefined ? Number(l.interestRate) : 1.0;
       const totalVyaj = Math.round(l.principalAmount * (ratePerMonth / 100) * monthsDiff);
 
       // 2. Calculate Deposited Amounts
@@ -1973,16 +2037,50 @@
         <div class="modal" style="max-width: 920px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
           <div class="modal-header" style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
             <div style="text-align: left;">
-              <h3 style="font-weight: 700; font-size: 14px; color: #111827; margin: 0;">${m.name} - સવિસ્તર ખાતાવહી મેળવણી</h3>
+              <h3 style="font-weight: 700; font-size: 14px; color: #383644; margin: 0;">${m.name} - સવિસ્તર ખાતાવહી મેળવણી</h3>
               <p style="font-size: 8.5px; color: #6b7280; margin: 2px 0 0 0;">પરંપરાગત દેસી હિસાબ પદ્ધતિ | <b>સાક્ષી ૧:</b> ${l.witness1 || 'નથી'} | <b>સાક્ષી ૨:</b> ${l.witness2 || 'નથી'}</p>
             </div>
             <button class="modal-close" onclick="closeModal('modal-loan-math')" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #6b7280; padding: 4px;">✕</button>
           </div>
           <div class="modal-body" style="padding: 24px; background-color: #ffffff;">
+            ${hasMultiLoans ? `
+              <div style="background: #faf5ff; border: 1.5px solid #d8b4fe; border-radius: 12px; padding: 12px 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 800; font-size: 11px; color: #6b21a8;">આ સભ્ય પાસે અલગ અલગ વ્યાજ દરની કુલ ${memberActiveLoans.length} લોન સક્રિય છે</span>
+                    <span style="background: #e9d5ff; color: #581c87; font-size: 8.5px; padding: 2px 6px; border-radius: 4px; font-weight: 700;">હાલ દર્શાવેલ: લોન #${thisLoanIndex} (${l.interestRate}% વ્યાજ)</span>
+                  </div>
+                  <div style="font-size: 8.5px; color: #7e22ce; margin-top: 3px;">
+                    અન્ય લોન: ${memberActiveLoans.filter(item => item.id !== l.id).map(item => `લોન #${memberActiveLoans.findIndex(x => x.id === item.id) + 1} (${item.interestRate}% દર - બાકી: ₹${item.currentBalance.toLocaleString('en-IN')})`).join(' | ')}
+                  </div>
+                </div>
+                <div style="text-align: right; background: #ffffff; padding: 6px 12px; border-radius: 8px; border: 1px solid #e9d5ff;">
+                  <div style="font-size: 8px; color: #7e22ce; text-transform: uppercase; font-weight: 700;">સભ્ય કુલ બાકી લોન રકમ</div>
+                  <div style="font-size: 14px; color: #6b21a8; font-weight: 900;">₹${memberTotalLoanBal.toLocaleString('en-IN')}</div>
+                </div>
+              </div>
+            ` : ''}
+
+            ${l.topups && l.topups.length > 0 ? `
+              <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 10px 12px; margin-bottom: 18px; font-size: 9px;">
+                <div style="font-weight: 700; color: #0369a1; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                  સમાન વ્યાજ દર હોવાથી આ લોનમાં ઉમેરાયેલ વધારાની રકમનો ઈતિહાસ (Top-ups):
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  ${l.topups.map((tp, idx) => `
+                    <div style="display: flex; justify-content: space-between; color: #0284c7; padding: 2px 0;">
+                      <span>${idx + 1}. તારીખ: <b>${tp.date}</b> | હેતુ: ${tp.purpose} (${tp.loanType === 'special' ? 'વિશેષ' : 'સામાન્ય'})</span>
+                      <strong style="color: #0369a1;">+₹${tp.amount.toLocaleString('en-IN')}</strong>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
             
             <!-- SECTION 1: THE REQUIRED 9-COLUMN ROW TABLE -->
             <div style="margin-bottom: 24px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-              <h4 style="font-weight: 600; font-size: 10px; color: #111827; margin: 0; padding: 12px 16px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+              <h4 style="font-weight: 600; font-size: 10px; color: #383644; margin: 0; padding: 12px 16px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
                 📋 સભ્ય ખાતા પત્રક વિગતવાર મેળવણી (Member Financial Row Overview)
               </h4>
               <div style="overflow-x: auto; width: 100%;">
@@ -2003,12 +2101,12 @@
                   </thead>
                   <tbody>
                     <tr style="border-bottom: 1px solid #f3f4f6; background-color: #ffffff;">
-                      <td style="padding: 12px; font-weight: bold; color: #111827;">${m.name}</td>
+                      <td style="padding: 12px; font-weight: bold; color: #383644;">${m.name}</td>
                       <td style="padding: 12px; text-align: center; font-weight: bold;">${mShares.length}</td>
                       <td style="padding: 12px; text-align: right; font-weight: 500; white-space: nowrap;">
                         <span style="color: #059669;">₹${mSavings.toLocaleString()}</span>/<span style="color: #4b5563;">₹${shareValue.toLocaleString()}</span>
                       </td>
-                      <td style="padding: 12px; text-align: right; font-weight: bold; color: #111827;">₹${l.principalAmount.toLocaleString()}</td>
+                      <td style="padding: 12px; text-align: right; font-weight: bold; color: #383644;">₹${l.principalAmount.toLocaleString()}</td>
                       <td style="padding: 12px; text-align: right; font-weight: bold; color: #2563eb;">₹${totalVyaj.toLocaleString()}</td>
                       <td style="padding: 12px; text-align: right; font-weight: bold; color: #059669;">₹${totalDeposited.toLocaleString()}</td>
                       <td style="padding: 12px; text-align: right; font-weight: 900; color: #dc2626; font-size: 10px;">₹${finalOutstandingBalance.toLocaleString()}</td>
@@ -2023,11 +2121,11 @@
 
             <!-- SECTION 2: THE TRADITIONAL GUJARATI VERTICAL SUM SHEET (UPSIDE DOWN MATH) -->
             <div style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); max-width: 480px; margin: 0 auto;">
-              <h4 style="font-weight: bold; font-size: 11px; color: #111827; margin: 0 0 16px 0; text-align: center; border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #111827;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> પરંપરાગત ઊભી મેળવણી ગણતરી (Mathematical Vertical Sum Ledger)
+              <h4 style="font-weight: bold; font-size: 11px; color: #383644; margin: 0 0 16px 0; text-align: center; border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #383644;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> પરંપરાગત ઊભી મેળવણી ગણતરી (Mathematical Vertical Sum Ledger)
               </h4>
               
-              <div style="display: flex; flex-direction: column; align-items: flex-end; font-family: 'Courier New', monospace, sans-serif; font-size: 14px; line-height: 2.2; color: #0f172a; padding: 0 20px;">
+              <div style="display: flex; flex-direction: column; align-items: flex-end; font-family: 'Courier New', monospace, sans-serif; font-size: 14px; line-height: 2.2; color: #383644; padding: 0 20px;">
                 
                 <div style="display: flex; justify-content: space-between; width: 100%;">
                   <span style="color: #6b7280; font-size: 10px; font-family: sans-serif; font-weight: bold;">મૂળ મંજૂર લોન મુદ્દલ (+):</span>
@@ -2043,7 +2141,7 @@
 
                 <div style="display: flex; justify-content: space-between; width: 100%;">
                   <span style="color: #4b5563; font-size: 10px; font-family: sans-serif; font-weight: bold;">વ્યાજ સહિત કુલ બાકી લો:</span>
-                  <span style="font-weight: 700; font-size: 15px; color: #111827;">₹${(l.principalAmount + totalVyaj).toLocaleString('en-IN')}</span>
+                  <span style="font-weight: 700; font-size: 15px; color: #383644;">₹${(l.principalAmount + totalVyaj).toLocaleString('en-IN')}</span>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; width: 100%;">
@@ -2051,7 +2149,7 @@
                   <span style="color: #059669; font-weight: 700; font-size: 15px;">- ₹${totalDeposited.toLocaleString('en-IN')}</span>
                 </div>
                 
-                <div style="width: 100%; border-bottom: 3px double #1f2937; margin: 6px 0;"></div>
+                <div style="width: 100%; border-bottom: 3px double #383644; margin: 6px 0;"></div>
                 
                 <div style="display: flex; justify-content: space-between; width: 100%; padding-top: 4px;">
                   <span style="color: #dc2626; font-weight: bold; font-size: 11px; font-family: sans-serif;">ચૂકવવાની બાકી રકમ (=):</span>
@@ -2345,19 +2443,19 @@
 
         if (navContainer) {
           navContainer.innerHTML = `
-            <button onclick="closeSideMenu(); setTab('dashboard');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('dashboard');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               <span>${isGuj ? 'મારું ડેશબોર્ડ' : 'My Dashboard'}</span>
             </button>
-            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-savings-card'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-savings-card'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
               <span>${isGuj ? 'મારા શેર અને બચત' : 'My Shares & Savings'}</span>
             </button>
-            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-loan-card'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-loan-card'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
               <span>${isGuj ? 'મારી લોન વિગત' : 'My Loan Details'}</span>
             </button>
-            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-passbook-list'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('dashboard'); const el=document.getElementById('mem-dash-passbook-list'); if(el) el.scrollIntoView({behavior:'smooth'});" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
               <span>${isGuj ? 'મારી પાસબુક સ્ટેટમેન્ટ' : 'My Passbook Entries'}</span>
             </button>
@@ -2369,19 +2467,19 @@
 
         if (navContainer) {
           navContainer.innerHTML = `
-            <button onclick="closeSideMenu(); setTab('dashboard');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('dashboard');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               <span>${isGuj ? 'મુખ્ય ડેશબોર્ડ' : 'Main Dashboard'}</span>
             </button>
-            <button onclick="closeSideMenu(); setTab('members');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('members');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               <span>${isGuj ? 'સભ્યો અને શેર' : 'Members & Shares'}</span>
             </button>
-            <button onclick="closeSideMenu(); setTab('ledger');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('ledger');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
               <span>${isGuj ? 'ચોપડા અને નાણાકીય હિસાબ' : 'Books & Financial Ledger'}</span>
             </button>
-            <button onclick="closeSideMenu(); setTab('backup');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #1e293b; text-align: left;">
+            <button onclick="closeSideMenu(); setTab('backup');" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #f1f5f9; background: #ffffff; cursor: pointer; font-size: 11.5px; font-weight: 600; color: #383644; text-align: left;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               <span>${isGuj ? 'સેટિંગ્સ અને બેકઅપ' : 'Settings & Backup'}</span>
             </button>
@@ -2617,7 +2715,7 @@
           <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px;" class="space-y-3">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <span style="font-size: 13px; font-weight: 700; color: #1e293b;">${mName}</span>
+                <span style="font-size: 13px; font-weight: 700; color: #383644;">${mName}</span>
                 <span style="font-size: 10px; color: #64748b; display: block;">${loan.purpose || 'લોન ખાતું'} (#${loan.id})</span>
               </div>
               <span style="font-size: 10px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 3px 8px; border-radius: 6px;">
@@ -2628,18 +2726,18 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10.5px;">
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span style="color: #64748b; font-size: 9px; display: block;">મંજૂર લોન તારીખ</span>
-                <strong style="color: #1e293b;">${loan.disburseDate || '-'}</strong>
+                <strong style="color: #383644;">${loan.disburseDate || '-'}</strong>
               </div>
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span style="color: #64748b; font-size: 9px; display: block;">ચાલુ તારીખ / માસ</span>
-                <strong style="color: #1e293b;">${new Date().toLocaleDateString('gu-IN')} (${intSched.currentMonthCode})</strong>
+                <strong style="color: #383644;">${new Date().toLocaleDateString('gu-IN')} (${intSched.currentMonthCode})</strong>
               </div>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span style="font-size: 9px; color: #64748b; display: block;">મૂળ લોન</span>
-                <strong style="font-size: 11px; color: #0f172a;">₹${loan.principalAmount.toLocaleString('en-IN')}</strong>
+                <strong style="font-size: 11px; color: #383644;">₹${loan.principalAmount.toLocaleString('en-IN')}</strong>
               </div>
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span style="font-size: 9px; color: #64748b; display: block;">ભરેલ મુદ્દલ</span>
@@ -2698,7 +2796,7 @@
               ` : ''}
 
               <div style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #bfdbfe; padding-top: 8px; margin-top: 6px;">
-                <span style="font-size: 11px; font-weight: 800; color: #0f172a;">કુલ ચૂકવવાપાત્ર રકમ (મુદ્દલ + વ્યાજ):</span>
+                <span style="font-size: 11px; font-weight: 800; color: #383644;">કુલ ચૂકવવાપાત્ર રકમ (મુદ્દલ + વ્યાજ):</span>
                 <strong style="font-size: 13px; font-weight: 900; color: #b91c1c;">₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}</strong>
               </div>
             </div>
@@ -2927,11 +3025,13 @@
       const curShareVal = getCurrentShareValue();
       const totalShareAssetVal = mShares.length * curShareVal;
       const totalSavingsPaid = getMemberSavings(m.id);
-      const activeLoan = loans.find(l => l.memberId === m.id && l.status === 'active');
+      const memberActiveLoans = loans.filter(l => l.memberId === m.id && l.status === 'active');
       const isGuj = currentLang === 'guj';
-      const intSched = activeLoan ? calculateLoanInterestSchedule(activeLoan, m.name) : null;
-      const currentLoanBal = activeLoan ? activeLoan.currentBalance : 0;
-      const loanRate = activeLoan ? (activeLoan.interestRate !== undefined ? activeLoan.interestRate : 1.0) : 0;
+      const currentLoanBal = memberActiveLoans.reduce((sum, l) => sum + l.currentBalance, 0);
+      const totalMonthlyInterest = memberActiveLoans.reduce((sum, l) => {
+        const sched = calculateLoanInterestSchedule(l, m.name);
+        return sum + (sched ? sched.monthlyInterest : 0);
+      }, 0);
 
       // 1. Profile Banner
       const nameEl = document.getElementById('mem-dash-name');
@@ -2957,10 +3057,16 @@
       if (loanBalEl) loanBalEl.textContent = `₹${currentLoanBal.toLocaleString('en-IN')}`;
       const loanRateEl = document.getElementById('mem-dash-loan-rate');
       if (loanRateEl) {
-        if (activeLoan && intSched) {
+        if (memberActiveLoans.length === 1) {
+          const al = memberActiveLoans[0];
+          const intSched = calculateLoanInterestSchedule(al, m.name);
           loanRateEl.textContent = isGuj 
-            ? `વ્યાજ: ₹${intSched.monthlyInterest}/માસ (${loanRate === 0 ? '0% વ્યાજમુક્ત' : '૧%'})` 
-            : `Int: ₹${intSched.monthlyInterest}/mo (${loanRate === 0 ? '0% Free' : '1%'})`;
+            ? `વ્યાજ: ₹${intSched.monthlyInterest}/માસ (${al.interestRate === 0 ? '0% વ્યાજમુક્ત' : al.interestRate + '%'})` 
+            : `Int: ₹${intSched.monthlyInterest}/mo (${al.interestRate === 0 ? '0% Free' : al.interestRate + '%'})`;
+        } else if (memberActiveLoans.length > 1) {
+          loanRateEl.textContent = isGuj 
+            ? `કુલ વ્યાજ: ₹${totalMonthlyInterest}/માસ (${memberActiveLoans.length} લોન)` 
+            : `Total Int: ₹${totalMonthlyInterest}/mo (${memberActiveLoans.length} Loans)`;
         } else {
           loanRateEl.textContent = isGuj ? 'ચાલુ લોન નથી' : 'No active loan';
         }
@@ -3014,111 +3120,131 @@
       // 4. Loan details card
       const loanBox = document.getElementById('mem-dash-loan-details-box');
       if (loanBox) {
-        if (activeLoan && intSched) {
-          const progressPercent = activeLoan.principalAmount > 0 
-            ? Math.min(100, Math.round(((activeLoan.principalAmount - activeLoan.currentBalance) / activeLoan.principalAmount) * 100))
-            : 0;
-
-          const w1Member = members.find(mem => mem.id === activeLoan.witness1);
-          const w2Member = members.find(mem => mem.id === activeLoan.witness2);
-          const w1Name = w1Member ? w1Member.name : (activeLoan.witness1 || '-');
-          const w2Name = w2Member ? w2Member.name : (activeLoan.witness2 || '-');
-
-          loanBox.innerHTML = `
-            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;" class="space-y-3">
-              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <span style="font-size: 11px; font-weight: 700; color: #1e293b;">
-                    ${isGuj ? `લોન નંબર: #${activeLoan.id}` : `Loan ID: #${activeLoan.id}`}
-                  </span>
-                  <span style="font-size: 9px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 2px 6px; border-radius: 4px;">
-                    ${activeLoan.interestRate === 0 ? (isGuj ? '0% વ્યાજમુક્ત' : '0% Free') : (isGuj ? '૧% માસિક વ્યાજ' : '1% Monthly')}
-                  </span>
-                </div>
-                <div>
-                  ${intSched.isThisMonthEmiPaid 
-                    ? `<span style="font-size: 8.5px; font-weight: 700; color: #047857; background: #ecfdf5; padding: 2px 8px; border-radius: 6px; border: 1px solid #a7f3d0; display: inline-flex; align-items: center; gap: 4px;">✓ ${isGuj ? 'ચાલુ માસ EMI જમા' : 'This Month EMI Done'}</span>`
-                    : `<span style="font-size: 8.5px; font-weight: 700; color: #dc2626; background: #fef2f2; padding: 2px 8px; border-radius: 6px; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 4px;">🔔 ${isGuj ? 'ચાલુ માસ EMI બાકી' : 'This Month EMI Pending'}</span>`}
-                </div>
-              </div>
-
-              <!-- 5 Stat Grid -->
-              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; text-align: left;">
-                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'મંજૂર મૂળ લોન' : 'Sanctioned Loan'}</span>
-                  <strong style="font-size: 11px; color: #0f172a;">₹${activeLoan.principalAmount.toLocaleString('en-IN')}</strong>
-                </div>
-                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'ભરેલ મુદ્દલ' : 'Principal Paid'}</span>
-                  <strong style="font-size: 11px; color: #059669;">₹${(activeLoan.principalAmount - activeLoan.currentBalance).toLocaleString('en-IN')}</strong>
-                </div>
-                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                  <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'બાકી મુદ્દલ' : 'Principal Balance'}</span>
-                  <strong style="font-size: 11px; color: #dc2626;">₹${activeLoan.currentBalance.toLocaleString('en-IN')}</strong>
-                </div>
-                <div style="background: #eff6ff; padding: 8px; border-radius: 6px; border: 1px solid #bfdbfe;">
-                  <span style="font-size: 8px; color: #1e40af; display: block;">${isGuj ? `ચાલુ માસ વ્યાજ (${intSched.currentMonthCode})` : `This Month Interest (${intSched.currentMonthCode})`}</span>
-                  <strong style="font-size: 11px; color: #1d4ed8;">₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString('en-IN')}</strong>
-                  <span style="font-size: 7px; display: block; color: ${intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: 700;">
-                    ${intSched.isThisMonthEmiPaid ? '✓ જમા થયેલ' : '🔔 બાકી છે'}
-                  </span>
-                </div>
-                <div style="background: #f0f9ff; padding: 8px; border-radius: 6px; border: 1px solid #bae6fd; grid-column: span 2;">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 8.5px; color: #0369a1; font-weight: 600;">${isGuj ? 'આવતા માસનું વ્યાજ (બાકી મુદ્દલ પર ૧%):' : 'Next Month Interest (1% on Balance):'}</span>
-                    <strong style="font-size: 11.5px; color: #0284c7;">₹${intSched.nextMonthInterest.toLocaleString('en-IN')} / માસ</strong>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Overdue Interest & Total Due Alert -->
-              ${intSched.pendingInterest > 0 ? `
-                <div style="background: #fff5f5; border: 1.5px solid #fecaca; border-radius: 8px; padding: 10px;">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 9.5px; font-weight: 700; color: #b91c1c;">
-                      ⚠️ ${isGuj ? `પાછલા ${intSched.unpaidMonths} મહિનાથી હપ્તો બાકી છે` : `${intSched.unpaidMonths} Months EMI Overdue`}
-                    </span>
-                    <strong style="font-size: 11px; color: #dc2626;">+₹${intSched.pendingInterest.toLocaleString('en-IN')} વ્યાજ</strong>
-                  </div>
-                  <p style="font-size: 8px; color: #991b1b; margin: 3px 0 0 0;">
-                    ${isGuj 
-                      ? `માસિક ₹${intSched.monthlyInterest} લેખે ${intSched.unpaidMonths} માસનું બાકી વ્યાજ લોનમાં ઉમેરાયેલ છે.` 
-                      : `Monthly interest of ₹${intSched.monthlyInterest} for ${intSched.unpaidMonths} months added to outstanding.`}
-                  </p>
-                  <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #fca5a5; padding-top: 6px; margin-top: 6px;">
-                    <span style="font-size: 10px; font-weight: 700; color: #111827;">${isGuj ? 'કુલ ચૂકવવાપાત્ર રકમ (મુદ્દલ + વ્યાજ):' : 'Total Due (Principal + Interest):'}</span>
-                    <strong style="font-size: 12px; font-weight: 900; color: #b91c1c;">₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}</strong>
-                  </div>
-                </div>
-              ` : `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px 10px; font-size: 9px;">
-                  <span style="color: #166534; font-weight: 600;">${isGuj ? 'કુલ બાકી લોન રકમ:' : 'Total Outstanding:'}</span>
-                  <strong style="color: #15803d; font-size: 11px;">₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}</strong>
-                </div>
-              `}
-
-              <!-- Progress -->
+        if (memberActiveLoans.length > 0) {
+          const multiHeaderHtml = memberActiveLoans.length > 1 ? `
+            <div style="background: #faf5ff; border: 1.5px solid #d8b4fe; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
               <div>
-                <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; margin-bottom: 3px;">
-                  <span>${isGuj ? 'પરત ચુકવણી પ્રગતિ' : 'Repayment Progress'}</span>
-                  <span><b>${progressPercent}%</b> ${isGuj ? 'ચૂકતે' : 'Paid'}</span>
+                <span style="font-size: 11.5px; font-weight: 800; color: #6b21a8;">
+                  ${isGuj ? 'સભ્ય કુલ બાકી લોન રકમ (Total Outstanding)' : 'Total Member Loan Outstanding'}
+                </span>
+                <div style="font-size: 9px; color: #7e22ce; margin-top: 2px;">
+                  ${isGuj ? `આ સભ્ય પાસે અલગ અલગ વ્યાજ દરની કુલ ${memberActiveLoans.length} સક્રિય લોન છે.` : `This member has ${memberActiveLoans.length} active loans with different interest rates.`}
                 </div>
-                <div style="background: #e2e8f0; height: 6px; border-radius: 9999px; overflow: hidden;">
-                  <div style="background: #2563eb; height: 100%; width: ${progressPercent}%; border-radius: 9999px;"></div>
-                </div>
               </div>
-
-              <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 6px;">
-                <span>${isGuj ? `મંજૂર તારીખ: ${activeLoan.disburseDate || '-'}` : `Disbursed: ${activeLoan.disburseDate || '-'}`}</span>
-                <span>${isGuj ? `હેતુ: ${activeLoan.purpose || 'વ્યક્તિગત લોન'}` : `Purpose: ${activeLoan.purpose || 'Personal Loan'}`}</span>
-              </div>
-
-              <div style="display: flex; justify-content: space-between; font-size: 8px; color: #334155; background: #ffffff; padding: 6px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                <span><b>${isGuj ? 'સાક્ષી ૧:' : 'Witness 1:'}</b> ${w1Name}</span>
-                <span><b>${isGuj ? 'સાક્ષી ૨:' : 'Witness 2:'}</b> ${w2Name}</span>
-              </div>
+              <strong style="font-size: 16px; color: #7e22ce; font-weight: 900;">₹${currentLoanBal.toLocaleString('en-IN')}</strong>
             </div>
-          `;
+          ` : '';
+
+          const cardsHtml = memberActiveLoans.map((activeLoan, idx) => {
+            const intSched = calculateLoanInterestSchedule(activeLoan, m.name);
+            const progressPercent = activeLoan.principalAmount > 0 
+              ? Math.min(100, Math.round(((activeLoan.principalAmount - activeLoan.currentBalance) / activeLoan.principalAmount) * 100))
+              : 0;
+
+            const w1Member = members.find(mem => mem.id === activeLoan.witness1);
+            const w2Member = members.find(mem => mem.id === activeLoan.witness2);
+            const w1Name = w1Member ? w1Member.name : (activeLoan.witness1 || '-');
+            const w2Name = w2Member ? w2Member.name : (activeLoan.witness2 || '-');
+
+            return `
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 10px;" class="space-y-3">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 11px; font-weight: 700; color: #383644;">
+                      ${memberActiveLoans.length > 1 ? `લોન #${idx + 1} (ID: #${activeLoan.id})` : (isGuj ? `લોન નંબર: #${activeLoan.id}` : `Loan ID: #${activeLoan.id}`)}
+                    </span>
+                    <span style="font-size: 9px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 2px 6px; border-radius: 4px;">
+                      ${activeLoan.interestRate === 0 ? (isGuj ? '0% વ્યાજમુક્ત' : '0% Free') : (isGuj ? `${activeLoan.interestRate}% માસિક વ્યાજ` : `${activeLoan.interestRate}% Monthly`)}
+                    </span>
+                    ${activeLoan.loanType === 'special' ? `<span style="font-size: 8px; font-weight: 700; color: #7e22ce; background: #f3e8ff; padding: 1px 5px; border-radius: 4px;">વિશેષ લોન</span>` : ''}
+                  </div>
+                  <div>
+                    ${intSched && intSched.isThisMonthEmiPaid 
+                      ? `<span style="font-size: 8.5px; font-weight: 700; color: #047857; background: #ecfdf5; padding: 2px 8px; border-radius: 6px; border: 1px solid #a7f3d0; display: inline-flex; align-items: center; gap: 4px;">✓ ${isGuj ? 'ચાલુ માસ EMI જમા' : 'This Month EMI Done'}</span>`
+                      : `<span style="font-size: 8.5px; font-weight: 700; color: #dc2626; background: #fef2f2; padding: 2px 8px; border-radius: 6px; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 4px;">🔔 ${isGuj ? 'ચાલુ માસ EMI બાકી' : 'This Month EMI Pending'}</span>`}
+                  </div>
+                </div>
+
+                <!-- 5 Stat Grid -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; text-align: left;">
+                  <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                    <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'મંજૂર મૂળ લોન' : 'Sanctioned Loan'}</span>
+                    <strong style="font-size: 11px; color: #383644;">₹${activeLoan.principalAmount.toLocaleString('en-IN')}</strong>
+                  </div>
+                  <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                    <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'ભરેલ મુદ્દલ' : 'Principal Paid'}</span>
+                    <strong style="font-size: 11px; color: #059669;">₹${(activeLoan.principalAmount - activeLoan.currentBalance).toLocaleString('en-IN')}</strong>
+                  </div>
+                  <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                    <span style="font-size: 8px; color: #64748b; display: block;">${isGuj ? 'આ લોનનું બાકી મુદ્દલ' : 'Principal Balance'}</span>
+                    <strong style="font-size: 11px; color: #dc2626;">₹${activeLoan.currentBalance.toLocaleString('en-IN')}</strong>
+                  </div>
+                  <div style="background: #eff6ff; padding: 8px; border-radius: 6px; border: 1px solid #bfdbfe;">
+                    <span style="font-size: 8px; color: #1e40af; display: block;">${isGuj ? `ચાલુ માસ વ્યાજ (${intSched ? intSched.currentMonthCode : ''})` : `This Month Interest`}</span>
+                    <strong style="font-size: 11px; color: #1d4ed8;">₹${intSched ? (intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString('en-IN') : 0}</strong>
+                    <span style="font-size: 7px; display: block; color: ${intSched && intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: 700;">
+                      ${intSched && intSched.isThisMonthEmiPaid ? '✓ જમા થયેલ' : '🔔 બાકી છે'}
+                    </span>
+                  </div>
+                  <div style="background: #f0f9ff; padding: 8px; border-radius: 6px; border: 1px solid #bae6fd; grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 8.5px; color: #0369a1; font-weight: 600;">${isGuj ? `આવતા માસનું વ્યાજ (${activeLoan.interestRate}% દર):` : `Next Month Interest (${activeLoan.interestRate}%):`}</span>
+                      <strong style="font-size: 11.5px; color: #0284c7;">₹${intSched ? intSched.nextMonthInterest.toLocaleString('en-IN') : 0} / માસ</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Overdue Interest & Total Due Alert -->
+                ${intSched && intSched.pendingInterest > 0 ? `
+                  <div style="background: #fff5f5; border: 1.5px solid #fecaca; border-radius: 8px; padding: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span style="font-size: 9.5px; font-weight: 700; color: #b91c1c;">
+                        ⚠️ ${isGuj ? `પાછલા ${intSched.unpaidMonths} મહિનાથી હપ્તો બાકી છે` : `${intSched.unpaidMonths} Months EMI Overdue`}
+                      </span>
+                      <strong style="font-size: 11px; color: #dc2626;">+₹${intSched.pendingInterest.toLocaleString('en-IN')} વ્યાજ</strong>
+                    </div>
+                    <p style="font-size: 8px; color: #991b1b; margin: 3px 0 0 0;">
+                      ${isGuj 
+                        ? `માસિક ₹${intSched.monthlyInterest} લેખે ${intSched.unpaidMonths} માસનું બાકી વ્યાજ લોનમાં ઉમેરાયેલ છે.` 
+                        : `Monthly interest of ₹${intSched.monthlyInterest} for ${intSched.unpaidMonths} months added to outstanding.`}
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #fca5a5; padding-top: 6px; margin-top: 6px;">
+                      <span style="font-size: 10px; font-weight: 700; color: #383644;">${isGuj ? 'આ લોન કુલ ચૂકવવાપાત્ર રકમ:' : 'Total Due for this loan:'}</span>
+                      <strong style="font-size: 12px; font-weight: 900; color: #b91c1c;">₹${intSched.totalDueWithInterest.toLocaleString('en-IN')}</strong>
+                    </div>
+                  </div>
+                ` : `
+                  <div style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 6px 10px; font-size: 9px;">
+                    <span style="color: #166534; font-weight: 600;">${isGuj ? 'આ લોન બાકી રકમ:' : 'This Loan Outstanding:'}</span>
+                    <strong style="color: #15803d; font-size: 11px;">₹${intSched ? intSched.totalDueWithInterest.toLocaleString('en-IN') : activeLoan.currentBalance.toLocaleString('en-IN')}</strong>
+                  </div>
+                `}
+
+                <!-- Progress -->
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; margin-bottom: 3px;">
+                    <span>${isGuj ? 'પરત ચુકવણી પ્રગતિ' : 'Repayment Progress'}</span>
+                    <span><b>${progressPercent}%</b> ${isGuj ? 'ચૂકતે' : 'Paid'}</span>
+                  </div>
+                  <div style="background: #e2e8f0; height: 6px; border-radius: 9999px; overflow: hidden;">
+                    <div style="background: #2563eb; height: 100%; width: ${progressPercent}%; border-radius: 9999px;"></div>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; border-top: 1px solid #f1f5f9; padding-top: 6px;">
+                  <span>${isGuj ? `મંજૂર તારીખ: ${activeLoan.disburseDate || '-'}` : `Disbursed: ${activeLoan.disburseDate || '-'}`}</span>
+                  <span>${isGuj ? `હેતુ: ${activeLoan.purpose || 'વ્યક્તિગત લોન'}` : `Purpose: ${activeLoan.purpose || 'Personal Loan'}`}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 8px; color: #334155; background: #ffffff; padding: 6px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                  <span><b>${isGuj ? 'સાક્ષી ૧:' : 'Witness 1:'}</b> ${w1Name}</span>
+                  <span><b>${isGuj ? 'સાક્ષી ૨:' : 'Witness 2:'}</b> ${w2Name}</span>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          loanBox.innerHTML = multiHeaderHtml + cardsHtml;
         } else {
           loanBox.innerHTML = `
             <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 16px; text-align: center; color: #64748b;">
@@ -3161,7 +3287,7 @@
               <div style="background: #ffffff; border: 1px solid #f1f5f9; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
                 <div>
                   <div style="display: flex; align-items: center; gap: 6px;">
-                    <span style="font-size: 9px; font-weight: 700; color: #1e293b; background: #f8fafc; padding: 1px 5px; border-radius: 4px; border: 1px solid #e2e8f0;">
+                    <span style="font-size: 9px; font-weight: 700; color: #383644; background: #f8fafc; padding: 1px 5px; border-radius: 4px; border: 1px solid #e2e8f0;">
                       ${typesGuj[t.type] || t.type}
                     </span>
                     <span style="font-size: 8px; color: #64748b;">${t.paymentMode || ''}</span>
@@ -3330,7 +3456,7 @@
             <div style="margin-bottom: 8px; display: flex; justify-content: center; color: #9ca3af;">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             </div>
-            <p style="font-size: 12px; font-weight: 600; color: #111827;">કોઈ સભ્યો મળ્યા નથી (No Members)</p>
+            <p style="font-size: 12px; font-weight: 600; color: #383644;">કોઈ સભ્યો મળ્યા નથી (No Members)</p>
             <p style="font-size: 10px; margin-top: 2px; color: #6b7280;">ઉપર ક્લિક કરીને નવો સભ્ય રજીસ્ટર કરો.</p>
           </div>
         `;
@@ -3362,8 +3488,8 @@
           <div class="member-box" style="padding: 14px 16px; border: 1px solid #e5e7eb; border-radius: 16px; background-color: #ffffff; cursor: pointer; transition: all 0.2s;" onclick="toggleMemberExpand('${m.id}')">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <h4 style="font-size: 14px; font-weight: 600; color: #111827; display: flex; align-items: center; gap: 6px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:#111827;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> ${m.name}
+                <h4 style="font-size: 14px; font-weight: 600; color: #383644; display: flex; align-items: center; gap: 6px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #383644;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> ${m.name}
                 </h4>
                 <div style="font-size: 11px; color: #6b7280; margin-top: 4px; display: flex; gap: 8px; align-items: center;">
                   <span style="display:flex; align-items:center; gap:3px;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #6b7280;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> ${m.phone || 'નથી'}</span>
@@ -3371,7 +3497,7 @@
                   <span><b>${mShares.length} શેર એક્ટિવ</b>${pendingCount > 0 ? ` (<span style="color: #d97706; font-weight: 600;">${pendingCount} પેન્ડિંગ</span>)` : ''}</span>
                   ${mLoan > 0 ? `
                     <span style="width: 3px; height: 3px; background-color: #9ca3af; border-radius: 50%;"></span>
-                    <span style="color: #111827; font-weight: 600;">બાકી લોન: ₹${mLoan.toLocaleString()}</span>
+                    <span style="color: #383644; font-weight: 600;">બાકી લોન: ₹${mLoan.toLocaleString()}</span>
                   ` : ''}
                 </div>
               </div>
@@ -3416,7 +3542,7 @@
                       return `
                         <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; background-color: #ffffff; padding: 6px 10px; border-radius: 10px; border: 1px solid #e5e7eb;">
                           <span style="font-weight: 700; color: #2563eb;">${sh.shareNumber}</span>
-                          <span style="color: #111827;">${sh.nameOnShare}</span>
+                          <span style="color: #383644;">${sh.nameOnShare}</span>
                           ${isActive ? `
                             <span style="color: #059669; font-weight: 600; background-color: rgba(5, 150, 105, 0.08); padding: 2px 6px; border-radius: 6px; font-size: 9px;">સક્રિય (₹20,000 મૂલ્ય)</span>
                           ` : `
@@ -3501,7 +3627,7 @@
                       <div style="color: #64748b; text-align: center; padding: 8px; font-style: italic; font-size: 10px;">કોઈ હપ્તા કે બચત ટ્રાન્ઝેક્શન લોગ નથી.</div>
                     ` : myLogs.map(t => `
                       <div class="payment-log-row">
-                        <span style="color: #0f172a;">${t.description}</span>
+                        <span style="color: #383644;">${t.description}</span>
                         <strong style="color: ${t.type === 'loan_disbursal' || t.type === 'other_expense' ? '#dc2626' : '#059669'};">
                           ${t.type === 'loan_disbursal' || t.type === 'other_expense' ? '-' : '+'}₹${t.amount.toLocaleString()}
                         </strong>
@@ -3591,7 +3717,7 @@
           <div class="member-box" style="padding: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid ${isMonthPending ? '#fecaca' : '#e5e7eb'}; background-color: ${isMonthPending ? '#fffafa' : '#ffffff'};">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <strong style="font-size: 12px; color: #111827; display: flex; align-items: center; gap: 5px;">
+                <strong style="font-size: 12px; color: #383644; display: flex; align-items: center; gap: 5px;">
                   ${m.name}
                   ${isMonthPending ? '<span style="color: #ef4444; font-size: 13px;" title="ચાલુ મહિનાની બચત બાકી છે">🔔</span>' : ''}
                 </strong>
@@ -3644,7 +3770,7 @@
                 <label style="font-size: 8px; font-weight: bold; color: #475569;">કસ્ટમ બચત:</label>
                 <div style="display: flex; gap: 3px; align-items: center;">
                   <input type="number" id="custom-sav-${m.id}" class="form-input" placeholder="₹50..." style="padding: 3px 6px; font-size: 9.5px; border-radius: 6px; text-align: right; height: 30px; margin: 0; width: 65px;">
-                  <button onclick="saveCustomYearlySavings('${m.id}')" class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; font-weight: bold; border-radius: 6px; height: 30px; background-color: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1;">
+                  <button onclick="saveCustomYearlySavings('${m.id}')" class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; font-weight: bold; border-radius: 6px; height: 30px; background-color: #f1f5f9; color: #383644; border: 1px solid #cbd5e1;">
                     +
                   </button>
                 </div>
@@ -3824,7 +3950,7 @@
             <div style="margin-bottom: 8px; display: flex; justify-content: center; color: #9ca3af;">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             </div>
-            <p style="font-size: 12px; font-weight: 600; color: #111827;">કોઈ સક્રિય શેર મળ્યા નથી (No Shares)</p>
+            <p style="font-size: 12px; font-weight: 600; color: #383644;">કોઈ સક્રિય શેર મળ્યા નથી (No Shares)</p>
             <p style="font-size: 10px; margin-top: 2px; color: #6b7280;">શરૂ કરવા માટે સભ્યો અને શેર ઉમેરો.</p>
           </div>
         `;
@@ -3841,7 +3967,7 @@
           <div class="card space-y-3" style="position: relative;" id="ledger-card-${sh.id}">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
               <div>
-                <h5 style="font-weight: 800; font-size: 11px; color: #111827;">${sh.nameOnShare}</h5>
+                <h5 style="font-weight: 800; font-size: 11px; color: #383644;">${sh.nameOnShare}</h5>
                 <p style="font-size: 9px; color: #6b7280; margin-top: 2px;">
                   શેર નં: <b style="color: #2563eb;">${sh.shareNumber}</b> | સભ્ય: ${m.name}
                 </p>
@@ -4053,7 +4179,7 @@
           <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-weight: bold; font-size: 11px; color: #111827;">${t.memberName}</span>
+                <span style="font-weight: bold; font-size: 11px; color: #383644;">${t.memberName}</span>
                 <span style="font-size: 8px; color: #6b7280; background-color: #f3f4f6; padding: 1px 4px; border-radius: 4px; font-weight: bold;">
                   ${typesGuj[t.type] || t.type}${t.paymentMode ? ` | ${t.paymentMode}` : ''}
                 </span>
@@ -4188,6 +4314,10 @@
           const totalPaid = Math.max(0, l.principalAmount - l.currentBalance);
           const totalInterestPaid = getLoanTotalInterest(l);
           const intSched = calculateLoanInterestSchedule(l, m ? m.name : '');
+          const memberActiveLoans = allActiveL.filter(loan => loan.memberId === l.memberId);
+          const hasMultipleLoans = memberActiveLoans.length > 1;
+          const memberTotalBal = memberActiveLoans.reduce((sum, loan) => sum + loan.currentBalance, 0);
+          const loanIndex = memberActiveLoans.findIndex(loan => loan.id === l.id) + 1;
 
           grandShares += mShares.length;
           grandSavings += mSavings;
@@ -4233,9 +4363,18 @@
 
           return `
             <tr onclick="openLoanMathModal('${l.id}')" style="border-bottom: 1px solid #e5e7eb; cursor: pointer; transition: background-color 0.15s;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='#ffffff'">
-              <td style="padding: 6px 4px; text-align: left; font-weight: 600; color: #111827; font-size: 8.5px;">
-                <div>${m ? m.name : 'Unknown'}</div>
-                <div style="font-size: 7px; color: #6b7280; font-weight: normal; margin-top: 1px; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${l.purpose || 'લોન'}</div>
+              <td style="padding: 6px 4px; text-align: left; font-weight: 600; color: #383644; font-size: 8.5px;">
+                <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                  <span>${m ? m.name : 'Unknown'}</span>
+                  ${hasMultipleLoans ? `<span style="background: #e9d5ff; color: #581c87; font-size: 7px; padding: 1px 4px; border-radius: 3px; font-weight: 800;">લોન #${loanIndex} (${l.interestRate}%)</span>` : ''}
+                  ${l.loanType === 'special' ? `<span style="background: #fef3c7; color: #92400e; font-size: 7px; padding: 1px 4px; border-radius: 3px; font-weight: 700;">વિશેષ</span>` : ''}
+                </div>
+                ${hasMultipleLoans ? `
+                  <div style="font-size: 6.8px; color: #7e22ce; font-weight: 700; margin-top: 1px;">
+                    સભ્ય કુલ લોન: ₹${memberTotalBal.toLocaleString('en-IN')} (${memberActiveLoans.length} લોન)
+                  </div>
+                ` : ''}
+                <div style="font-size: 7px; color: #6b7280; font-weight: normal; margin-top: 1px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${l.purpose || 'લોન'}</div>
               </td>
               <td style="padding: 6px 4px; text-align: center; font-weight: 600; color: #2563eb; font-size: 8.5px;">
                 ${mShares.length}
@@ -4243,14 +4382,15 @@
               <td style="padding: 6px 4px; text-align: right; white-space: nowrap; font-weight: 500; font-size: 8.5px;">
                 <span style="color: #059669;">${mSavings.toLocaleString()}</span>/<span style="color: #4b5563;">${shareValue.toLocaleString()}</span>
               </td>
-              <td style="padding: 6px 4px; text-align: right; color: #111827; font-weight: 600; font-size: 8.5px;">
+              <td style="padding: 6px 4px; text-align: right; color: #383644; font-weight: 600; font-size: 8.5px;">
                 ${l.principalAmount.toLocaleString()}
               </td>
               <td style="padding: 6px 4px; text-align: right; color: #059669; font-weight: bold; font-size: 8.5px;">
                 ${totalPaid.toLocaleString()}
               </td>
               <td style="padding: 6px 4px; text-align: right; color: #dc2626; font-weight: 900; font-size: 8.5px;">
-                ${l.currentBalance.toLocaleString()}
+                <div>₹${l.currentBalance.toLocaleString()}</div>
+                ${hasMultipleLoans ? `<div style="font-size: 6.5px; color: #7e22ce; font-weight: 700;">કુલ: ₹${memberTotalBal.toLocaleString('en-IN')}</div>` : ''}
               </td>
               <td style="padding: 6px 4px; text-align: center; white-space: nowrap; font-size: 8px;">
                 <div style="color: ${intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: bold; font-size: 8.5px;">₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString()}</div>
@@ -4266,9 +4406,9 @@
                 ${intSched.pendingInterest > 0 
                   ? `<div style="color: #dc2626; font-weight: 700; font-size: 7.5px;">+₹${intSched.pendingInterest.toLocaleString()} (${intSched.unpaidMonths}M)</div>` 
                   : '<div style="color: #059669; font-size: 7.5px;">-</div>'}
-                <div style="color: #111827; font-weight: 800; font-size: 8.5px;">₹${intSched.totalDueWithInterest.toLocaleString()}</div>
+                <div style="color: #383644; font-weight: 800; font-size: 8.5px;">₹${intSched.totalDueWithInterest.toLocaleString()}</div>
               </td>
-              <td style="padding: 6px 4px; text-align: right; color: #111827; font-weight: bold; font-size: 8.5px;">
+              <td style="padding: 6px 4px; text-align: right; color: #383644; font-weight: bold; font-size: 8.5px;">
                 ${lastTx ? lastTx.amount.toLocaleString() : '-'}
               </td>
               <td style="padding: 6px 4px; text-align: center; color: #4b5563; white-space: nowrap; font-size: 8px;">
@@ -4304,17 +4444,17 @@
                 ${rows}
               </tbody>
               <tfoot>
-                <tr style="background-color: #f9fafb; border-top: 2px solid #e5e7eb; font-weight: 700; color: #111827;">
+                <tr style="background-color: #f9fafb; border-top: 2px solid #e5e7eb; font-weight: 700; color: #383644;">
                   <td style="padding: 8px 4px; text-align: left; font-weight: 700;">કુલ સરવાળો (Total)</td>
                   <td style="padding: 8px 4px; text-align: center; font-weight: 700; color: #2563eb;">${grandShares}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; white-space: nowrap; color: #059669;">${grandSavings.toLocaleString()}/${grandShareValue.toLocaleString()}</td>
-                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #111827;">${grandLoan.toLocaleString()}</td>
+                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #383644;">${grandLoan.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #059669;">${grandPaid.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #dc2626;">${grandBalance.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: center; font-weight: 700; color: #047857;">₹${grandThisMonthInt.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: center; font-weight: 700; color: #2563eb;">₹${grandNextMonthInt.toLocaleString()}/માસ</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #b91c1c;">₹${grandTotalDue.toLocaleString()}</td>
-                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #111827;">${grandLastEmi > 0 ? grandLastEmi.toLocaleString() : '-'}</td>
+                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #383644;">${grandLastEmi > 0 ? grandLastEmi.toLocaleString() : '-'}</td>
                   <td colspan="2" style="padding: 8px 4px; text-align: center; color: #6b7280; font-weight: normal;">-</td>
                 </tr>
               </tfoot>
@@ -4416,14 +4556,14 @@
 
         return `
           <tr style="border-bottom: 1px solid #e2e8f0; font-size: 11.5px;">
-            <td style="padding: 9px 12px; text-align: left; font-weight: 600; color: #1e293b;">
-              <div style="font-size: 12px; font-weight: 700; color: #0f172a;">${m ? m.name : 'Unknown'}</div>
+            <td style="padding: 9px 12px; text-align: left; font-weight: 600; color: #383644;">
+              <div style="font-size: 12px; font-weight: 700; color: #383644;">${m ? m.name : 'Unknown'}</div>
               ${l.purpose ? `<span style="font-size: 9.5px; color: #64748b; display: block; font-weight: normal; margin-top: 1px;">${l.purpose}</span>` : ''}
             </td>
             <td style="padding: 9px 10px; text-align: center; font-weight: 700; color: #2563eb; font-size: 12px;">
               ${mShares.length}
             </td>
-            <td style="padding: 9px 12px; text-align: right; font-weight: 600; color: #0f172a; font-variant-numeric: tabular-nums;">
+            <td style="padding: 9px 12px; text-align: right; font-weight: 600; color: #383644; font-variant-numeric: tabular-nums;">
               ₹${l.principalAmount.toLocaleString('en-IN')}
             </td>
             <td style="padding: 9px 12px; text-align: right; font-weight: 700; color: #2563eb; font-variant-numeric: tabular-nums;">
@@ -4461,7 +4601,7 @@
             }
             body {
               font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Gujarati', sans-serif;
-              color: #0f172a;
+              color: #383644;
               background: #ffffff;
               padding: 24px 28px;
               margin: 0 auto;
@@ -4469,14 +4609,14 @@
             }
             .header-box {
               text-align: center;
-              border-bottom: 2.5px solid #0f172a;
+              border-bottom: 2.5px solid #383644;
               padding-bottom: 12px;
               margin-bottom: 18px;
             }
             .society-title {
               font-size: 22px;
               font-weight: 900;
-              color: #0f172a;
+              color: #383644;
               margin: 0 0 4px 0;
               letter-spacing: 0.5px;
             }
@@ -4504,7 +4644,7 @@
             }
             th {
               background-color: #f1f5f9;
-              color: #0f172a;
+              color: #383644;
               font-size: 11.5px;
               font-weight: 800;
               padding: 10px 12px;
@@ -4528,10 +4668,10 @@
             }
             tfoot tr {
               background-color: #f8fafc;
-              border-top: 2px solid #0f172a;
+              border-top: 2px solid #383644;
             }
             tfoot td {
-              border-top: 2px solid #0f172a;
+              border-top: 2px solid #383644;
               border-right: 1px solid #e2e8f0;
               padding: 11px 12px;
               font-weight: 800;
@@ -4611,9 +4751,9 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td style="text-align: left; color: #0f172a;">કુલ સરવાળો (Total)</td>
+                  <td style="text-align: left; color: #383644;">કુલ સરવાળો (Total)</td>
                   <td style="text-align: center; color: #2563eb;">${grandShares}</td>
-                  <td style="text-align: right; color: #0f172a;">₹${grandLoan.toLocaleString('en-IN')}</td>
+                  <td style="text-align: right; color: #383644;">₹${grandLoan.toLocaleString('en-IN')}</td>
                   <td style="text-align: right; color: #2563eb;">₹${grandInterest.toLocaleString('en-IN')}</td>
                   <td style="text-align: right; color: #059669;">₹${grandPaid.toLocaleString('en-IN')}</td>
                   <td style="text-align: right; color: #dc2626;">₹${grandBalance.toLocaleString('en-IN')}</td>
@@ -4661,7 +4801,13 @@
       select.innerHTML = '<option value="">-- લોન ખાતું પસંદ કરો --</option>' + 
         activeL.map(l => {
           const m = members.find(mem => mem.id === l.memberId);
-          return `<option value="${l.id}">${m ? m.name : 'Unknown'} - દેવું: ₹${l.currentBalance} (${l.purpose})</option>`;
+          const memberActiveLoans = activeL.filter(al => al.memberId === l.memberId);
+          const mTotalBal = memberActiveLoans.reduce((sum, al) => sum + al.currentBalance, 0);
+          const idx = memberActiveLoans.findIndex(al => al.id === l.id) + 1;
+          const multiTag = memberActiveLoans.length > 1
+            ? ` [લોન #${idx}: ₹${l.currentBalance.toLocaleString('en-IN')} @ ${l.interestRate}% | સભ્ય કુલ: ₹${mTotalBal.toLocaleString('en-IN')}]`
+            : ` [દેવું: ₹${l.currentBalance.toLocaleString('en-IN')} @ ${l.interestRate}%]`;
+          return `<option value="${l.id}">${m ? m.name : 'Unknown'} - ${l.purpose}${multiTag}</option>`;
         }).join('');
     }
 
@@ -4671,26 +4817,178 @@
         members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
     }
 
+    // --- LOAN DISBURSEMENT TYPE & CATEGORY CONTROLLER ---
+    let currentDisburseType = 'regular'; // 'regular' or 'special'
+    let currentSpecialCategory = 'business'; // 'business', 'abroad', or 'education'
+
+    window.handleLoanTypeSelect = function(type) {
+      currentDisburseType = type;
+      const regRadio = document.getElementById('disburse-type-regular');
+      const specRadio = document.getElementById('disburse-type-special');
+      const regLbl = document.getElementById('loan-type-reg-lbl');
+      const specLbl = document.getElementById('loan-type-spec-lbl');
+      const specBox = document.getElementById('disburse-special-options-box');
+      const purposeInput = document.getElementById('disburse-purpose');
+
+      if (type === 'special') {
+        if (specRadio) specRadio.checked = true;
+        if (regLbl) {
+          regLbl.style.borderColor = '#cbd5e1';
+          regLbl.style.background = '#ffffff';
+          regLbl.style.color = '#64748b';
+        }
+        if (specLbl) {
+          specLbl.style.borderColor = '#9333ea';
+          specLbl.style.background = '#faf5ff';
+          specLbl.style.color = '#7e22ce';
+        }
+        if (specBox) specBox.style.display = 'block';
+        window.handleSpecialCategorySelect(currentSpecialCategory);
+      } else {
+        if (regRadio) regRadio.checked = true;
+        if (regLbl) {
+          regLbl.style.borderColor = '#2563eb';
+          regLbl.style.background = '#eff6ff';
+          regLbl.style.color = '#1d4ed8';
+        }
+        if (specLbl) {
+          specLbl.style.borderColor = '#cbd5e1';
+          specLbl.style.background = '#ffffff';
+          specLbl.style.color = '#64748b';
+        }
+        if (specBox) specBox.style.display = 'none';
+        if (purposeInput) {
+          purposeInput.value = 'સામાન્ય લોન (Regular Loan)';
+        }
+      }
+      window.updateDisburseInfoLimit();
+    };
+
+    window.handleSpecialCategorySelect = function(category) {
+      currentSpecialCategory = category;
+      const purposeInput = document.getElementById('disburse-purpose');
+      
+      const optBiz = document.getElementById('spec-opt-business');
+      const optAbr = document.getElementById('spec-opt-abroad');
+      const optEdu = document.getElementById('spec-opt-education');
+
+      const radioBiz = document.getElementById('radio-spec-biz');
+      const radioAbr = document.getElementById('radio-spec-abroad');
+      const radioEdu = document.getElementById('radio-spec-edu');
+
+      if (radioBiz) radioBiz.checked = (category === 'business');
+      if (radioAbr) radioAbr.checked = (category === 'abroad');
+      if (radioEdu) radioEdu.checked = (category === 'education');
+
+      if (optBiz) {
+        optBiz.style.borderColor = category === 'business' ? '#9333ea' : '#e2e8f0';
+        optBiz.style.borderWidth = category === 'business' ? '2px' : '1px';
+        optBiz.style.background = category === 'business' ? '#faf5ff' : '#ffffff';
+      }
+      if (optAbr) {
+        optAbr.style.borderColor = category === 'abroad' ? '#9333ea' : '#e2e8f0';
+        optAbr.style.borderWidth = category === 'abroad' ? '2px' : '1px';
+        optAbr.style.background = category === 'abroad' ? '#faf5ff' : '#ffffff';
+      }
+      if (optEdu) {
+        optEdu.style.borderColor = category === 'education' ? '#9333ea' : '#e2e8f0';
+        optEdu.style.borderWidth = category === 'education' ? '2px' : '1px';
+        optEdu.style.background = category === 'education' ? '#faf5ff' : '#ffffff';
+      }
+
+      if (category === 'business') {
+        if (purposeInput) purposeInput.value = 'વેપાર / ધંધો (Business Loan)';
+      } else if (category === 'abroad') {
+        if (purposeInput) purposeInput.value = 'વિદેશ અભ્યાસ / પ્રવાસ (Abroad Loan)';
+      } else if (category === 'education') {
+        if (purposeInput) purposeInput.value = 'સ્થાનિક શિક્ષણ (Local Education Loan)';
+      }
+      window.updateDisburseInfoLimit();
+    };
+
+    window.updateDisburseInfoLimit = function() {
+      const memberId = document.getElementById('disburse-member') ? document.getElementById('disburse-member').value : '';
+      const limitValEl = document.getElementById('disburse-limit-val');
+      const limitLblEl = document.getElementById('disburse-limit-lbl');
+      if (!limitValEl) return;
+
+      const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
+      const regLimit = mShares.length * 25000;
+
+      if (currentDisburseType === 'special') {
+        let specLimit = 500000;
+        let lblText = 'વિશેષ મર્યાદા (વેપાર / Business):';
+        if (currentSpecialCategory === 'business') {
+          specLimit = 500000;
+          lblText = 'વિશેષ મર્યાદા (વેપાર / Business):';
+        } else if (currentSpecialCategory === 'abroad') {
+          specLimit = 500000;
+          lblText = 'વિશેષ મર્યાદા (વિદેશ / Abroad):';
+        } else if (currentSpecialCategory === 'education') {
+          specLimit = 200000;
+          lblText = 'વિશેષ મર્યાદા (સ્થાનિક શિક્ષણ / Local Education):';
+        }
+        if (limitLblEl) limitLblEl.textContent = lblText;
+        limitValEl.textContent = `₹${specLimit.toLocaleString('en-IN')}`;
+        limitValEl.style.color = '#7e22ce';
+      } else {
+        if (limitLblEl) limitLblEl.textContent = 'ભલામણ કરેલ સુરક્ષિત લિમિટ (શેર × ₹25,000):';
+        limitValEl.textContent = `₹${regLimit.toLocaleString('en-IN')}`;
+        limitValEl.style.color = '#2563eb';
+      }
+    };
+
     // Interactive disburse selector statistics listener
-    document.getElementById('disburse-member').addEventListener('change', (e) => {
-      const memberId = e.target.value;
+    window.updateDisburseMemberInfo = function() {
+      const memberEl = document.getElementById('disburse-member');
+      if (!memberEl) return;
+      const memberId = memberEl.value;
       const infoBox = document.getElementById('disburse-info-box');
       if (!memberId) {
-        infoBox.style.display = 'none';
+        if (infoBox) infoBox.style.display = 'none';
         return;
       }
 
-      infoBox.style.display = 'block';
+      if (infoBox) infoBox.style.display = 'block';
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
       const shareVal = mShares.length * 20000;
-      const limit = mShares.length * 25000;
-      const hasActive = loans.some(l => l.memberId === memberId && l.status === 'active');
+      const memberActiveLoans = loans.filter(l => l.memberId === memberId && l.status === 'active');
+      const totalActiveBal = memberActiveLoans.reduce((sum, l) => sum + l.currentBalance, 0);
 
-      document.getElementById('disburse-shares-cnt').textContent = `${mShares.length} શેર`;
-      document.getElementById('disburse-shares-value').textContent = `₹${shareVal.toLocaleString()}`;
-      document.getElementById('disburse-limit-val').textContent = `₹${limit.toLocaleString('en-IN')}`;
-      document.getElementById('disburse-status-val').innerHTML = hasActive ? '<span style="display:inline-flex; align-items:center; gap:4px; color:#d97706;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #d97706;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> પહેલેથી બાકી દેવું ચાલુ છે</span>' : '<span style="display:inline-flex; align-items:center; gap:4px; color:#047857;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #047857;"><polyline points="20 6 9 17 4 12"/></svg> નવો કોરો ખાતો</span>';
-    });
+      const sharesCntEl = document.getElementById('disburse-shares-cnt');
+      const sharesValEl = document.getElementById('disburse-shares-value');
+      if (sharesCntEl) sharesCntEl.textContent = `${mShares.length} શેર`;
+      if (sharesValEl) sharesValEl.textContent = `₹${shareVal.toLocaleString()}`;
+
+      const rateInput = document.getElementById('disburse-rate');
+      const currentRate = parseFloat(rateInput ? rateInput.value : '1.0') || 0;
+      const statusEl = document.getElementById('disburse-status-val');
+
+      if (statusEl) {
+        if (memberActiveLoans.length === 0) {
+          statusEl.innerHTML = '<span style="display:inline-flex; align-items:center; gap:4px; color:#047857;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #047857;"><polyline points="20 6 9 17 4 12"/></svg> નવો કોરો ખાતો (કોઈ બાકી લોન નથી)</span>';
+        } else {
+          const matchingLoan = memberActiveLoans.find(l => Number(l.interestRate) === Number(currentRate));
+          if (matchingLoan) {
+            statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#0284c7; font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #0284c7;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> સમાન વ્યાજ દર (${currentRate}%): ચાલુ લોનમાં રકમ ઉમેરાશે (કુલ બાકી: ₹${totalActiveBal.toLocaleString('en-IN')})</span>`;
+          } else {
+            const ratesList = memberActiveLoans.map(l => `${l.interestRate}%`).join(', ');
+            statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#7e22ce; font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #7e22ce;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg> અલગ વ્યાજ દર (${currentRate}% vs ${ratesList}): નવી અલગ લોન બનશે (કુલ બાકી: ₹${totalActiveBal.toLocaleString('en-IN')})</span>`;
+          }
+        }
+      }
+
+      window.updateDisburseInfoLimit();
+    };
+
+    const disburseMemberSelect = document.getElementById('disburse-member');
+    if (disburseMemberSelect) {
+      disburseMemberSelect.addEventListener('change', window.updateDisburseMemberInfo);
+    }
+    const disburseRateInput = document.getElementById('disburse-rate');
+    if (disburseRateInput) {
+      disburseRateInput.addEventListener('input', window.updateDisburseMemberInfo);
+    }
 
     document.getElementById('repay-loan-select').addEventListener('change', (e) => {
       const loanId = e.target.value;
@@ -4708,7 +5006,20 @@
       const intSched = calculateLoanInterestSchedule(targetLoan, m ? m.name : '');
 
       document.getElementById('repay-outstanding-val').textContent = `₹${targetLoan.currentBalance.toLocaleString('en-IN')}`;
-      document.getElementById('repay-monthly-int-val').textContent = `₹${intSched.monthlyInterest.toLocaleString('en-IN')}`;
+      document.getElementById('repay-monthly-int-val').textContent = `₹${intSched.monthlyInterest.toLocaleString('en-IN')} (${targetLoan.interestRate}%)`;
+
+      const memActive = loans.filter(l => l.memberId === targetLoan.memberId && l.status === 'active');
+      const memTotalBox = document.getElementById('repay-member-total-box');
+      const memTotalVal = document.getElementById('repay-member-total-val');
+      if (memActive.length > 1) {
+        if (memTotalBox && memTotalVal) {
+          memTotalBox.style.display = 'flex';
+          const totalAll = memActive.reduce((s, l) => s + l.currentBalance, 0);
+          memTotalVal.textContent = `₹${totalAll.toLocaleString('en-IN')} (${memActive.length} લોન)`;
+        }
+      } else {
+        if (memTotalBox) memTotalBox.style.display = 'none';
+      }
 
       if (intSched.pendingInterest > 0) {
         if (overdueBox) {
@@ -4896,6 +5207,9 @@
       const witness2 = document.getElementById('disburse-witness2').value;
       const selectedBank = document.getElementById('disburse-payment-mode').value;
 
+      const loanType = currentDisburseType; // 'regular' or 'special'
+      const specialCategory = loanType === 'special' ? currentSpecialCategory : null;
+
       if (!memberId) {
         alert('કૃપા કરીને લોન લેનાર સભ્ય પસંદ કરો!');
         return;
@@ -4917,7 +5231,15 @@
       const bankTitle = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
 
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
-      const limit = mShares.length * 25000;
+      
+      let effectiveLimit = mShares.length * 25000;
+      if (loanType === 'special') {
+        if (specialCategory === 'business' || specialCategory === 'abroad') {
+          effectiveLimit = 500000;
+        } else if (specialCategory === 'education') {
+          effectiveLimit = 200000;
+        }
+      }
 
       if (amount > selectedBankBal) {
         alert(`ભૂલ! ${bankTitle} માં પૂરતી સિલક નથી. હાલ ઉપલબ્ધ: ₹${selectedBankBal.toLocaleString('en-IN')}`);
@@ -4925,42 +5247,99 @@
       }
 
       // Check if they exceed the recommended limit (Inform but do not block admin override!)
-      if (amount > limit) {
-        if (!confirm(`સૂચના: ભલામણ કરેલી સુરક્ષિત મર્યાદા ₹${limit.toLocaleString('en-IN')} છે. પરંતુ એડમિન ઓવરરાઈડ સક્રિય હોવાથી લોન મંજૂર કરી શકાય છે. આગળ વધવું છે?`)) {
+      if (amount > effectiveLimit) {
+        const limitTypeMsg = loanType === 'special' ? 'વિશેષ લોન' : 'ભલામણ કરેલી સુરક્ષિત';
+        if (!confirm(`સૂચના: ${limitTypeMsg} મર્યાદા ₹${effectiveLimit.toLocaleString('en-IN')} છે. પરંતુ એડમિન ઓવરરાઈડ સક્રિય હોવાથી લોન મંજૂર કરી શકાય છે. આગળ વધવું છે?`)) {
           return;
         }
       }
 
-      const newLoanId = `l-${Date.now()}`;
-      loans.push({
-        id: newLoanId,
-        memberId,
-        principalAmount: amount,
-        currentBalance: amount,
-        interestRate: rate,
-        disburseDate: date,
-        purpose,
-        witness1,
-        witness2,
-        disbursedFromBank: isBank2 ? 'Bank 2' : 'Bank 1',
-        status: 'active'
-      });
+      // Check if member already has an active loan with the exact same interest rate
+      const existingSameRateLoan = loans.find(l => 
+        l.memberId === memberId && 
+        l.status === 'active' && 
+        Number(l.interestRate) === Number(rate)
+      );
 
       const b = members.find(mem => mem.id === memberId);
       const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
-      transactions.push({
-        id: `t-${Date.now()}`,
-        date,
-        type: 'loan_disbursal',
-        amount,
-        memberName: b ? b.name : 'Unknown',
-        paymentMode: payMode,
-        description: `નવી લોન ચૂકવણી: ${purpose} [${bankTitle} માંથી કપાત] (${rate === 0 ? 'વ્યાજ વગર' : rate + '% વ્યાજ'})`
-      });
+      const typeLabel = loanType === 'special' ? 'વિશેષ' : 'સામાન્ય';
+      let successAlertMsg = '';
+
+      if (existingSameRateLoan) {
+        // CASE 1: Same person & same interest rate -> Add money to existing active loan
+        existingSameRateLoan.principalAmount += amount;
+        existingSameRateLoan.currentBalance += amount;
+        if (!existingSameRateLoan.topups) existingSameRateLoan.topups = [];
+        existingSameRateLoan.topups.push({
+          date,
+          amount,
+          purpose,
+          loanType,
+          specialCategory,
+          bank: bankTitle
+        });
+        if (purpose && !existingSameRateLoan.purpose.includes(purpose)) {
+          existingSameRateLoan.purpose += ` + ${purpose}`;
+        }
+
+        transactions.push({
+          id: `t-${Date.now()}`,
+          date,
+          type: 'loan_disbursal',
+          amount,
+          memberName: b ? b.name : 'Unknown',
+          paymentMode: payMode,
+          description: `લોન ઉમેરો (Top-up): ${purpose} [સમાન વ્યાજ દર: ${rate}% હોવાથી ચાલુ લોનમાં ₹${amount.toLocaleString('en-IN')} ઉમેરાયા] [${bankTitle} માંથી કપાત]`
+        });
+
+        const memberAllActive = loans.filter(l => l.memberId === memberId && l.status === 'active');
+        const memberTotalBal = memberAllActive.reduce((sum, l) => sum + l.currentBalance, 0);
+
+        successAlertMsg = `સમાન વ્યાજ દર (${rate}%) હોવાથી ₹${amount.toLocaleString('en-IN')} ચાલુ લોનમાં સફળતાપૂર્વક ઉમેરાઈ ગયા છે!\n\nઆ લોનનું નવું બાકી દેવું: ₹${existingSameRateLoan.currentBalance.toLocaleString('en-IN')}\nસભ્યનું કુલ તમામ લોન બાકી દેવું: ₹${memberTotalBal.toLocaleString('en-IN')}`;
+      } else {
+        // CASE 2: Different interest rate or first loan -> Create a separate distinct loan
+        const newLoanId = `l-${Date.now()}`;
+        loans.push({
+          id: newLoanId,
+          memberId,
+          principalAmount: amount,
+          currentBalance: amount,
+          interestRate: rate,
+          disburseDate: date,
+          purpose,
+          loanType,
+          specialCategory,
+          witness1,
+          witness2,
+          disbursedFromBank: isBank2 ? 'Bank 2' : 'Bank 1',
+          status: 'active'
+        });
+
+        transactions.push({
+          id: `t-${Date.now()}`,
+          date,
+          type: 'loan_disbursal',
+          amount,
+          memberName: b ? b.name : 'Unknown',
+          paymentMode: payMode,
+          description: `નવી ${typeLabel} લોન ચૂકવણી: ${purpose} [${bankTitle} માંથી કપાત] (${rate === 0 ? 'વ્યાજ વગર' : rate + '% વ્યાજ'})`
+        });
+
+        const memberAllActive = loans.filter(l => l.memberId === memberId && l.status === 'active');
+        const memberTotalBal = memberAllActive.reduce((sum, l) => sum + l.currentBalance, 0);
+
+        if (memberAllActive.length > 1) {
+          successAlertMsg = `અલગ વ્યાજ દર (${rate}%) હોવાથી નવી અલગ લોન #${memberAllActive.length} સફળતાપૂર્વક બની ગઈ છે!\n\nઆ નવી લોનની રકમ: ₹${amount.toLocaleString('en-IN')} (${rate}% વ્યાજ)\nસભ્યનું કુલ તમામ (${memberAllActive.length}) લોન બાકી દેવું: ₹${memberTotalBal.toLocaleString('en-IN')}`;
+        } else {
+          successAlertMsg = `લોન ₹${amount.toLocaleString('en-IN')} ${bankTitle} માંથી સફળતાપૂર્વક ચૂકવાઈ અને કપાત થઈ!`;
+        }
+      }
 
       saveToLocalStorage();
-      alert(`લોન ₹${amount.toLocaleString('en-IN')} ${bankTitle} માંથી સફળતાપૂર્વક ચૂકવાઈ અને કપાત થઈ!`);
+      alert(successAlertMsg);
       document.getElementById('form-disburse').reset();
+      window.handleLoanTypeSelect('regular');
       document.getElementById('disburse-info-box').style.display = 'none';
       closeModal('modal-disburse');
       renderAllViews();
@@ -5058,7 +5437,7 @@
 
         preview.innerHTML = `
           <div style="font-size: 11px; line-height: 1.6;" id="print-area-element">
-            <div style="border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+            <div style="border-bottom: 2px solid #383644; padding-bottom: 6px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #dc2626; flex-shrink: 0;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
               <div>
                 <strong style="font-size: 12px; display: block;">બલાઢા ક્રેડિટ સોસાયટી</strong>
@@ -5087,7 +5466,7 @@
 
             <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 11px; border-top: 1px solid #ddd; padding-top: 8px;">
               <span>કુલ સોસાયટી મૂલ્ય (Total Asset Value):</span>
-              <span style="color: #0f172a;">₹${(cashBalance + totalOutstanding).toLocaleString()}</span>
+              <span style="color: #383644;">₹${(cashBalance + totalOutstanding).toLocaleString()}</span>
             </div>
           </div>
         `;
@@ -5106,7 +5485,7 @@
 
         preview.innerHTML = `
           <div style="font-size: 11px; line-height: 1.5;" id="print-area-element">
-            <div style="border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 10px;">
+            <div style="border-bottom: 2px solid #383644; padding-bottom: 6px; margin-bottom: 10px;">
               <strong style="font-size: 12px; display: block;">બલાઢા ક્રેડિટ સોસાયટી</strong>
               <span style="font-size: 9px; color: #6b7280;">સભ્યનું વ્યક્તિગત લેજર સ્ટેટમેન્ટ</span>
             </div>
@@ -5176,7 +5555,7 @@
           <head>
             <title>BCS Report Print</title>
             <style>
-              body { background: white !important; color: black !important; padding: 30px !important; font-family: system-ui, sans-serif !important; }
+              body { background: white !important; color: #383644 !important; padding: 30px !important; font-family: system-ui, sans-serif !important; }
               table { border-collapse: collapse !important; width: 100% !important; margin-top: 12px; }
               th, td { border: 1px solid #e5e7eb !important; padding: 8px !important; font-size: 11px !important; }
               th { background-color: #f3f4f6 !important; }
@@ -5303,6 +5682,7 @@
     });
     document.getElementById('btn-open-disburse-modal').addEventListener('click', () => {
       document.getElementById('form-disburse').reset();
+      window.handleLoanTypeSelect('regular');
       const picker = document.getElementById('disburse-date');
       picker.value = new Date().toISOString().split('T')[0];
       openModal('modal-disburse');
