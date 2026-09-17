@@ -1101,7 +1101,10 @@
             <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
               <div>
                 <label class="form-label">મહિનો અને વર્ષ</label>
-                <input type="month" id="ledger-month-picker" class="form-input">
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <input type="month" id="ledger-month-picker" class="form-input" style="flex: 1;">
+                  <button type="button" class="btn btn-secondary" onclick="setLedgerNextMonth()" style="width: auto; padding: 6px 10px; font-size: 10px; white-space: nowrap; font-weight: 700; color: #2563eb; background: #eff6ff; border-color: #bfdbfe;">આગામી મહિનો ⏭️</button>
+                </div>
               </div>
             </div>
 
@@ -1165,6 +1168,7 @@
               <select id="loans-filter-preset" class="form-select" style="font-size: 9.5px; padding: 6px; flex: 1; min-width: 130px;" onchange="handleLoansFilterPresetChange()">
                 <option value="all" selected>તમામ સમયની લોન (All Time)</option>
                 <option value="current_month">ચાલુ મહિનો (Current Month)</option>
+                <option value="next_month">આગામી મહિનો (Next Month)</option>
                 <option value="last_month">ગયેલો મહિનો (Last Month)</option>
                 <option value="current_year">ચાલુ વર્ષ (Current Year)</option>
                 <option value="last_year">ગયેલું વર્ષ (Last Year)</option>
@@ -1345,6 +1349,17 @@
               <option value="regular" selected>નિયમિત ચાલુ મહિનો (Regular Current Month)</option>
               <option value="advance">આગામી મહિનો - એડવાન્સ હપ્તો (Advance of Next Month)</option>
             </select>
+          </div>
+
+          <div class="form-group hidden" id="unified-repay-month-group">
+            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+              <span>આગામી હપ્તાનો મહિનો (Next EMI Month) *</span>
+              <span style="font-size: 8.5px; color: #64748b;">(પસંદ કરેલ આગામી મહિનો)</span>
+            </label>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <input type="month" id="unified-repay-month-picker" class="form-input" style="flex: 1; font-weight: 600; color: #2563eb;">
+              <button type="button" class="btn btn-secondary" onclick="setUnifiedNextMonth()" style="width: auto; padding: 6px 10px; font-size: 10px; white-space: nowrap; font-weight: 700; color: #2563eb; background: #eff6ff; border-color: #bfdbfe;">આગામી મહિનો ⏭️</button>
+            </div>
           </div>
 
           <!-- Auto-Calculated Interest Badge (Hidden/Read-only for hand interest) -->
@@ -1877,6 +1892,17 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+              <span>હપ્તાનો મહિનો (EMI Month) *</span>
+              <span style="font-size: 8.5px; color: #64748b;">(ચાલુ અથવા આગામી મહિનો)</span>
+            </label>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <input type="month" id="repay-month-picker" class="form-input" style="flex: 1; font-weight: 600; color: #2563eb;" onchange="handleRepayMonthChange()">
+              <button type="button" class="btn btn-secondary" onclick="setRepayNextMonth()" style="width: auto; padding: 6px 10px; font-size: 10px; white-space: nowrap; font-weight: 700; color: #2563eb; background: #eff6ff; border-color: #bfdbfe;">આગામી મહિનો ⏭️</button>
+            </div>
+          </div>
+
           <div class="form-group" style="background-color: #eff6ff; border: 1px solid #dbeafe; padding: 10px; border-radius: 8px;">
             <label class="form-label" style="color: #1e40af; font-weight: 700;">કુલ ભરેલ હપ્તો (Total EMI Payment) - વ્યાજ + મુદ્દલ</label>
             <input type="number" id="repay-total-emi" class="form-input" min="1" placeholder="દા.ત. ૧૦૦૦ (વ્યાજ ૧% અને બાકી મુદ્દલ આપોઆપ વહેંચાઈ જશે)" style="border-color: #bfdbfe;">
@@ -2089,7 +2115,6 @@
                     <tr style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; color: #4b5563; font-weight: 600;">
                       <th style="padding: 10px 12px;">સભ્યનું નામ</th>
                       <th style="padding: 10px 12px; text-align: center;">શેર</th>
-                      <th style="padding: 10px 12px; text-align: right;">બચત/મૂલ્ય (₹)</th>
                       <th style="padding: 10px 12px; text-align: right;">લોન (₹)</th>
                       <th style="padding: 10px 12px; text-align: right; color: #2563eb;">વ્યાજ (₹)</th>
                       <th style="padding: 10px 12px; text-align: right; color: #059669;">જમા (₹)</th>
@@ -2103,9 +2128,6 @@
                     <tr style="border-bottom: 1px solid #f3f4f6; background-color: #ffffff;">
                       <td style="padding: 12px; font-weight: bold; color: #383644;">${m.name}</td>
                       <td style="padding: 12px; text-align: center; font-weight: bold;">${mShares.length}</td>
-                      <td style="padding: 12px; text-align: right; font-weight: 500; white-space: nowrap;">
-                        <span style="color: #059669;">₹${mSavings.toLocaleString()}</span>/<span style="color: #4b5563;">₹${shareValue.toLocaleString()}</span>
-                      </td>
                       <td style="padding: 12px; text-align: right; font-weight: bold; color: #383644;">₹${l.principalAmount.toLocaleString()}</td>
                       <td style="padding: 12px; text-align: right; font-weight: bold; color: #2563eb;">₹${totalVyaj.toLocaleString()}</td>
                       <td style="padding: 12px; text-align: right; font-weight: bold; color: #059669;">₹${totalDeposited.toLocaleString()}</td>
@@ -2584,7 +2606,7 @@
     }
 
     // --- AUTOMATED MONTHLY INTEREST & EMI SCHEDULE CALCULATOR ---
-    function calculateLoanInterestSchedule(loan, memberName) {
+    function calculateLoanInterestSchedule(loan, memberName, targetMonthCodeOverride) {
       if (!loan) {
         return {
           monthlyInterest: 0,
@@ -2611,6 +2633,17 @@
       const currentMonth = now.getMonth() + 1;
       const currentMonthCode = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
 
+      const effectiveMonthCode = targetMonthCodeOverride || currentMonthCode;
+      let effectiveYear = currentYear;
+      let effectiveMonth = currentMonth;
+      if (targetMonthCodeOverride) {
+        const p = targetMonthCodeOverride.split('-');
+        if (p.length >= 2) {
+          effectiveYear = parseInt(p[0], 10);
+          effectiveMonth = parseInt(p[1], 10);
+        }
+      }
+
       let disburseYear = currentYear;
       let disburseMonth = currentMonth;
       if (loan.disburseDate) {
@@ -2622,8 +2655,8 @@
       }
       const disburseMonthCode = `${disburseYear}-${String(disburseMonth).padStart(2, '0')}`;
 
-      // Total months elapsed from disbursal to current date
-      let monthsElapsed = (currentYear - disburseYear) * 12 + (currentMonth - disburseMonth);
+      // Total months elapsed from disbursal to effective date
+      let monthsElapsed = (effectiveYear - disburseYear) * 12 + (effectiveMonth - disburseMonth);
       if (monthsElapsed < 0) monthsElapsed = 0;
 
       // Find payments made for this loan
@@ -2634,18 +2667,18 @@
         (!loan.disburseDate || t.date >= loan.disburseDate)
       );
 
-      // Check payments for the current month
-      const thisMonthTx = loanRepayTx.filter(t => t.date && t.date.startsWith(currentMonthCode));
+      // Check payments for the effective target month
+      const thisMonthTx = loanRepayTx.filter(t => t.date && t.date.startsWith(effectiveMonthCode));
       const thisMonthEntries = monthlyEntries.filter(e => 
         e.memberId === loan.memberId && 
-        e.monthCode === currentMonthCode && 
+        e.monthCode === effectiveMonthCode && 
         ((e.principalPaid && e.principalPaid > 0) || (e.interestPaid && e.interestPaid > 0))
       );
       const isThisMonthEmiPaid = thisMonthTx.length > 0 || thisMonthEntries.length > 0;
 
-      // Find interest specifically paid this current month
-      const thisMonthIntTx = loanRepayTx.filter(t => t.type === 'interest_payment' && t.date && t.date.startsWith(currentMonthCode));
-      const thisMonthEntryInt = monthlyEntries.filter(e => e.memberId === loan.memberId && e.monthCode === currentMonthCode && e.interestPaid > 0);
+      // Find interest specifically paid this effective month
+      const thisMonthIntTx = loanRepayTx.filter(t => t.type === 'interest_payment' && t.date && t.date.startsWith(effectiveMonthCode));
+      const thisMonthEntryInt = monthlyEntries.filter(e => e.memberId === loan.memberId && e.monthCode === effectiveMonthCode && e.interestPaid > 0);
       const thisMonthInterestPaid = Math.max(
         thisMonthIntTx.reduce((s, t) => s + t.amount, 0),
         thisMonthEntryInt.reduce((s, e) => s + (e.interestPaid || 0), 0)
@@ -2916,6 +2949,68 @@
     function closeModal(id) {
       document.getElementById(id).classList.add('hidden');
     }
+
+    window.setRepayNextMonth = function() {
+      const picker = document.getElementById('repay-month-picker');
+      let baseDate = new Date();
+      if (picker && picker.value) {
+        const parts = picker.value.split('-');
+        if (parts.length >= 2) {
+          baseDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
+        }
+      }
+      baseDate.setMonth(baseDate.getMonth() + 1);
+      const nextMonthStr = `${baseDate.getFullYear()}-${String(baseDate.getMonth() + 1).padStart(2, '0')}`;
+      if (picker) {
+        picker.value = nextMonthStr;
+      }
+      handleRepayMonthChange();
+    };
+
+    window.handleRepayMonthChange = function() {
+      const loanId = document.getElementById('repay-loan-select')?.value;
+      if (!loanId) return;
+      const targetLoan = loans.find(l => l.id === loanId);
+      if (!targetLoan) return;
+      const m = members.find(mem => mem.id === targetLoan.memberId);
+      const selectedMonth = document.getElementById('repay-month-picker')?.value;
+      const intSched = calculateLoanInterestSchedule(targetLoan, m ? m.name : '', selectedMonth);
+      
+      const now = new Date();
+      const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      const isNext = selectedMonth && selectedMonth > currentMonthStr;
+
+      const intVal = document.getElementById('repay-monthly-int-val');
+      if (intVal) {
+        intVal.textContent = `₹${intSched.monthlyInterest.toLocaleString('en-IN')}`;
+      }
+      const outVal = document.getElementById('repay-outstanding-val');
+      if (outVal) {
+        outVal.textContent = `₹${targetLoan.currentBalance.toLocaleString('en-IN')}`;
+      }
+      const totalDueVal = document.getElementById('repay-total-due-val');
+      if (totalDueVal) {
+        const due = targetLoan.currentBalance + (intSched.pendingInterest > 0 ? intSched.pendingInterest : intSched.monthlyInterest);
+        totalDueVal.textContent = `₹${due.toLocaleString('en-IN')}`;
+      }
+    };
+
+    window.setLedgerNextMonth = function() {
+      const picker = document.getElementById('ledger-month-picker');
+      let baseDate = new Date();
+      if (picker && picker.value) {
+        const parts = picker.value.split('-');
+        if (parts.length >= 2) {
+          baseDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
+        }
+      }
+      baseDate.setMonth(baseDate.getMonth() + 1);
+      const nextMonthStr = `${baseDate.getFullYear()}-${String(baseDate.getMonth() + 1).padStart(2, '0')}`;
+      if (picker) {
+        picker.value = nextMonthStr;
+        renderLedger();
+      }
+    };
 
     // --- RENDER FUNCTIONS ---
     function renderAllViews() {
@@ -3355,9 +3450,14 @@
       }
 
       // Calculate Revenue & Expenses
-      const totalInterestCollected = transactions
+      const allTxInterest = transactions
         .filter(t => t.type === 'interest_payment')
-        .reduce((sum, t) => sum + t.amount, 0);
+        .reduce((sum, t) => sum + (t.amount || 0), 0);
+      const allEntriesInterest = monthlyEntries
+        .reduce((sum, e) => sum + (e.interestPaid || 0), 0);
+      const allLoansInterest = loans
+        .reduce((sum, l) => sum + (l.totalInterestPaid || 0), 0);
+      const totalInterestCollected = Math.max(allTxInterest, allEntriesInterest, allLoansInterest);
 
       const totalDonations = transactions
         .filter(t => t.type === 'other_income')
@@ -4226,6 +4326,20 @@
       const filterPreset = document.getElementById('loans-filter-preset')?.value || 'all';
       const customMonthVal = document.getElementById('loans-filter-custom-month')?.value || '';
 
+      let filterTargetMonthCode = '';
+      const now = new Date();
+      if (filterPreset === 'current_month') {
+        filterTargetMonthCode = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      } else if (filterPreset === 'next_month') {
+        const nextM = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        filterTargetMonthCode = `${nextM.getFullYear()}-${String(nextM.getMonth() + 1).padStart(2, '0')}`;
+      } else if (filterPreset === 'last_month') {
+        const lastM = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        filterTargetMonthCode = `${lastM.getFullYear()}-${String(lastM.getMonth() + 1).padStart(2, '0')}`;
+      } else if (filterPreset === 'custom' && customMonthVal) {
+        filterTargetMonthCode = customMonthVal;
+      }
+
       const activeL = allActiveL.filter(l => {
         if (!l.disburseDate) return true; // safety fallback
         const dateParts = l.disburseDate.split('-'); // ["2026", "09", "13"]
@@ -4254,13 +4368,25 @@
           return loanYear === currentYearNum;
         } else if (filterPreset === 'last_year') {
           return loanYear === currentYearNum - 1;
+        } else if (filterPreset === 'next_month') {
+          let nextMonthNum = currentMonthNum + 1;
+          let targetYear = currentYearNum;
+          if (nextMonthNum === 13) {
+            nextMonthNum = 1;
+            targetYear = currentYearNum + 1;
+          }
+          const loanMonthCode = `${loanYear}-${String(loanMonth).padStart(2, '0')}`;
+          const targetMonthCode = `${targetYear}-${String(nextMonthNum).padStart(2, '0')}`;
+          return loanMonthCode <= targetMonthCode;
         } else if (filterPreset === 'custom') {
           if (!customMonthVal) return true;
           const customParts = customMonthVal.split('-'); // ["2026", "09"]
           if (customParts.length >= 2) {
             const customYear = parseInt(customParts[0]);
             const customMonth = parseInt(customParts[1]);
-            return loanYear === customYear && loanMonth === customMonth;
+            const loanMonthCode = `${loanYear}-${String(loanMonth).padStart(2, '0')}`;
+            const targetMonthCode = `${customYear}-${String(customMonth).padStart(2, '0')}`;
+            return loanMonthCode <= targetMonthCode;
           }
         }
         return true;
@@ -4313,7 +4439,7 @@
           const shareValue = mShares.length * 20000;
           const totalPaid = Math.max(0, l.principalAmount - l.currentBalance);
           const totalInterestPaid = getLoanTotalInterest(l);
-          const intSched = calculateLoanInterestSchedule(l, m ? m.name : '');
+          const intSched = calculateLoanInterestSchedule(l, m ? m.name : '', filterTargetMonthCode);
           const memberActiveLoans = allActiveL.filter(loan => loan.memberId === l.memberId);
           const hasMultipleLoans = memberActiveLoans.length > 1;
           const memberTotalBal = memberActiveLoans.reduce((sum, loan) => sum + loan.currentBalance, 0);
@@ -4379,9 +4505,6 @@
               <td style="padding: 6px 4px; text-align: center; font-weight: 600; color: #2563eb; font-size: 8.5px;">
                 ${mShares.length}
               </td>
-              <td style="padding: 6px 4px; text-align: right; white-space: nowrap; font-weight: 500; font-size: 8.5px;">
-                <span style="color: #059669;">${mSavings.toLocaleString()}</span>/<span style="color: #4b5563;">${shareValue.toLocaleString()}</span>
-              </td>
               <td style="padding: 6px 4px; text-align: right; color: #383644; font-weight: 600; font-size: 8.5px;">
                 ${l.principalAmount.toLocaleString()}
               </td>
@@ -4428,7 +4551,6 @@
                 <tr style="background-color: #f9fafb; border-bottom: 2px solid #e5e7eb; color: #4b5563; font-weight: 600;">
                   <th style="padding: 8px 4px; text-align: left; font-weight: 600;">સભ્યનું નામ</th>
                   <th style="padding: 8px 4px; text-align: center; font-weight: 600;">શેર</th>
-                  <th style="padding: 8px 4px; text-align: right; font-weight: 600;">બચત/મૂલ્ય (₹)</th>
                   <th style="padding: 8px 4px; text-align: right; font-weight: 600;">લોન (₹)</th>
                   <th style="padding: 8px 4px; text-align: right; font-weight: 600;">જમા (₹)</th>
                   <th style="padding: 8px 4px; text-align: right; font-weight: 600;">બાકી મુદ્દલ (₹)</th>
@@ -4447,7 +4569,6 @@
                 <tr style="background-color: #f9fafb; border-top: 2px solid #e5e7eb; font-weight: 700; color: #383644;">
                   <td style="padding: 8px 4px; text-align: left; font-weight: 700;">કુલ સરવાળો (Total)</td>
                   <td style="padding: 8px 4px; text-align: center; font-weight: 700; color: #2563eb;">${grandShares}</td>
-                  <td style="padding: 8px 4px; text-align: right; font-weight: 700; white-space: nowrap; color: #059669;">${grandSavings.toLocaleString()}/${grandShareValue.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #383644;">${grandLoan.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #059669;">${grandPaid.toLocaleString()}</td>
                   <td style="padding: 8px 4px; text-align: right; font-weight: 700; color: #dc2626;">${grandBalance.toLocaleString()}</td>
@@ -4520,13 +4641,25 @@
           return loanYear === currentYearNum;
         } else if (filterPreset === 'last_year') {
           return loanYear === currentYearNum - 1;
+        } else if (filterPreset === 'next_month') {
+          let nextMonthNum = currentMonthNum + 1;
+          let targetYear = currentYearNum;
+          if (nextMonthNum === 13) {
+            nextMonthNum = 1;
+            targetYear = currentYearNum + 1;
+          }
+          const loanMonthCode = `${loanYear}-${String(loanMonth).padStart(2, '0')}`;
+          const targetMonthCode = `${targetYear}-${String(nextMonthNum).padStart(2, '0')}`;
+          return loanMonthCode <= targetMonthCode;
         } else if (filterPreset === 'custom') {
           if (!customMonthVal) return true;
           const customParts = customMonthVal.split('-');
           if (customParts.length >= 2) {
             const customYear = parseInt(customParts[0]);
             const customMonth = parseInt(customParts[1]);
-            return loanYear === customYear && loanMonth === customMonth;
+            const loanMonthCode = `${loanYear}-${String(loanMonth).padStart(2, '0')}`;
+            const targetMonthCode = `${customYear}-${String(customMonth).padStart(2, '0')}`;
+            return loanMonthCode <= targetMonthCode;
           }
         }
         return true;
@@ -4809,6 +4942,16 @@
             : ` [દેવું: ₹${l.currentBalance.toLocaleString('en-IN')} @ ${l.interestRate}%]`;
           return `<option value="${l.id}">${m ? m.name : 'Unknown'} - ${l.purpose}${multiTag}</option>`;
         }).join('');
+
+      const repayMonthPicker = document.getElementById('repay-month-picker');
+      if (repayMonthPicker) {
+        const now = new Date();
+        repayMonthPicker.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      }
+      const repayDateInput = document.getElementById('repay-date');
+      if (repayDateInput) {
+        repayDateInput.value = new Date().toISOString().split('T')[0];
+      }
     }
 
     function renderAddShareModalOptions() {
@@ -5376,6 +5519,28 @@
       const borrower = members.find(mem => mem.id === targetLoan.memberId);
       const bName = borrower ? borrower.name : 'Unknown';
       const payMode = document.getElementById('repay-payment-mode').value;
+      const repayMonth = document.getElementById('repay-month-picker')?.value;
+
+      if (repayMonth && borrower) {
+        let existingEntry = monthlyEntries.find(e => e.memberId === borrower.id && e.monthCode === repayMonth);
+        if (existingEntry) {
+          existingEntry.principalRepaid = (existingEntry.principalRepaid || 0) + principal;
+          existingEntry.interestPaid = (existingEntry.interestPaid || 0) + interest;
+          existingEntry.datePaid = date;
+        } else {
+          monthlyEntries.push({
+            id: `me-${Date.now()}`,
+            monthCode: repayMonth,
+            memberId: borrower.id,
+            shareId: '',
+            savingsPaid: 0,
+            interestPaid: interest,
+            principalRepaid: principal,
+            datePaid: date,
+            notes: `રૂબરૂ હપ્તો (${targetLoan.purpose})`
+          });
+        }
+      }
 
       if (principal > 0) {
         transactions.push({
@@ -5837,6 +6002,7 @@
         amountLabel.textContent = 'મુદ્દલ ચૂકવણી રકમ (₹) * [Principal Amount]';
         document.getElementById('unified-amount-input').placeholder = 'દા.ત. 1000';
         populateRepayLoans();
+        handleRepayTypeChange();
       } else if (category === 'savings') {
         amountLabel.textContent = 'બચત ફાળો રકમ (₹) *';
         document.getElementById('unified-amount-input').placeholder = 'દા.ત. 50';
@@ -5920,8 +6086,33 @@
       }
     };
 
+    window.setUnifiedNextMonth = function() {
+      const picker = document.getElementById('unified-repay-month-picker');
+      if (picker) {
+        const today = new Date();
+        const nextM = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        picker.value = `${nextM.getFullYear()}-${String(nextM.getMonth() + 1).padStart(2, '0')}`;
+      }
+    };
+
     window.handleRepayTypeChange = function() {
-      // Both regular and advance calculate the month's interest per outstanding balance
+      const repayType = document.getElementById('unified-repay-type').value;
+      const monthGroup = document.getElementById('unified-repay-month-group');
+      const picker = document.getElementById('unified-repay-month-picker');
+      const today = new Date();
+
+      if (repayType === 'advance') {
+        if (monthGroup) monthGroup.classList.remove('hidden');
+        if (picker) {
+          const nextM = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+          picker.value = `${nextM.getFullYear()}-${String(nextM.getMonth() + 1).padStart(2, '0')}`;
+        }
+      } else {
+        if (monthGroup) monthGroup.classList.add('hidden');
+        if (picker) {
+          picker.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+        }
+      }
       handleUnifiedMemberChange();
     };
 
@@ -6010,13 +6201,16 @@
           }
 
           // Compute ledger target month
-          const today = new Date();
-          let targetMonthCode;
-          if (repayType === 'advance') {
-            const nextD = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-            targetMonthCode = `${nextD.getFullYear()}-${String(nextD.getMonth() + 1).padStart(2, '0')}`;
-          } else {
-            targetMonthCode = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+          const emiPickerVal = document.getElementById('unified-repay-month-picker')?.value;
+          let targetMonthCode = emiPickerVal;
+          if (!targetMonthCode) {
+            const today = new Date();
+            if (repayType === 'advance') {
+              const nextD = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+              targetMonthCode = `${nextD.getFullYear()}-${String(nextD.getMonth() + 1).padStart(2, '0')}`;
+            } else {
+              targetMonthCode = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+            }
           }
 
           const mShares = shares.filter(s => s.memberId === targetLoan.memberId && s.status === 'active');
