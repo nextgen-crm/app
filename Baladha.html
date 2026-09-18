@@ -849,19 +849,23 @@
               
               <!-- Hero Main Balance of the Society -->
               <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 12px;">
-                <span data-gu="સોસાયટી કુલ મુખ્ય સિલક (SBI બેંક 1 + BOB બેંક 2)" data-en="Society Main Fund (Bank 1 + Bank 2)" style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી કુલ મુખ્ય સિલક (SBI બેંક 1 + BOB બેંક 2)</span>
+                <span data-gu="સોસાયટી કુલ મુખ્ય સિલક (BOI + BOB-60149 + BOB-00839)" data-en="Society Main Fund (BOI + BOB-60149 + BOB-00839)" style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી કુલ મુખ્ય સિલક (BOI + BOB-60149 + BOB-00839)</span>
                 <div style="font-size: 22px; font-weight: 800; color: #383644; margin-top: 2px;" id="dash-trust-main-bal">₹0</div>
               </div>
 
-              <!-- Downside Grid showing Bank 1 and Bank 2 -->
-              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+              <!-- Downside Grid showing BOI, BOB-60149, BOB-00839 -->
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
-                  <span data-gu="SBI બેંક 1 (State Bank)" data-en="SBI Bank 1" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">SBI બેંક 1 (State Bank)</span>
+                  <span data-gu="BOI (Bank of India)" data-en="BOI (Bank of India)" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOI (Bank of India)</span>
                   <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank1-bal">₹0</div>
                 </div>
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
-                  <span data-gu="BOB બેંક 2 (Baroda Bank)" data-en="BOB Bank 2" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOB બેંક 2 (Baroda Bank)</span>
+                  <span data-gu="BOB (A/c 60149)" data-en="BOB (A/c 60149)" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOB (A/c 60149)</span>
                   <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank2-bal">₹0</div>
+                </div>
+                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
+                  <span data-gu="BOB (A/c 00839)" data-en="BOB (A/c 00839)" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOB (A/c 00839)</span>
+                  <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank3-bal">₹0</div>
                 </div>
               </div>
             </div>
@@ -1415,8 +1419,9 @@
           <div class="form-group">
             <label class="form-label" style="font-weight: 600; color: #047857;">બેંક પસંદ કરો (Select Bank) *</label>
             <select id="bank-interest-bank-select" class="form-select" onchange="handleBankInterestChange()" style="border-color: #10b981; background-color: #f0fdf4; font-weight: 500;">
-              <option value="Bank 1" selected>Bank 1 (બેંક ૧ - સ્ટેટ બેંક - SBI)</option>
-              <option value="Bank 2">Bank 2 (બેંક ૨ - બરોડા બેંક - BOB)</option>
+              <option value="Bank 1" selected>BOI (Bank of India)</option>
+              <option value="Bank 2">BOB (A/c 60149)</option>
+              <option value="Bank 3">BOB (A/c 00839)</option>
             </select>
           </div>
 
@@ -1464,8 +1469,9 @@
           <div class="form-group hidden" id="unified-bank-subgroup">
             <label class="form-label">કઈ બેંક પસંદ કરશો? (Select Bank) *</label>
             <select id="unified-bank-select" class="form-select" onchange="handleUnifiedBankSelectChange()">
-              <option value="Bank 1" selected>Bank 1 (બેંક ૧ - સ્ટેટ બેંક)</option>
-              <option value="Bank 2">Bank 2 (બેંક ૨ - બરોડા બેંક)</option>
+              <option value="Bank 1" selected>BOI (Bank of India)</option>
+              <option value="Bank 2">BOB (A/c 60149)</option>
+              <option value="Bank 3">BOB (A/c 00839)</option>
             </select>
           </div>
         </div>
@@ -1613,9 +1619,10 @@
           <div class="form-group" style="margin-top: 10px;">
             <label class="form-label">શેર ચૂકવણી બેંક / પદ્ધતિ (Payment Bank / Mode) *</label>
             <select id="add-m-payment-mode" class="form-select" required>
-              <option value="Bank 1" selected>SBI બેંક 1 (State Bank of India)</option>
-              <option value="Bank 2">BOB બેંક 2 (Bank of Baroda)</option>
-              <option value="રોકડ">રોકડ (Cash - SBI 1)</option>
+              <option value="Bank 1" selected>BOI (Bank of India)</option>
+              <option value="Bank 2">BOB (A/c 60149)</option>
+              <option value="Bank 3">BOB (A/c 00839)</option>
+              <option value="રોકડ">રોકડ (Cash - BOI)</option>
             </select>
           </div>
 
@@ -1659,9 +1666,10 @@
           <div class="form-group" style="margin-top: 10px;">
             <label class="form-label">શેર ચૂકવણી બેંક / પદ્ધતિ (Payment Bank / Mode) *</label>
             <select id="add-s-payment-mode" class="form-select" required>
-              <option value="Bank 1" selected>SBI બેંક 1 (State Bank of India)</option>
-              <option value="Bank 2">BOB બેંક 2 (Bank of Baroda)</option>
-              <option value="રોકડ">રોકડ (Cash - SBI 1)</option>
+              <option value="Bank 1" selected>BOI (Bank of India)</option>
+              <option value="Bank 2">BOB (A/c 60149)</option>
+              <option value="Bank 3">BOB (A/c 00839)</option>
+              <option value="રોકડ">રોકડ (Cash - BOI)</option>
             </select>
           </div>
 
@@ -1811,8 +1819,9 @@
           <div class="form-group" style="margin-top: 10px;">
             <label class="form-label">લોન ચૂકવણી બેંક (Disbursement Bank Account) *</label>
             <select id="disburse-payment-mode" class="form-select" required onchange="updateDisburseBankDisplay()">
-              <option value="Bank 1" selected>SBI બેંક 1 (State Bank of India)</option>
-              <option value="Bank 2">BOB બેંક 2 (Bank of Baroda)</option>
+              <option value="Bank 1" selected>BOI (Bank of India)</option>
+              <option value="Bank 2">BOB (A/c 60149)</option>
+              <option value="Bank 3">BOB (A/c 00839)</option>
             </select>
           </div>
 
@@ -1926,8 +1935,9 @@
           <div class="form-group" style="margin-top: 10px;">
             <label class="form-label">જમા લેનાર બેંક ખાતું (Bank Account) *</label>
             <select id="repay-payment-mode" class="form-select" required>
-              <option value="ઓનલાઈન (Bank 1)" selected>SBI બેંક 1 (State Bank of India)</option>
-              <option value="ઓનલાઈન (Bank 2)">BOB બેંક 2 (Bank of Baroda)</option>
+              <option value="ઓનલાઈન (Bank 1)" selected>BOI (Bank of India)</option>
+              <option value="ઓનલાઈન (Bank 2)">BOB (A/c 60149)</option>
+              <option value="ઓનલાઈન (Bank 3)">BOB (A/c 00839)</option>
             </select>
           </div>
 
@@ -2255,9 +2265,12 @@
       const savedEntries = localStorage.getItem(DB_KEYS.entries);
       const savedTransactions = localStorage.getItem(DB_KEYS.transactions);
 
+      const vKey = 'bcs_v5_bob_split_dataset';
+      const hasUpdatedData = localStorage.getItem(vKey);
+
       const hasValidData = savedMembers && savedShares && savedLoans && savedEntries && savedTransactions && JSON.parse(savedMembers).length > 0;
 
-      if (hasValidData) {
+      if (hasValidData && hasUpdatedData) {
         members = JSON.parse(savedMembers);
         shares = JSON.parse(savedShares);
         loans = JSON.parse(savedLoans);
@@ -2353,7 +2366,7 @@
             "specialCategory": null,
             "witness1": "Bhanubhai P Vala",
             "witness2": "Parshotam P Vala",
-            "disbursedFromBank": "Bank 2",
+            "disbursedFromBank": "Bank 3",
             "status": "active",
             "totalInterestPaid": 150
           }
@@ -2401,7 +2414,7 @@
             "interestPaid": 0,
             "principalRepaid": 0,
             "datePaid": "2026-09-18",
-            "notes": "2026 ની વાર્ષિક બચત [SBI બેંક 1] (Tick & Save)"
+            "notes": "2026 ની વાર્ષિક બચત [BOI બેંક 1] (Tick & Save)"
           },
           {
             "id": "me-1789729481561",
@@ -2412,7 +2425,7 @@
             "interestPaid": 0,
             "principalRepaid": 0,
             "datePaid": "2026-09-18",
-            "notes": "2026 ની વાર્ષિક બચત [SBI બેંક 1] (Tick & Save)"
+            "notes": "2026 ની વાર્ષિક બચત [BOI બેંક 1] (Tick & Save)"
           }
         ];
         transactions = [
@@ -2421,20 +2434,30 @@
             "date": "2026-09-17",
             "type": "other_income",
             "amount": 75000,
-            "memberName": "બલાઢા ટ્રસ્ટ (SBI Bank 1)",
+            "memberName": "બલાઢા ટ્રસ્ટ (BOI Bank 1)",
             "paymentMode": "ઓનલાઈન (Bank 1)",
             "homeAddress": "મુખ્ય ઓફિસ",
-            "description": "શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)"
+            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOI બેંક 1 (Starting Capital Bank 1)"
           },
           {
             "id": "t-2",
             "date": "2026-09-17",
             "type": "other_income",
-            "amount": 75000,
-            "memberName": "બલાઢા ટ્રસ્ટ (BOB Bank 2)",
+            "amount": 50000,
+            "memberName": "બલાઢા ટ્રસ્ટ (BOB A/c 60149)",
             "paymentMode": "ઓનલાઈન (Bank 2)",
             "homeAddress": "મુખ્ય ઓફિસ",
-            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)"
+            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOB A/c 60149 (Starting Capital BOB 60149)"
+          },
+          {
+            "id": "t-3",
+            "date": "2026-09-17",
+            "type": "other_income",
+            "amount": 25000,
+            "memberName": "બલાઢા ટ્રસ્ટ (BOB A/c 00839)",
+            "paymentMode": "ઓનલાઈન (Bank 3)",
+            "homeAddress": "મુખ્ય ઓફિસ",
+            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOB A/c 00839 (Starting Capital BOB 00839)"
           },
           {
             "id": "t-1789646069856-share-init",
@@ -2470,7 +2493,7 @@
             "amount": 40000,
             "memberName": "Bhanubhai P Vala",
             "paymentMode": "ઓનલાઈન (Bank 2)",
-            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB બેંક 2 માંથી કપાત] (1% વ્યાજ)"
+            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB A/c 60149 માંથી કપાત] (1% વ્યાજ)"
           },
           {
             "id": "t-1789646215474-urep",
@@ -2514,8 +2537,8 @@
             "type": "loan_disbursal",
             "amount": 14983,
             "memberName": "Manharbhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
-            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB બેંક 2 માંથી કપાત] (1% વ્યાજ)"
+            "paymentMode": "ઓનલાઈન (Bank 3)",
+            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB A/c 00839 માંથી કપાત] (1% વ્યાજ)"
           },
           {
             "id": "t-1789646346509-urep",
@@ -2523,7 +2546,7 @@
             "type": "loan_repayment",
             "amount": 850,
             "memberName": "Manharbhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "paymentMode": "ઓનલાઈન (Bank 3)",
             "description": "લોન મુદ્દલ પરત હપ્તો જમા (ચાલુ માસિક હપ્તો) [હેતુ: સામાન્ય લોન (Regular Loan)] "
           },
           {
@@ -2532,7 +2555,7 @@
             "type": "interest_payment",
             "amount": 150,
             "memberName": "Manharbhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "paymentMode": "ઓનલાઈન (Bank 3)",
             "description": "લોન વ્યાજ જમા (ચાલુ માસિક હપ્તો) [વ્યાજ દર: 1%] "
           },
           {
@@ -2551,7 +2574,7 @@
             "amount": 600,
             "memberName": "Bhanubhai P Vala",
             "paymentMode": "ઓનલાઈન (Bank 1)",
-            "description": "2026 ની વાર્ષિક બચત કલેક્શન [SBI બેંક 1 માં જમા]"
+            "description": "2026 ની વાર્ષિક બચત કલેક્શન [BOI બેંક 1 માં જમા]"
           },
           {
             "id": "t-1789729481561",
@@ -2560,9 +2583,10 @@
             "amount": 1200,
             "memberName": "Manharbhai P Vala",
             "paymentMode": "ઓનલાઈન (Bank 1)",
-            "description": "2026 ની વાર્ષિક બચત કલેક્શન [SBI બેંક 1 માં જમા]"
+            "description": "2026 ની વાર્ષિક બચત કલેક્શન [BOI બેંક 1 માં જમા]"
           }
         ];
+        localStorage.setItem(vKey, 'true');
         saveToLocalStorage();
       }
     }
@@ -3280,8 +3304,9 @@
     }
 
     function calculateBankBalances() {
-      let bank1 = 0;
-      let bank2 = 0;
+      let bank1 = 0; // BOI (Bank of India)
+      let bank2 = 0; // BOB-60149
+      let bank3 = 0; // BOB-00839
 
       transactions.forEach(t => {
         const amt = t.amount || 0;
@@ -3291,23 +3316,27 @@
         const mode = (t.paymentMode || t.disbursedFromBank || '').toLowerCase();
         
         if (isIncome) {
-          if (mode.includes('bank 2') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
+          if (mode.includes('bank 3') || mode.includes('00839')) {
+            bank3 += amt;
+          } else if (mode.includes('bank 2') || mode.includes('60149') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
             bank2 += amt;
           } else {
-            // Default / Bank 1 / SBI
+            // Default / Bank 1 / BOI / SBI
             bank1 += amt;
           }
         } else if (isExpense) {
-          if (mode.includes('bank 2') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
+          if (mode.includes('bank 3') || mode.includes('00839')) {
+            bank3 -= amt;
+          } else if (mode.includes('bank 2') || mode.includes('60149') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
             bank2 -= amt;
           } else {
-            // Default / Bank 1 / SBI
+            // Default / Bank 1 / BOI / SBI
             bank1 -= amt;
           }
         }
       });
 
-      return { bank1, bank2, total: bank1 + bank2 };
+      return { bank1, bank2, bank3, total: bank1 + bank2 + bank3 };
     }
 
     window.updateDisburseBankDisplay = function() {
@@ -3315,9 +3344,17 @@
       if (!modeEl) return;
       const selectedBank = modeEl.value;
       const balances = calculateBankBalances();
-      const isBank2 = (selectedBank === 'Bank 2' || selectedBank.includes('Bank 2') || selectedBank.includes('BOB'));
-      const currentBankBal = isBank2 ? balances.bank2 : balances.bank1;
-      const bankName = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+      
+      let currentBankBal = balances.bank1;
+      let bankName = 'BOI (Bank of India)';
+
+      if (selectedBank === 'Bank 3' || selectedBank.includes('Bank 3') || selectedBank.includes('00839')) {
+        currentBankBal = balances.bank3;
+        bankName = 'BOB (A/c 00839)';
+      } else if (selectedBank === 'Bank 2' || selectedBank.includes('Bank 2') || selectedBank.includes('60149') || selectedBank.includes('BOB')) {
+        currentBankBal = balances.bank2;
+        bankName = 'BOB (A/c 60149)';
+      }
       
       const lblEl = document.getElementById('disburse-bank-lbl');
       if (lblEl) {
@@ -3698,6 +3735,11 @@
       const bank2BalEl = document.getElementById('dash-bank2-bal');
       if (bank2BalEl) {
         bank2BalEl.textContent = `₹${balances.bank2.toLocaleString('en-IN')}`;
+      }
+
+      const bank3BalEl = document.getElementById('dash-bank3-bal');
+      if (bank3BalEl) {
+        bank3BalEl.textContent = `₹${balances.bank3.toLocaleString('en-IN')}`;
       }
 
       // Calculate Revenue & Expenses
@@ -6031,22 +6073,30 @@
 
     // Export as JSON back-up
     document.getElementById('btn-export-json').addEventListener('click', () => {
-      const payloadStr = "data:text/json;charset=utf-8," + encodeURIComponent(
-        JSON.stringify({
+      try {
+        const backupData = JSON.stringify({
           members,
           shares,
           loans,
           monthlyEntries,
           transactions,
           exportDate: new Date().toISOString()
-        }, null, 2)
-      );
-      const dl = document.createElement('a');
-      dl.setAttribute("href", payloadStr);
-      dl.setAttribute("download", `baladha_credit_society_backup_${new Date().toISOString().split('T')[0]}.json`);
-      document.body.appendChild(dl);
-      dl.click();
-      dl.remove();
+        }, null, 2);
+
+        const blob = new Blob([backupData], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const dl = document.createElement('a');
+        dl.setAttribute("href", url);
+        dl.setAttribute("download", `baladha_credit_society_backup_${new Date().toISOString().split('T')[0]}.json`);
+        document.body.appendChild(dl);
+        dl.click();
+        setTimeout(() => {
+          document.body.removeChild(dl);
+          URL.revokeObjectURL(url);
+        }, 100);
+      } catch (err) {
+        alert('બેકઅપ ડાઉનલોડ કરવામાં ખામી: ' + err.message);
+      }
     });
 
     // Import from JSON back-up
@@ -6174,8 +6224,17 @@
     window.handleBankInterestChange = function() {
       const bankSelect = document.getElementById('bank-interest-bank-select').value;
       const balances = calculateBankBalances();
-      const currentBalance = bankSelect === 'Bank 1' ? balances.bank1 : balances.bank2;
-      const bankName = bankSelect === 'Bank 1' ? 'SBI બેંક 1 (State Bank)' : 'BOB બેંક 2 (Baroda Bank)';
+      
+      let currentBalance = balances.bank1;
+      let bankName = 'BOI (Bank of India)';
+
+      if (bankSelect === 'Bank 3' || bankSelect.includes('00839')) {
+        currentBalance = balances.bank3;
+        bankName = 'BOB (A/c 00839)';
+      } else if (bankSelect === 'Bank 2' || bankSelect.includes('60149')) {
+        currentBalance = balances.bank2;
+        bankName = 'BOB (A/c 60149)';
+      }
 
       const labelEl = document.getElementById('bank-interest-curr-bal-lbl');
       if (labelEl) {
