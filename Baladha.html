@@ -2255,65 +2255,312 @@
       const savedEntries = localStorage.getItem(DB_KEYS.entries);
       const savedTransactions = localStorage.getItem(DB_KEYS.transactions);
 
-      if (savedMembers && savedShares && savedLoans && savedEntries && savedTransactions) {
+      const hasValidData = savedMembers && savedShares && savedLoans && savedEntries && savedTransactions && JSON.parse(savedMembers).length > 0;
+
+      if (hasValidData) {
         members = JSON.parse(savedMembers);
         shares = JSON.parse(savedShares);
         loans = JSON.parse(savedLoans);
         monthlyEntries = JSON.parse(savedEntries);
         transactions = JSON.parse(savedTransactions);
-
-        // Auto migrate initial single 150k demo transaction if present
-        if (transactions.length === 1 && transactions[0].id === 't-1' && transactions[0].amount === 150000) {
-          transactions = [
-            {
-              id: 't-1',
-              date: transactions[0].date || new Date().toISOString().split('T')[0],
-              type: 'other_income',
-              amount: 75000,
-              memberName: 'બલાઢા ટ્રસ્ટ (SBI Bank 1)',
-              paymentMode: 'ઓનલાઈન (Bank 1)',
-              homeAddress: 'મુખ્ય ઓફિસ',
-              description: 'શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)'
-            },
-            {
-              id: 't-2',
-              date: transactions[0].date || new Date().toISOString().split('T')[0],
-              type: 'other_income',
-              amount: 75000,
-              memberName: 'બલાઢા ટ્રસ્ટ (BOB Bank 2)',
-              paymentMode: 'ઓનલાઈન (Bank 2)',
-              homeAddress: 'મુખ્ય ઓફિસ',
-              description: 'શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)'
-            }
-          ];
-          saveToLocalStorage();
-        }
       } else {
-        // Absolute blank slate, with 1.5 lakh demo split equally into SBI Bank 1 (₹75,000) and BOB Bank 2 (₹75,000)
-        members = [];
-        shares = [];
-        loans = [];
-        monthlyEntries = [];
-        transactions = [
+        members = [
           {
-            id: 't-1',
-            date: new Date().toISOString().split('T')[0],
-            type: 'other_income',
-            amount: 75000,
-            memberName: 'બલાઢા ટ્રસ્ટ (SBI Bank 1)',
-            paymentMode: 'ઓનલાઈન (Bank 1)',
-            homeAddress: 'મુખ્ય ઓફિસ',
-            description: 'શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)'
+            "id": "m-1789646069856",
+            "name": "Bhanubhai P Vala",
+            "phone": "9998596097",
+            "nomineeName": "નથી",
+            "createdAt": "2026-09-17",
+            "status": "active"
           },
           {
-            id: 't-2',
-            date: new Date().toISOString().split('T')[0],
-            type: 'other_income',
-            amount: 75000,
-            memberName: 'બલાઢા ટ્રસ્ટ (BOB Bank 2)',
-            paymentMode: 'ઓનલાઈન (Bank 2)',
-            homeAddress: 'મુખ્ય ઓફિસ',
-            description: 'શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)'
+            "id": "m-1789646108403",
+            "name": "Manharbhai P Vala",
+            "phone": "9601560297",
+            "nomineeName": "નથી",
+            "createdAt": "2026-09-17",
+            "status": "active"
+          },
+          {
+            "id": "m-1789646140573",
+            "name": "Parshotam P Vala",
+            "phone": "123456789",
+            "nomineeName": "નથી",
+            "createdAt": "2026-09-17",
+            "status": "active"
+          }
+        ];
+        shares = [
+          {
+            "id": "s-1789646069856-0",
+            "memberId": "m-1789646069856",
+            "shareNumber": "S-1001",
+            "nameOnShare": "Bhanubhai P Vala",
+            "activationDate": "2026-09-17",
+            "status": "active"
+          },
+          {
+            "id": "s-1789646108403-0",
+            "memberId": "m-1789646108403",
+            "shareNumber": "S-1002",
+            "nameOnShare": "Manharbhai P Vala",
+            "activationDate": "2026-09-17",
+            "status": "active"
+          },
+          {
+            "id": "s-1789646108403-1",
+            "memberId": "m-1789646108403",
+            "shareNumber": "S-1003",
+            "nameOnShare": "Ghanshyam M Vala",
+            "activationDate": "2026-09-17",
+            "status": "active"
+          },
+          {
+            "id": "s-1789646140574-0",
+            "memberId": "m-1789646140573",
+            "shareNumber": "S-1004",
+            "nameOnShare": "Parshotam P Vala",
+            "activationDate": "2026-09-17",
+            "status": "active"
+          }
+        ];
+        loans = [
+          {
+            "id": "l-1789646180042",
+            "memberId": "m-1789646069856",
+            "principalAmount": 40000,
+            "currentBalance": 38794,
+            "interestRate": 1,
+            "disburseDate": "2026-09-17",
+            "purpose": "સામાન્ય લોન (Regular Loan)",
+            "loanType": "regular",
+            "specialCategory": null,
+            "witness1": "Manharbhai P Vala",
+            "witness2": "Parshotam P Vala",
+            "disbursedFromBank": "Bank 2",
+            "status": "active",
+            "totalInterestPaid": 794
+          },
+          {
+            "id": "l-1789646312120",
+            "memberId": "m-1789646108403",
+            "principalAmount": 14983,
+            "currentBalance": 14133,
+            "interestRate": 1,
+            "disburseDate": "2026-09-17",
+            "purpose": "સામાન્ય લોન (Regular Loan)",
+            "loanType": "regular",
+            "specialCategory": null,
+            "witness1": "Bhanubhai P Vala",
+            "witness2": "Parshotam P Vala",
+            "disbursedFromBank": "Bank 2",
+            "status": "active",
+            "totalInterestPaid": 150
+          }
+        ];
+        monthlyEntries = [
+          {
+            "id": "me-1789646215474",
+            "monthCode": "2026-09",
+            "memberId": "m-1789646069856",
+            "shareId": "s-1789646069856-0",
+            "savingsPaid": 0,
+            "interestPaid": 400,
+            "principalRepaid": 600,
+            "datePaid": "2026-09-15",
+            "notes": "ચાલુ માસિક હપ્તો (સ્વયંચાલિત બુક એન્ટ્રી) "
+          },
+          {
+            "id": "me-1789646259440",
+            "monthCode": "2026-10",
+            "memberId": "m-1789646069856",
+            "shareId": "s-1789646069856-0",
+            "savingsPaid": 0,
+            "interestPaid": 394,
+            "principalRepaid": 606,
+            "datePaid": "2026-09-17",
+            "notes": "આગામી એડવાન્સ હપ્તો (સ્વયંચાલિત બુક એન્ટ્રી) "
+          },
+          {
+            "id": "me-1789646346509",
+            "monthCode": "2026-09",
+            "memberId": "m-1789646108403",
+            "shareId": "s-1789646108403-0",
+            "savingsPaid": 0,
+            "interestPaid": 150,
+            "principalRepaid": 850,
+            "datePaid": "2026-09-17",
+            "notes": "ચાલુ માસિક હપ્તો (સ્વયંચાલિત બુક એન્ટ્રી) "
+          },
+          {
+            "id": "me-1789729478680",
+            "monthCode": "2026-12",
+            "memberId": "m-1789646069856",
+            "shareId": "s-1789646069856-0",
+            "savingsPaid": 600,
+            "interestPaid": 0,
+            "principalRepaid": 0,
+            "datePaid": "2026-09-18",
+            "notes": "2026 ની વાર્ષિક બચત [SBI બેંક 1] (Tick & Save)"
+          },
+          {
+            "id": "me-1789729481561",
+            "monthCode": "2026-12",
+            "memberId": "m-1789646108403",
+            "shareId": "s-1789646108403-0",
+            "savingsPaid": 1200,
+            "interestPaid": 0,
+            "principalRepaid": 0,
+            "datePaid": "2026-09-18",
+            "notes": "2026 ની વાર્ષિક બચત [SBI બેંક 1] (Tick & Save)"
+          }
+        ];
+        transactions = [
+          {
+            "id": "t-1",
+            "date": "2026-09-17",
+            "type": "other_income",
+            "amount": 75000,
+            "memberName": "બલાઢા ટ્રસ્ટ (SBI Bank 1)",
+            "paymentMode": "ઓનલાઈન (Bank 1)",
+            "homeAddress": "મુખ્ય ઓફિસ",
+            "description": "શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)"
+          },
+          {
+            "id": "t-2",
+            "date": "2026-09-17",
+            "type": "other_income",
+            "amount": 75000,
+            "memberName": "બલાઢા ટ્રસ્ટ (BOB Bank 2)",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "homeAddress": "મુખ્ય ઓફિસ",
+            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)"
+          },
+          {
+            "id": "t-1789646069856-share-init",
+            "date": "2026-09-17",
+            "type": "other_income",
+            "amount": 20000,
+            "memberName": "Bhanubhai P Vala",
+            "paymentMode": "Bank 1",
+            "description": "નવી સભ્ય નોંધણી શેર ખરીદી ચુકવણી જમા (કુલ શેર: 1)"
+          },
+          {
+            "id": "t-1789646108403-share-init",
+            "date": "2026-09-17",
+            "type": "other_income",
+            "amount": 40000,
+            "memberName": "Manharbhai P Vala",
+            "paymentMode": "Bank 1",
+            "description": "નવી સભ્ય નોંધણી શેર ખરીદી ચુકવણી જમા (કુલ શેર: 2)"
+          },
+          {
+            "id": "t-1789646140574-share-init",
+            "date": "2026-09-17",
+            "type": "other_income",
+            "amount": 20000,
+            "memberName": "Parshotam P Vala",
+            "paymentMode": "Bank 1",
+            "description": "નવી સભ્ય નોંધણી શેર ખરીદી ચુકવણી જમા (કુલ શેર: 1)"
+          },
+          {
+            "id": "t-1789646180042",
+            "date": "2026-09-17",
+            "type": "loan_disbursal",
+            "amount": 40000,
+            "memberName": "Bhanubhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB બેંક 2 માંથી કપાત] (1% વ્યાજ)"
+          },
+          {
+            "id": "t-1789646215474-urep",
+            "date": "2026-09-15",
+            "type": "loan_repayment",
+            "amount": 600,
+            "memberName": "Bhanubhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "લોન મુદ્દલ પરત હપ્તો જમા (ચાલુ માસિક હપ્તો) [હેતુ: સામાન્ય લોન (Regular Loan)] "
+          },
+          {
+            "id": "t-1789646215474-uint",
+            "date": "2026-09-15",
+            "type": "interest_payment",
+            "amount": 400,
+            "memberName": "Bhanubhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "લોન વ્યાજ જમા (ચાલુ માસિક હપ્તો) [વ્યાજ દર: 1%] "
+          },
+          {
+            "id": "t-1789646259440-urep",
+            "date": "2026-09-17",
+            "type": "loan_repayment",
+            "amount": 606,
+            "memberName": "Bhanubhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "લોન મુદ્દલ પરત હપ્તો જમા (આગામી એડવાન્સ હપ્તો) [હેતુ: સામાન્ય લોન (Regular Loan)] "
+          },
+          {
+            "id": "t-1789646259440-uint",
+            "date": "2026-09-17",
+            "type": "interest_payment",
+            "amount": 394,
+            "memberName": "Bhanubhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "લોન વ્યાજ જમા (આગામી એડવાન્સ હપ્તો) [વ્યાજ દર: 1%] "
+          },
+          {
+            "id": "t-1789646312120",
+            "date": "2026-09-17",
+            "type": "loan_disbursal",
+            "amount": 14983,
+            "memberName": "Manharbhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB બેંક 2 માંથી કપાત] (1% વ્યાજ)"
+          },
+          {
+            "id": "t-1789646346509-urep",
+            "date": "2026-09-17",
+            "type": "loan_repayment",
+            "amount": 850,
+            "memberName": "Manharbhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "લોન મુદ્દલ પરત હપ્તો જમા (ચાલુ માસિક હપ્તો) [હેતુ: સામાન્ય લોન (Regular Loan)] "
+          },
+          {
+            "id": "t-1789646346509-uint",
+            "date": "2026-09-17",
+            "type": "interest_payment",
+            "amount": 150,
+            "memberName": "Manharbhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 2)",
+            "description": "લોન વ્યાજ જમા (ચાલુ માસિક હપ્તો) [વ્યાજ દર: 1%] "
+          },
+          {
+            "id": "t-1789729456168-uexp",
+            "date": "2026-09-18",
+            "type": "other_expense",
+            "amount": 500,
+            "memberName": "સ્ટેશનરી ખર્ચ",
+            "paymentMode": "ઓનલાઈન (Bank 1)",
+            "description": "સ્ટેશનરી ઓફિસ સામાન ખર્ચ "
+          },
+          {
+            "id": "t-1789729478680",
+            "date": "2026-09-18",
+            "type": "savings",
+            "amount": 600,
+            "memberName": "Bhanubhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 1)",
+            "description": "2026 ની વાર્ષિક બચત કલેક્શન [SBI બેંક 1 માં જમા]"
+          },
+          {
+            "id": "t-1789729481561",
+            "date": "2026-09-18",
+            "type": "savings",
+            "amount": 1200,
+            "memberName": "Manharbhai P Vala",
+            "paymentMode": "ઓનલાઈન (Bank 1)",
+            "description": "2026 ની વાર્ષિક બચત કલેક્શન [SBI બેંક 1 માં જમા]"
           }
         ];
         saveToLocalStorage();
@@ -3023,7 +3270,11 @@
       // Call view-specific renderers
       if (activeTab === 'dashboard') renderDashboard(trustCash);
       else if (activeTab === 'members') renderMembers();
-      else if (activeTab === 'ledger') renderLedger();
+      else if (activeTab === 'ledger') {
+        renderLedger();
+        renderLoans(trustCash);
+        renderDailyLogs();
+      }
       else if (activeTab === 'loans') renderLoans(trustCash);
       else if (activeTab === 'backup') renderBackup();
     }
@@ -4328,7 +4579,7 @@
 
       let filterTargetMonthCode = '';
       const now = new Date();
-      if (filterPreset === 'current_month') {
+      if (filterPreset === 'current_month' || filterPreset === 'all') {
         filterTargetMonthCode = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
       } else if (filterPreset === 'next_month') {
         const nextM = new Date(now.getFullYear(), now.getMonth() + 1, 1);
@@ -4352,10 +4603,8 @@
         const currentYearNum = today.getFullYear();
         const currentMonthNum = today.getMonth() + 1; // 1-indexed
 
-        if (filterPreset === 'all') {
+        if (filterPreset === 'all' || filterPreset === 'current_month') {
           return true;
-        } else if (filterPreset === 'current_month') {
-          return loanYear === currentYearNum && loanMonth === currentMonthNum;
         } else if (filterPreset === 'last_month') {
           let lastMonthNum = currentMonthNum - 1;
           let targetYear = currentYearNum;
@@ -4625,10 +4874,8 @@
         const currentYearNum = today.getFullYear();
         const currentMonthNum = today.getMonth() + 1;
 
-        if (filterPreset === 'all') {
+        if (filterPreset === 'all' || filterPreset === 'current_month') {
           return true;
-        } else if (filterPreset === 'current_month') {
-          return loanYear === currentYearNum && loanMonth === currentMonthNum;
         } else if (filterPreset === 'last_month') {
           let lastMonthNum = currentMonthNum - 1;
           let targetYear = currentYearNum;
