@@ -6,17 +6,17 @@
   <title>BCS મોબાઇલ એપ - બલાઢા ક્રેડિટ સોસાયટી</title>
   <style>
     :root {
-      --bg-page: #f1f5f9;
+      --bg-page: #f8fafc;
       --bg-app: #f8fafc;
       --bg-card: #ffffff;
       --bg-subtle: #f8fafc;
       --border-main: #e2e8f0;
       --border-subtle: #f1f5f9;
-      --text-main: #383644;
+      --text-main: #1e293b;
       --text-muted: #64748b;
       --text-secondary: #334155;
-      --primary: #383644;
-      --primary-blue: #2563eb;
+      --primary: #1e293b;
+      --primary-blue: #1e40af;
       --success: #059669;
       --success-bg: #f0fdf4;
       --success-border: #bbf7d0;
@@ -195,7 +195,7 @@
       height: 100%;
     }
     .nav-btn-plus {
-      background: var(--text-main);
+      background: var(--primary-blue);
       color: #ffffff;
       width: 44px;
       height: 44px;
@@ -204,14 +204,14 @@
       align-items: center;
       justify-content: center;
       border: none;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.28);
       cursor: pointer;
       transition: all 0.2s ease-in-out;
     }
     .nav-btn-plus:hover {
       transform: scale(1.06);
-      background-color: #383644;
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
+      background-color: #173594;
+      box-shadow: 0 6px 16px rgba(30, 64, 175, 0.35);
     }
     .nav-btn-plus:active {
       transform: scale(0.95);
@@ -657,7 +657,7 @@
       <div style="text-align: center; margin-bottom: 24px;">
         <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px;">
-          <img id="login-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
+          <img id="login-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
         </div>
         <h2 style="font-size: 21px; font-weight: 800; color: #383644; margin: 0; letter-spacing: -0.3px;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h2>
       </div>
@@ -705,24 +705,27 @@
         <form id="form-admin-login" onsubmit="handleAdminLogin(event)" class="space-y-3 hidden">
           <div class="form-group">
             <label class="form-label" style="font-weight: 700; color: #383644;" data-gu="એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *" data-en="Admin Mobile / Username *">એડમિન મોબાઈલ / યુઝરનેમ (Mobile / User) *</label>
-            <input type="text" id="input-admin-login-user" class="form-input" required placeholder="મોબાઈલ અથવા admin" data-gu-placeholder="મોબાઈલ અથવા admin" data-en-placeholder="Mobile or admin" value="admin" style="font-size: 13px; font-weight: 600;">
+            <input type="text" id="input-admin-login-user" class="form-input" required placeholder="દા.ત. મોબાઈલ નંબર અથવા admin" data-gu-placeholder="દા.ત. મોબાઈલ નંબર અથવા admin" data-en-placeholder="e.g. Mobile number or admin" value="admin" style="font-size: 13.5px; font-weight: 600;">
+            <p style="font-size: 8.5px; color: #64748b; margin: 3px 0 0 0;">
+              જે સભ્યને શીટમાં Admin રોલ આપેલ હોય તેમનો મોબાઈલ નંબર અથવા 'admin' નાખો
+            </p>
           </div>
 
           <div class="form-group">
             <label class="form-label" style="font-weight: 700; color: #383644;" data-gu="એડમિન પાસવર્ડ (Password) *" data-en="Admin Password *">એડમિન પાસવર્ડ (Password) *</label>
-            <input type="password" id="input-admin-login-pass" class="form-input" required placeholder="પાસવર્ડ દાખલ કરો" data-gu-placeholder="પાસવર્ડ દાખલ કરો" data-en-placeholder="Enter Password" style="font-size: 14px;">
+            <input type="password" id="input-admin-login-pass" class="form-input" required placeholder="તમારો વ્યક્તિગત પાસવર્ડ દાખલ કરો" data-gu-placeholder="તમારો વ્યક્તિગત પાસવર્ડ દાખલ કરો" data-en-placeholder="Enter your personal password" style="font-size: 14px;">
             <div style="display: flex; align-items: center; gap: 5px; margin-top: 4px;">
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3"/></svg>
               <p style="font-size: 8.5px; color: #64748b; margin: 0;">
-                ડિફોલ્ટ પાસવર્ડ: <b>admin@123</b>
+                શીટમાં તમારા ખાતા માટે સેટ કરેલ વ્યક્તિગત પાસવર્ડ (Default: <b>admin@123</b>)
               </p>
             </div>
           </div>
 
           <div id="login-admin-error" class="hidden" style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span id="login-admin-error-text" data-gu="ખોટો પાસવર્ડ! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો (admin@123)." data-en="Incorrect password! Please enter the correct password (admin@123).">
-              ખોટો પાસવર્ડ! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો (admin@123).
+            <span id="login-admin-error-text" data-gu="ખોટો પાસવર્ડ! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો." data-en="Incorrect password! Please enter the correct password.">
+              ખોટો પાસવર્ડ! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો.
             </span>
           </div>
 
@@ -784,42 +787,88 @@
               </div>
             </div>
 
-            <!-- Financial Stats Grid -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px;">
-              <div class="stat-box">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span data-gu="સોસાયટી મુખ્ય ફંડ / Main Fund" data-en="Society Main Fund" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી મુખ્ય ફંડ / Main Fund</span>
-                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #059669; border-radius: 50%;"></span>
+            <!-- Logged-in Admin Identity & Welcome Toast/Banner (Appears after login for 3 seconds then auto-removes) -->
+            <div id="admin-welcome-banner" style="display: none; background: linear-gradient(135deg, #1e293b, #334155); color: #ffffff; padding: 12px 16px; border-radius: 12px; margin-bottom: 12px; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #475569; transition: opacity 0.35s ease, transform 0.35s ease;">
+              <div style="display: flex; align-items: center; gap: 11px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; box-shadow: 0 2px 6px rgba(37,99,235,0.4);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
-                <div style="font-size: 17px; font-weight: 800; color: #059669; margin-top: 4px;" id="stat-cash">₹0</div>
-                <div data-gu="બેંક ૧ + બેંક ૨ કુલ સિલક" data-en="Bank 1 + Bank 2 Total Fund" style="font-size: 9px; color: #64748b; margin-top: 2px;">બેંક ૧ + બેંક ૨ કુલ સિલક</div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(59,130,246,0.3); border: 1px solid rgba(59,130,246,0.5); color: #93c5fd; padding: 1px 6px; border-radius: 4px;">
+                      ADMIN SESSION
+                    </span>
+                    <span style="font-size: 8.5px; font-weight: 700; color: #4ade80;">● સક્રિય</span>
+                  </div>
+                  <div style="font-size: 14px; font-weight: 800; color: #ffffff; margin-top: 1px;" id="admin-welcome-name">
+                    Administrator (Admin)
+                  </div>
+                  <div style="font-size: 9.5px; color: #cbd5e1;" id="admin-welcome-phone">
+                    સક્રિય એડમિન સેશન
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 9px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #4ade80; padding: 3px 8px; border-radius: 9999px; font-weight: 700; display: inline-block;">
+                  સત્તાવાર એડમિન ✓
+                </span>
+                <button type="button" onclick="hideAdminWelcomeBanner()" style="background: none; border: none; color: #94a3b8; cursor: pointer; padding: 3px; display: flex; align-items: center; border-radius: 4px;" title="Dismiss">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Financial Stats: Big Square Middle + 2 Square Boxes Flowing + Horizontal Long Savings Card -->
+            <!-- 1. Big Square Box Middle: Society Main Fund -->
+            <div style="background: #ffffff; border: none; border-radius: 16px; padding: 32px 24px; text-align: left; margin-bottom: 16px; margin-top: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
+              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
+                <span style="display: inline-block; width: 8px; height: 8px; background-color: #059669; border-radius: 50%;"></span>
+                <span data-gu="સોસાયટી મુખ્ય ફંડ / Main Fund" data-en="Society Main Fund" style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી મુખ્ય ફંડ / Main Fund</span>
+              </div>
+              <div style="font-size: 42px; font-weight: 900; color: #1e293b; margin: 4px 0 2px 0; letter-spacing: -0.02em;" id="stat-cash">₹0</div>
+            </div>
+
+            <!-- 2. Downside: 2 Flowing Square Boxes (Loans & Shares) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+              <!-- Square Box 1: Loans -->
+              <div style="background: linear-gradient(145deg, #ffffff, #f8fafc); border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px 12px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px -3px rgba(30, 64, 175, 0.05); min-height: 100px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span data-gu="ચાલુ લોન / Loans" data-en="Active Loans" style="font-size: 10px; color: #475569; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">ચાલુ લોન / Loans</span>
+                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #1e40af; border-radius: 50%;"></span>
+                </div>
+                <div>
+                  <div style="font-size: 18px; font-weight: 800; color: #1e40af; margin-top: 6px;" id="stat-loans">₹0</div>
+                  <div data-gu="બહાર ફરેલા લોન નાણાં" data-en="Circulating Loan Fund" style="font-size: 9px; color: #64748b; margin-top: 2px;">બહાર ફરેલા લોન નાણાં</div>
+                </div>
               </div>
 
-              <div class="stat-box">
+              <!-- Square Box 2: Shares & Total Members -->
+              <div style="background: linear-gradient(145deg, #ffffff, #f8fafc); border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px 12px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px -3px rgba(15, 23, 42, 0.05); min-height: 100px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span data-gu="ચાલુ લોન / Loans" data-en="Active Loans" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">ચાલુ લોન / Loans</span>
-                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #2563eb; border-radius: 50%;"></span>
+                  <span data-gu="કુલ શેર / Shares" data-en="Total Shares" style="font-size: 10px; color: #475569; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">કુલ શેર / Shares</span>
+                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #1e293b; border-radius: 50%;"></span>
                 </div>
-                <div style="font-size: 17px; font-weight: 800; color: #2563eb; margin-top: 4px;" id="stat-loans">₹0</div>
-                <div data-gu="બહાર ફરેલા લોન નાણાં" data-en="Circulating Loan Fund" style="font-size: 9px; color: #64748b; margin-top: 2px;">બહાર ફરેલા લોન નાણાં</div>
+                <div>
+                  <div style="font-size: 18px; font-weight: 800; color: #1e293b; margin-top: 6px;" id="stat-shares">0 શેર</div>
+                  <div style="font-size: 9px; color: #64748b; margin-top: 2px; font-weight: 600;" id="stat-members-lbl">કુલ સભ્યો: 0</div>
+                </div>
               </div>
+            </div>
 
-              <div class="stat-box">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span data-gu="બચત ફાળો / Savings" data-en="Savings Contribution" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">બચત ફાળો / Savings</span>
-                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #059669; border-radius: 50%;"></span>
+            <!-- 3. One Horizontal Long Card: Savings -->
+            <div style="background: linear-gradient(145deg, #ffffff, #f8fafc); border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 12px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px -3px rgba(5, 150, 105, 0.05);">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(5, 150, 105, 0.1); border: 1px solid rgba(5, 150, 105, 0.2); display: flex; align-items: center; justify-content: center; color: #059669; flex-shrink: 0;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
                 </div>
-                <div style="font-size: 17px; font-weight: 800; color: #059669; margin-top: 4px;" id="stat-savings">₹0</div>
-                <div data-gu="માસિક ₹૫૦ ના ફાળામાંથી" data-en="From ₹50 monthly contribution" style="font-size: 9px; color: #64748b; margin-top: 2px;">માસિક ₹૫૦ ના ફાળામાંથી</div>
+                <div>
+                  <span data-gu="બચત ફાળો / Savings" data-en="Savings Contribution" style="font-size: 10.5px; color: #475569; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: block;">બચત ફાળો / Savings</span>
+                  <span data-gu="માસિક ₹૫૦ ના ફાળામાંથી" data-en="From ₹50 monthly contribution" style="font-size: 9.5px; color: #64748b;">માસિક ₹૫૦ ના ફાળામાંથી</span>
+                </div>
               </div>
-
-              <div class="stat-box">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span data-gu="કુલ શેર / Shares" data-en="Total Shares" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">કુલ શેર / Shares</span>
-                  <span style="display: inline-block; width: 6px; height: 6px; background-color: #383644; border-radius: 50%;"></span>
-                </div>
-                <div style="font-size: 17px; font-weight: 800; color: #383644; margin-top: 4px;" id="stat-shares">0 શેર</div>
-                <div style="font-size: 9px; color: #64748b; margin-top: 2px;" id="stat-members-lbl">કુલ સભ્યો: 0</div>
+              <div style="text-align: right;">
+                <div style="font-size: 20px; font-weight: 900; color: #059669;" id="stat-savings">₹0</div>
+                <span style="font-size: 8.5px; color: #059669; background: #ecfdf5; padding: 1px 6px; border-radius: 4px; border: 1px solid #d1fae5; font-weight: 700;">સુનિશ્ચિત બચત</span>
               </div>
             </div>
 
@@ -829,13 +878,13 @@
                 <div>
                   <div style="display: flex; align-items: center; gap: 6px;">
                     <span data-gu="વર્તમાન શેર મૂલ્ય (Current Share Value)" data-en="Current Share Value" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">વર્તમાન શેર મૂલ્ય (Current Share Value)</span>
-                    <span style="font-size: 8.5px; background-color: #eff6ff; color: #2563eb; font-weight: 700; padding: 1px 5px; border-radius: 4px; border: 1px solid #dbeafe;">Admin</span>
+                    <span style="font-size: 8.5px; background-color: #eff6ff; color: #1e40af; font-weight: 700; padding: 1px 5px; border-radius: 4px; border: 1px solid #dbeafe;">Admin</span>
                   </div>
-                  <div style="font-size: 20px; font-weight: 800; color: #383644; margin-top: 3px;" id="dash-current-share-val">₹20,000</div>
+                  <div style="font-size: 20px; font-weight: 800; color: #1e293b; margin-top: 3px;" id="dash-current-share-val">₹20,000</div>
                   <div style="font-size: 9px; color: #64748b; margin-top: 2px;" id="dash-total-equity-lbl">કુલ સુરક્ષિત શેર મૂડી: ₹0</div>
                 </div>
-                <button type="button" onclick="editCurrentShareValue()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 10.5px; border-radius: 6px; height: auto; display: inline-flex; align-items: center; gap: 4px; background-color: #f8fafc; color: #383644; border: 1px solid #cbd5e1;">
-                  ✏️ <span data-gu="શેર ભાવ બદલો" data-en="Edit Value">શેર ભાવ બદલો</span>
+                <button type="button" onclick="editCurrentShareValue()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 10.5px; border-radius: 6px; height: auto; display: inline-flex; align-items: center; gap: 4px; background-color: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1;">
+                  <span data-gu="શેર ભાવ બદલો" data-en="Edit Value">શેર ભાવ બદલો</span>
                 </button>
               </div>
             </div>
@@ -847,24 +896,24 @@
               </h4>
               
               <!-- Hero Main Balance of the Society -->
-              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 12px;">
-                <span data-gu="સોસાયટી કુલ મુખ્ય સિલક (BOI + BOB-60149 + BOB-00839)" data-en="Society Main Fund (BOI + BOB-60149 + BOB-00839)" style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી કુલ મુખ્ય સિલક (BOI + BOB-60149 + BOB-00839)</span>
-                <div style="font-size: 22px; font-weight: 800; color: #383644; margin-top: 2px;" id="dash-trust-main-bal">₹0</div>
+              <div style="background-color: #ffffff; border: none; padding: 14px; border-radius: 10px; text-align: left; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
+                <span data-gu="સોસાયટી કુલ મુખ્ય સિલક" data-en="Society Main Fund" style="font-size: 10px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી કુલ મુખ્ય સિલક</span>
+                <div style="font-size: 22px; font-weight: 800; color: #1e293b; margin-top: 2px;" id="dash-trust-main-bal">₹0</div>
               </div>
 
               <!-- Downside Grid showing BOI, BOB-60149, BOB-00839 -->
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
                   <span data-gu="BOI (Bank of India)" data-en="BOI (Bank of India)" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOI (Bank of India)</span>
-                  <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank1-bal">₹0</div>
+                  <div style="font-size: 13px; font-weight: 800; color: #1e40af;" id="dash-bank1-bal">₹0</div>
                 </div>
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
                   <span data-gu="BOB (A/c 60149)" data-en="BOB (A/c 60149)" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOB (A/c 60149)</span>
-                  <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank2-bal">₹0</div>
+                  <div style="font-size: 13px; font-weight: 800; color: #1e40af;" id="dash-bank2-bal">₹0</div>
                 </div>
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 8px; border-radius: 8px; text-align: center;">
                   <span data-gu="BOB (A/c 00839)" data-en="BOB (A/c 00839)" style="font-size: 8.5px; color: #64748b; font-weight: 700; display: block; margin-bottom: 2px;">BOB (A/c 00839)</span>
-                  <div style="font-size: 13px; font-weight: 800; color: #2563eb;" id="dash-bank3-bal">₹0</div>
+                  <div style="font-size: 13px; font-weight: 800; color: #1e40af;" id="dash-bank3-bal">₹0</div>
                 </div>
               </div>
             </div>
@@ -878,7 +927,7 @@
               <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px;">
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 8px;">
                   <span data-gu="વ્યાજ આવક (Loan Interest)" data-en="Interest Revenue" style="font-size: 8px; color: #64748b; font-weight: 700;">વ્યાજ આવક (Loan Interest)</span>
-                  <div style="font-size: 12px; font-weight: 800; color: #2563eb; margin-top: 2px;" id="dash-total-interest">₹0</div>
+                  <div style="font-size: 12px; font-weight: 800; color: #1e40af; margin-top: 2px;" id="dash-total-interest">₹0</div>
                 </div>
                 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 8px;">
                   <span data-gu="કુલ મળેલ દાન (Donations)" data-en="Received Donations" style="font-size: 8px; color: #64748b; font-weight: 700;">કુલ મળેલ દાન (Donations)</span>
@@ -901,7 +950,7 @@
             <!-- Loan limit & Share Calculator -->
             <div class="card space-y-3">
               <div style="display: flex; gap: 8px; align-items: center;">
-                <div style="font-size: 18px;">🧮</div>
+                <div style="font-size: 18px;"></div>
                 <div>
                   <h4 class="card-title" data-gu="શેર અને લોન ક્ષમતા કેલ્ક્યુલેટર" data-en="Share & Loan Limit Estimator">શેર અને લોન ક્ષમતા કેલ્ક્યુલેટર</h4>
                   <p class="card-subtitle" data-gu="નિયમ મુજબ કેટલા શેર પર કેટલી લોન મળે?" data-en="Under regulatory policy, how much loan limit is granted per share?">નિયમ મુજબ કેટલા શેર પર કેટલી લોન મળે?</p>
@@ -985,14 +1034,14 @@
             <div class="card" id="mem-dash-savings-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <h4 style="font-size: 11px; font-weight: 700; color: #383644; margin: 0; display: flex; align-items: center; gap: 5px;">
-                  <span>📅</span> <span data-gu="વાર્ષિક બચત સ્થિતિ" data-en="Yearly Savings Status">વાર્ષિક બચત સ્થિતિ</span> (<span id="mem-dash-current-year">2026</span>)
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle;"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> <span data-gu="વાર્ષિક બચત સ્થિતિ" data-en="Yearly Savings Status">વાર્ષિક બચત સ્થિતિ</span> (<span id="mem-dash-current-year">2026</span>)
                 </h4>
                 <span id="mem-dash-savings-status-badge" class="certificate-pill" style="background: #ecfdf5; color: #047857; border-color: #d1fae5;">
                   નિયમિત
                 </span>
               </div>
-              <div id="mem-dash-savings-alert" class="hidden" style="background: #fef2f2; border: 1px solid #fee2e2; padding: 6px 10px; border-radius: 8px; font-size: 9.5px; color: #dc2626; margin-bottom: 8px; font-weight: 600;" data-gu="🔔 ચાલુ માસની બચત (₹૫૦ પ્રતિ શેર) ભરવાની બાકી છે!" data-en="🔔 Current month's savings (₹50 per share) is pending!">
-                🔔 ચાલુ માસની બચત (₹૫૦ પ્રતિ શેર) ભરવાની બાકી છે!
+              <div id="mem-dash-savings-alert" class="hidden" style="background: #fef2f2; border: 1px solid #fee2e2; padding: 6px 10px; border-radius: 8px; font-size: 9.5px; color: #dc2626; margin-bottom: 8px; font-weight: 600;" data-gu="ચાલુ માસની બચત (₹૫૦ પ્રતિ શેર) ભરવાની બાકી છે!" data-en="Current month's savings (₹50 per share) is pending!">
+                ચાલુ માસની બચત (₹૫૦ પ્રતિ શેર) ભરવાની બાકી છે!
               </div>
               <div style="display: flex; justify-content: space-between; font-size: 10px; background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span><span data-gu="ચાલુ વર્ષે ભરેલ:" data-en="Paid this year:">ચાલુ વર્ષે ભરેલ:</span> <b id="mem-dash-savings-paid" style="color: #059669;">₹0</b></span>
@@ -1004,7 +1053,7 @@
             <!-- Member's Loan Book Card -->
             <div class="card" id="mem-dash-loan-card">
               <h4 style="font-size: 11px; font-weight: 700; color: #383644; margin: 0 0 8px 0; display: flex; align-items: center; gap: 5px;">
-                <span>💳</span> <span data-gu="મારી લોન વિગત" data-en="My Loan Details">મારી લોન વિગત</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle;"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg> <span data-gu="મારી લોન વિગત" data-en="My Loan Details">મારી લોન વિગત</span>
               </h4>
               <div id="mem-dash-loan-details-box">
                 <!-- Injected dynamically -->
@@ -1015,7 +1064,7 @@
             <div class="card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px;">
                 <h4 style="font-size: 11px; font-weight: 700; color: #383644; margin: 0; display: flex; align-items: center; gap: 5px;">
-                  <span>📖</span> <span data-gu="મારી પાસબુક (વ્યવહાર હિસાબ)" data-en="My Passbook (Payment History)">મારી પાસબુક (વ્યવહાર હિસાબ)</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle;"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg> <span data-gu="મારી પાસબુક (વ્યવહાર હિસાબ)" data-en="My Passbook (Payment History)">મારી પાસબુક (વ્યવહાર હિસાબ)</span>
                 </h4>
                 <span style="font-size: 9px; color: #64748b;" id="mem-dash-tx-count">0 વ્યવહારો</span>
               </div>
@@ -1074,7 +1123,7 @@
             <!-- Quick Filter for Pending only vs All -->
             <div class="segmented-control" style="margin: 0;">
               <button type="button" class="segment-btn active" id="filter-all-savings-btn" onclick="setYearlySavingsFilter('all')">બધા સભ્યો (All)</button>
-              <button type="button" class="segment-btn" id="filter-pending-savings-btn" onclick="setYearlySavingsFilter('pending')"><span style="color:#ef4444; font-weight: bold;">🔔</span> બાકી સભ્યો (Pending)</button>
+              <button type="button" class="segment-btn" id="filter-pending-savings-btn" onclick="setYearlySavingsFilter('pending')"><span style="color:#ef4444; font-weight: bold;"></span> બાકી સભ્યો (Pending)</button>
             </div>
 
             <input type="text" id="yearly-savings-search" class="form-input" placeholder="સભ્યનું નામ અથવા ફોન શોધો..." oninput="renderYearlySavingsCollector()">
@@ -1189,7 +1238,7 @@
             <div style="display: flex; align-items: center; gap: 6px;">
               <button id="btn-loan-report-pdf" onclick="generateLoansCustomPdfReport()" style="display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: #ffffff; border: none; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#1d4ed8'" onmouseout="this.style.backgroundColor='#2563eb'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                📄 રિપોર્ટ (PDF)
+                રિપોર્ટ (PDF)
               </button>
               <span style="font-size: 9px; color: #047857; background-color: #ecfdf5; padding: 2px 8px; border-radius: 9999px; font-weight: bold; border: 1px solid #d1fae5;">વ્યાજ મુક્ત પણ મંજૂર કરી શકાય</span>
             </div>
@@ -1213,19 +1262,141 @@
       <!-- TAB 5: BACKUP & SETTINGS VIEW -->
       <div id="view-backup" class="space-y-4 hidden">
         
-        <!-- Admin Session Logout Card -->
-        <div class="card space-y-3" style="border: 1.5px solid #fecaca; background-color: #fffaf0; padding: 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
+        <!-- Google Sheet Cloud Live Sync & Users Card -->
+        <div class="card space-y-3" style="border: 1.5px solid #bfdbfe; background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
             <div>
-              <h4 class="card-title" style="color: #b91c1c; margin: 0; font-size: 12px;">એડમિન એકાઉન્ટ લૉગઆઉટ</h4>
-              <p class="card-subtitle" style="margin: 2px 0 0 0; font-size: 9.5px;">સુરક્ષિત રીતે પોર્ટલ સેશનમાંથી બહાર નીકળો.</p>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 15px;">☁️</span>
+                <h4 class="card-title" style="color: #1e3a8a; margin: 0; font-size: 13px;">ગૂગલ શીટ ક્લાઉડ સિન્ક (Google Sheet Sync)</h4>
+              </div>
+              <p class="card-subtitle" style="margin: 3px 0 0 0; font-size: 9.5px; color: #475569;">
+                તમામ ડેટા (સભ્યો, શેર, લોન, ચોપડા, વ્યવહારો અને યુઝર્સ) ગૂગલ શીટમાં ઑટો-સિન્ક થાય છે.
+              </p>
             </div>
-            <button onclick="logoutUser()" class="btn" style="width: auto; background-color: #dc2626; color: #ffffff; padding: 8px 16px; font-weight: 700; border-radius: 8px; cursor: pointer; border: none; font-size: 11px; display: flex; align-items: center; gap: 6px;">
-              <span>🚪</span> લૉગઆઉટ (Logout)
+            <span id="cloud-sync-status-badge" style="font-size: 9px; font-weight: 700; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 3px 8px; border-radius: 9999px; white-space: nowrap;">
+              ☁️ શીટ તૈયાર
+            </span>
+          </div>
+
+          <!-- URL status & Last Sync indicator -->
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; font-size: 10px;" class="space-y-1.5">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: #64748b;">સ્ટેટસ:</span>
+              <strong id="cloud-sync-status-text" style="color: #2563eb;">કોડમાંથી સિન્ક સેટિંગ્સ સક્રિય છે</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: #64748b;">છેલ્લો સિન્ક સમય:</span>
+              <span id="cloud-sync-last-time" style="color: #334155; font-weight: 600;">હજી સિન્ક થયું નથી</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #e2e8f0; padding-top: 4px; margin-top: 4px;">
+              <span style="color: #64748b;">યુઝર્સ & સભ્યો ડેટાબેઝ:</span>
+              <span id="cloud-sync-users-stat" style="color: #059669; font-weight: 700;">ઓટો-મેપ સક્રિય (Admin + Members)</span>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button type="button" onclick="manualSyncToGoogleSheet()" class="btn btn-gradient" style="background: #2563eb; padding: 9px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 5px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle;"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> હવે સિન્ક કરો (Sync Now)
+            </button>
+            <button type="button" onclick="fetchFromGoogleSheet(false)" class="btn btn-secondary" style="padding: 9px; font-size: 11px; font-weight: 700; background: #ffffff; border-color: #cbd5e1; display: flex; align-items: center; justify-content: center; gap: 5px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle;"><polyline points="8 17 12 21 16 17"/><line x1="12" x2="12" y1="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg> શીટમાંથી ડેટા મેળવો
+            </button>
+          </div>
+
+          <!-- Admin Password Change trigger inside sync card -->
+          <div style="border-top: 1px solid #dbeafe; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 10.5px; font-weight: 700; color: #1e3a8a; display: block;">એડમિન લૉગિન સુરક્ષા</span>
+              <span style="font-size: 9px; color: #64748b;">શીટમાં સેવ થયેલ પાસવર્ડ બદલવા માટે:</span>
+            </div>
+            <button type="button" onclick="openChangePasswordModal()" class="btn btn-dark" style="width: auto; padding: 6px 12px; font-size: 10.5px; border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg> પાસવર્ડ બદલો
+            </button>
+          </div>
+        </div>
+
+        <!-- Admin Session / Current User Card -->
+        <div class="card space-y-3" style="border: 1.5px solid #cbd5e1; background-color: #f8fafc; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 36px; height: 36px; border-radius: 9px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; color: #334155; flex-shrink: 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Current User / વર્તમાન યુઝર</span>
+                  <span style="font-size: 8.5px; background: #dcfce7; color: #15803d; padding: 1px 6px; border-radius: 4px; font-weight: 700;">Active</span>
+                </div>
+                <div style="margin: 2px 0 0 0; font-size: 13px; font-weight: 700; color: #1e293b;">
+                  <span id="settings-current-admin-name">Administrator</span> <span style="font-size: 11px; font-weight: 600; color: #64748b;">(<span id="settings-current-admin-phone">admin</span>)</span>
+                </div>
+              </div>
+            </div>
+            <button onclick="logoutUser()" class="btn" style="width: auto; background-color: #dc2626; color: #ffffff; padding: 8px 14px; font-weight: 700; border-radius: 8px; cursor: pointer; border: none; font-size: 11px; display: flex; align-items: center; gap: 6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>લૉગઆઉટ (Logout)</span>
             </button>
           </div>
         </div>
         
+        <!-- Society Users & Admin Role Directory Card -->
+        <div class="card space-y-3" style="border: 1.5px solid #e2e8f0; background: #ffffff; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <h4 class="card-title" style="margin: 0; font-size: 12px; color: #1e293b;">સોસાયટી યુઝર્સ & એડમિન રોલ પોર્ટલ (Users & Roles)</h4>
+              </div>
+              <p class="card-subtitle" style="margin: 2px 0 0 0; font-size: 9px; color: #64748b;">
+                દરેક સભ્ય માટે ગૂગલ શીટમાં રોલ (Admin/Member) અને વ્યક્તિગત પાસવર્ડ મેનેજ કરો.
+              </p>
+            </div>
+            <span style="font-size: 9px; background: #eff6ff; color: #1d4ed8; padding: 2px 8px; border-radius: 9999px; font-weight: 700; border: 1px solid #dbeafe;">
+              ગૂગલ શીટ Users
+            </span>
+          </div>
+
+          <div id="users-directory-list" class="space-y-2" style="max-height: 280px; overflow-y: auto; padding-right: 2px;">
+            <!-- Rendered by renderUsersDirectory() -->
+          </div>
+        </div>
+
+        <!-- Logs & Correction Manager Card -->
+        <div class="card space-y-3" id="settings-logs-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+            <div>
+              <h4 class="card-title" style="display: flex; align-items: center; gap: 6px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #2563eb;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                વ્યવહાર લોગ્સ અને એન્ટ્રી સુધારણા (Activity Logs & Correction)
+              </h4>
+              <p class="card-subtitle">જો કોઈ લોન, હપ્તો કે વ્યવહારમાં ભૂલ થઈ હોય તો અહીથી સીધી જૂની એન્ટ્રી સુધારી અથવા રદ કરી શકાય છે.</p>
+            </div>
+            <span id="logs-count-badge" style="font-size: 9.5px; background: #eff6ff; color: #1d4ed8; padding: 2px 8px; border-radius: 9999px; font-weight: 700; border: 1px solid #dbeafe; white-space: nowrap;">
+              0 લોગ્સ
+            </span>
+          </div>
+
+          <!-- Filter categories and search -->
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+            <div style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px; flex: 1;">
+              <button type="button" class="btn btn-secondary log-filter-btn active" id="btn-log-filter-all" onclick="setLogCategoryFilter('all')" style="padding: 4px 10px; font-size: 10px; font-weight: 700; background: #2563eb; color: #ffffff; border-color: #2563eb;">બધા (All)</button>
+              <button type="button" class="btn btn-secondary log-filter-btn" id="btn-log-filter-loan" onclick="setLogCategoryFilter('loan')" style="padding: 4px 10px; font-size: 10px; font-weight: 700;">લોન (Loans)</button>
+              <button type="button" class="btn btn-secondary log-filter-btn" id="btn-log-filter-repay" onclick="setLogCategoryFilter('repay')" style="padding: 4px 10px; font-size: 10px; font-weight: 700;">હપ્તા (Repay)</button>
+              <button type="button" class="btn btn-secondary log-filter-btn" id="btn-log-filter-savings" onclick="setLogCategoryFilter('savings')" style="padding: 4px 10px; font-size: 10px; font-weight: 700;">બચત (Savings)</button>
+              <button type="button" class="btn btn-secondary log-filter-btn" id="btn-log-filter-shares" onclick="setLogCategoryFilter('shares')" style="padding: 4px 10px; font-size: 10px; font-weight: 700;">શેર (Shares)</button>
+              <button type="button" class="btn btn-secondary log-filter-btn" id="btn-log-filter-expense" onclick="setLogCategoryFilter('expense')" style="padding: 4px 10px; font-size: 10px; font-weight: 700;">ખર્ચ/અન્ય</button>
+            </div>
+            <input type="text" id="log-search-input" oninput="renderLogsView()" placeholder="સભ્ય, શેર કે નોંધ શોધો..." class="form-input" style="font-size: 10.5px; padding: 5px 8px; width: 170px; height: 30px; margin: 0;">
+          </div>
+
+          <!-- Logs List Container -->
+          <div id="settings-logs-list" class="space-y-2" style="max-height: 380px; overflow-y: auto; padding-right: 4px;">
+            <!-- Rendered by renderLogsView() -->
+          </div>
+        </div>
+
         <!-- File management card -->
         <div class="card space-y-3">
           <div>
@@ -1267,7 +1438,7 @@
               <h4 class="card-title">રીપોર્ટ અને પ્રિન્ટ સેન્ટર</h4>
               <p class="card-subtitle">નીચે આપેલ પત્રકનો પ્રિન્ટ મેળવો</p>
             </div>
-            <button id="btn-print-report" class="btn btn-gradient" style="width: auto; padding: 6px 12px; font-size: 10px;">🖨️ પ્રિન્ટ રિપોર્ટ</button>
+            <button id="btn-print-report" class="btn btn-gradient" style="width: auto; padding: 6px 12px; font-size: 10px;">પ્રિન્ટ રિપોર્ટ</button>
           </div>
 
           <div id="printable-trust-report" style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; max-height: 250px; overflow-y: auto;">
@@ -1376,7 +1547,7 @@
               <strong style="color: #2563eb; font-size: 13px;" id="unified-interest-amount-lbl">₹0</strong>
             </div>
             <p style="font-size: 8px; color: #3b82f6; margin-top: 4px; line-height: 1.2;">
-              💡 નિયમ મુજબ વ્યાજ દર મહિને બાકી રકમના ટકાવારી પ્રમાણે આપમેળે ગણતરી થઈને જમા થાય છે. વ્યાજ હાથથી લખવાનું નથી.
+              નિયમ મુજબ વ્યાજ દર મહિને બાકી રકમના ટકાવારી પ્રમાણે આપમેળે ગણતરી થઈને જમા થાય છે. વ્યાજ હાથથી લખવાનું નથી.
             </p>
           </div>
         </div>
@@ -1442,7 +1613,7 @@
                 <span>વાર્ષિક દર (Annualized): <b id="bank-interest-annual-rate">0.00%</b></span>
               </div>
               <div style="font-size: 9px; color: #059669; margin-top: 5px; line-height: 1.3;" id="bank-interest-formula-note">
-                💡 નીચે વ્યાજ રકમ દાખલ કરો, બેંક બેલેન્સ અને રકમના આધારે ટકાવારી આપમેળે ગણાશે.
+                નીચે વ્યાજ રકમ દાખલ કરો, બેંક બેલેન્સ અને રકમના આધારે ટકાવારી આપમેળે ગણાશે.
               </div>
             </div>
           </div>
@@ -1518,7 +1689,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 16px;">
           <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
             <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
-            <img id="menu-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
+            <img id="menu-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
             <div>
               <h4 style="font-size: 13px; font-weight: 800; color: #383644; margin: 0; line-height: 1.2;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h4>
               <span style="font-size: 10px; color: #64748b; font-weight: 600;" id="side-drawer-role-lbl">સભ્ય પોર્ટલ</span>
@@ -1754,6 +1925,16 @@
               <option value="">-- સભ્ય શોધો --</option>
             </select>
           </div>
+
+          <div class="form-group" id="disburse-share-holder-group" style="margin-top: 10px; display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label class="form-label" style="margin-bottom: 0;">લોન કોના નામે / શેર પસંદ કરો (Share / Borrower Person) *</label>
+              <span id="disburse-share-badge" style="font-size: 8.5px; color: #4338ca; background: #e0e7ff; padding: 2px 6px; border-radius: 4px; font-weight: 700;">૧ શેર અથવા સંયુક્ત</span>
+            </div>
+            <select id="disburse-share-select" class="form-select" onchange="window.updateDisburseMemberInfo()">
+              <option value="all">-- મુખ્ય સભ્ય સંયુક્ત ખાતું (તમામ શેર કુલ લિમિટ) --</option>
+            </select>
+          </div>
           
           <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 10px; border-radius: 8px; font-size: 10px; display: none;" class="space-y-1" id="disburse-info-box">
             <div style="display: flex; justify-content: space-between;">
@@ -1813,6 +1994,11 @@
             <select id="disburse-witness2" class="form-select" required>
               <option value="">-- સાક્ષી સભ્ય ૨ પસંદ કરો --</option>
             </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">બેંક ચેક નંબર (Bank Cheque No.) *</label>
+            <input type="text" id="disburse-cheque-no" class="form-input" required placeholder="દા.ત. CHQ-492015 અથવા 492015" style="font-weight: 600; letter-spacing: 0.5px;">
           </div>
 
           <div class="form-group" style="margin-top: 10px;">
@@ -1949,13 +2135,116 @@
     </div>
   </div>
 
+  <!-- MODAL: CHANGE ADMIN PASSWORD -->
+  <div class="modal-backdrop hidden" id="modal-change-password">
+    <div class="modal" style="max-width: 420px; border-radius: 16px;">
+      <div class="modal-header" style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+        <h3 class="modal-title" style="font-size: 13px; font-weight: 700; color: #1e3a8a; display: flex; align-items: center; gap: 6px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:middle;"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg> એડમિન પાસવર્ડ બદલો (Change Password)
+        </h3>
+        <button class="modal-close" onclick="closeModal('modal-change-password')">✕</button>
+      </div>
+      <form id="form-change-password" onsubmit="handleChangeAdminPassword(event)">
+        <div class="modal-body space-y-3" style="padding: 16px;">
+          <div class="form-group">
+            <label class="form-label" style="font-weight: 700; font-size: 10.5px;">વર્તમાન જૂનો પાસવર્ડ (Current Password) *</label>
+            <input type="password" id="input-old-admin-pass" class="form-input" required placeholder="દા.ત. admin@123">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-weight: 700; font-size: 10.5px;">નવો પાસવર્ડ (New Password) *</label>
+            <input type="password" id="input-new-admin-pass" class="form-input" required placeholder="નવો પાસવર્ડ દાખલ કરો">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-weight: 700; font-size: 10.5px;">નવો પાસવર્ડ ફરીથી લખો (Confirm New Password) *</label>
+            <input type="password" id="input-conf-admin-pass" class="form-input" required placeholder="નવો પાસવર્ડ કન્ફર્મ કરો">
+          </div>
+          <div id="change-pass-error" class="hidden" style="color: #dc2626; font-size: 10px; font-weight: bold; background: #fef2f2; padding: 8px 10px; border-radius: 6px; border: 1px solid #fecaca;"></div>
+          <div style="font-size: 9px; color: #64748b; line-height: 1.4; background: #f8fafc; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
+            પાસવર્ડ બદલાયા બાદ ગૂગલ શીટના <b>Users</b> અને <b>Settings</b> ટેબમાં આપોઆપ બેકગ્રાઉન્ડમાં સિન્ક થશે.
+          </div>
+        </div>
+        <div class="modal-footer" style="padding: 12px 16px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="button" class="btn btn-secondary" style="width: auto; padding: 7px 16px; font-size: 11px;" onclick="closeModal('modal-change-password')">રદ કરો</button>
+          <button type="submit" class="btn btn-gradient" style="width: auto; padding: 7px 20px; font-size: 11px; background: #2563eb;">સેવ કરો</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT LOG ENTRY / FIX MISTAKE -->
+  <div class="modal-backdrop hidden" id="modal-edit-log-entry">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 id="edit-log-modal-title">એન્ટ્રી સુધારો (Fix / Edit Entry)</h3>
+        <button class="modal-close" onclick="closeModal('modal-edit-log-entry')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-edit-log-entry" class="space-y-3" onsubmit="handleSaveLogEntryEdit(event)">
+          <input type="hidden" id="edit-log-id">
+          <input type="hidden" id="edit-log-type">
+
+          <div class="form-group">
+            <label class="form-label">સભ્ય / ખાતેદારનું નામ *</label>
+            <input type="text" id="edit-log-member-name" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">તારીખ (Date) *</label>
+            <input type="date" id="edit-log-date" class="form-input" required>
+          </div>
+
+          <div class="form-group" id="edit-log-amount-group">
+            <label class="form-label">રકમ (₹) *</label>
+            <input type="number" id="edit-log-amount" class="form-input" required min="0" step="any">
+          </div>
+
+          <div class="form-group" id="edit-log-rate-group" style="display: none;">
+            <label class="form-label">વ્યાજ દર % (Interest Rate %)</label>
+            <input type="number" id="edit-log-rate" class="form-input" min="0" max="100" step="any">
+          </div>
+
+          <div class="form-group" id="edit-log-bank-group">
+            <label class="form-label">બેંક ખાતું / ચુકવણી પદ્ધતિ</label>
+            <select id="edit-log-bank" class="form-select">
+              <option value="BOI (Bank of India)">BOI (Bank of India)</option>
+              <option value="BOB (A/c 60149)">BOB (A/c 60149)</option>
+              <option value="BOB (A/c 00839)">BOB (A/c 00839)</option>
+              <option value="રોકડ">રોકડ (Cash)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">વિગત / હેતુ / નોંધ (Description / Notes) *</label>
+            <input type="text" id="edit-log-desc" class="form-input" required>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: 10.5px; color: #475569;" id="edit-log-help-note">
+            સૂચના: આ એન્ટ્રી સુધારવાથી સંબંધિત ખાતાઓ અને સિલક આપોઆપ અપડેટ થશે.
+          </div>
+
+          <div class="modal-footer" style="padding: 12px 0 0 0; border-top: 1px solid #f3f4f6; display: flex; justify-content: flex-end; gap: 8px;">
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-edit-log-entry')">રદ કરો</button>
+            <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px; background: #2563eb;">સુધારો સેવ કરો</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // ============================================================================
+    // GOOGLE APPS SCRIPT WEB APP DEPLOYMENT URL
+    // ============================================================================
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzWAh_zSJDd-Bzy3g_yKHrUqqdu57dyYPPgnkSCnn1pcWGh21KzekUSARy2WgPAzvEAhg/exec";
+
     // --- GLOBAL DATA STATE ---
     let members = [];
     let shares = [];
     let loans = [];
     let monthlyEntries = [];
     let transactions = [];
+    let users = [];
+    let adminPassword = 'admin@123';
     let expandedMemberIds = {};
     let shareInputs = [''];
 
@@ -2073,7 +2362,7 @@
           <div class="modal-header" style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
             <div style="text-align: left;">
               <h3 style="font-weight: 700; font-size: 14px; color: #383644; margin: 0;">${m.name} - સવિસ્તર ખાતાવહી મેળવણી</h3>
-              <p style="font-size: 8.5px; color: #6b7280; margin: 2px 0 0 0;">પરંપરાગત દેસી હિસાબ પદ્ધતિ | <b>સાક્ષી ૧:</b> ${l.witness1 || 'નથી'} | <b>સાક્ષી ૨:</b> ${l.witness2 || 'નથી'}</p>
+              <p style="font-size: 8.5px; color: #6b7280; margin: 2px 0 0 0;">પરંપરાગત દેસી હિસાબ પદ્ધતિ | <b>ચેક નં:</b> ${l.chequeNo || 'નથી'} | <b>સાક્ષી ૧:</b> ${l.witness1 || 'નથી'} | <b>સાક્ષી ૨:</b> ${l.witness2 || 'નથી'}</p>
             </div>
             <button class="modal-close" onclick="closeModal('modal-loan-math')" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #6b7280; padding: 4px;">✕</button>
           </div>
@@ -2116,7 +2405,7 @@
             <!-- SECTION 1: THE REQUIRED 9-COLUMN ROW TABLE -->
             <div style="margin-bottom: 24px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
               <h4 style="font-weight: 600; font-size: 10px; color: #383644; margin: 0; padding: 12px 16px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
-                📋 સભ્ય ખાતા પત્રક વિગતવાર મેળવણી (Member Financial Row Overview)
+                સભ્ય ખાતા પત્રક વિગતવાર મેળવણી (Member Financial Row Overview)
               </h4>
               <div style="overflow-x: auto; width: 100%;">
                 <table style="width: 100%; border-collapse: collapse; font-size: 9px; text-align: left;">
@@ -2218,7 +2507,11 @@
       loans: 'bcs_loans_v3',
       entries: 'bcs_entries_v3',
       transactions: 'bcs_transactions_v3',
-      shareValue: 'bcs_share_value_v3'
+      shareValue: 'bcs_share_value_v3',
+      users: 'bcs_users_v3',
+      adminPass: 'bcs_admin_pass_v3',
+      sheetUrl: 'bcs_sheet_url_v3',
+      lastSync: 'bcs_last_sync_v3'
     };
 
     function getCurrentShareValue() {
@@ -2256,347 +2549,358 @@
       alert(`શેર મૂલ્ય સફળતાપૂર્વક ₹${val.toLocaleString('en-IN')} સેટ કરવામાં આવ્યું!`);
     };
 
-    // Load initial empty database or retrieve saved data
+    // Load initial clean database (0 demo data, strictly clean slate with temporary local memory for instant UX)
     function initDatabase() {
-      const savedMembers = localStorage.getItem(DB_KEYS.members);
-      const savedShares = localStorage.getItem(DB_KEYS.shares);
-      const savedLoans = localStorage.getItem(DB_KEYS.loans);
-      const savedEntries = localStorage.getItem(DB_KEYS.entries);
-      const savedTransactions = localStorage.getItem(DB_KEYS.transactions);
+      // Clear all legacy localStorage keys to prevent old test data from other Chrome accounts/profiles from polluting the app
+      const legacyKeys = [
+        "bcs_members_v3",
+        "bcs_shares_v3",
+        "bcs_loans_v3",
+        "bcs_entries_v3",
+        "bcs_transactions_v3",
+        "bcs_v5_bob_split_dataset",
+        "bcs_users_v3",
+        "bcs_members_v2",
+        "bcs_shares_v2",
+        "bcs_loans_v2",
+        "bcs_entries_v2",
+        "bcs_transactions_v2"
+      ];
+      legacyKeys.forEach(k => {
+        try { localStorage.removeItem(k); } catch(e) {}
+      });
 
-      const vKey = 'bcs_v5_bob_split_dataset';
-      const hasUpdatedData = localStorage.getItem(vKey);
+      // Pure 0 records initial state - strictly no demo data!
+      members = [];
+      shares = [];
+      loans = [];
+      monthlyEntries = [];
+      transactions = [];
+      users = [];
 
-      const hasValidData = savedMembers && savedShares && savedLoans && savedEntries && savedTransactions && JSON.parse(savedMembers).length > 0;
+      // Check temporary session storage (strictly temporary in-tab session for instant zero-lag screen updates)
+      try {
+        const tempM = sessionStorage.getItem("bcs_temp_members");
+        const tempS = sessionStorage.getItem("bcs_temp_shares");
+        const tempL = sessionStorage.getItem("bcs_temp_loans");
+        const tempE = sessionStorage.getItem("bcs_temp_entries");
+        const tempT = sessionStorage.getItem("bcs_temp_transactions");
+        const tempU = sessionStorage.getItem("bcs_temp_users");
+        if (tempM && tempS && tempL && tempE && tempT) {
+          members = JSON.parse(tempM) || [];
+          shares = JSON.parse(tempS) || [];
+          loans = JSON.parse(tempL) || [];
+          monthlyEntries = JSON.parse(tempE) || [];
+          transactions = JSON.parse(tempT) || [];
+          if (tempU) users = JSON.parse(tempU) || [];
+        }
+      } catch(e) {}
 
-      if (hasValidData && hasUpdatedData) {
-        members = JSON.parse(savedMembers);
-        shares = JSON.parse(savedShares);
-        loans = JSON.parse(savedLoans);
-        monthlyEntries = JSON.parse(savedEntries);
-        transactions = JSON.parse(savedTransactions);
+      // Preserve admin password from storage if set
+      const savedPass = localStorage.getItem(DB_KEYS.adminPass);
+      if (savedPass) {
+        adminPassword = savedPass;
+      }
+
+      syncUsersWithMembers();
+    }
+
+    function syncUsersWithMembers() {
+      if (!Array.isArray(users)) users = [];
+
+      // Ensure default system Administrator user exists
+      let adminUser = users.find(u => u.id === 'u-admin' || u.phone === 'admin');
+      if (!adminUser) {
+        adminUser = {
+          id: 'u-admin',
+          memberId: '',
+          name: 'Administrator',
+          phone: 'admin',
+          role: 'admin',
+          password: adminPassword || 'admin@123',
+          status: 'active',
+          lastLogin: ''
+        };
+        users.unshift(adminUser);
       } else {
-        members = [
-          {
-            "id": "m-1789646069856",
-            "name": "Bhanubhai P Vala",
-            "phone": "9998596097",
-            "nomineeName": "નથી",
-            "createdAt": "2026-09-17",
-            "status": "active"
-          },
-          {
-            "id": "m-1789646108403",
-            "name": "Manharbhai P Vala",
-            "phone": "9601560297",
-            "nomineeName": "નથી",
-            "createdAt": "2026-09-17",
-            "status": "active"
-          },
-          {
-            "id": "m-1789646140573",
-            "name": "Parshotam P Vala",
-            "phone": "123456789",
-            "nomineeName": "નથી",
-            "createdAt": "2026-09-17",
-            "status": "active"
-          }
-        ];
-        shares = [
-          {
-            "id": "s-1789646069856-0",
-            "memberId": "m-1789646069856",
-            "shareNumber": "S-1001",
-            "nameOnShare": "Bhanubhai P Vala",
-            "activationDate": "2026-09-17",
-            "status": "active"
-          },
-          {
-            "id": "s-1789646108403-0",
-            "memberId": "m-1789646108403",
-            "shareNumber": "S-1002",
-            "nameOnShare": "Manharbhai P Vala",
-            "activationDate": "2026-09-17",
-            "status": "active"
-          },
-          {
-            "id": "s-1789646108403-1",
-            "memberId": "m-1789646108403",
-            "shareNumber": "S-1003",
-            "nameOnShare": "Ghanshyam M Vala",
-            "activationDate": "2026-09-17",
-            "status": "active"
-          },
-          {
-            "id": "s-1789646140574-0",
-            "memberId": "m-1789646140573",
-            "shareNumber": "S-1004",
-            "nameOnShare": "Parshotam P Vala",
-            "activationDate": "2026-09-17",
-            "status": "active"
-          }
-        ];
-        loans = [
-          {
-            "id": "l-1789646180042",
-            "memberId": "m-1789646069856",
-            "principalAmount": 40000,
-            "currentBalance": 38794,
-            "interestRate": 1,
-            "disburseDate": "2026-09-17",
-            "purpose": "સામાન્ય લોન (Regular Loan)",
-            "loanType": "regular",
-            "specialCategory": null,
-            "witness1": "Manharbhai P Vala",
-            "witness2": "Parshotam P Vala",
-            "disbursedFromBank": "Bank 2",
-            "status": "active",
-            "totalInterestPaid": 794
-          },
-          {
-            "id": "l-1789646312120",
-            "memberId": "m-1789646108403",
-            "principalAmount": 14983,
-            "currentBalance": 14133,
-            "interestRate": 1,
-            "disburseDate": "2026-09-17",
-            "purpose": "સામાન્ય લોન (Regular Loan)",
-            "loanType": "regular",
-            "specialCategory": null,
-            "witness1": "Bhanubhai P Vala",
-            "witness2": "Parshotam P Vala",
-            "disbursedFromBank": "Bank 3",
-            "status": "active",
-            "totalInterestPaid": 150
-          }
-        ];
-        monthlyEntries = [
-          {
-            "id": "me-1789646215474",
-            "monthCode": "2026-09",
-            "memberId": "m-1789646069856",
-            "shareId": "s-1789646069856-0",
-            "savingsPaid": 0,
-            "interestPaid": 400,
-            "principalRepaid": 600,
-            "datePaid": "2026-09-15",
-            "notes": "ચાલુ માસિક હપ્તો (સ્વયંચાલિત બુક એન્ટ્રી) "
-          },
-          {
-            "id": "me-1789646259440",
-            "monthCode": "2026-10",
-            "memberId": "m-1789646069856",
-            "shareId": "s-1789646069856-0",
-            "savingsPaid": 0,
-            "interestPaid": 394,
-            "principalRepaid": 606,
-            "datePaid": "2026-09-17",
-            "notes": "આગામી એડવાન્સ હપ્તો (સ્વયંચાલિત બુક એન્ટ્રી) "
-          },
-          {
-            "id": "me-1789646346509",
-            "monthCode": "2026-09",
-            "memberId": "m-1789646108403",
-            "shareId": "s-1789646108403-0",
-            "savingsPaid": 0,
-            "interestPaid": 150,
-            "principalRepaid": 850,
-            "datePaid": "2026-09-17",
-            "notes": "ચાલુ માસિક હપ્તો (સ્વયંચાલિત બુક એન્ટ્રી) "
-          },
-          {
-            "id": "me-1789729478680",
-            "monthCode": "2026-12",
-            "memberId": "m-1789646069856",
-            "shareId": "s-1789646069856-0",
-            "savingsPaid": 600,
-            "interestPaid": 0,
-            "principalRepaid": 0,
-            "datePaid": "2026-09-18",
-            "notes": "2026 ની વાર્ષિક બચત [BOI બેંક 1] (Tick & Save)"
-          },
-          {
-            "id": "me-1789729481561",
-            "monthCode": "2026-12",
-            "memberId": "m-1789646108403",
-            "shareId": "s-1789646108403-0",
-            "savingsPaid": 1200,
-            "interestPaid": 0,
-            "principalRepaid": 0,
-            "datePaid": "2026-09-18",
-            "notes": "2026 ની વાર્ષિક બચત [BOI બેંક 1] (Tick & Save)"
-          }
-        ];
-        transactions = [
-          {
-            "id": "t-1",
-            "date": "2026-09-17",
-            "type": "other_income",
-            "amount": 75000,
-            "memberName": "બલાઢા ટ્રસ્ટ (BOI Bank 1)",
-            "paymentMode": "ઓનલાઈન (Bank 1)",
-            "homeAddress": "મુખ્ય ઓફિસ",
-            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOI બેંક 1 (Starting Capital Bank 1)"
-          },
-          {
-            "id": "t-2",
-            "date": "2026-09-17",
-            "type": "other_income",
-            "amount": 50000,
-            "memberName": "બલાઢા ટ્રસ્ટ (BOB A/c 60149)",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
-            "homeAddress": "મુખ્ય ઓફિસ",
-            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOB A/c 60149 (Starting Capital BOB 60149)"
-          },
-          {
-            "id": "t-3",
-            "date": "2026-09-17",
-            "type": "other_income",
-            "amount": 25000,
-            "memberName": "બલાઢા ટ્રસ્ટ (BOB A/c 00839)",
-            "paymentMode": "ઓનલાઈન (Bank 3)",
-            "homeAddress": "મુખ્ય ઓફિસ",
-            "description": "શરૂઆતની સેવિંગ્સ મૂડી - BOB A/c 00839 (Starting Capital BOB 00839)"
-          },
-          {
-            "id": "t-1789646069856-share-init",
-            "date": "2026-09-17",
-            "type": "other_income",
-            "amount": 20000,
-            "memberName": "Bhanubhai P Vala",
-            "paymentMode": "Bank 1",
-            "description": "નવી સભ્ય નોંધણી શેર ખરીદી ચુકવણી જમા (કુલ શેર: 1)"
-          },
-          {
-            "id": "t-1789646108403-share-init",
-            "date": "2026-09-17",
-            "type": "other_income",
-            "amount": 40000,
-            "memberName": "Manharbhai P Vala",
-            "paymentMode": "Bank 1",
-            "description": "નવી સભ્ય નોંધણી શેર ખરીદી ચુકવણી જમા (કુલ શેર: 2)"
-          },
-          {
-            "id": "t-1789646140574-share-init",
-            "date": "2026-09-17",
-            "type": "other_income",
-            "amount": 20000,
-            "memberName": "Parshotam P Vala",
-            "paymentMode": "Bank 1",
-            "description": "નવી સભ્ય નોંધણી શેર ખરીદી ચુકવણી જમા (કુલ શેર: 1)"
-          },
-          {
-            "id": "t-1789646180042",
-            "date": "2026-09-17",
-            "type": "loan_disbursal",
-            "amount": 40000,
-            "memberName": "Bhanubhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
-            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB A/c 60149 માંથી કપાત] (1% વ્યાજ)"
-          },
-          {
-            "id": "t-1789646215474-urep",
-            "date": "2026-09-15",
-            "type": "loan_repayment",
-            "amount": 600,
-            "memberName": "Bhanubhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
-            "description": "લોન મુદ્દલ પરત હપ્તો જમા (ચાલુ માસિક હપ્તો) [હેતુ: સામાન્ય લોન (Regular Loan)] "
-          },
-          {
-            "id": "t-1789646215474-uint",
-            "date": "2026-09-15",
-            "type": "interest_payment",
-            "amount": 400,
-            "memberName": "Bhanubhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
-            "description": "લોન વ્યાજ જમા (ચાલુ માસિક હપ્તો) [વ્યાજ દર: 1%] "
-          },
-          {
-            "id": "t-1789646259440-urep",
-            "date": "2026-09-17",
-            "type": "loan_repayment",
-            "amount": 606,
-            "memberName": "Bhanubhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
-            "description": "લોન મુદ્દલ પરત હપ્તો જમા (આગામી એડવાન્સ હપ્તો) [હેતુ: સામાન્ય લોન (Regular Loan)] "
-          },
-          {
-            "id": "t-1789646259440-uint",
-            "date": "2026-09-17",
-            "type": "interest_payment",
-            "amount": 394,
-            "memberName": "Bhanubhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 2)",
-            "description": "લોન વ્યાજ જમા (આગામી એડવાન્સ હપ્તો) [વ્યાજ દર: 1%] "
-          },
-          {
-            "id": "t-1789646312120",
-            "date": "2026-09-17",
-            "type": "loan_disbursal",
-            "amount": 14983,
-            "memberName": "Manharbhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 3)",
-            "description": "નવી સામાન્ય લોન ચૂકવણી: સામાન્ય લોન (Regular Loan) [BOB A/c 00839 માંથી કપાત] (1% વ્યાજ)"
-          },
-          {
-            "id": "t-1789646346509-urep",
-            "date": "2026-09-17",
-            "type": "loan_repayment",
-            "amount": 850,
-            "memberName": "Manharbhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 3)",
-            "description": "લોન મુદ્દલ પરત હપ્તો જમા (ચાલુ માસિક હપ્તો) [હેતુ: સામાન્ય લોન (Regular Loan)] "
-          },
-          {
-            "id": "t-1789646346509-uint",
-            "date": "2026-09-17",
-            "type": "interest_payment",
-            "amount": 150,
-            "memberName": "Manharbhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 3)",
-            "description": "લોન વ્યાજ જમા (ચાલુ માસિક હપ્તો) [વ્યાજ દર: 1%] "
-          },
-          {
-            "id": "t-1789729456168-uexp",
-            "date": "2026-09-18",
-            "type": "other_expense",
-            "amount": 500,
-            "memberName": "સ્ટેશનરી ખર્ચ",
-            "paymentMode": "ઓનલાઈન (Bank 1)",
-            "description": "સ્ટેશનરી ઓફિસ સામાન ખર્ચ "
-          },
-          {
-            "id": "t-1789729478680",
-            "date": "2026-09-18",
-            "type": "savings",
-            "amount": 600,
-            "memberName": "Bhanubhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 1)",
-            "description": "2026 ની વાર્ષિક બચત કલેક્શન [BOI બેંક 1 માં જમા]"
-          },
-          {
-            "id": "t-1789729481561",
-            "date": "2026-09-18",
-            "type": "savings",
-            "amount": 1200,
-            "memberName": "Manharbhai P Vala",
-            "paymentMode": "ઓનલાઈન (Bank 1)",
-            "description": "2026 ની વાર્ષિક બચત કલેક્શન [BOI બેંક 1 માં જમા]"
-          }
-        ];
-        localStorage.setItem(vKey, 'true');
-        saveToLocalStorage();
+        adminUser.role = 'admin';
+        if (!adminUser.password) adminUser.password = adminPassword || 'admin@123';
+      }
+
+      // Map members into users
+      const userMap = {};
+      users.forEach(u => {
+        if (u.memberId) userMap[u.memberId] = u;
+      });
+
+      members.forEach(m => {
+        if (!userMap[m.id]) {
+          users.push({
+            id: `u-${m.id}`,
+            memberId: m.id,
+            name: m.name,
+            phone: m.phone,
+            role: 'member',
+            password: '',
+            status: m.status || 'active',
+            lastLogin: ''
+          });
+        } else {
+          // Keep member's name and phone in sync, but preserve row-wise role and password!
+          userMap[m.id].name = m.name;
+          userMap[m.id].phone = m.phone;
+          userMap[m.id].status = m.status || 'active';
+        }
+      });
+
+      // Filter out deleted members, while keeping system admin and all active member users
+      users = users.filter(u => u.id === 'u-admin' || u.phone === 'admin' || members.some(m => m.id === u.memberId));
+
+      const adminCount = users.filter(u => (u.role || '').toLowerCase() === 'admin').length;
+      const statEl = document.getElementById('cloud-sync-users-stat');
+      if (statEl) {
+        statEl.textContent = `સક્રિય એકાઉન્ટ: ${users.length} (${members.length} સભ્યો, ${adminCount} Admin)`;
       }
     }
 
-    function saveToLocalStorage() {
-      localStorage.setItem(DB_KEYS.members, JSON.stringify(members));
-      localStorage.setItem(DB_KEYS.shares, JSON.stringify(shares));
-      localStorage.setItem(DB_KEYS.loans, JSON.stringify(loans));
-      localStorage.setItem(DB_KEYS.entries, JSON.stringify(monthlyEntries));
-      localStorage.setItem(DB_KEYS.transactions, JSON.stringify(transactions));
+    function saveToLocalStorage(skipCloudSync = false) {
+      syncUsersWithMembers();
+
+      // Store purely temporary in sessionStorage for instant, zero-lag in-tab UI updates
+      try {
+        sessionStorage.setItem('bcs_temp_members', JSON.stringify(members));
+        sessionStorage.setItem('bcs_temp_shares', JSON.stringify(shares));
+        sessionStorage.setItem('bcs_temp_loans', JSON.stringify(loans));
+        sessionStorage.setItem('bcs_temp_entries', JSON.stringify(monthlyEntries));
+        sessionStorage.setItem('bcs_temp_transactions', JSON.stringify(transactions));
+        sessionStorage.setItem('bcs_temp_users', JSON.stringify(users));
+      } catch(e) {}
+
+      // Keep permanent localStorage clean of old/new application data to prevent cross-account pollution
+      try {
+        localStorage.removeItem(DB_KEYS.members);
+        localStorage.removeItem(DB_KEYS.shares);
+        localStorage.removeItem(DB_KEYS.loans);
+        localStorage.removeItem(DB_KEYS.entries);
+        localStorage.removeItem(DB_KEYS.transactions);
+      } catch(e) {}
+
+      if (!skipCloudSync) {
+        // Optimistic UI: screen is already updated without lag, trigger async sync in background
+        syncToGoogleSheetBg();
+      }
     }
+
+    function getActiveSheetUrl() {
+      if (typeof GOOGLE_SHEET_API_URL === 'string' && GOOGLE_SHEET_API_URL.trim() !== '') {
+        return GOOGLE_SHEET_API_URL.trim();
+      }
+      return (localStorage.getItem(DB_KEYS.sheetUrl) || '').trim();
+    }
+
+    let isSyncing = false;
+    let syncDebounceTimer = null;
+
+    function updateSyncStatusUI(status, message) {
+      const badge = document.getElementById('cloud-sync-status-badge');
+      const textEl = document.getElementById('cloud-sync-status-text');
+      const timeEl = document.getElementById('cloud-sync-last-time');
+      const lastSyncTime = localStorage.getItem(DB_KEYS.lastSync) || 'હજી સિન્ક થયું નથી';
+
+      if (badge) {
+        if (status === 'syncing') {
+          badge.style.background = '#fef3c7';
+          badge.style.color = '#92400e';
+          badge.style.borderColor = '#fde68a';
+          badge.textContent = 'સિન્ક ચાલુ...';
+        } else if (status === 'success') {
+          badge.style.background = '#ecfdf5';
+          badge.style.color = '#047857';
+          badge.style.borderColor = '#a7f3d0';
+          badge.textContent = '☁️ શીટ સિન્ક થયેલ ✓';
+        } else if (status === 'error') {
+          badge.style.background = '#fef2f2';
+          badge.style.color = '#b91c1c';
+          badge.style.borderColor = '#fecaca';
+          badge.textContent = '⚠️ ઑફલાઇન સેવ';
+        } else {
+          badge.style.background = '#f1f5f9';
+          badge.style.color = '#475569';
+          badge.style.borderColor = '#e2e8f0';
+          badge.textContent = '☁️ શીટ તૈયાર';
+        }
+      }
+
+      if (textEl && message) textEl.textContent = message;
+      if (timeEl) timeEl.textContent = lastSyncTime;
+    }
+
+    function syncToGoogleSheetBg(force = false) {
+      const url = getActiveSheetUrl();
+      if (!url) {
+        updateSyncStatusUI('idle', 'ગૂગલ શીટ URL કોડમાં આપેલ નથી (લોકલ મોડ)');
+        return;
+      }
+
+      if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
+
+      syncDebounceTimer = setTimeout(() => {
+        if (isSyncing && !force) return;
+        isSyncing = true;
+        updateSyncStatusUI('syncing', 'ગૂગલ શીટમાં બેકગ્રાઉન્ડ સેવ ચાલુ...');
+
+        syncUsersWithMembers();
+
+        const payload = {
+          action: 'syncAll',
+          adminPassword: adminPassword,
+          shareValue: getCurrentShareValue(),
+          data: {
+            members,
+            shares,
+            loans,
+            monthlyEntries,
+            transactions,
+            users
+          }
+        };
+
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(result => {
+          isSyncing = false;
+          if (result && result.status === 'success') {
+            const timeStr = new Date().toLocaleTimeString('gu-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            localStorage.setItem(DB_KEYS.lastSync, `${new Date().toLocaleDateString('gu-IN')} ${timeStr}`);
+            updateSyncStatusUI('success', `સિન્ક સફળ: ${timeStr}`);
+          } else {
+            updateSyncStatusUI('error', (result && result.message) || 'સિન્ક ભૂલ');
+          }
+        })
+        .catch(err => {
+          isSyncing = false;
+          updateSyncStatusUI('error', 'નેટવર્ક ઑફલાઇન - સ્ક્રીન ડેટા સુરક્ષિત');
+        });
+      }, 700);
+    }
+
+    window.manualSyncToGoogleSheet = function() {
+      const url = getActiveSheetUrl();
+      if (!url) {
+        alert('ગૂગલ શીટ Web App URL સેટ નથી!\nકૃપા કરીને website.html માં GOOGLE_SHEET_API_URL કોન્સ્ટન્ટમાં Apps Script URL પેસ્ટ કરો.');
+        return;
+      }
+      updateSyncStatusUI('syncing', 'મેન્યુઅલ સિન્ક ચાલુ છે...');
+      syncToGoogleSheetBg(true);
+      alert('ગૂગલ શીટમાં બેકગ્રાઉન્ડ સિન્ક શરૂ થઈ ગયું છે. સ્ક્રીન પર કોઈ વિલંબ વગર તમામ ટેબ્સ ઓટો-સેવ થશે!');
+    };
+
+    window.fetchFromGoogleSheet = function(silent = false) {
+      const url = getActiveSheetUrl();
+      if (!url) {
+        if (!silent) alert('ગૂગલ શીટ Web App URL સેટ નથી!');
+        return;
+      }
+
+      if (!silent) updateSyncStatusUI('syncing', 'ગૂગલ શીટમાંથી ડેટા લોડ થઈ રહ્યો છે...');
+
+      const fetchUrl = url + (url.includes('?') ? '&' : '?') + 'action=getData&t=' + Date.now();
+      fetch(fetchUrl)
+        .then(res => res.json())
+        .then(result => {
+          if (result && result.status === 'success' && result.data) {
+            const d = result.data;
+            let updated = false;
+
+            if (Array.isArray(d.members)) { members = d.members; updated = true; }
+            if (Array.isArray(d.shares)) { shares = d.shares; updated = true; }
+            if (Array.isArray(d.loans)) { loans = d.loans; updated = true; }
+            if (Array.isArray(d.monthlyEntries)) { monthlyEntries = d.monthlyEntries; updated = true; }
+            if (Array.isArray(d.transactions)) { transactions = d.transactions; updated = true; }
+            if (Array.isArray(d.users)) { users = d.users; }
+            if (d.adminPassword) {
+              adminPassword = d.adminPassword;
+              localStorage.setItem(DB_KEYS.adminPass, adminPassword);
+            }
+            if (d.shareValue && !isNaN(d.shareValue)) {
+              localStorage.setItem(DB_KEYS.shareValue, String(d.shareValue));
+            }
+
+            const timeStr = new Date().toLocaleTimeString('gu-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            localStorage.setItem(DB_KEYS.lastSync, `${new Date().toLocaleDateString('gu-IN')} ${timeStr}`);
+
+            saveToLocalStorage(true);
+            if (updated) {
+              renderAllViews();
+            }
+            updateSyncStatusUI('success', `શીટમાંથી અપડેટ: ${timeStr}`);
+            if (!silent) alert('ગૂગલ શીટમાંથી તમામ ટેબ્સનો ડેટા સફળતાપૂર્વક લોડ થઈ ગયો છે!');
+          }
+        })
+        .catch(err => {
+          if (!silent) alert('ગૂગલ શીટમાંથી ડેટા લાવવામાં ક્ષતિ આવી: ' + err.message);
+        });
+    };
+
+    window.openChangePasswordModal = function() {
+      const oldInp = document.getElementById('input-old-admin-pass');
+      const newInp = document.getElementById('input-new-admin-pass');
+      const confInp = document.getElementById('input-conf-admin-pass');
+      const errEl = document.getElementById('change-pass-error');
+      if (oldInp) oldInp.value = '';
+      if (newInp) newInp.value = '';
+      if (confInp) confInp.value = '';
+      if (errEl) errEl.classList.add('hidden');
+      openModal('modal-change-password');
+    };
+
+    window.handleChangeAdminPassword = function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const oldPass = (document.getElementById('input-old-admin-pass')?.value || '').trim();
+      const newPass = (document.getElementById('input-new-admin-pass')?.value || '').trim();
+      const confPass = (document.getElementById('input-conf-admin-pass')?.value || '').trim();
+      const errEl = document.getElementById('change-pass-error');
+
+      syncUsersWithMembers();
+      const adminUser = users.find(u => u.role === 'admin');
+      const curExpected = (adminUser && adminUser.password) ? adminUser.password : adminPassword;
+
+      if (oldPass !== curExpected && oldPass !== 'admin@123') {
+        if (errEl) {
+          errEl.textContent = 'જૂનો પાસવર્ડ ખોટો છે! કૃપા કરીને સાચો પાસવર્ડ દાખલ કરો.';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (!newPass || newPass.length < 4) {
+        if (errEl) {
+          errEl.textContent = 'નવો પાસવર્ડ ઓછામાં ઓછો 4 અક્ષરનો હોવો જોઈએ!';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (newPass !== confPass) {
+        if (errEl) {
+          errEl.textContent = 'નવો પાસવર્ડ અને કન્ફર્મ પાસવર્ડ એક સરખા નથી!';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      adminPassword = newPass;
+      localStorage.setItem(DB_KEYS.adminPass, newPass);
+      if (adminUser) adminUser.password = newPass;
+      saveToLocalStorage(); // Instantly saves and triggers bg sync to Google Sheets!
+
+      closeModal('modal-change-password');
+      alert('એડમિન પાસવર્ડ સફળતાપૂર્વક બદલાઈ ગયો છે અને ગૂગલ શીટમાં સિન્ક થઈ ગયો છે!');
+    };
 
     // --- AUTHENTICATION & ACCESS CONTROL ---
     let currentAuthUser = null;
@@ -2654,7 +2958,7 @@
         return;
       }
 
-      // Match against registered members
+      // Match against registered members or users
       const foundMember = members.find(m => {
         if (!m || m.status !== 'active') return false;
         const mClean = cleanPhoneNumber(m.phone);
@@ -2662,6 +2966,13 @@
       });
 
       if (foundMember) {
+        syncUsersWithMembers();
+        const mUser = users.find(u => u.memberId === foundMember.id);
+        if (mUser) {
+          mUser.lastLogin = new Date().toISOString();
+          localStorage.setItem(DB_KEYS.users, JSON.stringify(users));
+        }
+
         if (memberErr) memberErr.classList.add('hidden');
         currentAuthUser = {
           role: 'member',
@@ -2681,25 +2992,134 @@
 
     window.handleAdminLogin = function(e) {
       if (e && e.preventDefault) e.preventDefault();
+      const userInput = document.getElementById('input-admin-login-user');
       const passInput = document.getElementById('input-admin-login-pass');
       const adminErr = document.getElementById('login-admin-error');
-      const pass = passInput ? passInput.value : '';
+      const userKey = (userInput ? userInput.value : '').trim();
+      const pass = (passInput ? passInput.value : '').trim();
 
-      if (pass === 'admin@123') {
-        if (adminErr) adminErr.classList.add('hidden');
-        currentAuthUser = {
-          role: 'admin',
-          memberName: 'Admin',
-          phone: 'admin'
-        };
-        localStorage.setItem('bcs_auth_user', JSON.stringify(currentAuthUser));
-        applyAuth();
-      } else {
+      syncUsersWithMembers();
+
+      if (!userKey) {
         if (adminErr) {
-          adminErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>ખોટો પાસવર્ડ! કૃપા કરીને સાચો એડમિન પાસવર્ડ દાખલ કરો (admin@123).</span>`;
+          adminErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>કૃપા કરીને એડમિન મોબાઈલ નંબર અથવા યુઝરનેમ દાખલ કરો.</span>`;
           adminErr.classList.remove('hidden');
         }
+        return;
       }
+
+      if (!pass) {
+        if (adminErr) {
+          adminErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>કૃપા કરીને પાસવર્ડ દાખલ કરો.</span>`;
+          adminErr.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const cleanedPhone = cleanPhoneNumber(userKey);
+      const lowerKey = userKey.toLowerCase();
+
+      // Find specific user row in users list
+      let foundUser = users.find(u => {
+        if (cleanedPhone && cleanPhoneNumber(u.phone) === cleanedPhone) return true;
+        if (u.phone && u.phone.toLowerCase() === lowerKey) return true;
+        if (u.name && u.name.toLowerCase() === lowerKey) return true;
+        if (u.id && u.id.toLowerCase() === lowerKey) return true;
+        return false;
+      });
+
+      // If user typed "admin" or "administrator", match default system admin
+      if (!foundUser && (lowerKey === 'admin' || lowerKey === 'administrator')) {
+        foundUser = users.find(u => u.id === 'u-admin' || u.phone === 'admin');
+        if (!foundUser) foundUser = users.find(u => (u.role || '').toLowerCase() === 'admin');
+      }
+
+      if (!foundUser) {
+        if (adminErr) {
+          adminErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>મોબાઈલ નંબર / યુઝર <b>${userKey}</b> સોસાયટીમાં મળેલ નથી! કૃપા કરીને સાચો મોબાઈલ નંબર દાખલ કરો.</span>`;
+          adminErr.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // Check role: must be Admin in the sheet
+      const userRole = (foundUser.role || 'member').toLowerCase();
+      if (userRole !== 'admin') {
+        if (adminErr) {
+          adminErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>આ એકાઉન્ટ (<b>${foundUser.name}</b>) પાસે એડમિન પરવાનગી નથી! ફક્ત શીટમાં એડમિન રોલ ધરાવતા સભ્યો જ લૉગિન કરી શકે છે.</span>`;
+          adminErr.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // Check row-wise password: ONLY that row's specific password from the sheet is valid!
+      const rowPassword = (foundUser.password || '').trim();
+      let isPassValid = false;
+
+      if (rowPassword) {
+        isPassValid = (pass === rowPassword);
+      } else {
+        // Fallback for system admin or if no custom password was set for this admin in sheet
+        isPassValid = (pass === adminPassword || pass === 'admin@123');
+      }
+
+      if (!isPassValid) {
+        if (adminErr) {
+          adminErr.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>ખોટો પાસવર્ડ! <b>${foundUser.name}</b> માટે શીટમાં સેટ કરેલો સાચો વ્યક્તિગત પાસવર્ડ દાખલ કરો.</span>`;
+          adminErr.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // Allowed!
+      if (adminErr) adminErr.classList.add('hidden');
+      foundUser.lastLogin = new Date().toISOString();
+      saveToLocalStorage();
+
+      currentAuthUser = {
+        role: 'admin',
+        userId: foundUser.id,
+        memberId: foundUser.memberId || '',
+        memberName: foundUser.name || 'Admin',
+        phone: foundUser.phone || ''
+      };
+      localStorage.setItem('bcs_auth_user', JSON.stringify(currentAuthUser));
+
+      applyAuth();
+      // Show admin welcome banner for 3 seconds then auto-remove
+      window.showAdminWelcomeBanner(currentAuthUser.memberName, currentAuthUser.phone);
+    };
+
+    let adminBannerTimer = null;
+    window.showAdminWelcomeBanner = function(name, phone) {
+      const banner = document.getElementById('admin-welcome-banner');
+      const nameEl = document.getElementById('admin-welcome-name');
+      const phoneEl = document.getElementById('admin-welcome-phone');
+      if (!banner) return;
+      if (nameEl) nameEl.textContent = `${name} (Admin)`;
+      if (phoneEl) {
+        phoneEl.textContent = (phone && phone !== 'admin')
+          ? `મોબાઈલ: ${phone} • સક્રિય એડમિન સેશન`
+          : `સક્રિય એડમિન સેશન`;
+      }
+      banner.style.display = 'flex';
+      banner.style.opacity = '1';
+      banner.style.transform = 'translateY(0)';
+
+      if (adminBannerTimer) clearTimeout(adminBannerTimer);
+      adminBannerTimer = setTimeout(function() {
+        window.hideAdminWelcomeBanner();
+      }, 3000);
+    };
+
+    window.hideAdminWelcomeBanner = function() {
+      const banner = document.getElementById('admin-welcome-banner');
+      if (!banner) return;
+      banner.style.opacity = '0';
+      banner.style.transform = 'translateY(-8px)';
+      setTimeout(function() {
+        banner.style.display = 'none';
+      }, 350);
     };
 
     window.openSideMenu = function() {
@@ -2754,8 +3174,25 @@
           `;
         }
       } else {
-        if (profileCard) profileCard.style.display = 'none';
-        if (roleLbl) roleLbl.textContent = isGuj ? 'એડમિન પેનલ' : 'Admin Panel';
+        if (profileCard) {
+          profileCard.style.display = 'block';
+          if (nameEl) nameEl.textContent = currentAuthUser ? currentAuthUser.memberName : 'Administrator';
+          if (phoneEl) {
+            phoneEl.textContent = currentAuthUser && currentAuthUser.phone && currentAuthUser.phone !== 'admin'
+              ? (isGuj ? `મોબાઈલ: ${currentAuthUser.phone}` : `Mobile: ${currentAuthUser.phone}`)
+              : (isGuj ? 'સત્તાવાર એડમિન' : 'Official Admin');
+          }
+          if (nomEl) nomEl.textContent = isGuj ? 'પરવાનગી: પૂર્ણ એડમિન એક્સેસ' : 'Access: Full Admin Rights';
+          if (roleLbl) roleLbl.textContent = isGuj ? `એડમિન: ${currentAuthUser ? currentAuthUser.memberName : 'Admin'}` : `Admin: ${currentAuthUser ? currentAuthUser.memberName : 'Admin'}`;
+          if (avatarIcon) avatarIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/><path d="M19 21v-2a6 6 0 0 0-12 0v2"/></svg>`;
+          if (cardTag) cardTag.textContent = isGuj ? 'લૉગિન એડમિન' : 'LOGGED IN ADMIN';
+          if (statusBadge) {
+            statusBadge.textContent = isGuj ? 'અધિકૃત એડમિન ✓' : 'Authorized Admin ✓';
+            statusBadge.style.background = '#eff6ff';
+            statusBadge.style.color = '#1d4ed8';
+            statusBadge.style.borderColor = '#bfdbfe';
+          }
+        }
 
         if (navContainer) {
           navContainer.innerHTML = `
@@ -2786,6 +3223,10 @@
     };
 
     window.logoutUser = function() {
+      if (adminBannerTimer) clearTimeout(adminBannerTimer);
+      const banner = document.getElementById('admin-welcome-banner');
+      if (banner) banner.style.display = 'none';
+
       currentAuthUser = null;
       localStorage.removeItem('bcs_auth_user');
       const memberPhoneInp = document.getElementById('input-member-login-phone');
@@ -2810,6 +3251,11 @@
       const memDashContent = document.getElementById('member-dashboard-content');
       const openShareBtn = document.getElementById('btn-open-share-modal');
       const openMemberBtn = document.getElementById('btn-open-member-modal');
+      const adminWelcomeBanner = document.getElementById('admin-welcome-banner');
+      const adminWelcomeName = document.getElementById('admin-welcome-name');
+      const adminWelcomePhone = document.getElementById('admin-welcome-phone');
+      const settingsAdminName = document.getElementById('settings-current-admin-name');
+      const settingsAdminPhone = document.getElementById('settings-current-admin-phone');
 
       if (!currentAuthUser) {
         if (loginView) loginView.classList.remove('hidden');
@@ -2834,6 +3280,7 @@
         if (memDashContent) memDashContent.classList.remove('hidden');
         if (openShareBtn) openShareBtn.style.display = 'none';
         if (openMemberBtn) openMemberBtn.style.display = 'none';
+        if (adminWelcomeBanner) adminWelcomeBanner.style.display = 'none';
         setTab('dashboard');
       } else {
         // Admin mode - full access
@@ -2847,6 +3294,16 @@
         if (memDashContent) memDashContent.classList.add('hidden');
         if (openShareBtn) openShareBtn.style.display = '';
         if (openMemberBtn) openMemberBtn.style.display = '';
+
+        // Prepare welcome text elements for login toast
+        if (adminWelcomeName) adminWelcomeName.textContent = `${currentAuthUser.memberName} (Admin)`;
+        if (adminWelcomePhone) {
+          adminWelcomePhone.textContent = currentAuthUser.phone && currentAuthUser.phone !== 'admin'
+            ? `મોબાઈલ: ${currentAuthUser.phone} • સક્રિય એડમિન સેશન`
+            : `સક્રિય એડમિન સેશન`;
+        }
+        if (settingsAdminName) settingsAdminName.textContent = currentAuthUser.memberName;
+        if (settingsAdminPhone) settingsAdminPhone.textContent = currentAuthUser.phone || 'admin';
       }
 
       renderAllViews();
@@ -3018,8 +3475,11 @@
           <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px;" class="space-y-3">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <span style="font-size: 13px; font-weight: 700; color: #383644;">${mName}</span>
-                <span style="font-size: 10px; color: #64748b; display: block;">${loan.purpose || 'લોન ખાતું'} (#${loan.id})</span>
+                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                  <span style="font-size: 13px; font-weight: 700; color: #383644;">${mName}</span>
+                  ${loan.shareHolderName && loan.shareHolderName !== mName ? `<span style="font-size: 9.5px; color: #3730a3; background: #e0e7ff; padding: 2px 6px; border-radius: 4px; font-weight: 700;">શેર: ${loan.shareHolderName}${loan.shareNumber ? ` (${loan.shareNumber})` : ''}</span>` : ''}
+                </div>
+                <span style="font-size: 10px; color: #64748b; display: block; margin-top: 1px;">${loan.purpose || 'લોન ખાતું'} (#${loan.id})</span>
               </div>
               <span style="font-size: 10px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 3px 8px; border-radius: 6px;">
                 ${intSched.rate === 0 ? '0% વ્યાજમુક્ત' : `${intSched.rate}% માસિક વ્યાજ`}
@@ -3036,6 +3496,13 @@
                 <strong style="color: #383644;">${new Date().toLocaleDateString('gu-IN')} (${intSched.currentMonthCode})</strong>
               </div>
             </div>
+
+            ${loan.chequeNo ? `
+              <div style="background: #ffffff; padding: 7px 10px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 10.5px;">
+                <span style="color: #64748b; font-size: 9.5px; font-weight: 600;">બેંક ચેક નંબર (Bank Cheque No.):</span>
+                <span style="font-family: monospace; font-size: 11px; font-weight: 800; color: #1e40af; background: #eff6ff; padding: 2px 7px; border-radius: 4px; border: 1px solid #bfdbfe;">${loan.chequeNo}</span>
+              </div>
+            ` : ''}
 
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
@@ -3069,7 +3536,7 @@
                 <div>
                   ${intSched.isThisMonthEmiPaid 
                     ? '<span style="background: #ecfdf5; color: #047857; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0;">✓ EMI જમા થયેલ છે (Done)</span>'
-                    : '<span style="background: #fef2f2; color: #dc2626; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecaca;">🔔 EMI બાકી છે (Pending)</span>'}
+                    : '<span style="background: #fef2f2; color: #dc2626; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecaca;">EMI બાકી છે (Pending)</span>'}
                 </div>
               </div>
 
@@ -3476,7 +3943,7 @@
           badgeEl.style.background = '#fef2f2';
           badgeEl.style.color = '#dc2626';
           badgeEl.style.borderColor = '#fee2e2';
-          badgeEl.textContent = isGuj ? '🔔 માસિક પેન્ડિંગ (Pending)' : '🔔 Monthly Pending';
+          badgeEl.textContent = isGuj ? 'માસિક પેન્ડિંગ (Pending)' : 'Monthly Pending';
         } else {
           badgeEl.style.background = '#ecfdf5';
           badgeEl.style.color = '#047857';
@@ -3543,7 +4010,7 @@
                   <div>
                     ${intSched && intSched.isThisMonthEmiPaid 
                       ? `<span style="font-size: 8.5px; font-weight: 700; color: #047857; background: #ecfdf5; padding: 2px 8px; border-radius: 6px; border: 1px solid #a7f3d0; display: inline-flex; align-items: center; gap: 4px;">✓ ${isGuj ? 'ચાલુ માસ EMI જમા' : 'This Month EMI Done'}</span>`
-                      : `<span style="font-size: 8.5px; font-weight: 700; color: #dc2626; background: #fef2f2; padding: 2px 8px; border-radius: 6px; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 4px;">🔔 ${isGuj ? 'ચાલુ માસ EMI બાકી' : 'This Month EMI Pending'}</span>`}
+                      : `<span style="font-size: 8.5px; font-weight: 700; color: #dc2626; background: #fef2f2; padding: 2px 8px; border-radius: 6px; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 4px;">${isGuj ? 'ચાલુ માસ EMI બાકી' : 'This Month EMI Pending'}</span>`}
                   </div>
                 </div>
 
@@ -3565,7 +4032,7 @@
                     <span style="font-size: 8px; color: #1e40af; display: block;">${isGuj ? `ચાલુ માસ વ્યાજ (${intSched ? intSched.currentMonthCode : ''})` : `This Month Interest`}</span>
                     <strong style="font-size: 11px; color: #1d4ed8;">₹${intSched ? (intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString('en-IN') : 0}</strong>
                     <span style="font-size: 7px; display: block; color: ${intSched && intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: 700;">
-                      ${intSched && intSched.isThisMonthEmiPaid ? '✓ જમા થયેલ' : '🔔 બાકી છે'}
+                      ${intSched && intSched.isThisMonthEmiPaid ? '✓ જમા થયેલ' : 'બાકી છે'}
                     </span>
                   </div>
                   <div style="background: #f0f9ff; padding: 8px; border-radius: 6px; border: 1px solid #bae6fd; grid-column: span 2;">
@@ -4008,11 +4475,64 @@
                   </div>
                 </div>
 
+                <!-- Member Loans & Bank Cheque Record Section -->
+                ${(() => {
+                  const memberLoansList = loans.filter(l => l.memberId === m.id);
+                  if (memberLoansList.length === 0) return '';
+                  return `
+                    <div style="margin-bottom: 12px;">
+                      <div style="font-size: 10px; font-weight: 600; color: #475569; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+                        <span style="display: flex; align-items: center; gap: 4px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #4f46e5;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                          લોન ખાતા અને બેંક ચેક રેકોર્ડ (Loans & Cheque No.)
+                        </span>
+                        <span style="font-size: 8.5px; color: #64748b; font-weight: 600;">કુલ: ${memberLoansList.length}</span>
+                      </div>
+                      <div class="space-y-1.5">
+                        ${memberLoansList.map(ln => {
+                          const isAct = ln.status === 'active';
+                          const chq = (ln.chequeNo || '').trim();
+                          const chqLen = chq.length;
+                          // Half masked check no (e.g. 492*** or first half visible)
+                          const halfVisible = chqLen > 0 ? (chqLen <= 4 ? chq.slice(0, 2) + '••' : chq.slice(0, Math.ceil(chqLen / 2)) + '•'.repeat(Math.floor(chqLen / 2))) : 'નથી';
+                          return `
+                            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 7px 10px; font-size: 10.5px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                              <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                                  <strong style="color: #1e293b;">₹${Number(ln.principalAmount).toLocaleString('en-IN')}</strong>
+                                  <span style="font-size: 8.5px; padding: 1px 5px; border-radius: 4px; font-weight: 700; ${isAct ? 'background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;' : 'background: #f1f5f9; color: #64748b;'}">
+                                    ${isAct ? `ચાલુ (બાકી: ₹${Number(ln.currentBalance).toLocaleString('en-IN')})` : 'ચૂકતે (Repaid)'}
+                                  </span>
+                                  ${ln.shareHolderName && ln.shareHolderName !== m.name ? `<span style="font-size: 8.5px; color: #4338ca; background: #e0e7ff; padding: 1px 5px; border-radius: 3px; font-weight: 700;">શેર: ${ln.shareHolderName}</span>` : ''}
+                                </div>
+                                <div style="font-size: 9px; color: #64748b; margin-top: 2px;">
+                                  <span>તારીખ: ${ln.disburseDate || '-'}</span> | <span>દર: ${ln.interestRate}%</span> | <span>${ln.purpose || 'સામાન્ય લોન'}</span>
+                                </div>
+                              </div>
+                              <div style="text-align: right; flex-shrink: 0;">
+                                <div style="font-size: 8px; color: #64748b; font-weight: 600;">ચેક નં (Cheque No.)</div>
+                                ${chq ? `
+                                  <span id="chq-display-${ln.id}" onclick="toggleChequeReveal('${ln.id}', '${chq}', '${halfVisible}'); event.stopPropagation();" title="ક્લિક કરીને આખો ચેક નંબર જુઓ" style="cursor: pointer; font-family: monospace; font-size: 10.5px; font-weight: 800; color: #1e40af; background: #eff6ff; padding: 2px 6px; border-radius: 4px; border: 1px solid #bfdbfe; display: inline-flex; align-items: center; gap: 3px; user-select: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #2563eb;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <span id="chq-text-${ln.id}">${halfVisible}</span>
+                                  </span>
+                                ` : `
+                                  <span style="font-size: 9px; color: #94a3b8; font-style: italic;">નોંધાયેલ નથી</span>
+                                `}
+                              </div>
+                            </div>
+                          `;
+                        }).join('')}
+                      </div>
+                    </div>
+                  `;
+                })()}
+
                 <!-- Member Transaction Logs / Payment Log -->
                 <div>
                   <span style="font-size: 10px; font-weight: 600; color: #475569; display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    📜 સભ્યનું પેમેન્ટ લોગ (Payment History)
+                    સભ્યનું પેમેન્ટ લોગ (Payment History)
                   </span>
                   <div class="payment-log-container">
                     ${myLogs.length === 0 ? `
@@ -4036,6 +4556,16 @@
     }
 
     let yearlySavingsFilter = 'all';
+
+    window.toggleChequeReveal = function(loanId, fullCheque, halfCheque) {
+      const textEl = document.getElementById(`chq-text-${loanId}`);
+      if (!textEl) return;
+      if (textEl.textContent === fullCheque) {
+        textEl.textContent = halfCheque;
+      } else {
+        textEl.textContent = fullCheque;
+      }
+    };
 
     window.setYearlySavingsFilter = function(filter) {
       yearlySavingsFilter = filter;
@@ -4111,7 +4641,7 @@
               <div>
                 <strong style="font-size: 12px; color: #383644; display: flex; align-items: center; gap: 5px;">
                   ${m.name}
-                  ${isMonthPending ? '<span style="color: #ef4444; font-size: 13px;" title="ચાલુ મહિનાની બચત બાકી છે">🔔</span>' : ''}
+                  ${isMonthPending ? '<span style="color: #ef4444; font-size: 13px;" title="ચાલુ મહિનાની બચત બાકી છે"></span>' : ''}
                 </strong>
                 <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">
                   સક્રિય શેર: <b>${mShares.length} શેર</b> | વાર્ષિક લક્ષ્ય: ₹${targetSavings.toLocaleString()}
@@ -4126,7 +4656,7 @@
             ${isMonthPending ? `
               <div style="display: flex; justify-content: space-between; align-items: center; background-color: #fef2f2; border: 1px solid #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 9.5px; color: #dc2626;">
                 <span style="font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
-                  <span>🔔</span> ચાલુ માસ બચત બાકી (Pending ₹50/Month)
+                  <span></span> ચાલુ માસ બચત બાકી (Pending ₹50/Month)
                 </span>
                 <span style="font-weight: 800;">બાકી: ₹${thisMonthPendingAmt.toLocaleString()}</span>
               </div>
@@ -4328,7 +4858,7 @@
       const activeShares = shares.filter(s => s.status === 'active');
       const rows = activeShares.map(sh => {
         const m = members.find(mem => mem.id === sh.memberId);
-        const activeLoan = m ? loans.find(l => l.memberId === m.id && l.status === 'active') : null;
+        const activeLoan = m ? (loans.find(l => l.memberId === m.id && l.status === 'active' && l.shareId === sh.id) || loans.find(l => l.memberId === m.id && l.status === 'active' && (!l.shareId || l.shareId === 'all'))) : null;
         const autoInterest = activeLoan ? Math.round(activeLoan.currentBalance * 0.01) : 0;
         const existingEntry = monthlyEntries.find(e => e.monthCode === selectedMonth && e.shareId === sh.id);
 
@@ -4423,7 +4953,7 @@
       const activeShares = shares.filter(s => s.status === 'active');
       const rows = activeShares.map(sh => {
         const m = members.find(mem => mem.id === sh.memberId);
-        const activeLoan = m ? loans.find(l => l.memberId === m.id && l.status === 'active') : null;
+        const activeLoan = m ? (loans.find(l => l.memberId === m.id && l.status === 'active' && l.shareId === sh.id) || loans.find(l => l.memberId === m.id && l.status === 'active' && (!l.shareId || l.shareId === 'all'))) : null;
         const autoInterest = activeLoan ? Math.round(activeLoan.currentBalance * 0.01) : 0;
         const existingEntry = monthlyEntries.find(e => e.monthCode === selectedMonth && e.shareId === sh.id);
 
@@ -4782,6 +5312,7 @@
               <td style="padding: 6px 4px; text-align: left; font-weight: 600; color: #383644; font-size: 8.5px;">
                 <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
                   <span>${m ? m.name : 'Unknown'}</span>
+                  ${l.shareHolderName && l.shareHolderName !== (m ? m.name : '') ? `<span style="background: #e0e7ff; color: #3730a3; font-size: 7.5px; padding: 1px 5px; border-radius: 4px; font-weight: 700;">શેર: ${l.shareHolderName}${l.shareNumber ? ` (${l.shareNumber})` : ''}</span>` : ''}
                   ${hasMultipleLoans ? `<span style="background: #e9d5ff; color: #581c87; font-size: 7px; padding: 1px 4px; border-radius: 3px; font-weight: 800;">લોન #${loanIndex} (${l.interestRate}%)</span>` : ''}
                   ${l.loanType === 'special' ? `<span style="background: #fef3c7; color: #92400e; font-size: 7px; padding: 1px 4px; border-radius: 3px; font-weight: 700;">વિશેષ</span>` : ''}
                 </div>
@@ -4793,7 +5324,7 @@
                 <div style="font-size: 7px; color: #6b7280; font-weight: normal; margin-top: 1px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${l.purpose || 'લોન'}</div>
               </td>
               <td style="padding: 6px 4px; text-align: center; font-weight: 600; color: #2563eb; font-size: 8.5px;">
-                ${mShares.length}
+                ${l.shareId ? `૧ શેર <span style="font-size: 7px; color: #6366f1; display: block;">(${l.shareNumber || 'વ્યક્તિગત'})</span>` : `${mShares.length} શેર`}
               </td>
               <td style="padding: 6px 4px; text-align: right; color: #383644; font-weight: 600; font-size: 8.5px;">
                 ${l.principalAmount.toLocaleString()}
@@ -4809,7 +5340,7 @@
                 <div style="color: ${intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: bold; font-size: 8.5px;">₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString()}</div>
                 ${intSched.isThisMonthEmiPaid 
                   ? '<span style="color: #047857; background-color: #ecfdf5; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #a7f3d0; display: inline-block; margin-top: 1px;">✓ જમા</span>'
-                  : `<span style="color: #dc2626; background-color: #fef2f2; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #fecaca; display: inline-block; margin-top: 1px;">🔔 ${intSched.unpaidMonths > 1 ? intSched.unpaidMonths + 'M બાકી' : 'બાકી'}</span>`}
+                  : `<span style="color: #dc2626; background-color: #fef2f2; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #fecaca; display: inline-block; margin-top: 1px;">${intSched.unpaidMonths > 1 ? intSched.unpaidMonths + 'M બાકી' : 'બાકી'}</span>`}
               </td>
               <td style="padding: 6px 4px; text-align: center; white-space: nowrap; font-size: 8px;">
                 <div style="color: #2563eb; font-weight: 800; font-size: 8.5px;">₹${intSched.nextMonthInterest.toLocaleString()}</div>
@@ -5145,8 +5676,8 @@
         </head>
         <body>
           <div class="no-print-bar">
-            <span style="font-size: 12.5px; font-weight: 600; color: #334155;">📄 બલાઢા ક્રેડિટ સોસાયટી - લોન રિપોર્ટ</span>
-            <button class="print-btn" onclick="window.print()">🖨️ સેવ / પ્રિન્ટ PDF (Print PDF)</button>
+            <span style="font-size: 12.5px; font-weight: 600; color: #334155;">બલાઢા ક્રેડિટ સોસાયટી - લોન રિપોર્ટ</span>
+            <button class="print-btn" onclick="window.print()">સેવ / પ્રિન્ટ PDF (Print PDF)</button>
           </div>
 
           <div class="header-box">
@@ -5206,6 +5737,14 @@
       select.innerHTML = '<option value="">-- સભ્ય શોધો --</option>' + 
         members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
 
+      const shareGroup = document.getElementById('disburse-share-holder-group');
+      if (shareGroup) shareGroup.style.display = 'none';
+      const shareSelect = document.getElementById('disburse-share-select');
+      if (shareSelect) {
+        shareSelect.innerHTML = '<option value="all">-- મુખ્ય સભ્ય સંયુક્ત ખાતું (તમામ શેર કુલ લિમિટ) --</option>';
+        shareSelect.removeAttribute('data-loaded-for');
+      }
+
       const w1 = document.getElementById('disburse-witness1');
       const w2 = document.getElementById('disburse-witness2');
       if (w1 && w2) {
@@ -5225,10 +5764,13 @@
           const memberActiveLoans = activeL.filter(al => al.memberId === l.memberId);
           const mTotalBal = memberActiveLoans.reduce((sum, al) => sum + al.currentBalance, 0);
           const idx = memberActiveLoans.findIndex(al => al.id === l.id) + 1;
+          const shareTag = l.shareHolderName && l.shareHolderName !== (m ? m.name : '')
+            ? ` [શેર હોલ્ડર: ${l.shareHolderName}${l.shareNumber ? ` (${l.shareNumber})` : ''}]`
+            : (l.shareNumber ? ` [${l.shareNumber}]` : '');
           const multiTag = memberActiveLoans.length > 1
             ? ` [લોન #${idx}: ₹${l.currentBalance.toLocaleString('en-IN')} @ ${l.interestRate}% | સભ્ય કુલ: ₹${mTotalBal.toLocaleString('en-IN')}]`
             : ` [દેવું: ₹${l.currentBalance.toLocaleString('en-IN')} @ ${l.interestRate}%]`;
-          return `<option value="${l.id}">${m ? m.name : 'Unknown'} - ${l.purpose}${multiTag}</option>`;
+          return `<option value="${l.id}">${m ? m.name : 'Unknown'}${shareTag} - ${l.purpose}${multiTag}</option>`;
         }).join('');
 
       const repayMonthPicker = document.getElementById('repay-month-picker');
@@ -5344,26 +5886,38 @@
       if (!limitValEl) return;
 
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
-      const regLimit = mShares.length * 25000;
+      const shareSelectEl = document.getElementById('disburse-share-select');
+      const selectedShareId = shareSelectEl ? shareSelectEl.value : 'all';
+
+      // Logic: if main member (all) selected -> total share limit (e.g. 2 shares * 25,000 = ₹50,000)
+      // If individual share person selected -> ONE share amount limit (1 share * 25,000 = ₹25,000)!
+      const isSingleShare = selectedShareId !== 'all';
+      const chosenShare = isSingleShare ? mShares.find(s => s.id === selectedShareId) : null;
+      const countForLimit = isSingleShare ? 1 : mShares.length;
+      const regLimit = countForLimit * 25000;
 
       if (currentDisburseType === 'special') {
         let specLimit = 500000;
         let lblText = 'વિશેષ મર્યાદા (વેપાર / Business):';
         if (currentSpecialCategory === 'business') {
           specLimit = 500000;
-          lblText = 'વિશેષ મર્યાદા (વેપાર / Business):';
+          lblText = isSingleShare ? `વિશેષ મર્યાદા [${chosenShare ? chosenShare.nameOnShare : ''}]:` : 'વિશેષ મર્યાદા (વેપાર / Business):';
         } else if (currentSpecialCategory === 'abroad') {
           specLimit = 500000;
-          lblText = 'વિશેષ મર્યાદા (વિદેશ / Abroad):';
+          lblText = isSingleShare ? `વિશેષ મર્યાદા [${chosenShare ? chosenShare.nameOnShare : ''}]:` : 'વિશેષ મર્યાદા (વિદેશ / Abroad):';
         } else if (currentSpecialCategory === 'education') {
           specLimit = 200000;
-          lblText = 'વિશેષ મર્યાદા (સ્થાનિક શિક્ષણ / Local Education):';
+          lblText = isSingleShare ? `વિશેષ મર્યાદા [${chosenShare ? chosenShare.nameOnShare : ''}]:` : 'વિશેષ મર્યાદા (સ્થાનિક શિક્ષણ / Education):';
         }
         if (limitLblEl) limitLblEl.textContent = lblText;
         limitValEl.textContent = `₹${specLimit.toLocaleString('en-IN')}`;
         limitValEl.style.color = '#7e22ce';
       } else {
-        if (limitLblEl) limitLblEl.textContent = 'ભલામણ કરેલ સુરક્ષિત લિમિટ (શેર × ₹25,000):';
+        if (limitLblEl) {
+          limitLblEl.textContent = isSingleShare 
+            ? `ભલામણ કરેલ સુરક્ષિત લિમિટ (૧ શેર × ₹25,000 [${chosenShare ? chosenShare.nameOnShare : ''}]):`
+            : `ભલામણ કરેલ સુરક્ષિત લિમિટ (કુલ ${mShares.length} શેર × ₹25,000):`;
+        }
         limitValEl.textContent = `₹${regLimit.toLocaleString('en-IN')}`;
         limitValEl.style.color = '#2563eb';
       }
@@ -5375,36 +5929,91 @@
       if (!memberEl) return;
       const memberId = memberEl.value;
       const infoBox = document.getElementById('disburse-info-box');
+      const shareGroup = document.getElementById('disburse-share-holder-group');
+      const shareSelectEl = document.getElementById('disburse-share-select');
+      const purposeInput = document.getElementById('disburse-purpose');
+
       if (!memberId) {
         if (infoBox) infoBox.style.display = 'none';
+        if (shareGroup) shareGroup.style.display = 'none';
         return;
       }
 
       if (infoBox) infoBox.style.display = 'block';
+      const m = members.find(mem => mem.id === memberId);
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
-      const shareVal = mShares.length * 20000;
-      const memberActiveLoans = loans.filter(l => l.memberId === memberId && l.status === 'active');
-      const totalActiveBal = memberActiveLoans.reduce((sum, l) => sum + l.currentBalance, 0);
+      
+      // Populate share selector for this member if needed
+      if (shareGroup && shareSelectEl) {
+        if (mShares.length > 0) {
+          shareGroup.style.display = 'block';
+          if (shareSelectEl.getAttribute('data-loaded-for') !== memberId) {
+            let optionsHtml = '';
+            if (mShares.length > 1) {
+              optionsHtml += `<option value="all" selected>${m ? m.name : 'મુખ્ય સભ્ય'} (મુખ્ય સભ્ય - તમામ ${mShares.length} શેર સંયુક્ત ખાતું - કુલ લિમિટ)</option>`;
+              mShares.forEach((s, idx) => {
+                optionsHtml += `<option value="${s.id}">શેર ${idx + 1}: ${s.nameOnShare} (${s.shareNumber} - વ્યક્તિગત ૧ શેર લિમિટ)</option>`;
+              });
+            } else {
+              const singleS = mShares[0];
+              optionsHtml += `<option value="all" selected>${m ? m.name : 'મુખ્ય સભ્ય'} (મુખ્ય સભ્ય - ૧ શેર)</option>`;
+              optionsHtml += `<option value="${singleS.id}">શેર ૧: ${singleS.nameOnShare} (${singleS.shareNumber} - વ્યક્તિગત ૧ શેર લિમિટ)</option>`;
+            }
+            shareSelectEl.innerHTML = optionsHtml;
+            shareSelectEl.setAttribute('data-loaded-for', memberId);
+          }
+        } else {
+          shareGroup.style.display = 'none';
+        }
+      }
 
+      const selectedShareId = shareSelectEl ? shareSelectEl.value : 'all';
+      const isSingleShare = selectedShareId !== 'all';
+      const chosenShare = isSingleShare ? mShares.find(s => s.id === selectedShareId) : null;
+
+      // Statistics display
       const sharesCntEl = document.getElementById('disburse-shares-cnt');
       const sharesValEl = document.getElementById('disburse-shares-value');
-      if (sharesCntEl) sharesCntEl.textContent = `${mShares.length} શેર`;
-      if (sharesValEl) sharesValEl.textContent = `₹${shareVal.toLocaleString()}`;
+      
+      if (isSingleShare && chosenShare) {
+        if (sharesCntEl) sharesCntEl.textContent = `૧ શેર [શેર: ${chosenShare.shareNumber} - ${chosenShare.nameOnShare}]`;
+        if (sharesValEl) sharesValEl.textContent = `₹20,000 (૧ શેર મૂડી ગેરંટી)`;
+        if (purposeInput && (!purposeInput.value || purposeInput.value === 'સામાન્ય લોન' || purposeInput.value.startsWith('સામાન્ય લોન (Regular Loan)'))) {
+          purposeInput.value = `સામાન્ય લોન (${chosenShare.nameOnShare})`;
+        }
+      } else {
+        const shareVal = mShares.length * 20000;
+        if (sharesCntEl) sharesCntEl.textContent = `${mShares.length} શેર (સંયુક્ત તમામ શેર)`;
+        if (sharesValEl) sharesValEl.textContent = `₹${shareVal.toLocaleString('en-IN')}`;
+      }
+
+      const memberActiveLoans = loans.filter(l => l.memberId === memberId && l.status === 'active');
+      const totalActiveBal = memberActiveLoans.reduce((sum, l) => sum + l.currentBalance, 0);
 
       const rateInput = document.getElementById('disburse-rate');
       const currentRate = parseFloat(rateInput ? rateInput.value : '1.0') || 0;
       const statusEl = document.getElementById('disburse-status-val');
 
       if (statusEl) {
-        if (memberActiveLoans.length === 0) {
-          statusEl.innerHTML = '<span style="display:inline-flex; align-items:center; gap:4px; color:#047857;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #047857;"><polyline points="20 6 9 17 4 12"/></svg> નવો કોરો ખાતો (કોઈ બાકી લોન નથી)</span>';
-        } else {
-          const matchingLoan = memberActiveLoans.find(l => Number(l.interestRate) === Number(currentRate));
-          if (matchingLoan) {
-            statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#0284c7; font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #0284c7;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> સમાન વ્યાજ દર (${currentRate}%): ચાલુ લોનમાં રકમ ઉમેરાશે (કુલ બાકી: ₹${totalActiveBal.toLocaleString('en-IN')})</span>`;
+        if (isSingleShare && chosenShare) {
+          // Check if THIS specific share person already has an active loan
+          const shareLoan = loans.find(l => l.memberId === memberId && l.shareId === selectedShareId && l.status === 'active');
+          if (shareLoan) {
+            statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#0284c7; font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #0284c7;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> આ શેર [${chosenShare.nameOnShare}] પર ચાલુ લોન બાકી: ₹${shareLoan.currentBalance.toLocaleString('en-IN')} (@ ${shareLoan.interestRate}%)</span>`;
           } else {
-            const ratesList = memberActiveLoans.map(l => `${l.interestRate}%`).join(', ');
-            statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#7e22ce; font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #7e22ce;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg> અલગ વ્યાજ દર (${currentRate}% vs ${ratesList}): નવી અલગ લોન બનશે (કુલ બાકી: ₹${totalActiveBal.toLocaleString('en-IN')})</span>`;
+            statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#047857;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #047857;"><polyline points="20 6 9 17 4 12"/></svg> આ શેર [${chosenShare.nameOnShare}] પર નવો કોરો ખાતો (કોઈ લોન નથી)</span>`;
+          }
+        } else {
+          if (memberActiveLoans.length === 0) {
+            statusEl.innerHTML = '<span style="display:inline-flex; align-items:center; gap:4px; color:#047857;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #047857;"><polyline points="20 6 9 17 4 12"/></svg> નવો કોરો ખાતો (કોઈ બાકી લોન નથી)</span>';
+          } else {
+            const matchingLoan = memberActiveLoans.find(l => (!l.shareId || l.shareId === 'all') && Number(l.interestRate) === Number(currentRate));
+            if (matchingLoan) {
+              statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#0284c7; font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #0284c7;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> સમાન વ્યાજ દર (${currentRate}%): ચાલુ સંયુક્ત લોનમાં રકમ ઉમેરાશે (કુલ બાકી: ₹${totalActiveBal.toLocaleString('en-IN')})</span>`;
+            } else {
+              const ratesList = memberActiveLoans.map(l => `${l.interestRate}%`).join(', ');
+              statusEl.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#7e22ce; font-weight: 700;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #7e22ce;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg> નવી અલગ લોન બનશે (કુલ બાકી: ₹${totalActiveBal.toLocaleString('en-IN')})</span>`;
+            }
           }
         }
       }
@@ -5636,6 +6245,7 @@
       const purpose = document.getElementById('disburse-purpose').value.trim() || 'વ્યક્તિગત લોન';
       const witness1 = document.getElementById('disburse-witness1').value;
       const witness2 = document.getElementById('disburse-witness2').value;
+      const chequeNo = (document.getElementById('disburse-cheque-no')?.value || '').trim();
       const selectedBank = document.getElementById('disburse-payment-mode').value;
 
       const loanType = currentDisburseType; // 'regular' or 'special'
@@ -5643,6 +6253,11 @@
 
       if (!memberId) {
         alert('કૃપા કરીને લોન લેનાર સભ્ય પસંદ કરો!');
+        return;
+      }
+
+      if (!chequeNo) {
+        alert('કૃપા કરીને બેંક ચેક નંબર (Bank Cheque No.) દાખલ કરો!');
         return;
       }
 
@@ -5662,8 +6277,17 @@
       const bankTitle = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
 
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
-      
-      let effectiveLimit = mShares.length * 25000;
+      const shareSelectEl = document.getElementById('disburse-share-select');
+      const selectedShareId = shareSelectEl ? shareSelectEl.value : 'all';
+      const isSingleShare = selectedShareId !== 'all';
+      const chosenShare = isSingleShare ? mShares.find(s => s.id === selectedShareId) : null;
+
+      const b = members.find(mem => mem.id === memberId);
+      const borrowerDisplayName = (isSingleShare && chosenShare) ? chosenShare.nameOnShare : (b ? b.name : 'Unknown');
+      const shareNumberTag = chosenShare ? chosenShare.shareNumber : '';
+
+      // Limit logic: if single share -> 1 share amount (₹25,000)! If all -> total shares * 25,000!
+      let effectiveLimit = isSingleShare ? (1 * 25000) : (mShares.length * 25000);
       if (loanType === 'special') {
         if (specialCategory === 'business' || specialCategory === 'abroad') {
           effectiveLimit = 500000;
@@ -5679,32 +6303,40 @@
 
       // Check if they exceed the recommended limit (Inform but do not block admin override!)
       if (amount > effectiveLimit) {
-        const limitTypeMsg = loanType === 'special' ? 'વિશેષ લોન' : 'ભલામણ કરેલી સુરક્ષિત';
+        const limitTypeMsg = isSingleShare 
+          ? `શેર [${borrowerDisplayName}] ની ૧ શેર ભલામણ કરેલ લિમિટ` 
+          : (loanType === 'special' ? 'વિશેષ લોન' : 'કુલ શેર ભલામણ કરેલી સુરક્ષિત');
         if (!confirm(`સૂચના: ${limitTypeMsg} મર્યાદા ₹${effectiveLimit.toLocaleString('en-IN')} છે. પરંતુ એડમિન ઓવરરાઈડ સક્રિય હોવાથી લોન મંજૂર કરી શકાય છે. આગળ વધવું છે?`)) {
           return;
         }
       }
 
-      // Check if member already has an active loan with the exact same interest rate
-      const existingSameRateLoan = loans.find(l => 
-        l.memberId === memberId && 
-        l.status === 'active' && 
-        Number(l.interestRate) === Number(rate)
-      );
+      // Check if this borrower account already has an active loan with the exact same interest rate
+      // If single share: must match this exact shareId!
+      // If combined ('all'): must match existing combined loan (no shareId or shareId === 'all')!
+      const existingSameRateLoan = loans.find(l => {
+        if (l.memberId !== memberId || l.status !== 'active' || Number(l.interestRate) !== Number(rate)) return false;
+        if (isSingleShare) {
+          return l.shareId === selectedShareId;
+        } else {
+          return (!l.shareId || l.shareId === 'all');
+        }
+      });
 
-      const b = members.find(mem => mem.id === memberId);
       const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
       const typeLabel = loanType === 'special' ? 'વિશેષ' : 'સામાન્ય';
       let successAlertMsg = '';
 
       if (existingSameRateLoan) {
-        // CASE 1: Same person & same interest rate -> Add money to existing active loan
+        // CASE 1: Same person/share & same interest rate -> Add money to existing active loan
         existingSameRateLoan.principalAmount += amount;
         existingSameRateLoan.currentBalance += amount;
+        if (!existingSameRateLoan.chequeNo) existingSameRateLoan.chequeNo = chequeNo;
         if (!existingSameRateLoan.topups) existingSameRateLoan.topups = [];
         existingSameRateLoan.topups.push({
           date,
           amount,
+          chequeNo,
           purpose,
           loanType,
           specialCategory,
@@ -5721,24 +6353,28 @@
           amount,
           memberName: b ? b.name : 'Unknown',
           paymentMode: payMode,
-          description: `લોન ઉમેરો (Top-up): ${purpose} [સમાન વ્યાજ દર: ${rate}% હોવાથી ચાલુ લોનમાં ₹${amount.toLocaleString('en-IN')} ઉમેરાયા] [${bankTitle} માંથી કપાત]`
+          description: `લોન ઉમેરો (Top-up): ${purpose} [${borrowerDisplayName}${shareNumberTag ? ` (${shareNumberTag})` : ''}] [ચેક નં: ${chequeNo}] [સમાન વ્યાજ દર: ${rate}% હોવાથી ચાલુ લોનમાં ₹${amount.toLocaleString('en-IN')} ઉમેરાયા] [${bankTitle} માંથી કપાત]`
         });
 
         const memberAllActive = loans.filter(l => l.memberId === memberId && l.status === 'active');
         const memberTotalBal = memberAllActive.reduce((sum, l) => sum + l.currentBalance, 0);
 
-        successAlertMsg = `સમાન વ્યાજ દર (${rate}%) હોવાથી ₹${amount.toLocaleString('en-IN')} ચાલુ લોનમાં સફળતાપૂર્વક ઉમેરાઈ ગયા છે!\n\nઆ લોનનું નવું બાકી દેવું: ₹${existingSameRateLoan.currentBalance.toLocaleString('en-IN')}\nસભ્યનું કુલ તમામ લોન બાકી દેવું: ₹${memberTotalBal.toLocaleString('en-IN')}`;
+        successAlertMsg = `સમાન વ્યાજ દર (${rate}%) હોવાથી ₹${amount.toLocaleString('en-IN')} ચાલુ લોનમાં સફળતાપૂર્વક ઉમેરાઈ ગયા છે!\n\nચેક નં: ${chequeNo}\nઆ લોનનું નવું બાકી દેવું: ₹${existingSameRateLoan.currentBalance.toLocaleString('en-IN')}\nસભ્યનું કુલ તમામ લોન બાકી દેવું: ₹${memberTotalBal.toLocaleString('en-IN')}`;
       } else {
-        // CASE 2: Different interest rate or first loan -> Create a separate distinct loan
+        // CASE 2: Different interest rate OR different share holder -> Create a separate distinct loan!
         const newLoanId = `l-${Date.now()}`;
         loans.push({
           id: newLoanId,
           memberId,
+          shareId: isSingleShare ? selectedShareId : null,
+          shareNumber: shareNumberTag || null,
+          shareHolderName: borrowerDisplayName,
           principalAmount: amount,
           currentBalance: amount,
           interestRate: rate,
           disburseDate: date,
-          purpose,
+          chequeNo: chequeNo,
+          purpose: isSingleShare && !purpose.includes(borrowerDisplayName) ? `${purpose} (${borrowerDisplayName})` : purpose,
           loanType,
           specialCategory,
           witness1,
@@ -5754,16 +6390,16 @@
           amount,
           memberName: b ? b.name : 'Unknown',
           paymentMode: payMode,
-          description: `નવી ${typeLabel} લોન ચૂકવણી: ${purpose} [${bankTitle} માંથી કપાત] (${rate === 0 ? 'વ્યાજ વગર' : rate + '% વ્યાજ'})`
+          description: `નવી ${typeLabel} લોન ચૂકવણી: ${purpose} [શેર હોલ્ડર: ${borrowerDisplayName}${shareNumberTag ? ` (${shareNumberTag})` : ''}] [ચેક નં: ${chequeNo}] [${bankTitle} માંથી કપાત] (${rate === 0 ? 'વ્યાજ વગર' : rate + '% વ્યાજ'})`
         });
 
         const memberAllActive = loans.filter(l => l.memberId === memberId && l.status === 'active');
         const memberTotalBal = memberAllActive.reduce((sum, l) => sum + l.currentBalance, 0);
 
         if (memberAllActive.length > 1) {
-          successAlertMsg = `અલગ વ્યાજ દર (${rate}%) હોવાથી નવી અલગ લોન #${memberAllActive.length} સફળતાપૂર્વક બની ગઈ છે!\n\nઆ નવી લોનની રકમ: ₹${amount.toLocaleString('en-IN')} (${rate}% વ્યાજ)\nસભ્યનું કુલ તમામ (${memberAllActive.length}) લોન બાકી દેવું: ₹${memberTotalBal.toLocaleString('en-IN')}`;
+          successAlertMsg = `નવી અલગ લોન #${memberAllActive.length} [${borrowerDisplayName}${shareNumberTag ? ` - ${shareNumberTag}` : ''}] સફળતાપૂર્વક બની ગઈ છે!\n\nચેક નં: ${chequeNo}\nઆ લોનની રકમ: ₹${amount.toLocaleString('en-IN')} (${rate}% વ્યાજ)\nસભ્ય ખાતાનું કુલ તમામ (${memberAllActive.length}) લોન બાકી દેવું: ₹${memberTotalBal.toLocaleString('en-IN')}`;
         } else {
-          successAlertMsg = `લોન ₹${amount.toLocaleString('en-IN')} ${bankTitle} માંથી સફળતાપૂર્વક ચૂકવાઈ અને કપાત થઈ!`;
+          successAlertMsg = `લોન ₹${amount.toLocaleString('en-IN')} [${borrowerDisplayName}] માટે ${bankTitle} માંથી સફળતાપૂર્વક ચૂકવાઈ અને કપાત થઈ!\nચેક નં: ${chequeNo}`;
         }
       }
 
@@ -5772,6 +6408,8 @@
       document.getElementById('form-disburse').reset();
       window.handleLoanTypeSelect('regular');
       document.getElementById('disburse-info-box').style.display = 'none';
+      const sGroup = document.getElementById('disburse-share-holder-group');
+      if (sGroup) sGroup.style.display = 'none';
       closeModal('modal-disburse');
       renderAllViews();
     });
@@ -5874,7 +6512,369 @@
       statementSelect.value = currVal;
 
       renderBackupReportPreview();
+      renderUsersDirectory();
+      renderLogsView();
     }
+
+    window.renderUsersDirectory = function() {
+      const listEl = document.getElementById('users-directory-list');
+      if (!listEl) return;
+      syncUsersWithMembers();
+
+      if (users.length === 0) {
+        listEl.innerHTML = `<div style="text-align: center; color: #94a3b8; font-size: 10px; padding: 12px;">કોઈ સક્રિય યુઝર મળ્યા નથી</div>`;
+        return;
+      }
+
+      listEl.innerHTML = users.map(u => {
+        const isAdmin = (u.role || '').toLowerCase() === 'admin';
+        const hasCustomPass = Boolean((u.password || '').trim());
+        const isMasterAdmin = (u.id === 'u-admin' || u.phone === 'admin');
+
+        return `
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <strong style="font-size: 11px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.name || 'Unnamed'}</strong>
+                <span style="font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 4px; ${isAdmin ? 'background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;' : 'background: #f1f5f9; color: #475569;'}">
+                  ${isAdmin ? 'ADMIN' : 'MEMBER'}
+                </span>
+              </div>
+              <div style="font-size: 9px; color: #64748b; margin-top: 2px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span>${u.phone || 'N/A'}</span>
+                <span>•</span>
+                <span style="color: ${hasCustomPass ? '#059669' : '#d97706'}; font-weight: 600;">
+                  ${hasCustomPass ? 'પાસવર્ડ સેટ છે' : 'ડિફોલ્ટ પાસવર્ડ'}
+                </span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
+              ${!isMasterAdmin ? `
+                <button type="button" onclick="toggleUserRole('${u.id}')" style="background: ${isAdmin ? '#fef2f2' : '#f0fdf4'}; color: ${isAdmin ? '#dc2626' : '#15803d'}; border: 1px solid ${isAdmin ? '#fecaca' : '#bbf7d0'}; padding: 4px 7px; border-radius: 5px; font-size: 8.5px; font-weight: 700; cursor: pointer;">
+                  ${isAdmin ? 'સભ્ય બનાવો' : 'Admin બનાવો'}
+                </button>
+              ` : ''}
+              <button type="button" onclick="editUserPasswordPrompt('${u.id}')" style="background: #f8fafc; color: #334155; border: 1px solid #cbd5e1; padding: 4px 7px; border-radius: 5px; font-size: 8.5px; font-weight: 600; cursor: pointer;">
+                પાસવર્ડ
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    window.toggleUserRole = function(userId) {
+      syncUsersWithMembers();
+      const u = users.find(user => user.id === userId);
+      if (!u) return;
+      if (u.id === 'u-admin' || u.phone === 'admin') {
+        alert('મુખ્ય Administrator એકાઉન્ટનો રોલ બદલી શકાતો નથી!');
+        return;
+      }
+
+      const newRole = (u.role || '').toLowerCase() === 'admin' ? 'member' : 'admin';
+      u.role = newRole;
+      saveToLocalStorage(); // Instantly saves and triggers bg sync to Google Sheets Users tab!
+      renderUsersDirectory();
+      alert(`${u.name} નો રોલ "${newRole.toUpperCase()}" કરવામાં આવ્યો છે અને ગૂગલ શીટમાં સિન્ક થઈ ગયો છે!`);
+    };
+
+    window.editUserPasswordPrompt = function(userId) {
+      syncUsersWithMembers();
+      const u = users.find(user => user.id === userId);
+      if (!u) return;
+
+      const currentPass = u.password || (u.phone === 'admin' ? adminPassword : '');
+      const newPass = prompt(`${u.name} (${u.phone}) માટે વ્યક્તિગત પાસવર્ડ દાખલ કરો:\n(ખાલી રાખવાથી ડિફોલ્ટ admin@123 ગણાશે)`, currentPass);
+      if (newPass === null) return; // Cancelled
+
+      u.password = newPass.trim();
+      if (u.id === 'u-admin' || u.phone === 'admin') {
+        if (newPass.trim()) {
+          adminPassword = newPass.trim();
+          localStorage.setItem(DB_KEYS.adminPass, adminPassword);
+        }
+      }
+      saveToLocalStorage(); // Instantly saves and bg syncs to Google Sheets!
+      renderUsersDirectory();
+      alert(`${u.name} માટે વ્યક્તિગત પાસવર્ડ સફળતાપૂર્વક અપડેટ થઈ ગયો છે અને ગૂગલ શીટમાં સિન્ક થઈ ગયો છે!`);
+    };
+
+    // --- ACTIVITY LOGS & ENTRIES CORRECTION CONTROLLER ---
+    let currentLogFilter = 'all';
+
+    window.setLogCategoryFilter = function(category) {
+      currentLogFilter = category;
+      document.querySelectorAll('.log-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        btn.style.background = '#ffffff';
+        btn.style.color = '#475569';
+        btn.style.borderColor = '#cbd5e1';
+      });
+      const activeBtn = document.getElementById(`btn-log-filter-${category}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.style.background = '#2563eb';
+        activeBtn.style.color = '#ffffff';
+        activeBtn.style.borderColor = '#2563eb';
+      }
+      renderLogsView();
+    };
+
+    window.renderLogsView = function() {
+      const container = document.getElementById('settings-logs-list');
+      const badge = document.getElementById('logs-count-badge');
+      if (!container) return;
+
+      const searchInput = document.getElementById('log-search-input');
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+      // Consolidate activity items from transactions, loans, monthlyEntries, and shares
+      let items = [];
+
+      // 1. Transactions
+      transactions.forEach(t => {
+        let cat = 'expense';
+        let badgeColor = '#dc2626';
+        let badgeBg = '#fef2f2';
+        let badgeBorder = '#fecaca';
+        let typeName = 'ખર્ચ';
+
+        if (t.type === 'loan_disbursal') {
+          cat = 'loan';
+          badgeColor = '#7e22ce';
+          badgeBg = '#faf5ff';
+          badgeBorder = '#e9d5ff';
+          typeName = 'લોન ધિરાણ';
+        } else if (t.type === 'loan_repayment') {
+          cat = 'repay';
+          badgeColor = '#059669';
+          badgeBg = '#ecfdf5';
+          badgeBorder = '#a7f3d0';
+          typeName = 'લોન મુદ્દલ હપ્તો';
+        } else if (t.type === 'interest_payment') {
+          cat = 'repay';
+          badgeColor = '#0284c7';
+          badgeBg = '#f0f9ff';
+          badgeBorder = '#bae6fd';
+          typeName = 'વ્યાજ જમા';
+        } else if (t.type === 'savings') {
+          cat = 'savings';
+          badgeColor = '#2563eb';
+          badgeBg = '#eff6ff';
+          badgeBorder = '#bfdbfe';
+          typeName = 'માસિક બચત';
+        } else if (t.type === 'other_income') {
+          if ((t.description || '').includes('શેર')) {
+            cat = 'shares';
+            badgeColor = '#d97706';
+            badgeBg = '#fffbeb';
+            badgeBorder = '#fde68a';
+            typeName = 'શેર ખરીદી';
+          } else {
+            cat = 'expense';
+            badgeColor = '#059669';
+            badgeBg = '#ecfdf5';
+            badgeBorder = '#a7f3d0';
+            typeName = 'અન્ય આવક';
+          }
+        }
+
+        items.push({
+          source: 'transaction',
+          id: t.id,
+          date: t.date || '',
+          amount: t.amount || 0,
+          memberName: t.memberName || '',
+          description: t.description || '',
+          category: cat,
+          typeName,
+          badgeColor,
+          badgeBg,
+          badgeBorder,
+          bank: t.paymentMode || '',
+          raw: t
+        });
+      });
+
+      // Filter by category
+      if (currentLogFilter !== 'all') {
+        items = items.filter(it => it.category === currentLogFilter);
+      }
+
+      // Filter by search query
+      if (query) {
+        items = items.filter(it => 
+          it.memberName.toLowerCase().includes(query) ||
+          it.description.toLowerCase().includes(query) ||
+          (it.date && it.date.includes(query)) ||
+          (it.bank && it.bank.toLowerCase().includes(query)) ||
+          String(it.amount).includes(query)
+        );
+      }
+
+      // Sort chronological descending (latest first)
+      items.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+      if (badge) badge.textContent = `${items.length} એન્ટ્રીઓ`;
+
+      if (items.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: #94a3b8; font-size: 11px; padding: 20px; font-style: italic; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">કોઈ લોગ એન્ટ્રી મળી નથી.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map(it => `
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; transition: all 0.15s;" onmouseover="this.style.borderColor='#cbd5e1'" onmouseout="this.style.backgroundColor='#ffffff'; this.style.borderColor='#e2e8f0'">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+            <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="font-size: 8.5px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: ${it.badgeBg}; color: ${it.badgeColor}; border: 1px solid ${it.badgeBorder};">
+                  ${it.typeName}
+                </span>
+                <span style="font-size: 9.5px; color: #64748b; font-weight: 600;">
+                  તારીખ: ${it.date || '-'}
+                </span>
+                ${it.bank ? `<span style="font-size: 8.5px; color: #475569; background: #f1f5f9; padding: 1px 5px; border-radius: 3px;">બેંક: ${it.bank}</span>` : ''}
+              </div>
+              <div style="margin-top: 4px; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;">
+                <strong style="font-size: 12px; color: #1e293b;">${it.memberName || 'સોસાયટી'}</strong>
+                <span style="font-size: 10px; color: #475569;">${it.description}</span>
+              </div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0;">
+              <div style="font-size: 13px; font-weight: 800; color: ${it.category === 'loan' || it.category === 'expense' ? '#dc2626' : '#059669'};">
+                ${it.category === 'loan' || it.category === 'expense' ? '-' : '+'}₹${Number(it.amount).toLocaleString('en-IN')}
+              </div>
+              <div style="display: flex; gap: 4px; margin-top: 4px; justify-content: flex-end;">
+                <button type="button" onclick="openEditLogModal('${it.source}', '${it.id}')" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; cursor: pointer;">
+                  સુધારો
+                </button>
+                <button type="button" onclick="deleteLogEntry('${it.source}', '${it.id}')" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; font-size: 9px; font-weight: 700; padding: 3px 6px; border-radius: 4px; cursor: pointer;">
+                  ✕ કાઢો
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    window.openEditLogModal = function(source, id) {
+      const modal = document.getElementById('modal-edit-log-entry');
+      if (!modal) return;
+
+      const t = transactions.find(item => item.id === id);
+      if (!t) {
+        alert('એન્ટ્રી મળી નથી!');
+        return;
+      }
+
+      document.getElementById('edit-log-id').value = id;
+      document.getElementById('edit-log-type').value = source;
+      document.getElementById('edit-log-member-name').value = t.memberName || '';
+      document.getElementById('edit-log-date').value = t.date || '';
+      document.getElementById('edit-log-amount').value = t.amount || 0;
+      document.getElementById('edit-log-desc').value = t.description || '';
+
+      const bankEl = document.getElementById('edit-log-bank');
+      if (bankEl && t.paymentMode) {
+        bankEl.value = t.paymentMode;
+      }
+
+      openModal('modal-edit-log-entry');
+    };
+
+    window.handleSaveLogEntryEdit = function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const id = document.getElementById('edit-log-id').value;
+      const memberName = document.getElementById('edit-log-member-name').value.trim();
+      const date = document.getElementById('edit-log-date').value;
+      const newAmount = parseFloat(document.getElementById('edit-log-amount').value) || 0;
+      const desc = document.getElementById('edit-log-desc').value.trim();
+      const bank = document.getElementById('edit-log-bank').value;
+
+      const t = transactions.find(item => item.id === id);
+      if (!t) return;
+
+      const oldAmount = t.amount || 0;
+      const diff = newAmount - oldAmount;
+
+      // If this was a loan repayment, adjust the loan balance accordingly!
+      if (t.type === 'loan_repayment' && diff !== 0) {
+        const borrower = members.find(m => m.name === t.memberName);
+        if (borrower) {
+          const l = loans.find(loan => loan.memberId === borrower.id && loan.status === 'active');
+          if (l) {
+            l.currentBalance = Math.max(0, l.currentBalance - diff);
+          }
+        }
+      }
+
+      // If this was a loan disbursal, adjust the principal/balance!
+      if (t.type === 'loan_disbursal' && diff !== 0) {
+        const borrower = members.find(m => m.name === t.memberName);
+        if (borrower) {
+          const l = loans.find(loan => loan.memberId === borrower.id && loan.status === 'active');
+          if (l) {
+            l.principalAmount = Math.max(0, l.principalAmount + diff);
+            l.currentBalance = Math.max(0, l.currentBalance + diff);
+          }
+        }
+      }
+
+      // Update transaction fields
+      t.memberName = memberName;
+      t.date = date;
+      t.amount = newAmount;
+      t.description = desc;
+      t.paymentMode = bank;
+
+      saveToLocalStorage(); // Saves session & triggers background cloud sync!
+      closeModal('modal-edit-log-entry');
+      renderAllViews();
+      renderLogsView();
+      alert('એન્ટ્રી સફળતાપૂર્વક સુધારી લેવામાં આવી છે અને ગૂગલ શીટમાં સિન્ક થઈ ગઈ છે!');
+    };
+
+    window.deleteLogEntry = function(source, id) {
+      const t = transactions.find(item => item.id === id);
+      if (!t) return;
+
+      if (!confirm(`શું તમે ખરેખર "${t.description}" (₹${t.amount.toLocaleString('en-IN')}) ની એન્ટ્રી કાઢી નાખવા માંગો છો?\nઆનાથી ખાતાની સિલક પણ આપોઆપ રિવર્સ થઈ જશે.`)) {
+        return;
+      }
+
+      // If loan repayment was deleted, reverse loan balance (add back principal)
+      if (t.type === 'loan_repayment') {
+        const borrower = members.find(m => m.name === t.memberName);
+        if (borrower) {
+          const l = loans.find(loan => loan.memberId === borrower.id);
+          if (l) {
+            l.currentBalance += t.amount;
+            if (l.status === 'repaid' && l.currentBalance > 0) l.status = 'active';
+          }
+        }
+      }
+
+      // If loan disbursal was deleted, reverse loan
+      if (t.type === 'loan_disbursal') {
+        const borrower = members.find(m => m.name === t.memberName);
+        if (borrower) {
+          const loanIdx = loans.findIndex(loan => loan.memberId === borrower.id && loan.disburseDate === t.date);
+          if (loanIdx !== -1) {
+            loans.splice(loanIdx, 1);
+          }
+        }
+      }
+
+      // Remove transaction
+      transactions = transactions.filter(item => item.id !== id);
+
+      saveToLocalStorage();
+      renderAllViews();
+      renderLogsView();
+      alert('એન્ટ્રી સફળતાપૂર્વક કાઢી નાખવામાં આવી છે!');
+    };
 
     function renderBackupReportPreview() {
       const selectedMemberId = statementSelect.value;
@@ -6031,38 +7031,20 @@
     // Reset whole database to 0 records (Absolute clean launch slate)
     document.getElementById('btn-reset-db').addEventListener('click', () => {
       if (confirm('ચેતવણી! શું તમે એપનો તમામ ડેટા (સભ્યો, શેર, લોન અને વ્યવહારો) કાયમી માટે ડીલીટ કરીને શરૂઆતથી ૦ કરવા માંગો છો? આ ક્રિયા પાછી મેળવી શકાશે નહીં.')) {
-        localStorage.removeItem(DB_KEYS.members);
-        localStorage.removeItem(DB_KEYS.shares);
-        localStorage.removeItem(DB_KEYS.loans);
-        localStorage.removeItem(DB_KEYS.entries);
-        localStorage.removeItem(DB_KEYS.transactions);
+        try {
+          sessionStorage.clear();
+          localStorage.removeItem(DB_KEYS.members);
+          localStorage.removeItem(DB_KEYS.shares);
+          localStorage.removeItem(DB_KEYS.loans);
+          localStorage.removeItem(DB_KEYS.entries);
+          localStorage.removeItem(DB_KEYS.transactions);
+        } catch(e) {}
 
         members = [];
         shares = [];
         loans = [];
         monthlyEntries = [];
-        transactions = [
-          {
-            id: 't-1',
-            date: new Date().toISOString().split('T')[0],
-            type: 'other_income',
-            amount: 75000,
-            memberName: 'બલાઢા ટ્રસ્ટ (SBI Bank 1)',
-            paymentMode: 'ઓનલાઈન (Bank 1)',
-            homeAddress: 'મુખ્ય ઓફિસ',
-            description: 'શરૂઆતની સેવિંગ્સ મૂડી - SBI બેંક 1 (Starting Capital Bank 1)'
-          },
-          {
-            id: 't-2',
-            date: new Date().toISOString().split('T')[0],
-            type: 'other_income',
-            amount: 75000,
-            memberName: 'બલાઢા ટ્રસ્ટ (BOB Bank 2)',
-            paymentMode: 'ઓનલાઈન (Bank 2)',
-            homeAddress: 'મુખ્ય ઓફિસ',
-            description: 'શરૂઆતની સેવિંગ્સ મૂડી - BOB બેંક 2 (Starting Capital Bank 2)'
-          }
-        ];
+        transactions = [];
 
         saveToLocalStorage();
         alert('ડેટાબેઝ સફળતાપૂર્વક શૂન્ય (0) થયો છે!');
@@ -6263,17 +7245,17 @@
         if (badgeEl) badgeEl.textContent = `${aRate}% વાર્ષિક (~${qRate}% ત્રિમાસિક)`;
         if (quarterlyEl) quarterlyEl.textContent = `${qRate}%`;
         if (annualEl) annualEl.textContent = `${aRate}%`;
-        if (noteEl) noteEl.textContent = `💡 ₹${currentBalance.toLocaleString('en-IN')} બેલેન્સ પર ₹${enteredAmt.toLocaleString('en-IN')} વ્યાજ એટલે લગભગ ${aRate}% વાર્ષિક દર થાય છે. સેવ કરવા પર ફક્ત આ ₹${enteredAmt.toLocaleString('en-IN')} બેંકમાં જમા થશે.`;
+        if (noteEl) noteEl.textContent = `₹${currentBalance.toLocaleString('en-IN')} બેલેન્સ પર ₹${enteredAmt.toLocaleString('en-IN')} વ્યાજ એટલે લગભગ ${aRate}% વાર્ષિક દર થાય છે. સેવ કરવા પર ફક્ત આ ₹${enteredAmt.toLocaleString('en-IN')} બેંકમાં જમા થશે.`;
       } else if (currentBalance <= 0 && enteredAmt > 0) {
         if (badgeEl) badgeEl.textContent = `નવી રકમ જમા`;
         if (quarterlyEl) quarterlyEl.textContent = `0.00%`;
         if (annualEl) annualEl.textContent = `0.00%`;
-        if (noteEl) noteEl.textContent = `💡 હાલ બેંકમાં બેલેન્સ ₹૦ છે. આ ₹${enteredAmt.toLocaleString('en-IN')} વ્યાજ રકમ ઉમેરવાથી બેંકનું બેલેન્સ ₹${enteredAmt.toLocaleString('en-IN')} થઈ જશે.`;
+        if (noteEl) noteEl.textContent = `હાલ બેંકમાં બેલેન્સ ₹૦ છે. આ ₹${enteredAmt.toLocaleString('en-IN')} વ્યાજ રકમ ઉમેરવાથી બેંકનું બેલેન્સ ₹${enteredAmt.toLocaleString('en-IN')} થઈ જશે.`;
       } else {
         if (badgeEl) badgeEl.textContent = `0.00% વાર્ષિક`;
         if (quarterlyEl) quarterlyEl.textContent = `0.00%`;
         if (annualEl) annualEl.textContent = `0.00%`;
-        if (noteEl) noteEl.textContent = `💡 નીચે વ્યાજ રકમ દાખલ કરો, બેંક બેલેન્સ અને રકમના આધારે ટકાવારી આપમેળે ગણાશે.`;
+        if (noteEl) noteEl.textContent = `નીચે વ્યાજ રકમ દાખલ કરો, બેંક બેલેન્સ અને રકમના આધારે ટકાવારી આપમેળે ગણાશે.`;
       }
     };
 
@@ -6663,6 +7645,12 @@
     initDatabase();
     applyLanguage();
     applyAuth();
+    updateSyncStatusUI('idle');
+
+    // Background fetch latest live data from Google Sheet on startup (silent, no flicker)
+    if (getActiveSheetUrl()) {
+      fetchFromGoogleSheet(true);
+    }
 
     // Startup Video Loading Screen Controller (3.5s duration with last frame pause hold)
     (function initVideoSplashScreen() {
