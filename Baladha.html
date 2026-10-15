@@ -778,7 +778,7 @@
           <!-- ADMIN DASHBOARD CONTAINER -->
           <div id="admin-dashboard-content" class="space-y-4">
             <!-- Onboarding Alert (Hidden - 0 data screen banner removed) -->
-            <div id="onboarding-alert" class="hidden"></div>
+
 
             <!-- Logged-in Admin Identity & Welcome Toast/Banner (Appears after login for 3 seconds then auto-removes) -->
             <div id="admin-welcome-banner" style="display: none; background: linear-gradient(135deg, #1e293b, #334155); color: #ffffff; padding: 12px 16px; border-radius: 12px; margin-bottom: 12px; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #475569; transition: opacity 0.35s ease, transform 0.35s ease;">
@@ -5195,8 +5195,9 @@
               <div style="display: flex; flex-direction: column; gap: 2px; flex: 1.2; min-width: 95px;">
                 <label style="font-size: 8px; font-weight: bold; color: #475569;">જમા બેંક:</label>
                 <select id="sav-bank-${m.id}" class="form-select" style="padding: 3px 6px; font-size: 9.5px; border-radius: 6px; height: 30px;">
-                  <option value="Bank 1" selected>SBI બેંક 1</option>
-                  <option value="Bank 2">BOB બેંક 2</option>
+                  <option value="Bank 1" selected>BOI (Bank of India)</option>
+                  <option value="Bank 2">BOB (A/c 60149)</option>
+                  <option value="Bank 3">BOB (A/c 00839)</option>
                 </select>
               </div>
 
@@ -5233,9 +5234,16 @@
 
       const bankSel = document.getElementById('sav-bank-' + memberId);
       const chosenBank = bankSel ? bankSel.value : 'Bank 1';
-      const isBank2 = (chosenBank === 'Bank 2' || chosenBank.includes('Bank 2') || chosenBank.includes('BOB') || chosenBank.includes('બેંક ૨') || chosenBank.includes('બેંક 2'));
-      const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
-      const bankName = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+      let bankName = 'BOI (Bank of India)';
+      let payMode = 'ઓનલાઈન (Bank 1)';
+
+      if (chosenBank === 'Bank 2') {
+        bankName = 'BOB (A/c 60149)';
+        payMode = 'ઓનલાઈન (Bank 2)';
+      } else if (chosenBank === 'Bank 3') {
+        bankName = 'BOB (A/c 00839)';
+        payMode = 'ઓનલાઈન (Bank 3)';
+      }
 
       const todayStr = new Date().toISOString().split('T')[0];
       monthlyEntries.push({
@@ -5280,9 +5288,16 @@
 
       const bankSel = document.getElementById('sav-bank-' + memberId);
       const chosenBank = bankSel ? bankSel.value : 'Bank 1';
-      const isBank2 = (chosenBank === 'Bank 2' || chosenBank.includes('Bank 2') || chosenBank.includes('BOB') || chosenBank.includes('બેંક ૨') || chosenBank.includes('બેંક 2'));
-      const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
-      const bankName = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+      let bankName = 'BOI (Bank of India)';
+      let payMode = 'ઓનલાઈન (Bank 1)';
+
+      if (chosenBank === 'Bank 2') {
+        bankName = 'BOB (A/c 60149)';
+        payMode = 'ઓનલાઈન (Bank 2)';
+      } else if (chosenBank === 'Bank 3') {
+        bankName = 'BOB (A/c 00839)';
+        payMode = 'ઓનલાઈન (Bank 3)';
+      }
 
       const todayStr = new Date().toISOString().split('T')[0];
       monthlyEntries.push({
@@ -6794,9 +6809,16 @@
       }
 
       const balances = calculateBankBalances();
-      const isBank2 = (selectedBank === 'Bank 2' || selectedBank.includes('Bank 2') || selectedBank.includes('BOB'));
-      const selectedBankBal = isBank2 ? balances.bank2 : balances.bank1;
-      const bankTitle = isBank2 ? 'BOB બેંક 2' : 'SBI બેંક 1';
+      let selectedBankBal = balances.bank1; // Default Bank 1 (BOI)
+      let bankTitle = 'BOI (Bank of India)';
+
+      if (selectedBank === 'Bank 2') {
+        selectedBankBal = balances.bank2;
+        bankTitle = 'BOB (A/c 60149)';
+      } else if (selectedBank === 'Bank 3') {
+        selectedBankBal = balances.bank3;
+        bankTitle = 'BOB (A/c 00839)';
+      }
 
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
       const shareSelectEl = document.getElementById('disburse-share-select');
@@ -7719,9 +7741,8 @@
         `;
       }
 
-      // Populate member select
-      memSelect.innerHTML = '<option value="">-- સભ્ય પસંદ કરો --</option>' +
-        members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+      // Populate member select (leave empty, to be filled by handleUnifiedCategoryChange)
+      memSelect.innerHTML = '<option value="">-- સભ્ય પસંદ કરો --</option>';
     }
 
     window.handleBankInterestChange = function() {
@@ -7788,6 +7809,16 @@
       }
     };
 
+    function populateMembersForCategory(category) {
+      const memSelect = document.getElementById('unified-member-select');
+      if (category === 'loan_repayment') {
+        populateRepayLoans();
+      } else {
+        memSelect.innerHTML = '<option value="">-- સભ્ય પસંદ કરો --</option>' +
+          members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+      }
+    }
+
     window.handleUnifiedCategoryChange = function() {
       const category = document.getElementById('unified-category-select').value;
       const memberGroup = document.getElementById('unified-member-group');
@@ -7806,11 +7837,12 @@
       if (payCard) payCard.classList.remove('hidden');
       document.getElementById('unified-payment-mode').disabled = false;
 
+      populateMembersForCategory(category);
+
       if (category === 'loan_repayment') {
         loanRepayFields.classList.remove('hidden');
         amountLabel.textContent = 'મુદ્દલ ચૂકવણી રકમ (₹) * [Principal Amount]';
         document.getElementById('unified-amount-input').placeholder = 'દા.ત. 1000';
-        populateRepayLoans();
         handleRepayTypeChange();
       } else if (category === 'savings') {
         amountLabel.textContent = 'બચત ફાળો રકમ (₹) *';
@@ -7829,6 +7861,7 @@
       } else {
         // Expense types: annual_dinner, stationary, other_expense
         memberGroup.classList.add('hidden'); // No member selection needed for general expenses
+        if (payCard) payCard.classList.add('hidden');
         if (category === 'annual_dinner') {
           amountLabel.textContent = 'વાર્ષિક ભોજન ખર્ચ રકમ (₹) *';
           document.getElementById('unified-amount-input').placeholder = 'દા.ત. 5000';
@@ -8099,7 +8132,12 @@
           alert('દાન / અન્ય આવક સફળતાપૂર્વક જમા થઈ ગઈ!');
         } else if (category === 'bank_interest') {
           const selectedBank = document.getElementById('bank-interest-bank-select').value;
-          const bankName = selectedBank === 'Bank 1' ? 'SBI બેંક 1 (State Bank)' : 'BOB બેંક 2 (Baroda Bank)';
+          let bankName = 'BOI (Bank of India)';
+          if (selectedBank === 'Bank 2') {
+            bankName = 'BOB (A/c 60149)';
+          } else if (selectedBank === 'Bank 3') {
+            bankName = 'BOB (A/c 00839)';
+          }
           const finalBankPaymentMode = `ઓનલાઈન (${selectedBank})`;
 
           if (amount <= 0) {
