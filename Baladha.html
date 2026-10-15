@@ -657,7 +657,7 @@
       <div style="text-align: center; margin-bottom: 24px;">
         <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px;">
-          <img id="login-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
+          <img id="login-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 200px; max-width: 100%; height: auto; max-height: 55px; object-fit: contain;">
         </div>
         <h2 style="font-size: 21px; font-weight: 800; color: #383644; margin: 0; letter-spacing: -0.3px;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h2>
       </div>
@@ -988,18 +988,32 @@
 
           <!-- MEMBER PERSONAL DASHBOARD CONTAINER (Visible only when Member is logged in) -->
           <div id="member-dashboard-content" class="space-y-4 hidden">
-            <!-- Member Profile Banner -->
-            <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; border: none; padding: 18px 20px; border-radius: 14px; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
+            <!-- Member Profile Banner (Blue Section) -->
+            <div class="card" id="mem-profile-banner" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; border: none; padding: 18px 20px; border-radius: 14px; box-shadow: 0 4px 14px rgba(37,99,235,0.25); position: relative; transition: all 0.2s ease;">
               <div>
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                  <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" data-gu="સભ્ય પ્રોફાઇલ" data-en="MEMBER PROFILE">સભ્ય પ્રોફાઇલ</span>
-                  <span style="font-size: 9.5px; background: rgba(16,185,129,0.25); border: 1px solid rgba(255,255,255,0.4); color: #a7f3d0; font-weight: 700; padding: 2px 8px; border-radius: 9999px;" data-gu="સક્રિય સભ્ય ✓" data-en="Active Member ✓">
-                    સક્રિય સભ્ય ✓
-                  </span>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 6px;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" data-gu="સભ્ય પ્રોફાઇલ" data-en="MEMBER PROFILE">સભ્ય પ્રોફાઇલ</span>
+                    <span style="font-size: 9.5px; background: rgba(16,185,129,0.25); border: 1px solid rgba(255,255,255,0.4); color: #a7f3d0; font-weight: 700; padding: 2px 8px; border-radius: 9999px;" data-gu="સક્રિય સભ્ય ✓" data-en="Active Member ✓">
+                      સક્રિય સભ્ય ✓
+                    </span>
+                  </div>
+                  <!-- Family member selector pill on blue card: visible ONLY in same no condition -->
+                  <div id="family-member-switch-badge" class="hidden" style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.45); padding: 3px 10px; border-radius: 9999px; font-size: 10px; font-weight: 700; color: #ffffff; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: all 0.2s ease;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span id="family-member-switch-label">સભ્ય બદલો ▼</span>
+                  </div>
                 </div>
-                <h3 style="font-size: 19px; font-weight: 800; margin: 0 0 4px 0;" id="mem-dash-name">સભ્ય નામ</h3>
-                <p style="font-size: 11px; opacity: 0.9; margin: 0;" id="mem-dash-phone">મોબાઈલ: -</p>
-                <p style="font-size: 10px; opacity: 0.8; margin: 2px 0 0 0;" id="mem-dash-nominee">વારસદાર: -</p>
+                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                  <div>
+                    <h3 style="font-size: 19px; font-weight: 800; margin: 0 0 4px 0;" id="mem-dash-name">સભ્ય નામ</h3>
+                    <p style="font-size: 11px; opacity: 0.9; margin: 0;" id="mem-dash-phone">મોબાઈલ: -</p>
+                    <p style="font-size: 10px; opacity: 0.8; margin: 2px 0 0 0;" id="mem-dash-nominee">વારસદાર: -</p>
+                  </div>
+                  <div id="family-member-hint" class="hidden" style="text-align: right; font-size: 9.5px; opacity: 0.9; background: rgba(0,0,0,0.22); padding: 3px 8px; border-radius: 6px;">
+                    <span id="family-member-hint-text">એક જ નંબર પર ૨ સભ્યો</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1689,7 +1703,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 16px;">
           <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
             <!-- NextGen Logo (258x65) - Change image URL / src below as needed -->
-            <img id="menu-nextgen-logo" src="Logo2.png" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
+            <img id="menu-nextgen-logo" src="https://placehold.co/258x65/png?text=NextGen+Logo" alt="NextGen Logo" style="width: 135px; max-width: 100%; height: auto; max-height: 38px; object-fit: contain; margin-bottom: 2px;">
             <div>
               <h4 style="font-size: 13px; font-weight: 800; color: #383644; margin: 0; line-height: 1.2;" data-gu="બલાઢા ક્રેડિટ સોસાયટી" data-en="Baladha Credit Society">બલાઢા ક્રેડિટ સોસાયટી</h4>
               <span style="font-size: 10px; color: #64748b; font-weight: 600;" id="side-drawer-role-lbl">સભ્ય પોર્ટલ</span>
@@ -2171,6 +2185,32 @@
     </div>
   </div>
 
+  <!-- MODAL: SELECT FAMILY MEMBER (Same Phone Number) -->
+  <div class="modal-backdrop hidden" id="modal-family-member-select">
+    <div class="modal" style="max-width: 440px; border-radius: 16px;">
+      <div class="modal-header" style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+        <div>
+          <h3 class="modal-title" style="font-size: 13.5px; font-weight: 800; color: #1e3a8a; display: flex; align-items: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: #2563eb;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>પરિવારના સભ્ય પસંદ કરો (Select Member)</span>
+          </h3>
+          <p style="font-size: 10px; color: #64748b; margin: 2px 0 0 0;" id="family-member-modal-sub">
+            આ મોબાઈલ નંબર પર નોંધાયેલ અન્ય પરિવારજનોનું ખાતું જુઓ
+          </p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-family-member-select')">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 14px 16px;">
+        <div id="family-members-modal-list" class="space-y-2">
+          <!-- Populated dynamically by openFamilyMemberSelectModal() -->
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 10px 16px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" style="width: auto; padding: 6px 16px; font-size: 11px;" onclick="closeModal('modal-family-member-select')">બંધ કરો (Close)</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: EDIT LOG ENTRY / FIX MISTAKE -->
   <div class="modal-backdrop hidden" id="modal-edit-log-entry">
     <div class="modal" style="max-width: 520px;">
@@ -2553,13 +2593,6 @@
     function initDatabase() {
       // Clear all legacy localStorage keys to prevent old test data from other Chrome accounts/profiles from polluting the app
       const legacyKeys = [
-        "bcs_members_v3",
-        "bcs_shares_v3",
-        "bcs_loans_v3",
-        "bcs_entries_v3",
-        "bcs_transactions_v3",
-        "bcs_v5_bob_split_dataset",
-        "bcs_users_v3",
         "bcs_members_v2",
         "bcs_shares_v2",
         "bcs_loans_v2",
@@ -2580,12 +2613,12 @@
 
       // Check temporary session storage (strictly temporary in-tab session for instant zero-lag screen updates)
       try {
-        const tempM = sessionStorage.getItem("bcs_temp_members");
-        const tempS = sessionStorage.getItem("bcs_temp_shares");
-        const tempL = sessionStorage.getItem("bcs_temp_loans");
-        const tempE = sessionStorage.getItem("bcs_temp_entries");
-        const tempT = sessionStorage.getItem("bcs_temp_transactions");
-        const tempU = sessionStorage.getItem("bcs_temp_users");
+        const tempM = sessionStorage.getItem("bcs_temp_members") || localStorage.getItem(DB_KEYS.members);
+        const tempS = sessionStorage.getItem("bcs_temp_shares") || localStorage.getItem(DB_KEYS.shares);
+        const tempL = sessionStorage.getItem("bcs_temp_loans") || localStorage.getItem(DB_KEYS.loans);
+        const tempE = sessionStorage.getItem("bcs_temp_entries") || localStorage.getItem(DB_KEYS.entries);
+        const tempT = sessionStorage.getItem("bcs_temp_transactions") || localStorage.getItem(DB_KEYS.transactions);
+        const tempU = sessionStorage.getItem("bcs_temp_users") || localStorage.getItem(DB_KEYS.users);
         if (tempM && tempS && tempL && tempE && tempT) {
           members = JSON.parse(tempM) || [];
           shares = JSON.parse(tempS) || [];
@@ -2676,13 +2709,13 @@
         sessionStorage.setItem('bcs_temp_users', JSON.stringify(users));
       } catch(e) {}
 
-      // Keep permanent localStorage clean of old/new application data to prevent cross-account pollution
+      // Store persistent data in localStorage
       try {
-        localStorage.removeItem(DB_KEYS.members);
-        localStorage.removeItem(DB_KEYS.shares);
-        localStorage.removeItem(DB_KEYS.loans);
-        localStorage.removeItem(DB_KEYS.entries);
-        localStorage.removeItem(DB_KEYS.transactions);
+        localStorage.setItem(DB_KEYS.members, JSON.stringify(members));
+        localStorage.setItem(DB_KEYS.shares, JSON.stringify(shares));
+        localStorage.setItem(DB_KEYS.loans, JSON.stringify(loans));
+        localStorage.setItem(DB_KEYS.entries, JSON.stringify(monthlyEntries));
+        localStorage.setItem(DB_KEYS.transactions, JSON.stringify(transactions));
       } catch(e) {}
 
       if (!skipCloudSync) {
@@ -2943,6 +2976,76 @@
       return str.toString().replace(/[^0-9]/g, '').slice(-10);
     }
 
+    function getMatchingFamilyMembers(targetMemberId, targetPhone) {
+      let cleanP = cleanPhoneNumber(targetPhone);
+      if (!cleanP && targetMemberId) {
+        const targetM = members.find(m => m.id === targetMemberId);
+        if (targetM) cleanP = cleanPhoneNumber(targetM.phone);
+      }
+      if (!cleanP) return [];
+      return members.filter(m => {
+        if (!m || m.status !== 'active') return false;
+        const mClean = cleanPhoneNumber(m.phone);
+        return mClean === cleanP || (m.phone && m.phone.includes(cleanP));
+      });
+    }
+
+    window.openFamilyMemberSelectModal = function() {
+      if (!currentAuthUser || currentAuthUser.role !== 'member') return;
+      const curMember = members.find(m => m.id === currentAuthUser.memberId);
+      const phoneToUse = currentAuthUser.phone || (curMember && curMember.phone);
+      const matches = getMatchingFamilyMembers(currentAuthUser.memberId, phoneToUse);
+
+      // Condition: ONLY in same phone number condition (family members)
+      if (matches.length <= 1) return;
+
+      const subTitle = document.getElementById('family-member-modal-sub');
+      if (subTitle) {
+        subTitle.textContent = `મોબાઈલ નંબર ${phoneToUse || ''} પર નોંધાયેલ કુલ ${matches.length} સભ્યો:`;
+      }
+
+      const listContainer = document.getElementById('family-members-modal-list');
+      if (listContainer) {
+        listContainer.innerHTML = matches.map(m => {
+          const isSelected = (m.id === currentAuthUser.memberId);
+          const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+          const mSavings = getMemberSavings(m.id);
+          const mLoans = loans.filter(l => l.memberId === m.id && l.status === 'active');
+          const loanBal = mLoans.reduce((sum, l) => sum + l.currentBalance, 0);
+
+          return `
+            <div onclick="selectFamilyMember('${m.id}')" style="cursor: pointer; padding: 12px 14px; border-radius: 12px; border: 1.5px solid ${isSelected ? '#2563eb' : '#e2e8f0'}; background: ${isSelected ? '#eff6ff' : '#ffffff'}; transition: all 0.15s ease; box-shadow: ${isSelected ? '0 3px 10px rgba(37,99,235,0.18)' : '0 1px 3px rgba(0,0,0,0.05)'}; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="font-size: 13.5px; color: ${isSelected ? '#1e40af' : '#1e293b'};">${m.name}</strong>
+                  ${isSelected ? '<span style="font-size: 9px; font-weight: 700; background: #2563eb; color: #ffffff; padding: 1px 7px; border-radius: 9999px;">ચાલુ સભ્ય ✓</span>' : ''}
+                </div>
+                <div style="font-size: 10px; color: #64748b; margin-top: 3px; display: flex; flex-wrap: wrap; gap: 8px;">
+                  <span><b>શેર:</b> ${mShares.length}</span>
+                  <span>•</span>
+                  <span><b>જમા બચત:</b> ₹${mSavings.toLocaleString('en-IN')}</span>
+                  ${loanBal > 0 ? `<span>•</span><span style="color: #dc2626;"><b>બાકી લોન:</b> ₹${loanBal.toLocaleString('en-IN')}</span>` : ''}
+                  ${m.nomineeName ? `<span>•</span><span><b>વારસદાર:</b> ${m.nomineeName}</span>` : ''}
+                </div>
+              </div>
+              <div style="flex-shrink: 0;">
+                ${isSelected 
+                  ? '<div style="width: 26px; height: 26px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold;">✓</div>' 
+                  : '<button type="button" class="btn btn-secondary" style="font-size: 10.5px; padding: 5px 12px; border-radius: 6px; pointer-events: none; border-color: #cbd5e1;">પસંદ કરો</button>'}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      openModal('modal-family-member-select');
+    };
+
+    window.selectFamilyMember = function(memberId) {
+      window.switchMember(memberId);
+      closeModal('modal-family-member-select');
+    };
+
     window.handleMemberLogin = function(e) {
       if (e && e.preventDefault) e.preventDefault();
       const phoneInput = document.getElementById('input-member-login-phone');
@@ -2959,13 +3062,14 @@
       }
 
       // Match against registered members or users
-      const foundMember = members.find(m => {
+      const allMatches = members.filter(m => {
         if (!m || m.status !== 'active') return false;
         const mClean = cleanPhoneNumber(m.phone);
         return mClean === cleaned || (m.phone && m.phone.includes(cleaned));
       });
 
-      if (foundMember) {
+      if (allMatches.length > 0) {
+        const foundMember = allMatches[0];
         syncUsersWithMembers();
         const mUser = users.find(u => u.memberId === foundMember.id);
         if (mUser) {
@@ -2978,7 +3082,8 @@
           role: 'member',
           memberId: foundMember.id,
           memberName: foundMember.name,
-          phone: foundMember.phone
+          phone: foundMember.phone,
+          allMatches: allMatches
         };
         localStorage.setItem('bcs_auth_user', JSON.stringify(currentAuthUser));
         applyAuth();
@@ -2988,6 +3093,23 @@
           memberErr.classList.remove('hidden');
         }
       }
+    };
+
+    window.switchMember = function(memberId) {
+      if (!currentAuthUser) return;
+      const targetMember = members.find(m => m.id === memberId);
+      if (!targetMember) return;
+
+      currentAuthUser.memberId = targetMember.id;
+      currentAuthUser.memberName = targetMember.name;
+      currentAuthUser.phone = targetMember.phone;
+      
+      const phoneToUse = targetMember.phone;
+      currentAuthUser.allMatches = getMatchingFamilyMembers(targetMember.id, phoneToUse);
+
+      localStorage.setItem('bcs_auth_user', JSON.stringify(currentAuthUser));
+      applyAuth();
+      renderAllViews();
     };
 
     window.handleAdminLogin = function(e) {
@@ -3270,8 +3392,68 @@
       if (currentAuthUser.role === 'member') {
         // Hide sensitive society totals and all other admin sections (Members, Books, Settings, unified +)
         if (trustBadge) trustBadge.classList.add('hidden');
-        if (memHeaderBadge) memHeaderBadge.classList.remove('hidden');
-        if (memHeaderName) memHeaderName.textContent = currentAuthUser.memberName;
+
+        // Look up member details and all family matches sharing this phone number
+        const curMember = members.find(m => m.id === currentAuthUser.memberId);
+        const curPhone = currentAuthUser.phone || (curMember && curMember.phone);
+        const familyMatches = getMatchingFamilyMembers(currentAuthUser.memberId, curPhone);
+        const isMultiFamily = familyMatches && familyMatches.length > 1;
+
+        if (memHeaderBadge) {
+            memHeaderBadge.classList.remove('hidden');
+            if (isMultiFamily) {
+                memHeaderBadge.style.cursor = 'pointer';
+                memHeaderBadge.title = 'પરિવારના અન્ય સભ્ય પસંદ કરો (Select family member)';
+                memHeaderBadge.onclick = () => window.openFamilyMemberSelectModal();
+            } else {
+                memHeaderBadge.style.cursor = 'default';
+                memHeaderBadge.title = '';
+                memHeaderBadge.onclick = null;
+            }
+        }
+        if (memHeaderName) memHeaderName.textContent = currentAuthUser.memberName + (isMultiFamily ? ' ▼' : '');
+
+        // BLUE SECTION (Member Profile Banner) Interaction - ONLY in same phone condition!
+        const blueBanner = document.getElementById('mem-profile-banner');
+        const familySwitchBadge = document.getElementById('family-member-switch-badge');
+        const familySwitchLabel = document.getElementById('family-member-switch-label');
+        const familyHint = document.getElementById('family-member-hint');
+        const familyHintText = document.getElementById('family-member-hint-text');
+
+        if (isMultiFamily) {
+          // SAME NUMBER CONDITION: Multiple members in family
+          if (familySwitchBadge) {
+            familySwitchBadge.classList.remove('hidden');
+            familySwitchBadge.onclick = (e) => {
+              e.stopPropagation();
+              window.openFamilyMemberSelectModal();
+            };
+          }
+          if (familySwitchLabel) {
+            familySwitchLabel.textContent = `સભ્ય બદલો (${familyMatches.length}) ▼`;
+          }
+          if (familyHint) {
+            familyHint.classList.remove('hidden');
+          }
+          if (familyHintText) {
+            familyHintText.textContent = `એક જ નંબર પર ${familyMatches.length} સભ્યો (ક્લિક કરો)`;
+          }
+          if (blueBanner) {
+            blueBanner.style.cursor = 'pointer';
+            blueBanner.title = 'પરિવારના અન્ય સભ્ય પસંદ કરવા માટે ક્લિક કરો (Click to select other member)';
+            blueBanner.onclick = () => window.openFamilyMemberSelectModal();
+          }
+        } else {
+          // Single member: Not same number condition
+          if (familySwitchBadge) familySwitchBadge.classList.add('hidden');
+          if (familyHint) familyHint.classList.add('hidden');
+          if (blueBanner) {
+            blueBanner.style.cursor = 'default';
+            blueBanner.title = '';
+            blueBanner.onclick = null;
+          }
+        }
+
         if (plusBtnContainer) plusBtnContainer.style.display = 'none';
         if (navMembers) navMembers.style.display = 'none';
         if (navLedger) navLedger.style.display = 'none';
@@ -3889,6 +4071,17 @@
       if (phoneEl) phoneEl.textContent = isGuj ? `મોબાઈલ: ${m.phone || 'નથી'}` : `Mobile: ${m.phone || 'N/A'}`;
       const nomEl = document.getElementById('mem-dash-nominee');
       if (nomEl) nomEl.textContent = isGuj ? `વારસદાર (Nominee): ${m.nomineeName || 'નથી'}` : `Nominee: ${m.nomineeName || 'N/A'}`;
+
+      const famMatches = getMatchingFamilyMembers(m.id, m.phone);
+      const isMulti = famMatches && famMatches.length > 1;
+      const fHint = document.getElementById('family-member-hint-text');
+      if (fHint && isMulti) {
+        fHint.textContent = isGuj ? `એક જ નંબર પર ${famMatches.length} સભ્યો` : `${famMatches.length} members on this number`;
+      }
+      const fBadge = document.getElementById('family-member-switch-label');
+      if (fBadge && isMulti) {
+        fBadge.textContent = isGuj ? `સભ્ય બદલો (${famMatches.length}) ▼` : `Switch Member (${famMatches.length}) ▼`;
+      }
 
       // 2. Stats Grid
       const shCountEl = document.getElementById('mem-dash-shares-count');
