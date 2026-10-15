@@ -777,15 +777,8 @@
           
           <!-- ADMIN DASHBOARD CONTAINER -->
           <div id="admin-dashboard-content" class="space-y-4">
-            <!-- Onboarding Alert when 0 members exist -->
-            <div id="onboarding-alert" class="alert-amber">
-              <div class="alert-title">
-                <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:6px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> એપમાં હાલ કોઈ ડેટા નથી! (0 Data Screen)</span>
-              </div>
-              <div class="alert-body">
-                બલાઢા ક્રેડિટ સોસાયટી એપમાં તમારું સ્વાગત છે. શરૂ કરવા માટે નીચે આપેલા <b>"સભ્યો / શેર"</b> ટેબ પર ક્લિક કરો અને નવો સભ્ય તેમજ તેમના શેર (શેર દીઠ કિંમત ₹૨૦,૦૦૦) રજીસ્ટર કરો!
-              </div>
-            </div>
+            <!-- Onboarding Alert (Hidden - 0 data screen banner removed) -->
+            <div id="onboarding-alert" class="hidden"></div>
 
             <!-- Logged-in Admin Identity & Welcome Toast/Banner (Appears after login for 3 seconds then auto-removes) -->
             <div id="admin-welcome-banner" style="display: none; background: linear-gradient(135deg, #1e293b, #334155); color: #ffffff; padding: 12px 16px; border-radius: 12px; margin-bottom: 12px; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #475569; transition: opacity 0.35s ease, transform 0.35s ease;">
@@ -863,7 +856,7 @@
                 </div>
                 <div>
                   <span data-gu="બચત ફાળો / Savings" data-en="Savings Contribution" style="font-size: 10.5px; color: #475569; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: block;">બચત ફાળો / Savings</span>
-                  <span data-gu="માસિક ₹૫૦ ના ફાળામાંથી" data-en="From ₹50 monthly contribution" style="font-size: 9.5px; color: #64748b;">માસિક ₹૫૦ ના ફાળામાંથી</span>
+                  <span id="dash-savings-rate-sub" style="font-size: 9.5px; color: #64748b;">માસિક ફાળામાંથી</span>
                 </div>
               </div>
               <div style="text-align: right;">
@@ -872,19 +865,32 @@
               </div>
             </div>
 
-            <!-- Current Share Value Admin Editable Card (Dashboard Middle) -->
+            <!-- Current Share Value & Society Rules Admin Editable Card (Dashboard Middle) -->
             <div class="card" style="margin-bottom: 12px; background: #ffffff; border: 1px solid #e2e8f0;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
                 <div>
                   <div style="display: flex; align-items: center; gap: 6px;">
-                    <span data-gu="વર્તમાન શેર મૂલ્ય (Current Share Value)" data-en="Current Share Value" style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">વર્તમાન શેર મૂલ્ય (Current Share Value)</span>
+                    <span style="font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી નાણાકીય નિયમો (Financial Rules)</span>
                     <span style="font-size: 8.5px; background-color: #eff6ff; color: #1e40af; font-weight: 700; padding: 1px 5px; border-radius: 4px; border: 1px solid #dbeafe;">Admin</span>
                   </div>
-                  <div style="font-size: 20px; font-weight: 800; color: #1e293b; margin-top: 3px;" id="dash-current-share-val">₹20,000</div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; margin-top: 3px;">
+                    <div>
+                      <span style="font-size: 8px; color: #64748b; display: block;">શેર મૂડી:</span>
+                      <strong style="font-size: 17px; font-weight: 800; color: #1e293b;" id="dash-current-share-val">₹20,000</strong>
+                    </div>
+                    <div style="border-left: 1px solid #e2e8f0; padding-left: 8px;">
+                      <span style="font-size: 8px; color: #64748b; display: block;">માસિક બચત:</span>
+                      <strong style="font-size: 13.5px; font-weight: 800; color: #059669;" id="dash-rule-monthly-sav">₹50/શેર</strong>
+                    </div>
+                    <div style="border-left: 1px solid #e2e8f0; padding-left: 8px;">
+                      <span style="font-size: 8px; color: #64748b; display: block;">શેર લોન લિમિટ:</span>
+                      <strong style="font-size: 13.5px; font-weight: 800; color: #c2410c;" id="dash-rule-loan-limit">₹25,000/શેર</strong>
+                    </div>
+                  </div>
                   <div style="font-size: 9px; color: #64748b; margin-top: 2px;" id="dash-total-equity-lbl">કુલ સુરક્ષિત શેર મૂડી: ₹0</div>
                 </div>
-                <button type="button" onclick="editCurrentShareValue()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 10.5px; border-radius: 6px; height: auto; display: inline-flex; align-items: center; gap: 4px; background-color: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1;">
-                  <span data-gu="શેર ભાવ બદલો" data-en="Edit Value">શેર ભાવ બદલો</span>
+                <button type="button" onclick="editCurrentShareValue()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 10.5px; border-radius: 6px; height: auto; display: inline-flex; align-items: center; gap: 4px; background-color: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1; white-space: nowrap;">
+                  <span>નિયમો બદલો</span>
                 </button>
               </div>
             </div>
@@ -2038,23 +2044,46 @@
     </div>
   </div>
 
-  <!-- MODAL: EDIT CURRENT SHARE VALUE -->
+  <!-- MODAL: EDIT FINANCIAL RULES & SHARE SETTINGS -->
   <div class="modal-backdrop hidden" id="modal-edit-share-val">
-    <div class="modal" style="max-width: 440px;">
-      <div class="modal-header modal-header-blue">
-        <h3 data-gu="શેર મૂલ્ય સેટિંગ્સ (Share Value Settings)" data-en="Share Value Settings">શેર મૂલ્ય સેટિંગ્સ (Share Value Settings)</h3>
+    <div class="modal" style="max-width: 460px; border-radius: 18px;">
+      <div class="modal-header modal-header-blue" style="border-radius: 18px 18px 0 0;">
+        <h3 data-gu="સોસાયટી નાણાકીય નિયમો (Financial Rules Settings)" data-en="Financial Rules Settings">સોસાયટી નાણાકીય નિયમો (Financial Rules Settings)</h3>
         <button class="modal-close" onclick="closeModal('modal-edit-share-val')">✕</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="padding: 16px;">
         <form id="form-edit-share-val" class="space-y-3" onsubmit="handleSaveShareValue(event)">
           <div class="form-group">
-            <label class="form-label" data-gu="વર્તમાન શેરદીઠ મૂડી મૂલ્ય (₹) *" data-en="Current Share Value (₹) *">વર્તમાન શેરદીઠ મૂડી મૂલ્ય (₹) *</label>
-            <input type="number" id="input-edit-share-val" class="form-input" required min="1000" step="500" placeholder="20000" style="font-size: 16px; font-weight: bold; color: #2563eb;">
-            <p style="font-size: 9px; color: #64748b; margin-top: 4px;" data-gu="આ મૂલ્ય બદલવાથી ડેશબોર્ડ, લોન ગેરંટી, અને સભ્યોની શેર એસેટ કેલ્ક્યુલેશન આપમેળે અપડેટ થશે." data-en="Updating this will automatically recalculate asset values, loan guarantees and dashboard metrics.">આ મૂલ્ય બદલવાથી ડેશબોર્ડ, લોન ગેરંટી, અને સભ્યોની શેર એસેટ કેલ્ક્યુલેશન આપમેળે અપડેટ થશે.</p>
+            <label class="form-label" style="font-size: 11px; font-weight: 700; color: #1e3a8a;">
+              ૧. શેરદીઠ મૂડી કિંમત / Share Nominal Value (₹) *
+            </label>
+            <input type="number" id="input-edit-share-val" class="form-input" required min="1000" step="500" placeholder="20000" style="font-size: 15px; font-weight: bold; color: #1e40af;">
+            <p style="font-size: 9px; color: #64748b; margin-top: 3px;">સભ્ય નોંધણી વખતે ૧ શેરની મૂડી કિંમત (મૂળભૂત ₹૨૦,૦૦૦).</p>
           </div>
+
+          <div class="form-group">
+            <label class="form-label" style="font-size: 11px; font-weight: 700; color: #047857;">
+              ૨. માસિક બચત ફાળો પ્રતિ શેર / Monthly Savings Per Share (₹) *
+            </label>
+            <input type="number" id="input-edit-monthly-savings" class="form-input" required min="10" step="10" placeholder="50" style="font-size: 15px; font-weight: bold; color: #059669;">
+            <p style="font-size: 9px; color: #64748b; margin-top: 3px;">ચોપડા (Ledger) અને માસિક હપ્તા વખતે ઓટો-ગણતરી થતી બચત (મૂળભૂત ₹૫૦ પ્રતિ શેર).</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" style="font-size: 11px; font-weight: 700; color: #c2410c;">
+              ૩. સામાન્ય લોન મર્યાદા પ્રતિ શેર / Regular Loan Limit Per Share (₹) *
+            </label>
+            <input type="number" id="input-edit-loan-limit" class="form-input" required min="1000" step="1000" placeholder="25000" style="font-size: 15px; font-weight: bold; color: #c2410c;">
+            <p style="font-size: 9px; color: #64748b; margin-top: 3px;">નવી લોન આપતી વખતે ૧ શેરદીઠ મહત્તમ લોન પાત્રતા (મૂળભૂત ₹૨૫,૦૦૦ પ્રતિ શેર).</p>
+          </div>
+
+          <div style="background: #f1f5f9; border-radius: 10px; padding: 10px; font-size: 9.5px; color: #475569; border: 1px solid #e2e8f0;">
+            ℹ️ આ મૂલ્યો બદલવાથી ગૂગલ શીટના <b>Settings</b> ટેબમાં ઓટો-સેવ થશે અને એપના તમામ ડેશબોર્ડ, કેલ્ક્યુલેટર અને લોન લિમિટ્સ તરત જ અપડેટ થઈ જશે.
+          </div>
+
           <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 12px;">
             <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px;" onclick="closeModal('modal-edit-share-val')">રદ કરો</button>
-            <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px; background: #2563eb;">સેવ કરો (Update)</button>
+            <button type="submit" class="btn btn-gradient" style="width: auto; padding: 8px 24px; background: #2563eb;">સેવ કરો (Update & Sync)</button>
           </div>
         </form>
       </div>
@@ -2548,11 +2577,38 @@
       entries: 'bcs_entries_v3',
       transactions: 'bcs_transactions_v3',
       shareValue: 'bcs_share_value_v3',
+      monthlySavings: 'bcs_monthly_savings_v3',
+      loanLimitPerShare: 'bcs_loan_limit_per_share_v3',
       users: 'bcs_users_v3',
       adminPass: 'bcs_admin_pass_v3',
       sheetUrl: 'bcs_sheet_url_v3',
       lastSync: 'bcs_last_sync_v3'
     };
+
+    function normalizeMonthCode(code) {
+      if (!code) return '';
+      if (typeof code === 'string' && /^\d{4}-\d{2}$/.test(code.trim())) return code.trim();
+      const d = (code instanceof Date) ? code : new Date(code);
+      if (!isNaN(d.getTime())) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        return `${y}-${m}`;
+      }
+      return String(code).trim();
+    }
+
+    function normalizeDateStr(dStr) {
+      if (!dStr) return '';
+      if (typeof dStr === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dStr.trim())) return dStr.trim();
+      const d = (dStr instanceof Date) ? dStr : new Date(dStr);
+      if (!isNaN(d.getTime())) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
+      return String(dStr).trim();
+    }
 
     function getCurrentShareValue() {
       const saved = localStorage.getItem(DB_KEYS.shareValue);
@@ -2566,32 +2622,87 @@
     function setCurrentShareValue(val) {
       const num = parseFloat(val) || 20000;
       localStorage.setItem(DB_KEYS.shareValue, num.toString());
-      renderAllViews();
+    }
+
+    function getCurrentMonthlySavingsPerShare() {
+      const saved = localStorage.getItem(DB_KEYS.monthlySavings);
+      if (saved) {
+        const parsed = parseFloat(saved);
+        if (!isNaN(parsed) && parsed > 0) return parsed;
+      }
+      return 50;
+    }
+
+    function setCurrentMonthlySavingsPerShare(val) {
+      const num = parseFloat(val) || 50;
+      localStorage.setItem(DB_KEYS.monthlySavings, num.toString());
+    }
+
+    function getCurrentLoanLimitPerShare() {
+      const saved = localStorage.getItem(DB_KEYS.loanLimitPerShare);
+      if (saved) {
+        const parsed = parseFloat(saved);
+        if (!isNaN(parsed) && parsed > 0) return parsed;
+      }
+      return 25000;
+    }
+
+    function setCurrentLoanLimitPerShare(val) {
+      const num = parseFloat(val) || 25000;
+      localStorage.setItem(DB_KEYS.loanLimitPerShare, num.toString());
     }
 
     window.editCurrentShareValue = function() {
-      const cur = getCurrentShareValue();
-      const input = document.getElementById('input-edit-share-val');
-      if (input) input.value = cur;
+      const curVal = getCurrentShareValue();
+      const curSav = getCurrentMonthlySavingsPerShare();
+      const curLim = getCurrentLoanLimitPerShare();
+
+      const inputVal = document.getElementById('input-edit-share-val');
+      if (inputVal) inputVal.value = curVal;
+      const inputSav = document.getElementById('input-edit-monthly-savings');
+      if (inputSav) inputSav.value = curSav;
+      const inputLim = document.getElementById('input-edit-loan-limit');
+      if (inputLim) inputLim.value = curLim;
+
       openModal('modal-edit-share-val');
     };
 
     window.handleSaveShareValue = function(e) {
       if (e) e.preventDefault();
-      const input = document.getElementById('input-edit-share-val');
-      const val = parseFloat(input.value);
+      const inputVal = document.getElementById('input-edit-share-val');
+      const inputSav = document.getElementById('input-edit-monthly-savings');
+      const inputLim = document.getElementById('input-edit-loan-limit');
+
+      const val = parseFloat(inputVal ? inputVal.value : 20000);
+      const sav = parseFloat(inputSav ? inputSav.value : 50);
+      const lim = parseFloat(inputLim ? inputLim.value : 25000);
+
       if (!val || val <= 0) {
         alert('કૃપા કરીને સાચી શેર કિંમત દાખલ કરો!');
         return;
       }
+      if (!sav || sav <= 0) {
+        alert('કૃપા કરીને સાચી માસિક બચત રકમ દાખલ કરો!');
+        return;
+      }
+      if (!lim || lim <= 0) {
+        alert('કૃપા કરીને સાચી શેર લોન મર્યાદા દાખલ કરો!');
+        return;
+      }
+
       setCurrentShareValue(val);
+      setCurrentMonthlySavingsPerShare(sav);
+      setCurrentLoanLimitPerShare(lim);
+
+      saveToLocalStorage();
+      renderAllViews();
       closeModal('modal-edit-share-val');
-      alert(`શેર મૂલ્ય સફળતાપૂર્વક ₹${val.toLocaleString('en-IN')} સેટ કરવામાં આવ્યું!`);
+      alert(`સોસાયટી નાણાકીય નિયમો સફળતાપૂર્વક અપડેટ થયા!\n\n• શેર મૂડી: ₹${val.toLocaleString('en-IN')}\n• માસિક બચત: ₹${sav.toLocaleString('en-IN')} / શેર\n• શેરદીઠ લોન લિમિટ: ₹${lim.toLocaleString('en-IN')}`);
     };
 
-    // Load initial clean database (0 demo data, strictly clean slate with temporary local memory for instant UX)
+    // Load initial clean database (0 demo data, strictly clean slate with independent key safety)
     function initDatabase() {
-      // Clear all legacy localStorage keys to prevent old test data from other Chrome accounts/profiles from polluting the app
+      // Clear legacy storage keys
       const legacyKeys = [
         "bcs_members_v2",
         "bcs_shares_v2",
@@ -2603,7 +2714,7 @@
         try { localStorage.removeItem(k); } catch(e) {}
       });
 
-      // Pure 0 records initial state - strictly no demo data!
+      // Pure initial state
       members = [];
       shares = [];
       loans = [];
@@ -2611,23 +2722,82 @@
       transactions = [];
       users = [];
 
-      // Check temporary session storage (strictly temporary in-tab session for instant zero-lag screen updates)
+      // Check temporary session storage and localStorage independently
       try {
         const tempM = sessionStorage.getItem("bcs_temp_members") || localStorage.getItem(DB_KEYS.members);
+        if (tempM) members = JSON.parse(tempM) || [];
+
         const tempS = sessionStorage.getItem("bcs_temp_shares") || localStorage.getItem(DB_KEYS.shares);
+        if (tempS) shares = JSON.parse(tempS) || [];
+
         const tempL = sessionStorage.getItem("bcs_temp_loans") || localStorage.getItem(DB_KEYS.loans);
+        if (tempL) loans = JSON.parse(tempL) || [];
+
         const tempE = sessionStorage.getItem("bcs_temp_entries") || localStorage.getItem(DB_KEYS.entries);
+        if (tempE) monthlyEntries = JSON.parse(tempE) || [];
+
         const tempT = sessionStorage.getItem("bcs_temp_transactions") || localStorage.getItem(DB_KEYS.transactions);
+        if (tempT) transactions = JSON.parse(tempT) || [];
+
         const tempU = sessionStorage.getItem("bcs_temp_users") || localStorage.getItem(DB_KEYS.users);
-        if (tempM && tempS && tempL && tempE && tempT) {
-          members = JSON.parse(tempM) || [];
-          shares = JSON.parse(tempS) || [];
-          loans = JSON.parse(tempL) || [];
-          monthlyEntries = JSON.parse(tempE) || [];
-          transactions = JSON.parse(tempT) || [];
-          if (tempU) users = JSON.parse(tempU) || [];
-        }
+        if (tempU) users = JSON.parse(tempU) || [];
       } catch(e) {}
+
+      // Normalize entries
+      monthlyEntries = monthlyEntries.map(e => ({
+        ...e,
+        monthCode: normalizeMonthCode(e.monthCode),
+        datePaid: normalizeDateStr(e.datePaid) || new Date().toISOString().split('T')[0],
+        savingsPaid: Number(e.savingsPaid) || 0,
+        interestPaid: Number(e.interestPaid) || 0,
+        principalRepaid: Number(e.principalRepaid) || 0
+      }));
+
+      // Sanitize and protect loans from 0 balance bugs on active accounts
+      loans.forEach(l => {
+        const pAmt = Number(l.principalAmount) || 0;
+        let cBal = (l.currentBalance !== undefined && l.currentBalance !== null && l.currentBalance !== '') ? Number(l.currentBalance) : pAmt;
+        let st = l.status || 'active';
+
+        if (st === 'active' && (isNaN(cBal) || cBal <= 0) && pAmt > 0) {
+          const totalRepaid = monthlyEntries
+            .filter(e => e.memberId === l.memberId)
+            .reduce((sum, e) => sum + (Number(e.principalRepaid) || 0), 0);
+          if (totalRepaid > 0 && totalRepaid < pAmt) {
+            cBal = pAmt - totalRepaid;
+          } else if (totalRepaid >= pAmt) {
+            cBal = 0;
+            st = 'repaid';
+          } else {
+            cBal = pAmt; // Never 0 when unpaid!
+          }
+        }
+        l.principalAmount = pAmt;
+        l.currentBalance = isNaN(cBal) ? pAmt : cBal;
+        l.interestRate = Number(l.interestRate) || 1;
+        l.disburseDate = normalizeDateStr(l.disburseDate);
+        l.status = st;
+      });
+
+      // Sanitize shares and members
+      shares.forEach(s => {
+        const mem = members.find(m => m.id === s.memberId);
+        if (!s.nameOnShare && mem) s.nameOnShare = mem.name;
+        if (!s.activationDate) s.activationDate = (mem && mem.createdAt) ? normalizeDateStr(mem.createdAt) : new Date().toISOString().split('T')[0];
+        s.activationDate = normalizeDateStr(s.activationDate);
+        s.status = s.status || 'active';
+      });
+
+      members.forEach(m => {
+        m.createdAt = normalizeDateStr(m.createdAt) || new Date().toISOString().split('T')[0];
+        if (m.nomineeName === undefined) m.nomineeName = '';
+        m.status = m.status || 'active';
+      });
+
+      transactions.forEach(t => {
+        t.date = normalizeDateStr(t.date) || new Date().toISOString().split('T')[0];
+        t.amount = Number(t.amount) || 0;
+      });
 
       // Preserve admin password from storage if set
       const savedPass = localStorage.getItem(DB_KEYS.adminPass);
@@ -2733,6 +2903,7 @@
 
     let isSyncing = false;
     let syncDebounceTimer = null;
+    let hasPendingSync = false;
 
     function updateSyncStatusUI(status, message) {
       const badge = document.getElementById('cloud-sync-status-badge');
@@ -2777,8 +2948,13 @@
 
       if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
 
+      const delay = force ? 0 : 150; // Ultra-fast response: 0ms on explicit trigger, 150ms tight debounce for auto-save
+
       syncDebounceTimer = setTimeout(() => {
-        if (isSyncing && !force) return;
+        if (isSyncing) {
+          hasPendingSync = true;
+          return;
+        }
         isSyncing = true;
         updateSyncStatusUI('syncing', 'ગૂગલ શીટમાં બેકગ્રાઉન્ડ સેવ ચાલુ...');
 
@@ -2788,12 +2964,64 @@
           action: 'syncAll',
           adminPassword: adminPassword,
           shareValue: getCurrentShareValue(),
+          monthlySavings: getCurrentMonthlySavingsPerShare(),
+          loanLimitPerShare: getCurrentLoanLimitPerShare(),
           data: {
-            members,
-            shares,
-            loans,
-            monthlyEntries,
-            transactions,
+            members: members.map(m => ({
+              ...m,
+              nomineeName: m.nomineeName || '',
+              createdAt: normalizeDateStr(m.createdAt) || new Date().toISOString().split('T')[0],
+              status: m.status || 'active'
+            })),
+            shares: shares.map(s => {
+              const mem = members.find(m => m.id === s.memberId);
+              return {
+                ...s,
+                nameOnShare: s.nameOnShare || (mem ? mem.name : '') || '',
+                activationDate: normalizeDateStr(s.activationDate) || (mem ? normalizeDateStr(mem.createdAt) : '') || new Date().toISOString().split('T')[0],
+                status: s.status || 'active'
+              };
+            }),
+            loans: loans.map(l => {
+              const pAmt = Number(l.principalAmount) || 0;
+              let cBal = (l.currentBalance !== undefined && l.currentBalance !== null && l.currentBalance !== '') ? Number(l.currentBalance) : pAmt;
+              let st = l.status || 'active';
+              if (st === 'active' && (isNaN(cBal) || cBal <= 0) && pAmt > 0) {
+                const totalRepaid = monthlyEntries
+                  .filter(e => e.memberId === l.memberId)
+                  .reduce((sum, e) => sum + (Number(e.principalRepaid) || 0), 0);
+                if (totalRepaid > 0 && totalRepaid < pAmt) {
+                  cBal = pAmt - totalRepaid;
+                } else if (totalRepaid >= pAmt) {
+                  cBal = 0;
+                  st = 'repaid';
+                } else {
+                  cBal = pAmt;
+                }
+              }
+              return {
+                ...l,
+                principalAmount: pAmt,
+                currentBalance: isNaN(cBal) ? pAmt : cBal,
+                interestRate: Number(l.interestRate) || 1,
+                disburseDate: normalizeDateStr(l.disburseDate),
+                loanType: l.loanType || 'regular',
+                status: st
+              };
+            }),
+            monthlyEntries: monthlyEntries.map(e => ({
+              ...e,
+              monthCode: normalizeMonthCode(e.monthCode),
+              datePaid: normalizeDateStr(e.datePaid),
+              savingsPaid: Number(e.savingsPaid) || 0,
+              interestPaid: Number(e.interestPaid) || 0,
+              principalRepaid: Number(e.principalRepaid) || 0
+            })),
+            transactions: transactions.map(t => ({
+              ...t,
+              date: normalizeDateStr(t.date),
+              amount: Number(t.amount) || 0
+            })),
             users
           }
         };
@@ -2813,12 +3041,20 @@
           } else {
             updateSyncStatusUI('error', (result && result.message) || 'સિન્ક ભૂલ');
           }
+          if (hasPendingSync) {
+            hasPendingSync = false;
+            syncToGoogleSheetBg(true);
+          }
         })
         .catch(err => {
           isSyncing = false;
           updateSyncStatusUI('error', 'નેટવર્ક ઑફલાઇન - સ્ક્રીન ડેટા સુરક્ષિત');
+          if (hasPendingSync) {
+            hasPendingSync = false;
+            syncToGoogleSheetBg(true);
+          }
         });
-      }, 700);
+      }, delay);
     }
 
     window.manualSyncToGoogleSheet = function() {
@@ -2829,7 +3065,6 @@
       }
       updateSyncStatusUI('syncing', 'મેન્યુઅલ સિન્ક ચાલુ છે...');
       syncToGoogleSheetBg(true);
-      alert('ગૂગલ શીટમાં બેકગ્રાઉન્ડ સિન્ક શરૂ થઈ ગયું છે. સ્ક્રીન પર કોઈ વિલંબ વગર તમામ ટેબ્સ ઓટો-સેવ થશે!');
     };
 
     window.fetchFromGoogleSheet = function(silent = false) {
@@ -2849,11 +3084,79 @@
             const d = result.data;
             let updated = false;
 
-            if (Array.isArray(d.members)) { members = d.members; updated = true; }
-            if (Array.isArray(d.shares)) { shares = d.shares; updated = true; }
-            if (Array.isArray(d.loans)) { loans = d.loans; updated = true; }
-            if (Array.isArray(d.monthlyEntries)) { monthlyEntries = d.monthlyEntries; updated = true; }
-            if (Array.isArray(d.transactions)) { transactions = d.transactions; updated = true; }
+            if (Array.isArray(d.members)) {
+              members = d.members.map(m => ({
+                ...m,
+                nomineeName: m.nomineeName || '',
+                createdAt: normalizeDateStr(m.createdAt) || new Date().toISOString().split('T')[0],
+                status: m.status || 'active'
+              }));
+              updated = true;
+            }
+            if (Array.isArray(d.shares)) {
+              shares = d.shares.map(s => {
+                const mem = members.find(m => m.id === s.memberId);
+                return {
+                  ...s,
+                  nameOnShare: s.nameOnShare || (mem ? mem.name : '') || '',
+                  activationDate: normalizeDateStr(s.activationDate) || (mem ? normalizeDateStr(mem.createdAt) : '') || new Date().toISOString().split('T')[0],
+                  status: s.status || 'active'
+                };
+              });
+              updated = true;
+            }
+            if (Array.isArray(d.monthlyEntries)) {
+              monthlyEntries = d.monthlyEntries.map(e => ({
+                ...e,
+                monthCode: normalizeMonthCode(e.monthCode),
+                datePaid: normalizeDateStr(e.datePaid) || new Date().toISOString().split('T')[0],
+                savingsPaid: Number(e.savingsPaid) || 0,
+                interestPaid: Number(e.interestPaid) || 0,
+                principalRepaid: Number(e.principalRepaid) || 0
+              }));
+              updated = true;
+            }
+            if (Array.isArray(d.loans)) {
+              loans = d.loans.map(l => {
+                const pAmt = Number(l.principalAmount) || 0;
+                let cBal = (l.currentBalance !== undefined && l.currentBalance !== null && l.currentBalance !== '') ? Number(l.currentBalance) : pAmt;
+                let st = l.status || 'active';
+
+                // CRITICAL FIX: If loan is active and currentBalance was 0 or invalid, compute from actual repayments:
+                if (st === 'active' && (isNaN(cBal) || cBal <= 0) && pAmt > 0) {
+                  const mEntries = Array.isArray(d.monthlyEntries) ? d.monthlyEntries : monthlyEntries;
+                  const totalRepaid = mEntries
+                    .filter(e => e.memberId === l.memberId)
+                    .reduce((sum, e) => sum + (Number(e.principalRepaid) || 0), 0);
+                  if (totalRepaid > 0 && totalRepaid < pAmt) {
+                    cBal = pAmt - totalRepaid;
+                  } else if (totalRepaid >= pAmt) {
+                    cBal = 0;
+                    st = 'repaid';
+                  } else {
+                    cBal = pAmt; // Never 0 when unpaid!
+                  }
+                }
+                return {
+                  ...l,
+                  principalAmount: pAmt,
+                  currentBalance: isNaN(cBal) ? pAmt : cBal,
+                  interestRate: Number(l.interestRate) || 1,
+                  disburseDate: normalizeDateStr(l.disburseDate),
+                  loanType: l.loanType || 'regular',
+                  status: st
+                };
+              });
+              updated = true;
+            }
+            if (Array.isArray(d.transactions)) {
+              transactions = d.transactions.map(t => ({
+                ...t,
+                date: normalizeDateStr(t.date) || new Date().toISOString().split('T')[0],
+                amount: Number(t.amount) || 0
+              }));
+              updated = true;
+            }
             if (Array.isArray(d.users)) { users = d.users; }
             if (d.adminPassword) {
               adminPassword = d.adminPassword;
@@ -2861,6 +3164,12 @@
             }
             if (d.shareValue && !isNaN(d.shareValue)) {
               localStorage.setItem(DB_KEYS.shareValue, String(d.shareValue));
+            }
+            if (d.monthlySavings && !isNaN(d.monthlySavings)) {
+              localStorage.setItem(DB_KEYS.monthlySavings, String(d.monthlySavings));
+            }
+            if (d.loanLimitPerShare && !isNaN(d.loanLimitPerShare)) {
+              localStorage.setItem(DB_KEYS.loanLimitPerShare, String(d.loanLimitPerShare));
             }
 
             const timeStr = new Date().toLocaleTimeString('gu-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -4291,7 +4600,7 @@
           loanBox.innerHTML = `
             <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 16px; text-align: center; color: #64748b;">
               <p style="font-size: 11px; font-weight: 600; color: #059669; margin: 0 0 4px 0;">${isGuj ? '✓ હાલ કોઈ બાકી લોન નથી' : '✓ No outstanding loans'}</p>
-              <p style="font-size: 9px; color: #94a3b8; margin: 0;">${isGuj ? `તમારું ખાતું સંપૂર્ણપણે ક્લીયર છે. મહત્તમ શેર લિમિટ: ₹${(mShares.length * 25000).toLocaleString('en-IN')}` : `Your account is completely clear. Max share loan limit: ₹${(mShares.length * 25000).toLocaleString('en-IN')}`}</p>
+              <p style="font-size: 9px; color: #94a3b8; margin: 0;">${isGuj ? `તમારું ખાતું સંપૂર્ણપણે ક્લીયર છે. મહત્તમ શેર લિમિટ: ₹${(mShares.length * getCurrentLoanLimitPerShare()).toLocaleString('en-IN')}` : `Your account is completely clear. Max share loan limit: ₹${(mShares.length * getCurrentLoanLimitPerShare()).toLocaleString('en-IN')}`}</p>
             </div>
           `;
         }
@@ -4359,9 +4668,7 @@
 
       // Toggle onboarding banner
       const onboardingAlert = document.getElementById('onboarding-alert');
-      if (activeMembers === 0) {
-        onboardingAlert.classList.remove('hidden');
-      } else {
+      if (onboardingAlert) {
         onboardingAlert.classList.add('hidden');
       }
 
@@ -4442,12 +4749,28 @@
         netProfitEl.textContent = `₹${netProfit.toLocaleString('en-IN')}`;
       }
 
-      // Display dynamic current share value in middle dashboard card
+      // Display dynamic financial rules in middle dashboard card
       const curShareVal = getCurrentShareValue();
+      const curSavPerShare = getCurrentMonthlySavingsPerShare();
+      const curLoanLimit = getCurrentLoanLimitPerShare();
+
       const currentShareValEl = document.getElementById('dash-current-share-val');
       if (currentShareValEl) {
         currentShareValEl.textContent = `₹${curShareVal.toLocaleString('en-IN')}`;
       }
+      const savingsRateSub = document.getElementById('dash-savings-rate-sub');
+      if (savingsRateSub) {
+        savingsRateSub.textContent = `માસિક ₹${curSavPerShare} ના ફાળામાંથી`;
+      }
+      const ruleSavEl = document.getElementById('dash-rule-monthly-sav');
+      if (ruleSavEl) {
+        ruleSavEl.textContent = `₹${curSavPerShare}/શેર`;
+      }
+      const ruleLimEl = document.getElementById('dash-rule-loan-limit');
+      if (ruleLimEl) {
+        ruleLimEl.textContent = `₹${curLoanLimit.toLocaleString('en-IN')}/શેર`;
+      }
+
       const totalEquityLbl = document.getElementById('dash-total-equity-lbl');
       if (totalEquityLbl) {
         totalEquityLbl.textContent = `કુલ સુરક્ષિત શેર મૂડી: ₹${(activeShares * curShareVal).toLocaleString('en-IN')}`;
@@ -4464,16 +4787,19 @@
     function updateSliderCalculator() {
       const shVal = parseInt(calcRange.value) || 1;
       const curShareVal = getCurrentShareValue();
+      const curSav = getCurrentMonthlySavingsPerShare();
+      const curLimit = getCurrentLoanLimitPerShare();
+
       if (currentLang === 'eng') {
         document.getElementById('calc-shares-count').textContent = `${shVal} Share(s)`;
-        document.getElementById('calc-monthly').textContent = `₹${shVal * 50} / Month`;
-        document.getElementById('calc-yearly').textContent = `₹${shVal * 600} / Year`;
+        document.getElementById('calc-monthly').textContent = `₹${(shVal * curSav).toLocaleString('en-IN')} / Month`;
+        document.getElementById('calc-yearly').textContent = `₹${(shVal * curSav * 12).toLocaleString('en-IN')} / Year`;
       } else {
         document.getElementById('calc-shares-count').textContent = `${shVal} શેર (Shares)`;
-        document.getElementById('calc-monthly').textContent = `₹${shVal * 50} / મહિને`;
-        document.getElementById('calc-yearly').textContent = `₹${shVal * 600} / વર્ષે`;
+        document.getElementById('calc-monthly').textContent = `₹${(shVal * curSav).toLocaleString('en-IN')} / મહિને`;
+        document.getElementById('calc-yearly').textContent = `₹${(shVal * curSav * 12).toLocaleString('en-IN')} / વર્ષે`;
       }
-      document.getElementById('calc-loan-limit').textContent = `₹${(shVal * 25000).toLocaleString('en-IN')}`;
+      document.getElementById('calc-loan-limit').textContent = `₹${(shVal * curLimit).toLocaleString('en-IN')}`;
       document.getElementById('calc-asset-value').textContent = `₹${(shVal * curShareVal).toLocaleString('en-IN')}`;
     }
 
@@ -4786,12 +5112,13 @@
       if (yearlySavingsFilter === 'pending') {
         filtered = filtered.filter(m => {
           const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
-          const targetSavings = mShares.length * 600;
+          const curSavPerShare = getCurrentMonthlySavingsPerShare();
+          const targetSavings = mShares.length * curSavPerShare * 12;
           const paidThisYear = monthlyEntries
             .filter(e => e.memberId === m.id && e.monthCode.startsWith(selectedYear))
             .reduce((sum, e) => sum + e.savingsPaid, 0);
           const remainingSavings = Math.max(0, targetSavings - paidThisYear);
-          const expectedUpToNow = mShares.length * 50 * curMonthIdx;
+          const expectedUpToNow = mShares.length * curSavPerShare * curMonthIdx;
           return remainingSavings > 0 || paidThisYear < expectedUpToNow;
         });
       }
@@ -4812,9 +5139,10 @@
 
       trackerWrapper.innerHTML = filtered.map(m => {
         const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+        const curSavPerShare = getCurrentMonthlySavingsPerShare();
         
-        // Target: ₹600 per active share for this year
-        const targetSavings = mShares.length * 600;
+        // Target: Dynamic per active share for this year
+        const targetSavings = mShares.length * curSavPerShare * 12;
 
         // How much has been paid for this year?
         const paidThisYear = monthlyEntries
@@ -4823,10 +5151,10 @@
 
         const remainingSavings = Math.max(0, targetSavings - paidThisYear);
         
-        // Month-wise ₹50 check
-        const expectedUpToNow = mShares.length * 50 * curMonthIdx;
+        // Month-wise check
+        const expectedUpToNow = mShares.length * curSavPerShare * curMonthIdx;
         const isMonthPending = paidThisYear < expectedUpToNow;
-        const thisMonthPendingAmt = mShares.length * 50;
+        const thisMonthPendingAmt = mShares.length * curSavPerShare;
 
         return `
           <div class="member-box" style="padding: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid ${isMonthPending ? '#fecaca' : '#e5e7eb'}; background-color: ${isMonthPending ? '#fffafa' : '#ffffff'};">
@@ -5072,8 +5400,9 @@
         return;
       }
 
+      const curSavDefault = getCurrentMonthlySavingsPerShare();
       cardsContainer.innerHTML = rows.map(({ sh, m, activeLoan, autoInterest, existingEntry }) => {
-        const sav = tempSavings[sh.id] !== undefined ? tempSavings[sh.id] : (existingEntry ? existingEntry.savingsPaid : '50');
+        const sav = tempSavings[sh.id] !== undefined ? tempSavings[sh.id] : (existingEntry ? existingEntry.savingsPaid : curSavDefault);
         const pri = tempPrincipal[sh.id] !== undefined ? tempPrincipal[sh.id] : (existingEntry ? existingEntry.principalRepaid : '');
         const inte = tempInterest[sh.id] !== undefined ? tempInterest[sh.id] : (existingEntry ? existingEntry.interestPaid : (activeLoan ? autoInterest : ''));
         const rem = tempNotes[sh.id] !== undefined ? tempNotes[sh.id] : (existingEntry ? existingEntry.notes : '');
@@ -5169,7 +5498,7 @@
         const shareId = row.sh.id;
         const memberId = row.sh.memberId;
 
-        const savings = parseFloat(tempSavings[shareId] !== undefined ? tempSavings[shareId] : (row.existingEntry ? row.existingEntry.savingsPaid : 50)) || 0;
+        const savings = parseFloat(tempSavings[shareId] !== undefined ? tempSavings[shareId] : (row.existingEntry ? row.existingEntry.savingsPaid : getCurrentMonthlySavingsPerShare())) || 0;
         const principal = parseFloat(tempPrincipal[shareId] !== undefined ? tempPrincipal[shareId] : (row.existingEntry ? row.existingEntry.principalRepaid : 0)) || 0;
         const interest = parseFloat(tempInterest[shareId] !== undefined ? tempInterest[shareId] : (row.existingEntry ? row.existingEntry.interestPaid : (row.activeLoan ? row.autoInterest : 0))) || 0;
         const notes = tempNotes[shareId] !== undefined ? tempNotes[shareId] : (row.existingEntry ? row.existingEntry.notes : '');
