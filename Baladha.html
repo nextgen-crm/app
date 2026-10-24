@@ -1452,58 +1452,12 @@
           </div>
         </div>
 
-        <!-- File management card -->
-        <div class="card space-y-3">
-          <div>
-            <h4 class="card-title">બેકઅપ અને સુરક્ષા ટૂલ્સ</h4>
-            <p class="card-subtitle">ભવિષ્યની સુરક્ષા માટે તમારો બધો ડેટા ડાઉનલોડ કરી રાખો.</p>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <button id="btn-export-json" class="btn btn-dark" style="display: flex; align-items: center; justify-content: center; gap: 4px;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ડાઉનલોડ બેકઅપ</button>
-            <label class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; width: 100%; gap: 4px; cursor: pointer;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> બેકઅપ અપલોડ
-              <input type="file" id="import-json-file" accept=".json" style="display: none;">
-            </label>
-          </div>
-
-          <div id="import-error-div" style="font-size: 10px; color: #dc2626; font-weight: bold;" class="hidden"></div>
-
-          <div style="border-top: 1px solid #e5e7eb; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 10px; color: #9ca3af;">એપ સાફ કરીને કોરી કરવી છે?</span>
-            <button id="btn-reset-db" style="padding: 4px 10px; background-color: #fef2f2; border: 1px solid #fee2e2; color: #b91c1c; font-size: 9px; font-weight: 900; border-radius: 6px; cursor: pointer;">તમામ ડેટા સાફ કરો</button>
-          </div>
-        </div>
-
-        <!-- Individual Statement Picker -->
-        <div class="card space-y-3">
-          <div>
-            <h4 class="card-title">સભ્યોનું વ્યક્તિગત સ્ટેટમેન્ટ</h4>
-            <p class="card-subtitle">કોઈપણ સભ્યના ખાતાનો આખો હિસાબ પ્રિન્ટ કરો.</p>
-          </div>
-          <select id="statement-member-select" class="form-select">
-            <option value="">-- સભ્યનું ખાતું પસંદ કરો --</option>
-          </select>
-        </div>
-
-        <!-- Report center preview -->
-        <div class="card space-y-3">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f3f4f6; padding-bottom: 8px;">
-            <div>
-              <h4 class="card-title">રીપોર્ટ અને પ્રિન્ટ સેન્ટર</h4>
-              <p class="card-subtitle">નીચે આપેલ પત્રકનો પ્રિન્ટ મેળવો</p>
-            </div>
-            <button id="btn-print-report" class="btn btn-gradient" style="width: auto; padding: 6px 12px; font-size: 10px;">પ્રિન્ટ રિપોર્ટ</button>
-          </div>
-
-          <div id="printable-trust-report" style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; max-height: 250px; overflow-y: auto;">
-            <!-- Render print preview dynamically -->
-          </div>
         </div>
 
       </div>
 
     </main>
+
 
     <!-- Bottom Navigation Dock -->
     <nav id="bottom-nav">
@@ -7116,14 +7070,18 @@
 
     // Backup & Statement Reporting Screen
     const statementSelect = document.getElementById('statement-member-select');
-    statementSelect.addEventListener('change', renderBackupReportPreview);
+    if (statementSelect) {
+      statementSelect.addEventListener('change', renderBackupReportPreview);
+    }
 
     function renderBackup() {
-      // Load selector options
-      const currVal = statementSelect.value;
-      statementSelect.innerHTML = '<option value="">-- સભ્યનું ખાતું પસંદ કરો --</option>' + 
-        members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
-      statementSelect.value = currVal;
+      const sel = document.getElementById('statement-member-select');
+      if (sel) {
+        const currVal = sel.value;
+        sel.innerHTML = '<option value="">-- સભ્યનું ખાતું પસંદ કરો --</option>' + 
+          members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+        sel.value = currVal;
+      }
 
       renderBackupReportPreview();
       renderUsersDirectory();
@@ -7616,8 +7574,10 @@
     };
 
     function renderBackupReportPreview() {
-      const selectedMemberId = statementSelect.value;
+      const sel = document.getElementById('statement-member-select');
+      const selectedMemberId = sel ? sel.value : '';
       const preview = document.getElementById('printable-trust-report');
+      if (!preview) return;
 
       if (!selectedMemberId) {
         // Render Overall general summary stats
@@ -7737,7 +7697,7 @@
     }
 
     // Print utility triggers
-    document.getElementById('btn-print-report').addEventListener('click', () => {
+    document.getElementById('btn-print-report')?.addEventListener('click', () => {
       const pArea = document.getElementById('print-area-element');
       if (!pArea) return;
 
@@ -7768,7 +7728,7 @@
     });
 
     // Reset whole database to 0 records (Absolute clean launch slate)
-    document.getElementById('btn-reset-db').addEventListener('click', () => {
+    document.getElementById('btn-reset-db')?.addEventListener('click', () => {
       if (confirm('ચેતવણી! શું તમે એપનો તમામ ડેટા (સભ્યો, શેર, લોન અને વ્યવહારો) કાયમી માટે ડીલીટ કરીને શરૂઆતથી ૦ કરવા માંગો છો? આ ક્રિયા પાછી મેળવી શકાશે નહીં.')) {
         try {
           sessionStorage.clear();
@@ -7792,7 +7752,7 @@
     });
 
     // Export as JSON back-up
-    document.getElementById('btn-export-json').addEventListener('click', () => {
+    document.getElementById('btn-export-json')?.addEventListener('click', () => {
       try {
         const backupData = JSON.stringify({
           members,
@@ -7820,9 +7780,9 @@
     });
 
     // Import from JSON back-up
-    document.getElementById('import-json-file').addEventListener('change', (e) => {
+    document.getElementById('import-json-file')?.addEventListener('change', (e) => {
       const errorDiv = document.getElementById('import-error-div');
-      errorDiv.classList.add('hidden');
+      if (errorDiv) errorDiv.classList.add('hidden');
       const file = e.target.files[0];
       if (!file) return;
 
@@ -7831,8 +7791,10 @@
         try {
           const parsed = JSON.parse(event.target.result);
           if (!parsed.members || !parsed.shares || !parsed.loans || !parsed.monthlyEntries || !parsed.transactions) {
-            errorDiv.textContent = 'ભૂલ! આ ફાઈલ સાચો બેકઅપ ડેટા નથી.';
-            errorDiv.classList.remove('hidden');
+            if (errorDiv) {
+              errorDiv.textContent = 'ભૂલ! આ ફાઈલ સાચો બેકઅપ ડેટા નથી.';
+              errorDiv.classList.remove('hidden');
+            }
             return;
           }
 
@@ -7846,12 +7808,15 @@
           alert('બેકઅપ સફળતાપૂર્વક પુનઃસ્થાપિત થયો!');
           renderAllViews();
         } catch(err) {
-          errorDiv.textContent = 'ફાઇલ ખોલવામાં ક્ષતિ આવી. યોગ્ય JSON પસંદ કરો.';
-          errorDiv.classList.remove('hidden');
+          if (errorDiv) {
+            errorDiv.textContent = 'ફાઇલ ખોલવામાં ક્ષતિ આવી. યોગ્ય JSON પસંદ કરો.';
+            errorDiv.classList.remove('hidden');
+          }
         }
       };
       reader.readAsText(file);
     });
+
 
     // Modal open listeners
     document.getElementById('btn-open-member-modal').addEventListener('click', () => {
