@@ -7490,27 +7490,59 @@
 
       const oldAmount = t.amount || 0;
       const diff = newAmount - oldAmount;
+      const memberId = t.memberId;
 
-      // If this was a loan repayment, adjust the loan balance accordingly!
+      // Robust member lookup
+      const member = members.find(m => m.id === memberId) || members.find(m => m.name === t.memberName);
+
+      // --- LOGICAL SYNC: LOAN REPAYMENT ---
       if (t.type === 'loan_repayment' && diff !== 0) {
-        const borrower = members.find(m => m.name === t.memberName);
-        if (borrower) {
-          const l = loans.find(loan => loan.memberId === borrower.id && loan.status === 'active');
-          if (l) {
-            l.currentBalance = Math.max(0, l.currentBalance - diff);
+        let l = loans.find(loan => loan.id === t.loanId);
+        if (!l && member) {
+          l = loans.find(loan => loan.memberId === member.id && (loan.status === 'active' || loan.status === 'repaid'));
+        }
+        
+        if (l) {
+          // Adjust balance by the difference. 
+          // If amount increased, we subtract more from balance.
+          l.currentBalance = Math.max(0, l.currentBalance - diff);
+          
+          // Update status if needed
+          if (l.currentBalance <= 0) {
+            l.status = 'repaid';
+            l.currentBalance = 0;
+          } else {
+            l.status = 'active';
+          }
+          
+          // Also update the principalAmount/interestAmount in the transaction object if they exist
+          // Since we don't have separate inputs for P/I in the edit modal, we'll assume the change is to principal for simplicity
+          if (t.principalAmount !== undefined) {
+            t.principalAmount = Math.max(0, (t.principalAmount || 0) + diff);
           }
         }
       }
 
-      // If this was a loan disbursal, adjust the principal/balance!
+      // --- LOGICAL SYNC: LOAN DISBURSAL ---
       if (t.type === 'loan_disbursal' && diff !== 0) {
-        const borrower = members.find(m => m.name === t.memberName);
-        if (borrower) {
-          const l = loans.find(loan => loan.memberId === borrower.id && loan.status === 'active');
-          if (l) {
-            l.principalAmount = Math.max(0, l.principalAmount + diff);
-            l.currentBalance = Math.max(0, l.currentBalance + diff);
-          }
+        let l = loans.find(loan => loan.id === t.loanId || (loan.memberId === (member ? member.id : '') && loan.disburseDate === t.date));
+        if (l) {
+          l.principalAmount = Math.max(0, l.principalAmount + diff);
+          l.currentBalance = Math.max(0, l.currentBalance + diff);
+        }
+      }
+
+      // --- LOGICAL SYNC: MONTHLY ENTRIES (LEDGER) ---
+      // Try to find a linked monthly entry by ID match (ledger logic used shared timestamps) or date/member
+      let mEntry = monthlyEntries.find(me => me.id === id.replace('t-', 'me-'));
+      if (!mEntry && member) {
+        mEntry = monthlyEntries.find(me => me.memberId === member.id && me.datePaid === t.date);
+      }
+
+      if (mEntry) {
+        if (t.type === 'savings') mEntry.savingsPaid = newAmount;
+        if (t.type === 'loan_repayment') {
+          mEntry.principalRepaid = (t.principalAmount !== undefined) ? t.principalAmount : newAmount;
         }
       }
 
@@ -7521,11 +7553,11 @@
       t.description = desc;
       t.paymentMode = bank;
 
-      saveToLocalStorage(); // Saves session & triggers background cloud sync!
+      saveToLocalStorage(); 
       closeModal('modal-edit-log-entry');
       renderAllViews();
       renderLogsView();
-      alert('એન્ટ્રી સફળતાપૂર્વક સુધારી લેવામાં આવી છે અને ગૂગલ શીટમાં સિન્ક થઈ ગઈ છે!');
+      alert('એન્ટ્રી સફળતાપૂર્વક સુધારી લેવામાં આવી છે!');
     };
 
     window.deleteLogEntry = function(source, id) {
@@ -7536,27 +7568,42 @@
         return;
       }
 
-      // If loan repayment was deleted, reverse loan balance (add back principal)
+      const member = members.find(m => m.id === t.memberId) || members.find(m => m.name === t.memberName);
+
+      // --- LOGICAL REVERSE: LOAN REPAYMENT ---
       if (t.type === 'loan_repayment') {
-        const borrower = members.find(m => m.name === t.memberName);
-        if (borrower) {
-          const l = loans.find(loan => loan.memberId === borrower.id);
-          if (l) {
-            l.currentBalance += t.amount;
-            if (l.status === 'repaid' && l.currentBalance > 0) l.status = 'active';
-          }
+        let l = loans.find(loan => loan.id === t.loanId);
+        if (!l && member) {
+          l = loans.find(loan => loan.memberId === member.id && (loan.status === 'active' || loan.status === 'repaid'));
+        }
+        if (l) {
+          // Add back the principal that was repaid
+          const amountToReverse = (t.principalAmount !== undefined) ? t.principalAmount : t.amount;
+          l.currentBalance += amountToReverse;
+          if (l.currentBalance > 0) l.status = 'active';
         }
       }
 
-      // If loan disbursal was deleted, reverse loan
+      // --- LOGICAL REVERSE: LOAN DISBURSAL ---
       if (t.type === 'loan_disbursal') {
-        const borrower = members.find(m => m.name === t.memberName);
-        if (borrower) {
-          const loanIdx = loans.findIndex(loan => loan.memberId === borrower.id && loan.disburseDate === t.date);
-          if (loanIdx !== -1) {
-            loans.splice(loanIdx, 1);
-          }
+        let lIdx = loans.findIndex(loan => loan.id === t.loanId);
+        if (lIdx === -1 && member) {
+          lIdx = loans.findIndex(loan => loan.memberId === member.id && loan.disburseDate === t.date);
         }
+        if (lIdx !== -1) {
+          // Only remove if it has no other transactions? 
+          // For simplicity and mistake fixing, we remove it.
+          loans.splice(lIdx, 1);
+        }
+      }
+
+      // --- LOGICAL REVERSE: MONTHLY ENTRIES ---
+      let meIdx = monthlyEntries.findIndex(me => me.id === id.replace('t-', 'me-'));
+      if (meIdx === -1 && member) {
+        meIdx = monthlyEntries.findIndex(me => me.memberId === member.id && me.datePaid === t.date);
+      }
+      if (meIdx !== -1) {
+        monthlyEntries.splice(meIdx, 1);
       }
 
       // Remove transaction
