@@ -159,7 +159,7 @@
       flex-direction: column;
       padding: 16px;
       overflow-y: auto;
-      padding-bottom: 24px;
+      padding-bottom: 80px;
     }
 
     /* Tab Buttons & Bottom Nav */
@@ -653,6 +653,18 @@
 </head>
 <body>
 
+  <script>
+    // FINANCIAL PRECISION HELPERS
+    const CURRENCY_FACTOR = 100;
+    function toPaise(val) { return Math.round(parseFloat(val) * CURRENCY_FACTOR); }
+    function fromPaise(paise) { return paise / CURRENCY_FACTOR; }
+    function addMoney(a, b) { return toPaise(a) + toPaise(b); }
+    function subMoney(a, b) { return toPaise(a) - toPaise(b); }
+    function formatMoney(paise) { 
+        return (paise / CURRENCY_FACTOR).toLocaleString('en-IN', {minimumFractionDigits: 2}); 
+    }
+  </script>
+  
   <!-- VIDEO SPLASH SCREEN (Plays ngavidwbg.webm for 3s at startup before opening app) -->
   <div id="video-splash-screen" style="position: fixed; inset: 0; z-index: 999999; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease;">
     <div style="width: 100%; max-width: 480px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -1195,7 +1207,6 @@
                 <label class="form-label">મહિનો અને વર્ષ</label>
                 <div style="display: flex; gap: 6px; align-items: center;">
                   <input type="month" id="ledger-month-picker" class="form-input" style="flex: 1;">
-                  <button type="button" class="btn btn-secondary" onclick="setLedgerNextMonth()" style="width: auto; padding: 6px 10px; font-size: 10px; white-space: nowrap; font-weight: 700; color: #2563eb; background: #eff6ff; border-color: #bfdbfe;">આગામી મહિનો ⏭️</button>
                 </div>
               </div>
             </div>
@@ -1491,7 +1502,7 @@
     </main>
 
     <!-- Bottom Navigation Dock -->
-    <nav>
+    <nav id="bottom-nav">
       <button class="nav-btn active" id="nav-btn-dashboard">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         <span>ડેશબોર્ડ</span>
@@ -1557,24 +1568,7 @@
 
         <!-- LOAN REPAYMENT SPECIFIC FIELDS -->
         <div id="unified-loan-repayment-fields" class="space-y-3 hidden">
-          <div class="form-group">
-            <label class="form-label">ચૂકવણી હપ્તો પ્રકાર *</label>
-            <select id="unified-repay-type" class="form-select" onchange="handleRepayTypeChange()">
-              <option value="regular" selected>નિયમિત ચાલુ મહિનો (Regular Current Month)</option>
-              <option value="advance">આગામી મહિનો - એડવાન્સ હપ્તો (Advance of Next Month)</option>
-            </select>
-          </div>
-
-          <div class="form-group hidden" id="unified-repay-month-group">
-            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
-              <span>આગામી હપ્તાનો મહિનો (Next EMI Month) *</span>
-              <span style="font-size: 8.5px; color: #64748b;">(પસંદ કરેલ આગામી મહિનો)</span>
-            </label>
-            <div style="display: flex; gap: 6px; align-items: center;">
-              <input type="month" id="unified-repay-month-picker" class="form-input" style="flex: 1; font-weight: 600; color: #2563eb;">
-              <button type="button" class="btn btn-secondary" onclick="setUnifiedNextMonth()" style="width: auto; padding: 6px 10px; font-size: 10px; white-space: nowrap; font-weight: 700; color: #2563eb; background: #eff6ff; border-color: #bfdbfe;">આગામી મહિનો ⏭️</button>
-            </div>
-          </div>
+          <!-- Auto Month Detection: Payments will be automatically assigned to the first available month -->
 
           <!-- Auto-Calculated Interest Badge (Hidden/Read-only for hand interest) -->
           <div style="background-color: #eff6ff; border: 1px solid #dbeafe; padding: 12px; border-radius: 12px;" class="space-y-1">
@@ -2043,7 +2037,7 @@
 
           <div class="form-group" style="margin-top: 10px;">
             <label class="form-label">લોન ચૂકવણી બેંક (Disbursement Bank Account) *</label>
-            <select id="disburse-payment-mode" class="form-select" required onchange="updateDisburseBankDisplay()">
+            <select id="disburse-payment-mode" class="form-select" required onchange="window.updateDisburseBankDisplay()">
               <option value="Bank 1" selected>BOI (Bank of India)</option>
               <option value="Bank 2">BOB (A/c 60149)</option>
               <option value="Bank 3">BOB (A/c 00839)</option>
@@ -2051,7 +2045,7 @@
           </div>
 
           <div style="display: flex; justify-content: space-between; font-size: 10px; color: #047857; background-color: #ecfdf5; padding: 8px; border-radius: 8px; border: 1px solid #d1fae5;">
-            <span id="disburse-bank-lbl">SBI બેંક 1 ઉપલબ્ધ સિલક:</span>
+            <span id="disburse-bank-lbl">BOI બેંક 1 ઉપલબ્ધ સિલક:</span>
             <strong id="disburse-trust-cash">₹75,000</strong>
           </div>
 
@@ -2149,16 +2143,7 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
-              <span>હપ્તાનો મહિનો (EMI Month) *</span>
-              <span style="font-size: 8.5px; color: #64748b;">(ચાલુ અથવા આગામી મહિનો)</span>
-            </label>
-            <div style="display: flex; gap: 6px; align-items: center;">
-              <input type="month" id="repay-month-picker" class="form-input" style="flex: 1; font-weight: 600; color: #2563eb;" onchange="handleRepayMonthChange()">
-              <button type="button" class="btn btn-secondary" onclick="setRepayNextMonth()" style="width: auto; padding: 6px 10px; font-size: 10px; white-space: nowrap; font-weight: 700; color: #2563eb; background: #eff6ff; border-color: #bfdbfe;">આગામી મહિનો ⏭️</button>
-            </div>
-          </div>
+          <!-- Manual Month Selection Removed as requested: Auto-detection is now active -->
 
           <div class="form-group" style="background-color: #eff6ff; border: 1px solid #dbeafe; padding: 10px; border-radius: 8px;">
             <label class="form-label" style="color: #1e40af; font-weight: 700;">કુલ ભરેલ હપ્તો (Total EMI Payment) - વ્યાજ + મુદ્દલ</label>
@@ -2387,196 +2372,7 @@
       alert(`શેર ${sh.shareNumber} માટે ₹${curShareVal.toLocaleString('en-IN')} ની ચૂકવણી સફળતાપૂર્વક જમા થઈ અને શેર સક્રિય થયો!`);
     };
 
-    window.openLoanMathModal = function(loanId) {
-      const l = loans.find(item => item.id === loanId);
-      if (!l) return;
-      const m = members.find(mem => mem.id === l.memberId);
-      if (!m) return;
-      const mShares = shares.filter(s => s.memberId === l.memberId && s.status === 'active');
-      const shareValue = mShares.length * getCurrentShareValue();
-      const mSavings = getMemberSavings(l.memberId);
 
-      const memberActiveLoans = loans.filter(item => item.memberId === l.memberId && item.status === 'active');
-      const memberTotalLoanBal = memberActiveLoans.reduce((sum, item) => sum + item.currentBalance, 0);
-      const hasMultiLoans = memberActiveLoans.length > 1;
-      const thisLoanIndex = memberActiveLoans.findIndex(item => item.id === l.id) + 1;
-
-      // 1. Calculate Monthly Interest (Vyaj added in center)
-      const disDate = new Date(l.disburseDate);
-      const today = new Date();
-      const monthsDiff = Math.max(1, (today.getFullYear() - disDate.getFullYear()) * 12 + today.getMonth() - disDate.getMonth());
-      const ratePerMonth = l.interestRate !== undefined ? Number(l.interestRate) : 1.0;
-      const totalVyaj = Math.round(l.principalAmount * (ratePerMonth / 100) * monthsDiff);
-
-      // 2. Calculate Deposited Amounts
-      const totalPaidPrincipal = Math.max(0, l.principalAmount - l.currentBalance);
-      const totalPaidInterest = transactions
-        .filter(t => t.type === 'interest_payment' && t.memberName === m.name)
-        .reduce((sum, t) => sum + t.amount, 0);
-      const totalDeposited = totalPaidPrincipal + totalPaidInterest;
-
-      // 3. Final Outstanding Balance (Including Vyaj)
-      const finalOutstandingBalance = l.principalAmount + totalVyaj - totalDeposited;
-
-      // 4. Find Last EMI payment details
-      const repayments = transactions.filter(t => (t.type === 'loan_repayment' || t.type === 'interest_payment') && t.memberName === m.name);
-      let lastEmiAmount = 0;
-      let lastEmiDate = '-';
-      let lastEmiTime = '-';
-      if (repayments.length > 0) {
-        const lastTx = repayments[repayments.length - 1];
-        lastEmiAmount = lastTx.amount;
-        lastEmiDate = new Date(lastTx.date).toLocaleDateString('gu-IN');
-        const match = lastTx.id.match(/t-(\d+)/);
-        if (match) {
-          const ms = parseInt(match[1]);
-          if (!isNaN(ms)) {
-            try {
-              lastEmiTime = new Date(ms).toLocaleTimeString('gu-IN', { hour: '2-digit', minute: '2-digit' });
-            } catch (e) {}
-          }
-        }
-      }
-
-      let modalEl = document.getElementById('modal-loan-math');
-      if (!modalEl) {
-        modalEl = document.createElement('div');
-        modalEl.className = 'modal-backdrop hidden';
-        modalEl.id = 'modal-loan-math';
-        document.body.appendChild(modalEl);
-      }
-
-      modalEl.innerHTML = `
-        <div class="modal" style="max-width: 920px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
-          <div class="modal-header" style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
-            <div style="text-align: left;">
-              <h3 style="font-weight: 700; font-size: 14px; color: #383644; margin: 0;">${m.name} - સવિસ્તર ખાતાવહી મેળવણી</h3>
-              <p style="font-size: 8.5px; color: #6b7280; margin: 2px 0 0 0;">પરંપરાગત દેસી હિસાબ પદ્ધતિ | <b>ચેક નં:</b> ${l.chequeNo || 'નથી'} | <b>સાક્ષી ૧:</b> ${l.witness1 || 'નથી'} | <b>સાક્ષી ૨:</b> ${l.witness2 || 'નથી'}</p>
-            </div>
-            <button class="modal-close" onclick="closeModal('modal-loan-math')" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #6b7280; padding: 4px;">✕</button>
-          </div>
-          <div class="modal-body" style="padding: 24px; background-color: #ffffff;">
-            ${hasMultiLoans ? `
-              <div style="background: #faf5ff; border: 1.5px solid #d8b4fe; border-radius: 12px; padding: 12px 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                <div>
-                  <div style="display: flex; align-items: center; gap: 6px;">
-                    <span style="font-weight: 800; font-size: 11px; color: #6b21a8;">આ સભ્ય પાસે અલગ અલગ વ્યાજ દરની કુલ ${memberActiveLoans.length} લોન સક્રિય છે</span>
-                    <span style="background: #e9d5ff; color: #581c87; font-size: 8.5px; padding: 2px 6px; border-radius: 4px; font-weight: 700;">હાલ દર્શાવેલ: લોન #${thisLoanIndex} (${l.interestRate}% વ્યાજ)</span>
-                  </div>
-                  <div style="font-size: 8.5px; color: #7e22ce; margin-top: 3px;">
-                    અન્ય લોન: ${memberActiveLoans.filter(item => item.id !== l.id).map(item => `લોન #${memberActiveLoans.findIndex(x => x.id === item.id) + 1} (${item.interestRate}% દર - બાકી: ₹${item.currentBalance.toLocaleString('en-IN')})`).join(' | ')}
-                  </div>
-                </div>
-                <div style="text-align: right; background: #ffffff; padding: 6px 12px; border-radius: 8px; border: 1px solid #e9d5ff;">
-                  <div style="font-size: 8px; color: #7e22ce; text-transform: uppercase; font-weight: 700;">સભ્ય કુલ બાકી લોન રકમ</div>
-                  <div style="font-size: 14px; color: #6b21a8; font-weight: 900;">₹${memberTotalLoanBal.toLocaleString('en-IN')}</div>
-                </div>
-              </div>
-            ` : ''}
-
-            ${l.topups && l.topups.length > 0 ? `
-              <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 10px 12px; margin-bottom: 18px; font-size: 9px;">
-                <div style="font-weight: 700; color: #0369a1; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                  સમાન વ્યાજ દર હોવાથી આ લોનમાં ઉમેરાયેલ વધારાની રકમનો ઈતિહાસ (Top-ups):
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 2px;">
-                  ${l.topups.map((tp, idx) => `
-                    <div style="display: flex; justify-content: space-between; color: #0284c7; padding: 2px 0;">
-                      <span>${idx + 1}. તારીખ: <b>${tp.date}</b> | હેતુ: ${tp.purpose} (${tp.loanType === 'special' ? 'વિશેષ' : 'સામાન્ય'})</span>
-                      <strong style="color: #0369a1;">+₹${tp.amount.toLocaleString('en-IN')}</strong>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            ` : ''}
-            
-            <!-- SECTION 1: THE REQUIRED 9-COLUMN ROW TABLE -->
-            <div style="margin-bottom: 24px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-              <h4 style="font-weight: 600; font-size: 10px; color: #383644; margin: 0; padding: 12px 16px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
-                સભ્ય ખાતા પત્રક વિગતવાર મેળવણી (Member Financial Row Overview)
-              </h4>
-              <div style="overflow-x: auto; width: 100%;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 9px; text-align: left;">
-                  <thead>
-                    <tr style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; color: #4b5563; font-weight: 600;">
-                      <th style="padding: 10px 12px;">સભ્યનું નામ</th>
-                      <th style="padding: 10px 12px; text-align: center;">શેર</th>
-                      <th style="padding: 10px 12px; text-align: right;">લોન (₹)</th>
-                      <th style="padding: 10px 12px; text-align: right; color: #2563eb;">વ્યાજ (₹)</th>
-                      <th style="padding: 10px 12px; text-align: right; color: #059669;">જમા (₹)</th>
-                      <th style="padding: 10px 12px; text-align: right; color: #dc2626; font-weight: 800;">બાકી (₹)</th>
-                      <th style="padding: 10px 12px; text-align: right;">છેલ્લી EMI (₹)</th>
-                      <th style="padding: 10px 12px; text-align: center;">તારીખ</th>
-                      <th style="padding: 10px 12px; text-align: center;">સમય</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style="border-bottom: 1px solid #f3f4f6; background-color: #ffffff;">
-                      <td style="padding: 12px; font-weight: bold; color: #383644;">${m.name}</td>
-                      <td style="padding: 12px; text-align: center; font-weight: bold;">${mShares.length}</td>
-                      <td style="padding: 12px; text-align: right; font-weight: bold; color: #383644;">₹${l.principalAmount.toLocaleString()}</td>
-                      <td style="padding: 12px; text-align: right; font-weight: bold; color: #2563eb;">₹${totalVyaj.toLocaleString()}</td>
-                      <td style="padding: 12px; text-align: right; font-weight: bold; color: #059669;">₹${totalDeposited.toLocaleString()}</td>
-                      <td style="padding: 12px; text-align: right; font-weight: 900; color: #dc2626; font-size: 10px;">₹${finalOutstandingBalance.toLocaleString()}</td>
-                      <td style="padding: 12px; text-align: right; font-weight: bold; color: #4b5563;">${lastEmiAmount > 0 ? '₹' + lastEmiAmount.toLocaleString() : '-'}</td>
-                      <td style="padding: 12px; text-align: center; color: #6b7280;">${lastEmiDate}</td>
-                      <td style="padding: 12px; text-align: center; color: #6b7280;">${lastEmiTime}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- SECTION 2: THE TRADITIONAL GUJARATI VERTICAL SUM SHEET (UPSIDE DOWN MATH) -->
-            <div style="background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); max-width: 480px; margin: 0 auto;">
-              <h4 style="font-weight: bold; font-size: 11px; color: #383644; margin: 0 0 16px 0; text-align: center; border-bottom: 1px dashed #e5e7eb; padding-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #383644;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> પરંપરાગત ઊભી મેળવણી ગણતરી (Mathematical Vertical Sum Ledger)
-              </h4>
-              
-              <div style="display: flex; flex-direction: column; align-items: flex-end; font-family: 'Courier New', monospace, sans-serif; font-size: 14px; line-height: 2.2; color: #383644; padding: 0 20px;">
-                
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                  <span style="color: #6b7280; font-size: 10px; font-family: sans-serif; font-weight: bold;">મૂળ મંજૂર લોન મુદ્દલ (+):</span>
-                  <span style="font-weight: 900; font-size: 15px;">₹${l.principalAmount.toLocaleString('en-IN')}</span>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; width: 100%; background-color: #eff6ff; padding: 2px 6px; border-radius: 6px;">
-                  <span style="color: #1e40af; font-size: 10px; font-family: sans-serif; font-weight: bold;">ઉમેરેલ વ્યાજ ગણતરી (${monthsDiff} મહિનો / ${ratePerMonth}%) (+):</span>
-                  <span style="color: #2563eb; font-weight: 700; font-size: 15px;">+ ₹${totalVyaj.toLocaleString('en-IN')}</span>
-                </div>
-                
-                <div style="width: 100%; border-bottom: 1px solid #e5e7eb; margin: 4px 0;"></div>
-
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                  <span style="color: #4b5563; font-size: 10px; font-family: sans-serif; font-weight: bold;">વ્યાજ સહિત કુલ બાકી લો:</span>
-                  <span style="font-weight: 700; font-size: 15px; color: #383644;">₹${(l.principalAmount + totalVyaj).toLocaleString('en-IN')}</span>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                  <span style="color: #059669; font-size: 10px; font-family: sans-serif; font-weight: bold;">કુલ જમા મળેલ હપ્તા રકમ (-):</span>
-                  <span style="color: #059669; font-weight: 700; font-size: 15px;">- ₹${totalDeposited.toLocaleString('en-IN')}</span>
-                </div>
-                
-                <div style="width: 100%; border-bottom: 3px double #383644; margin: 6px 0;"></div>
-                
-                <div style="display: flex; justify-content: space-between; width: 100%; padding-top: 4px;">
-                  <span style="color: #dc2626; font-weight: bold; font-size: 11px; font-family: sans-serif;">ચૂકવવાની બાકી રકમ (=):</span>
-                  <span style="color: #dc2626; font-weight: 700; font-size: 18px; text-decoration: underline; text-underline-offset: 4px;">₹${finalOutstandingBalance.toLocaleString('en-IN')}</span>
-                </div>
-                
-              </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 16px;">
-              <button class="btn btn-dark" style="width: auto; padding: 10px 48px; border-radius: 12px; font-weight: 600;" onclick="closeModal('modal-loan-math')">બહાર નીકળો (Close)</button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      openModal('modal-loan-math');
-    };
 
     // Add dynamic share fields initializer and Pull-to-Refresh after DOM loads
     document.addEventListener('DOMContentLoaded', () => {
@@ -2634,7 +2430,17 @@
 
     function normalizeMonthCode(code) {
       if (!code) return '';
-      if (typeof code === 'string' && /^\d{4}-\d{2}$/.test(code.trim())) return code.trim();
+      if (typeof code === 'string') {
+        const trimmed = code.trim();
+        if (/^\d{4}-\d{2}$/.test(trimmed)) return trimmed;
+        // Handle DD/MM/YYYY
+        if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(trimmed)) {
+          const parts = trimmed.split(/[\/\-]/);
+          const y = parts[2];
+          const m = parts[1].padStart(2, '0');
+          return `${y}-${m}`;
+        }
+      }
       const d = (code instanceof Date) ? code : new Date(code);
       if (!isNaN(d.getTime())) {
         const y = d.getFullYear();
@@ -2646,7 +2452,18 @@
 
     function normalizeDateStr(dStr) {
       if (!dStr) return '';
-      if (typeof dStr === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dStr.trim())) return dStr.trim();
+      if (typeof dStr === 'string') {
+        const trimmed = dStr.trim();
+        if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+        // Handle DD/MM/YYYY
+        if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(trimmed)) {
+          const parts = trimmed.split(/[\/\-]/);
+          const y = parts[2];
+          const m = parts[1].padStart(2, '0');
+          const day = parts[0].padStart(2, '0');
+          return `${y}-${m}-${day}`;
+        }
+      }
       const d = (dStr instanceof Date) ? dStr : new Date(dStr);
       if (!isNaN(d.getTime())) {
         const y = d.getFullYear();
@@ -3850,7 +3667,7 @@
     // --- RE-CALCULATORS ---
     function calculateTrustBalance() {
       const b = calculateBankBalances();
-      return b.bank1 + b.bank2 + b.bank3;
+      return b.total;
     }
 
     // Get Member specific analytics
@@ -3870,6 +3687,135 @@
       return transactions.filter(t => t.memberName === memberName).slice().reverse();
     }
 
+    // --- SHARED REPAYMENT HELPER ---
+    window.processLoanRepayment = function(loanId, principalInput, interestInput, date, paymentMode, notes) {
+      const targetLoan = loans.find(l => l.id === loanId);
+      if (!targetLoan) return;
+      const borrower = members.find(mem => mem.id === targetLoan.memberId);
+      const bName = borrower ? borrower.name : 'Unknown';
+
+      const intSched = calculateLoanInterestSchedule(targetLoan, bName);
+      const mInterest = intSched.monthlyInterest || (Math.round(targetLoan.currentBalance * (targetLoan.interestRate / 100)));
+      
+      let principal = principalInput;
+      let interest = interestInput;
+
+      // PRIORITY FIX: Only cover PENDING + CURRENT month interest. Excess ALWAYS goes to principal.
+      // We no longer pre-pay next month's interest by default to ensure maximum principal reduction.
+      const currentInterestOwed = intSched.pendingInterest + (intSched.isThisMonthEmiPaid ? 0 : mInterest);
+      if (interest > currentInterestOwed) {
+          const excess = interest - currentInterestOwed;
+          interest = currentInterestOwed;
+          principal += excess;
+      }
+
+      // Update basic balance
+      targetLoan.currentBalance = Math.max(0, targetLoan.currentBalance - principal);
+      if (interest > 0) {
+        targetLoan.totalInterestPaid = (targetLoan.totalInterestPaid || 0) + interest;
+      }
+      if (targetLoan.currentBalance === 0) {
+        targetLoan.status = 'repaid';
+      }
+
+      // Split the interest payment across historical monthly ledger entries for reporting
+      let remainingInterest = interest;
+      let dParts = normalizeDateStr(targetLoan.disburseDate).split('-');
+      let checkDate = new Date(parseInt(dParts[0]), parseInt(dParts[1]) - 1, 1);
+      const currentMonthCode = normalizeMonthCode(new Date());
+      let safetyCounter = 0;
+
+      while (remainingInterest > 0 && safetyCounter < 60) {
+          safetyCounter++;
+          const mCode = normalizeMonthCode(checkDate);
+          if (mCode > currentMonthCode) break; // Don't pre-fill future months in ledger
+
+          const monthPaidAmt = intSched.paidEmiLog
+            .filter(l => l.monthCode === mCode)
+            .reduce((s, l) => s + (l.interestPaid || 0), 0);
+          
+          if (monthPaidAmt < mInterest) {
+              const needed = mInterest - monthPaidAmt;
+              const toPay = Math.min(remainingInterest, needed);
+              let existingEntry = monthlyEntries.find(e => e.memberId === targetLoan.memberId && e.monthCode === mCode);
+              if (existingEntry) {
+                  existingEntry.interestPaid = (existingEntry.interestPaid || 0) + toPay;
+                  existingEntry.datePaid = date;
+              } else {
+                  monthlyEntries.push({
+                      id: `me-${Date.now()}-${safetyCounter}`,
+                      monthCode: mCode,
+                      memberId: targetLoan.memberId,
+                      shareId: targetLoan.shareId || '',
+                      savingsPaid: 0,
+                      interestPaid: toPay,
+                      principalRepaid: 0,
+                      datePaid: date,
+                      notes: notes || `લોન વ્યાજ હપ્તો (${targetLoan.purpose})`
+                  });
+              }
+              remainingInterest -= toPay;
+          }
+          checkDate.setMonth(checkDate.getMonth() + 1);
+      }
+
+      // If any interest is left (e.g. overpayment confirmed by user), put it in current month
+      if (remainingInterest > 0) {
+          let entry = monthlyEntries.find(e => e.memberId === targetLoan.memberId && e.monthCode === currentMonthCode);
+          if (entry) {
+              entry.interestPaid += remainingInterest;
+          } else {
+              monthlyEntries.push({
+                  id: `me-int-${Date.now()}`,
+                  monthCode: currentMonthCode,
+                  memberId: targetLoan.memberId,
+                  shareId: targetLoan.shareId || '',
+                  savingsPaid: 0,
+                  interestPaid: remainingInterest,
+                  principalRepaid: 0,
+                  datePaid: date,
+                  notes: `વધારાનું વ્યાજ જમા (${targetLoan.purpose})`
+              });
+          }
+      }
+
+      // Add principal repayment to ledger
+      if (principal > 0) {
+          let principalEntry = monthlyEntries.find(e => e.memberId === targetLoan.memberId && e.monthCode === currentMonthCode);
+          if (principalEntry) {
+              principalEntry.principalRepaid = (principalEntry.principalRepaid || 0) + principal;
+              principalEntry.datePaid = date;
+          } else {
+              monthlyEntries.push({
+                  id: `me-p-${Date.now()}`,
+                  monthCode: currentMonthCode,
+                  memberId: targetLoan.memberId,
+                  shareId: targetLoan.shareId || '',
+                  savingsPaid: 0,
+                  interestPaid: 0,
+                  principalRepaid: principal,
+                  datePaid: date,
+                  notes: `લોન મુદ્દલ પરત (${targetLoan.purpose})`
+              });
+          }
+      }
+
+      // RECORD MASTER TRANSACTION (Sole source of truth for loan simulation)
+      transactions.push({
+          id: `t-${Date.now()}-repay`,
+          date,
+          type: 'loan_repayment',
+          amount: principal + interest,
+          principalAmount: principal,
+          interestAmount: interest,
+          memberId: targetLoan.memberId,
+          loanId: targetLoan.id,
+          memberName: bName,
+          paymentMode,
+          description: `લોન હપ્તો જમા: ${targetLoan.purpose} (#${targetLoan.id}) [મુદ્દલ: ₹${principal.toLocaleString('en-IN')}] [વ્યાજ: ₹${interest.toLocaleString('en-IN')}] [બાકી મુદ્દલ: ₹${targetLoan.currentBalance.toLocaleString('en-IN')}] ${notes ? `| ${notes}` : ''}`
+      });
+    };
+
     // --- AUTOMATED MONTHLY INTEREST & EMI SCHEDULE CALCULATOR ---
     function calculateLoanInterestSchedule(loan, memberName, targetMonthCodeOverride) {
       if (!loan) {
@@ -3881,118 +3827,151 @@
           unpaidMonths: 0,
           isThisMonthEmiPaid: false,
           totalDueWithInterest: 0,
-          monthsElapsed: 0,
+          paidEmiLog: [],
           rate: 0,
           currentMonthCode: '',
-          disburseMonthCode: '',
-          totalInterestPaid: 0
+          totalInterestPaid: 0,
+          totalPaidCount: 0,
+          prePaidMonths: 0
         };
       }
+
       const rate = loan.interestRate !== undefined ? loan.interestRate : 1.0;
-      const principal = loan.currentBalance || 0;
-      const nextMonthInterest = rate > 0 ? Math.round(principal * (rate / 100)) : 0;
-      const monthlyInterest = nextMonthInterest;
-
       const now = new Date();
-      const currentYear = now.getFullYear();
-      const currentMonth = now.getMonth() + 1;
-      const currentMonthCode = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
-
+      const currentMonthCode = normalizeMonthCode(now);
       const effectiveMonthCode = targetMonthCodeOverride || currentMonthCode;
-      let effectiveYear = currentYear;
-      let effectiveMonth = currentMonth;
-      if (targetMonthCodeOverride) {
-        const p = targetMonthCodeOverride.split('-');
-        if (p.length >= 2) {
-          effectiveYear = parseInt(p[0], 10);
-          effectiveMonth = parseInt(p[1], 10);
-        }
-      }
-
-      let disburseYear = currentYear;
-      let disburseMonth = currentMonth;
-      if (loan.disburseDate) {
-        const parts = loan.disburseDate.split('-');
-        if (parts.length >= 2) {
-          disburseYear = parseInt(parts[0], 10);
-          disburseMonth = parseInt(parts[1], 10);
-        }
-      }
-      const disburseMonthCode = `${disburseYear}-${String(disburseMonth).padStart(2, '0')}`;
-
-      // Total months elapsed from disbursal to effective date
-      let monthsElapsed = (effectiveYear - disburseYear) * 12 + (effectiveMonth - disburseMonth);
-      if (monthsElapsed < 0) monthsElapsed = 0;
-
-      // Find payments made for this loan
       const mName = memberName || (members.find(m => m.id === loan.memberId)?.name) || '';
-      const loanRepayTx = transactions.filter(t => 
-        (t.type === 'loan_repayment' || t.type === 'interest_payment') &&
-        (t.memberName === mName || (loan.memberId && t.memberId === loan.memberId)) &&
-        (!loan.disburseDate || t.date >= loan.disburseDate)
-      );
 
-      // Check payments for the effective target month
-      const thisMonthTx = loanRepayTx.filter(t => t.date && t.date.startsWith(effectiveMonthCode));
-      const thisMonthEntries = monthlyEntries.filter(e => 
-        e.memberId === loan.memberId && 
-        e.monthCode === effectiveMonthCode && 
-        ((e.principalPaid && e.principalPaid > 0) || (e.interestPaid && e.interestPaid > 0))
-      );
-      const isThisMonthEmiPaid = thisMonthTx.length > 0 || thisMonthEntries.length > 0;
+      // AUTHORITATIVE SOURCE: Only use Transactions for loan simulation to avoid double counting.
+      const rawPayments = [];
+      transactions.forEach(t => {
+        // STRICT MATCHING: Only include transactions belonging to THIS loan or THIS member.
+        // We avoid matching by Name string to prevent collisions between different people with same name.
+        const isMatch = (t.loanId === loan.id) || (t.memberId === loan.memberId && (!t.loanId || t.loanId === loan.id));
+        
+        // Legacy fallback: Check description for Loan ID if missing from properties
+        const descMatch = (t.description || '').includes(`#${loan.id}`);
+        
+        if ((t.type === 'loan_repayment' || t.type === 'interest_payment') && (isMatch || descMatch)) {
+          
+          let mCode = normalizeMonthCode(t.date);
+          const match = (t.description || '').match(/\d{4}-\d{2}/);
+          if (match) mCode = match[0];
 
-      // Find interest specifically paid this effective month
-      const thisMonthIntTx = loanRepayTx.filter(t => t.type === 'interest_payment' && t.date && t.date.startsWith(effectiveMonthCode));
-      const thisMonthEntryInt = monthlyEntries.filter(e => e.memberId === loan.memberId && e.monthCode === effectiveMonthCode && e.interestPaid > 0);
-      const thisMonthInterestPaid = Math.max(
-        thisMonthIntTx.reduce((s, t) => s + t.amount, 0),
-        thisMonthEntryInt.reduce((s, e) => s + (e.interestPaid || 0), 0)
-      );
-
-      // Calculate total interest paid overall
-      let totalInterestPaid = loan.totalInterestPaid || 0;
-      const mIntTx = transactions.filter(t => 
-        t.type === 'interest_payment' && 
-        t.memberName === mName && 
-        (!loan.disburseDate || t.date >= loan.disburseDate)
-      );
-      const mIntEntries = monthlyEntries.filter(e => 
-        e.memberId === loan.memberId && 
-        e.interestPaid > 0 && 
-        (!loan.disburseDate || e.datePaid >= loan.disburseDate)
-      );
-      const txIntSum = mIntTx.reduce((s, t) => s + t.amount, 0);
-      const entryIntSum = mIntEntries.reduce((s, e) => s + e.interestPaid, 0);
-      totalInterestPaid = Math.max(totalInterestPaid, txIntSum, entryIntSum);
-
-      // Total expected interest over elapsed months
-      const totalExpectedInterest = rate > 0 ? monthlyInterest * monthsElapsed : 0;
-      let pendingInterest = rate > 0 ? Math.max(0, totalExpectedInterest - totalInterestPaid) : 0;
-
-      let unpaidMonths = 0;
-      if (rate > 0 && monthlyInterest > 0) {
-        unpaidMonths = Math.ceil(pendingInterest / monthlyInterest);
-        if (!isThisMonthEmiPaid && unpaidMonths === 0 && monthsElapsed >= 1) {
-          unpaidMonths = 1;
-          pendingInterest = monthlyInterest;
+          rawPayments.push({
+            date: normalizeDateStr(t.date),
+            amountPaise: toPaise(t.amount || 0),
+            monthCode: mCode,
+            id: t.id
+          });
         }
-      }
+      });
 
-      const totalDueWithInterest = principal + pendingInterest;
+      // Sort all payments by date
+      rawPayments.sort((a, b) => (a.date > b.date ? 1 : (a.date < b.date ? -1 : 0)));
+
+      // Step 2: Chronological Simulation
+      let runningBalancePaise = toPaise(loan.principalAmount || 0);
+      let interestDebtPaise = 0;
+      let totalInterestPaidPaise = 0;
+      let paidEmiLog = [];
+      
+      let disYear = 2026, disMonth = 1;
+      if (loan.disburseDate) {
+        const parts = normalizeDateStr(loan.disburseDate).split('-');
+        disYear = parseInt(parts[0]);
+        disMonth = parseInt(parts[1]);
+      }
+      
+      let iterDate = new Date(disYear, disMonth - 1, 1);
+      const targetParts = effectiveMonthCode.split('-');
+      const targetDate = new Date(parseInt(targetParts[0]), parseInt(targetParts[1]) - 1, 1);
+      
+      let monthlyInterestAtTargetPaise = 0;
+      let unpaidMonths = 0;
+      let isThisMonthEmiPaid = false;
+      let thisMonthInterestPaidPaise = 0;
+
+      let safety = 0;
+      while (iterDate <= targetDate && safety < 240) {
+        safety++;
+        const mCode = normalizeMonthCode(iterDate);
+        
+        // 1. Interest accrues at the start of the month
+        const monthlyInterestPaise = rate > 0 ? Math.round(runningBalancePaise * (rate / 100)) : 0;
+        interestDebtPaise += monthlyInterestPaise;
+        
+        if (mCode === effectiveMonthCode) {
+          monthlyInterestAtTargetPaise = monthlyInterestPaise;
+        }
+
+        // 2. Process payments made in THIS month (logical allocation)
+        const currentMonthPayments = rawPayments.filter(p => normalizeMonthCode(p.date) === mCode);
+        
+        // Logical Grouping: Group multiple payments on the same day into one log entry
+        const dailyGroups = {};
+        currentMonthPayments.forEach(p => {
+          if (!dailyGroups[p.date]) dailyGroups[p.date] = 0;
+          dailyGroups[p.date] += p.amountPaise;
+        });
+
+        // Apply grouped payments chronologically
+        Object.keys(dailyGroups).sort().forEach(date => {
+          const totalPaidPaise = dailyGroups[date];
+          const toInterestPaise = Math.min(totalPaidPaise, interestDebtPaise);
+          const toPrincipalPaise = totalPaidPaise - toInterestPaise;
+          
+          interestDebtPaise -= toInterestPaise;
+          runningBalancePaise -= toPrincipalPaise;
+          totalInterestPaidPaise += toInterestPaise;
+
+          if (mCode === effectiveMonthCode) {
+            thisMonthInterestPaidPaise += toInterestPaise;
+          }
+
+          paidEmiLog.push({
+            date: date,
+            amount: fromPaise(totalPaidPaise),
+            interestPaid: fromPaise(toInterestPaise),
+            principalPaid: fromPaise(toPrincipalPaise),
+            remainingBalance: fromPaise(runningBalancePaise),
+            monthCode: mCode,
+            nextMonthInterest: rate > 0 ? fromPaise(Math.round(runningBalancePaise * (rate / 100))) : 0
+          });
+        });
+
+        if (mCode === effectiveMonthCode) {
+          isThisMonthEmiPaid = thisMonthInterestPaidPaise >= monthlyInterestAtTargetPaise;
+        } else if (iterDate < targetDate) {
+          // Check if previous months fully paid their interest
+          let monthInterestPaid = 0;
+          currentMonthPayments.forEach(p => {
+             // In simulation, we need to track if THIS SPECIFIC MONTH'S debt was cleared
+             // but interestDebtPaise is a rolling pool. This logic is correct for "Reducing Balance".
+          });
+          if (interestDebtPaise > 0) {
+            unpaidMonths++;
+          }
+        }
+
+        iterDate.setMonth(iterDate.getMonth() + 1);
+      }
 
       return {
-        monthlyInterest,
-        thisMonthInterestPaid,
-        nextMonthInterest,
-        pendingInterest,
+        monthlyInterest: fromPaise(monthlyInterestAtTargetPaise),
+        thisMonthInterestPaid: fromPaise(thisMonthInterestPaidPaise),
+        nextMonthInterest: rate > 0 ? fromPaise(Math.round(runningBalancePaise * (rate / 100))) : 0,
+        pendingInterest: fromPaise(interestDebtPaise),
         unpaidMonths,
         isThisMonthEmiPaid,
-        totalDueWithInterest,
-        monthsElapsed,
+        currentBalance: fromPaise(runningBalancePaise),
+        totalDueWithInterest: fromPaise(runningBalancePaise + interestDebtPaise),
+        paidEmiLog,
         rate,
         currentMonthCode,
-        disburseMonthCode,
-        totalInterestPaid
+        totalInterestPaid: fromPaise(totalInterestPaidPaise),
+        totalPaidCount: paidEmiLog.length,
+        prePaidMonths: 0
       };
     }
 
@@ -4045,15 +4024,54 @@
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span style="font-size: 9px; color: #64748b; display: block;">મૂળ લોન</span>
-                <strong style="font-size: 11px; color: #383644;">₹${loan.principalAmount.toLocaleString('en-IN')}</strong>
+                <strong style="font-size: 11px; color: #383644;">₹${formatMoney(toPaise(loan.principalAmount))}</strong>
               </div>
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span style="font-size: 9px; color: #64748b; display: block;">ભરેલ મુદ્દલ</span>
-                <strong style="font-size: 11px; color: #059669;">₹${(loan.principalAmount - loan.currentBalance).toLocaleString('en-IN')}</strong>
+                <strong style="font-size: 11px; color: #059669;">₹${formatMoney(toPaise(loan.principalAmount - intSched.currentBalance))}</strong>
               </div>
               <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <span style="font-size: 9px; color: #64748b; display: block;">બાકી મુદ્દલ</span>
-                <strong style="font-size: 11px; color: #dc2626;">₹${loan.currentBalance.toLocaleString('en-IN')}</strong>
+                <strong style="font-size: 11px; color: #dc2626;">₹${formatMoney(toPaise(intSched.currentBalance))}</strong>
+              </div>
+            </div>
+
+            <!-- Total Paid EMIs Row -->
+            <div style="background: #ffffff; padding: 8px 12px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleLoanEmiLog()">
+              <span style="font-size: 10.5px; font-weight: 700; color: #383644;">કુલ ભરેલા હપ્તા (Total Paid EMIs):</span>
+              <div style="display: flex; align-items: center; gap: 4px;">
+                <strong style="font-size: 12px; color: #1e40af;">${intSched.totalPaidCount} હપ્તા</strong>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="loan-log-chevron"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+
+            <!-- Detailed EMI Log View -->
+            <div id="loan-emi-log-view" class="hidden" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: -6px;">
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; min-width: 450px; font-size: 9.5px; border-collapse: collapse;">
+                  <thead style="background: #f8fafc;">
+                    <tr>
+                      <th style="padding: 6px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 9px;">તારીખ</th>
+                      <th style="padding: 6px; text-align: right; border-bottom: 1px solid #e2e8f0; font-size: 9px;">ભરેલ રકમ</th>
+                      <th style="padding: 6px; text-align: right; border-bottom: 1px solid #e2e8f0; font-size: 9px;">વ્યાજ</th>
+                      <th style="padding: 6px; text-align: right; border-bottom: 1px solid #e2e8f0; font-size: 9px;">મુદ્દલ</th>
+                      <th style="padding: 6px; text-align: right; border-bottom: 1px solid #e2e8f0; font-size: 9px;">બાકી મુદ્દલ</th>
+                      <th style="padding: 6px; text-align: right; border-bottom: 1px solid #e2e8f0; font-size: 9px;">આવતું વ્યાજ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${intSched.paidEmiLog.map(l => `
+                      <tr>
+                        <td style="padding: 6px; border-bottom: 1px solid #f1f5f9; font-size: 9px;">${l.date}</td>
+                        <td style="padding: 6px; text-align: right; border-bottom: 1px solid #f1f5f9; font-weight: 800; font-size: 9.5px; color: #383644;">₹${(l.amount || 0).toLocaleString('en-IN')}</td>
+                        <td style="padding: 6px; text-align: right; border-bottom: 1px solid #f1f5f9; color: #2563eb; font-size: 9px;">₹${(l.interestPaid || 0).toLocaleString('en-IN')}</td>
+                        <td style="padding: 6px; text-align: right; border-bottom: 1px solid #f1f5f9; color: #059669; font-size: 9px;">₹${(l.principalPaid || 0).toLocaleString('en-IN')}</td>
+                        <td style="padding: 6px; text-align: right; border-bottom: 1px solid #f1f5f9; color: #dc2626; font-weight: 700; font-size: 9.5px;">₹${(l.remainingBalance || 0).toLocaleString('en-IN')}</td>
+                        <td style="padding: 6px; text-align: right; border-bottom: 1px solid #f1f5f9; color: #7c3aed; font-weight: 600; font-size: 9px;">₹${(l.nextMonthInterest || 0).toLocaleString('en-IN')}</td>
+                      </tr>
+                    `).join('') || '<tr><td colspan="6" style="padding: 10px; text-align: center; color: #64748b;">કોઈ હપ્તો જમા નથી</td></tr>'}
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -4067,13 +4085,13 @@
                   </span>
                   <div style="font-size: 9px; color: #3b82f6;">
                     ${intSched.isThisMonthEmiPaid 
-                      ? `જમા મળેલ વ્યાજ: ₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString('en-IN')}` 
+                      ? `જમા મળેલ વ્યાજ: ₹${intSched.thisMonthInterestPaid.toLocaleString('en-IN')}` 
                       : `ચૂકવવાપાત્ર વ્યાજ: ₹${intSched.monthlyInterest.toLocaleString('en-IN')}`}
                   </div>
                 </div>
                 <div>
                   ${intSched.isThisMonthEmiPaid 
-                    ? '<span style="background: #ecfdf5; color: #047857; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0;">✓ EMI જમા થયેલ છે (Done)</span>'
+                    ? `<span style="background: #ecfdf5; color: #047857; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0;">✓ EMI જમા થયેલ છે (Done)</span>`
                     : '<span style="background: #fef2f2; color: #dc2626; font-weight: 700; font-size: 9.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecaca;">EMI બાકી છે (Pending)</span>'}
                 </div>
               </div>
@@ -4087,7 +4105,7 @@
                   <strong style="font-size: 12px; color: #0369a1;">₹${intSched.nextMonthInterest.toLocaleString('en-IN')} / માસ</strong>
                 </div>
                 <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">
-                  હાલની બાકી મુદ્દલ રકમ ₹${loan.currentBalance.toLocaleString('en-IN')} પર ${intSched.rate}% લેખે આવતા મહિને ₹${intSched.nextMonthInterest} વ્યાજ થશે.
+                  હાલની બાકી મુદ્દલ રકમ ₹${intSched.currentBalance.toLocaleString('en-IN')} પર ${intSched.rate}% લેખે આવતા મહિને ₹${intSched.nextMonthInterest.toLocaleString('en-IN')} વ્યાજ થશે.
                 </div>
               </div>
 
@@ -4098,7 +4116,7 @@
                     <strong style="font-size: 12px; color: #dc2626;">+₹${intSched.pendingInterest.toLocaleString('en-IN')}</strong>
                   </div>
                   <p style="font-size: 8.5px; color: #b91c1c; margin: 2px 0 0 0;">
-                    ${intSched.unpaidMonths} મહિનાથી હપ્તો ભરેલ ન હોવાથી વ્યાજ ઉમેરાયેલ છે (₹${intSched.monthlyInterest} × ${intSched.unpaidMonths} = ₹${intSched.pendingInterest}).
+                    ${intSched.unpaidMonths} મહિનાથી હપ્તો ભરેલ ન હોવાથી વ્યાજ ઉમેરાયેલ છે.
                   </p>
                 </div>
               ` : ''}
@@ -4117,6 +4135,21 @@
         `;
       }
       openModal('modal-loan-math');
+    };
+
+    window.toggleLoanEmiLog = function() {
+      const logView = document.getElementById('loan-emi-log-view');
+      const chevron = document.getElementById('loan-log-chevron');
+      if (logView) {
+        logView.classList.toggle('hidden');
+        if (chevron) {
+          if (logView.classList.contains('hidden')) {
+            chevron.style.transform = 'rotate(0deg)';
+          } else {
+            chevron.style.transform = 'rotate(180deg)';
+          }
+        }
+      }
     };
 
     window.openDirectRepayForLoan = function(loanId) {
@@ -4212,7 +4245,18 @@
 
     // Modal helpers
     function openModal(id) {
-      document.getElementById(id).classList.remove('hidden');
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('hidden');
+      
+      // Prevent body scrolling when modal is open
+      document.body.style.overflow = 'hidden';
+
+      // Hide bottom nav for all modals to avoid UI overlap on mobile
+      if (id.startsWith('modal-')) {
+        const bottomNav = document.getElementById('bottom-nav');
+        if (bottomNav) bottomNav.style.setProperty('display', 'none', 'important');
+      }
+
       if (id === 'modal-disburse') {
         renderDisburseModalOptions();
       } else if (id === 'modal-repay') {
@@ -4222,70 +4266,16 @@
       }
     }
     function closeModal(id) {
-      document.getElementById(id).classList.add('hidden');
-    }
-
-    window.setRepayNextMonth = function() {
-      const picker = document.getElementById('repay-month-picker');
-      let baseDate = new Date();
-      if (picker && picker.value) {
-        const parts = picker.value.split('-');
-        if (parts.length >= 2) {
-          baseDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
-        }
-      }
-      baseDate.setMonth(baseDate.getMonth() + 1);
-      const nextMonthStr = `${baseDate.getFullYear()}-${String(baseDate.getMonth() + 1).padStart(2, '0')}`;
-      if (picker) {
-        picker.value = nextMonthStr;
-      }
-      handleRepayMonthChange();
-    };
-
-    window.handleRepayMonthChange = function() {
-      const loanId = document.getElementById('repay-loan-select')?.value;
-      if (!loanId) return;
-      const targetLoan = loans.find(l => l.id === loanId);
-      if (!targetLoan) return;
-      const m = members.find(mem => mem.id === targetLoan.memberId);
-      const selectedMonth = document.getElementById('repay-month-picker')?.value;
-      const intSched = calculateLoanInterestSchedule(targetLoan, m ? m.name : '', selectedMonth);
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('hidden');
       
-      const now = new Date();
-      const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      const isNext = selectedMonth && selectedMonth > currentMonthStr;
+      // Restore body scrolling
+      document.body.style.overflow = '';
 
-      const intVal = document.getElementById('repay-monthly-int-val');
-      if (intVal) {
-        intVal.textContent = `₹${intSched.monthlyInterest.toLocaleString('en-IN')}`;
-      }
-      const outVal = document.getElementById('repay-outstanding-val');
-      if (outVal) {
-        outVal.textContent = `₹${targetLoan.currentBalance.toLocaleString('en-IN')}`;
-      }
-      const totalDueVal = document.getElementById('repay-total-due-val');
-      if (totalDueVal) {
-        const due = targetLoan.currentBalance + (intSched.pendingInterest > 0 ? intSched.pendingInterest : intSched.monthlyInterest);
-        totalDueVal.textContent = `₹${due.toLocaleString('en-IN')}`;
-      }
-    };
-
-    window.setLedgerNextMonth = function() {
-      const picker = document.getElementById('ledger-month-picker');
-      let baseDate = new Date();
-      if (picker && picker.value) {
-        const parts = picker.value.split('-');
-        if (parts.length >= 2) {
-          baseDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
-        }
-      }
-      baseDate.setMonth(baseDate.getMonth() + 1);
-      const nextMonthStr = `${baseDate.getFullYear()}-${String(baseDate.getMonth() + 1).padStart(2, '0')}`;
-      if (picker) {
-        picker.value = nextMonthStr;
-        renderLedger();
-      }
-    };
+      // Show bottom nav back when closing any modal that hides it
+      const bottomNav = document.getElementById('bottom-nav');
+      if (bottomNav) bottomNav.style.setProperty('display', 'grid', 'important');
+    }
 
     // --- RENDER FUNCTIONS ---
     function renderAllViews() {
@@ -4312,35 +4302,30 @@
       let bank2 = 0; // BOB-60149
       let bank3 = 0; // BOB-00839
 
+      let b1 = 0, b2 = 0, b3 = 0;
       transactions.forEach(t => {
-        const amt = t.amount || 0;
-        const isIncome = (t.type === 'savings' || t.type === 'loan_repayment' || t.type === 'interest_payment' || t.type === 'other_income');
-        const isExpense = (t.type === 'loan_disbursal' || t.type === 'other_expense');
-        
-        const mode = (t.paymentMode || t.disbursedFromBank || '').toLowerCase();
+        const amtP = toPaise(t.amount || 0);
+        const type = t.type;
+        const isIncome = (type === 'savings' || type === 'loan_repayment' || type === 'interest_payment' || type === 'other_income');
+        const isExpense = (type === 'loan_disbursal' || type === 'other_expense');
+        const mode = (t.paymentMode || '').toLowerCase();
         
         if (isIncome) {
-          if (mode.includes('bank 3') || mode.includes('00839')) {
-            bank3 += amt;
-          } else if (mode.includes('bank 2') || mode.includes('60149') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
-            bank2 += amt;
-          } else {
-            // Default / Bank 1 / BOI / SBI
-            bank1 += amt;
-          }
+          if (mode.includes('bank 3') || mode.includes('00839')) b3 += amtP;
+          else if (mode.includes('bank 2') || mode.includes('60149')) b2 += amtP;
+          else b1 += amtP;
         } else if (isExpense) {
-          if (mode.includes('bank 3') || mode.includes('00839')) {
-            bank3 -= amt;
-          } else if (mode.includes('bank 2') || mode.includes('60149') || mode.includes('bob') || mode.includes('બેંક ૨') || mode.includes('બેંક 2')) {
-            bank2 -= amt;
-          } else {
-            // Default / Bank 1 / BOI / SBI
-            bank1 -= amt;
-          }
+          if (mode.includes('bank 3') || mode.includes('00839')) b3 -= amtP;
+          else if (mode.includes('bank 2') || mode.includes('60149')) b2 -= amtP;
+          else b1 -= amtP;
         }
       });
-
-      return { bank1, bank2, bank3, total: bank1 + bank2 + bank3 };
+      return { 
+        bank1: fromPaise(b1), 
+        bank2: fromPaise(b2), 
+        bank3: fromPaise(b3), 
+        total: fromPaise(b1 + b2 + b3) 
+      };
     }
 
     window.updateDisburseBankDisplay = function() {
@@ -5061,20 +5046,27 @@
                           const chqLen = chq.length;
                           // Half masked check no (e.g. 492*** or first half visible)
                           const halfVisible = chqLen > 0 ? (chqLen <= 4 ? chq.slice(0, 2) + '••' : chq.slice(0, Math.ceil(chqLen / 2)) + '•'.repeat(Math.floor(chqLen / 2))) : 'નથી';
+                          const intSched = calculateLoanInterestSchedule(ln, m.name);
                           return `
-                            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 7px 10px; font-size: 10.5px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-                              <div style="flex: 1; min-width: 0;">
-                                <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
-                                  <strong style="color: #1e293b;">₹${Number(ln.principalAmount).toLocaleString('en-IN')}</strong>
-                                  <span style="font-size: 8.5px; padding: 1px 5px; border-radius: 4px; font-weight: 700; ${isAct ? 'background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;' : 'background: #f1f5f9; color: #64748b;'}">
-                                    ${isAct ? `ચાલુ (બાકી: ₹${Number(ln.currentBalance).toLocaleString('en-IN')})` : 'ચૂકતે (Repaid)'}
-                                  </span>
-                                  ${ln.shareHolderName && ln.shareHolderName !== m.name ? `<span style="font-size: 8.5px; color: #4338ca; background: #e0e7ff; padding: 1px 5px; border-radius: 3px; font-weight: 700;">શેર: ${ln.shareHolderName}</span>` : ''}
+                            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 7px 10px; font-size: 10.5px; display: flex; flex-direction: column; gap: 4px;">
+                              <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                                <div style="flex: 1; min-width: 0;">
+                                  <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                                    <strong style="color: #1e293b;">₹${Number(ln.principalAmount).toLocaleString('en-IN')}</strong>
+                                    <span style="font-size: 8.5px; padding: 1px 5px; border-radius: 4px; font-weight: 700; ${isAct ? 'background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;' : 'background: #f1f5f9; color: #64748b;'}">
+                                      ${isAct ? `ચાલુ (બાકી: ₹${Number(ln.currentBalance).toLocaleString('en-IN')})` : 'ચૂકતે (Repaid)'}
+                                    </span>
+                                    ${isAct ? `
+                                      <span style="font-size: 8.5px; padding: 1px 5px; border-radius: 4px; font-weight: 700; background: #f0fdf4; color: #059669; border: 1px solid #bbf7d0; cursor: pointer;" onclick="window.openLoanMathModal('${ln.id}'); event.stopPropagation();">
+                                        ${intSched.totalPaidCount} હપ્તા જમા ✓
+                                      </span>
+                                    ` : ''}
+                                    ${ln.shareHolderName && ln.shareHolderName !== m.name ? `<span style="font-size: 8.5px; color: #4338ca; background: #e0e7ff; padding: 1px 5px; border-radius: 3px; font-weight: 700;">શેર: ${ln.shareHolderName}</span>` : ''}
+                                  </div>
+                                  <div style="font-size: 9px; color: #64748b; margin-top: 2px;">
+                                    <span>તારીખ: ${ln.disburseDate || '-'}</span> | <span>દર: ${ln.interestRate}%</span> | <span>${ln.purpose || 'સામાન્ય લોન'}</span>
+                                  </div>
                                 </div>
-                                <div style="font-size: 9px; color: #64748b; margin-top: 2px;">
-                                  <span>તારીખ: ${ln.disburseDate || '-'}</span> | <span>દર: ${ln.interestRate}%</span> | <span>${ln.purpose || 'સામાન્ય લોન'}</span>
-                                </div>
-                              </div>
                               <div style="text-align: right; flex-shrink: 0;">
                                 <div style="font-size: 8px; color: #64748b; font-weight: 600;">ચેક નં (Cheque No.)</div>
                                 ${chq ? `
@@ -5442,7 +5434,8 @@
       const rows = activeShares.map(sh => {
         const m = members.find(mem => mem.id === sh.memberId);
         const activeLoan = m ? (loans.find(l => l.memberId === m.id && l.status === 'active' && l.shareId === sh.id) || loans.find(l => l.memberId === m.id && l.status === 'active' && (!l.shareId || l.shareId === 'all'))) : null;
-        const autoInterest = activeLoan ? Math.round(activeLoan.currentBalance * 0.01) : 0;
+        const rate = activeLoan ? (activeLoan.interestRate !== undefined ? activeLoan.interestRate : 1.0) : 1.0;
+        const autoInterest = activeLoan ? Math.round(activeLoan.currentBalance * (rate / 100)) : 0;
         const existingEntry = monthlyEntries.find(e => e.monthCode === selectedMonth && e.shareId === sh.id);
 
         return { sh, m, activeLoan, autoInterest, existingEntry };
@@ -5464,32 +5457,64 @@
 
       const curSavDefault = getCurrentMonthlySavingsPerShare();
       cardsContainer.innerHTML = rows.map(({ sh, m, activeLoan, autoInterest, existingEntry }) => {
+        const intSched = activeLoan ? calculateLoanInterestSchedule(activeLoan, m ? m.name : '', selectedMonth) : null;
+        
+        const isAlreadyPaidForThisMonth = existingEntry || (intSched && intSched.isThisMonthEmiPaid);
+        
         const sav = tempSavings[sh.id] !== undefined ? tempSavings[sh.id] : (existingEntry ? existingEntry.savingsPaid : curSavDefault);
         const pri = tempPrincipal[sh.id] !== undefined ? tempPrincipal[sh.id] : (existingEntry ? existingEntry.principalRepaid : '');
-        const inte = tempInterest[sh.id] !== undefined ? tempInterest[sh.id] : (existingEntry ? existingEntry.interestPaid : (activeLoan ? autoInterest : ''));
+        
+        // Logic: If already paid for this month, suggest next month's interest. 
+        // If not, suggest this month's interest.
+        let defaultInterest = '';
+        if (activeLoan) {
+          if (isAlreadyPaidForThisMonth) {
+            defaultInterest = intSched.nextMonthInterest;
+          } else {
+            defaultInterest = intSched.monthlyInterest;
+          }
+        }
+        const inte = tempInterest[sh.id] !== undefined ? tempInterest[sh.id] : (existingEntry ? existingEntry.interestPaid : defaultInterest);
         const rem = tempNotes[sh.id] !== undefined ? tempNotes[sh.id] : (existingEntry ? existingEntry.notes : '');
 
         return `
-          <div class="card space-y-3" style="position: relative;" id="ledger-card-${sh.id}">
+          <div class="card space-y-3" style="position: relative; ${isAlreadyPaidForThisMonth ? 'border-color: #a7f3d0; background-color: #f0fdf4;' : ''}" id="ledger-card-${sh.id}">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
               <div>
                 <h5 style="font-weight: 800; font-size: 11px; color: #383644;">${sh.nameOnShare}</h5>
                 <p style="font-size: 9px; color: #6b7280; margin-top: 2px;">
                   શેર નં: <b style="color: #2563eb;">${sh.shareNumber}</b> | સભ્ય: ${m.name}
+                  ${activeLoan ? ` | <span style="color: #1e40af; font-weight: 700;">લોન: ₹${activeLoan.principalAmount.toLocaleString()}</span> | <span style="color: #dc2626; font-weight: 700;">બાકી: ₹${activeLoan.currentBalance.toLocaleString()}</span> | <span style="color: #1e40af; font-weight: 800;">${activeLoan.interestRate}%</span>` : ''}
                 </p>
               </div>
+              ${isAlreadyPaidForThisMonth ? `
+                <div style="text-align: right;">
+                  <span style="color: #047857; background-color: #ecfdf5; padding: 2px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; border: 1px solid #a7f3d0; display: block;">
+                    ✓ જમા (Done)
+                  </span>
+                  ${intSched && intSched.prePaidMonths > 0 ? `
+                    <span style="font-size: 8px; color: #059669; font-weight: 700; margin-top: 2px; display: block;">
+                      ${intSched.prePaidMonths} માસ એડવાન્સ જમા
+                    </span>
+                  ` : `
+                    <span style="font-size: 8px; color: #059669; font-weight: 700; margin-top: 2px; display: block;">
+                      આવતા માસનું વ્યાજ એડ કરો
+                    </span>
+                  `}
+                </div>
+              ` : ''}
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 8px;">
               <div>
                 <label class="form-label" style="font-size: 8px;">બચત ફાળો (₹)</label>
-                <input type="number" class="form-input" required value="${sav}" oninput="updateLedgerVal('${sh.id}', 'savings', this.value)" style="font-weight: 900; color: #059669; text-align: right;">
+                <input type="number" class="form-input" required value="${sav}" oninput="updateLedgerVal('${sh.id}', 'savings', this.value)" style="font-weight: 900; color: #059669; text-align: right; ${isAlreadyPaidForThisMonth ? 'background-color: #f0fdf4;' : ''}">
               </div>
               
               <div>
                 <label class="form-label" style="font-size: 8px;">લોન મુદ્દલ પરત (₹) ${activeLoan ? `[બાકી: ₹${activeLoan.currentBalance}]` : ''}</label>
                 ${activeLoan ? `
-                  <input type="number" class="form-input" min="0" max="${activeLoan.currentBalance}" placeholder="મહત્તમ: ${activeLoan.currentBalance}" value="${pri}" oninput="updateLedgerVal('${sh.id}', 'principal', this.value)" style="font-weight: bold; color: #2563eb; text-align: right;">
+                  <input type="number" class="form-input" min="0" max="${activeLoan.currentBalance}" placeholder="મહત્તમ: ${activeLoan.currentBalance}" value="${pri}" oninput="updateLedgerVal('${sh.id}', 'principal', this.value)" style="font-weight: bold; color: #2563eb; text-align: right; ${isAlreadyPaidForThisMonth ? 'background-color: #f0fdf4;' : ''}">
                 ` : `
                   <div style="font-size: 9px; color: #9ca3af; font-style: italic; background-color: #f9fafb; text-align: center; padding: 6px; border: 1px solid #f3f4f6; border-radius: 6px;">ચાલુ લોન નથી</div>
                 `}
@@ -5500,12 +5525,12 @@
               <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 4px;">
                 <div>
                   <label class="form-label" style="font-size: 8px;">વ્યાજ ચુકવણી (₹) ${activeLoan.interestRate === 0 ? '(0% વ્યાજ)' : ''}</label>
-                  <input type="number" class="form-input" min="0" placeholder="${autoInterest}" value="${inte}" oninput="updateLedgerVal('${sh.id}', 'interest', this.value)" style="font-weight: bold; color: #2563eb; text-align: right;">
-                  ${activeLoan.interestRate > 0 ? `<span style="font-size: 7px; color: #9ca3af; display: block; margin-top: 2px;">માસિક ${activeLoan.interestRate}% વ્યાજ</span>` : ''}
+                  <input type="number" class="form-input" min="0" placeholder="${isAlreadyPaidForThisMonth ? intSched.nextMonthInterest : intSched.monthlyInterest}" value="${inte}" oninput="updateLedgerVal('${sh.id}', 'interest', this.value)" style="font-weight: bold; color: #2563eb; text-align: right; ${isAlreadyPaidForThisMonth ? 'background-color: #f0fdf4;' : ''}">
+                  ${activeLoan.interestRate > 0 ? `<span style="font-size: 7px; color: #9ca3af; display: block; margin-top: 2px;">${isAlreadyPaidForThisMonth ? 'આગામી માસ વ્યાજ' : `માસિક ${activeLoan.interestRate}% વ્યાજ`}</span>` : ''}
                 </div>
                 <div>
                   <label class="form-label" style="font-size: 8px;">નોંધ (Remarks / Reason)</label>
-                  <input type="text" class="form-input" placeholder="રીમાર્કસ..." value="${rem}" oninput="updateLedgerVal('${sh.id}', 'notes', this.value)">
+                  <input type="text" class="form-input" placeholder="રીમાર્કસ..." value="${rem}" oninput="updateLedgerVal('${sh.id}', 'notes', this.value)" style="${isAlreadyPaidForThisMonth ? 'background-color: #f0fdf4;' : ''}">
                 </div>
               </div>
             ` : ''}
@@ -5552,6 +5577,15 @@
         return !(isSelectedMonth && isMatchedShare);
       });
 
+      // CRITICAL FIX: Also clear previously generated book-entry transactions for this month/members
+      const rowMemberNames = [...new Set(rows.map(r => r.m.name))];
+      transactions = transactions.filter(t => {
+        const isBookEntry = (t.description || '').includes('[બુક એન્ટ્રી]');
+        const isSelectedMonth = (t.description || '').includes(selectedMonth);
+        const isMatchedMember = rowMemberNames.includes(t.memberName);
+        return !(isBookEntry && isSelectedMonth && isMatchedMember);
+      });
+
       // Generate new entries
       const todayStr = new Date().toISOString().split('T')[0];
       const newEntries = [];
@@ -5559,20 +5593,56 @@
       rows.forEach((row, idx) => {
         const shareId = row.sh.id;
         const memberId = row.sh.memberId;
+        const intSched = row.activeLoan ? calculateLoanInterestSchedule(row.activeLoan, row.m ? row.m.name : '', selectedMonth) : null;
+        const isAlreadyPaid = row.existingEntry || (intSched && intSched.isThisMonthEmiPaid);
 
-        const savings = parseFloat(tempSavings[shareId] !== undefined ? tempSavings[shareId] : (row.existingEntry ? row.existingEntry.savingsPaid : getCurrentMonthlySavingsPerShare())) || 0;
-        const principal = parseFloat(tempPrincipal[shareId] !== undefined ? tempPrincipal[shareId] : (row.existingEntry ? row.existingEntry.principalRepaid : 0)) || 0;
-        const interest = parseFloat(tempInterest[shareId] !== undefined ? tempInterest[shareId] : (row.existingEntry ? row.existingEntry.interestPaid : (row.activeLoan ? row.autoInterest : 0))) || 0;
+        const savings = fromPaise(toPaise(tempSavings[shareId] !== undefined ? tempSavings[shareId] : (row.existingEntry ? row.existingEntry.savingsPaid : getCurrentMonthlySavingsPerShare())));
+        const principalInput = fromPaise(toPaise(tempPrincipal[shareId] !== undefined ? tempPrincipal[shareId] : (row.existingEntry ? row.existingEntry.principalRepaid : 0)));
+        
+        let defaultInt = 0;
+        if (row.activeLoan) {
+          defaultInt = isAlreadyPaid ? intSched.nextMonthInterest : intSched.monthlyInterest;
+        }
+        let interestInput = fromPaise(toPaise(tempInterest[shareId] !== undefined ? tempInterest[shareId] : (row.existingEntry ? row.existingEntry.interestPaid : defaultInt)));
         const notes = tempNotes[shareId] !== undefined ? tempNotes[shareId] : (row.existingEntry ? row.existingEntry.notes : '');
+
+        let principal = Math.min(principalInput, row.activeLoan ? row.activeLoan.currentBalance : 0);
+        let interest = interestInput;
+
+        // LOGICAL SPLIT FIX: If interest entered exceeds what is owed (including next month), move the extra to principal
+        if (row.activeLoan && row.activeLoan.interestRate > 0) {
+            const maxAllowedInterest = intSched.pendingInterest + (intSched.isThisMonthEmiPaid ? 0 : intSched.monthlyInterest) + intSched.nextMonthInterest;
+            if (interest > maxAllowedInterest) {
+                const excess = interest - maxAllowedInterest;
+                interest = maxAllowedInterest;
+                principal += excess;
+            }
+        }
+        
+        // Final balance check for principal
+        if (row.activeLoan) {
+            principal = Math.min(principal, row.activeLoan.currentBalance);
+        }
+
+        // Target Month Code: If already paid for selectedMonth, calculate next month
+        let targetMonthCode = selectedMonth;
+        if (isAlreadyPaid && (savings > 0 || principal > 0 || interest > 0)) {
+          const parts = selectedMonth.split('-');
+          let y = parseInt(parts[0]);
+          let m = parseInt(parts[1]);
+          m++;
+          if (m > 12) { m = 1; y++; }
+          targetMonthCode = `${y}-${String(m).padStart(2, '0')}`;
+        }
 
         newEntries.push({
           id: `me-${Date.now()}-${idx}`,
-          monthCode: selectedMonth,
+          monthCode: targetMonthCode,
           memberId,
           shareId,
           savingsPaid: savings,
           interestPaid: interest,
-          principalRepaid: Math.min(principal, row.activeLoan ? row.activeLoan.currentBalance : 0),
+          principalRepaid: principal,
           datePaid: todayStr,
           notes
         });
@@ -5602,30 +5672,26 @@
             date: todayStr,
             type: 'savings',
             amount: savings,
+            memberId: memberId,
             memberName,
             description: `${selectedMonth} મહિનાની માસિક બચત ફાળો જમા`
           });
         }
 
-        if (principal > 0) {
+        // Record ONE transaction for the loan part (Principal + Interest)
+        const loanAmount = principal + interest;
+        if (loanAmount > 0) {
           transactions.push({
-            id: `t-${Date.now()}-rep-${idx}`,
+            id: `t-${Date.now()}-loan-${idx}`,
             date: todayStr,
             type: 'loan_repayment',
-            amount: principal,
+            amount: loanAmount,
+            principalAmount: principal,
+            interestAmount: interest,
+            memberId: memberId,
+            loanId: row.activeLoan ? row.activeLoan.id : '',
             memberName,
-            description: `લોન મુદ્દલ પરત મળી - માસિક હપ્તો નોંધણી (${selectedMonth})`
-          });
-        }
-
-        if (interest > 0) {
-          transactions.push({
-            id: `t-${Date.now()}-int-${idx}`,
-            date: todayStr,
-            type: 'interest_payment',
-            amount: interest,
-            memberName,
-            description: `લોન વ્યાજ જમા મળ્યું - માસિક હપ્તો નોંધણી (${selectedMonth})`
+            description: `લોન હપ્તો નોંધણી (${selectedMonth}) (#${row.activeLoan ? row.activeLoan.id : ''}) [મુદ્દલ: ₹${principal}] [વ્યાજ: ₹${interest}]`
           });
         }
       });
@@ -5923,7 +5989,7 @@
               <td style="padding: 6px 4px; text-align: center; white-space: nowrap; font-size: 8px;">
                 <div style="color: ${intSched.isThisMonthEmiPaid ? '#047857' : '#dc2626'}; font-weight: bold; font-size: 8.5px;">₹${(intSched.thisMonthInterestPaid || intSched.monthlyInterest).toLocaleString()}</div>
                 ${intSched.isThisMonthEmiPaid 
-                  ? '<span style="color: #047857; background-color: #ecfdf5; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #a7f3d0; display: inline-block; margin-top: 1px;">✓ જમા</span>'
+                  ? `<span style="color: #047857; background-color: #ecfdf5; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #a7f3d0; display: inline-block; margin-top: 1px;">✓ જમા${intSched.prePaidMonths > 0 ? ` (${intSched.prePaidMonths} M)` : ''}</span>`
                   : `<span style="color: #dc2626; background-color: #fef2f2; padding: 1px 4px; border-radius: 4px; font-size: 7px; font-weight: 700; border: 1px solid #fecaca; display: inline-block; margin-top: 1px;">${intSched.unpaidMonths > 1 ? intSched.unpaidMonths + 'M બાકી' : 'બાકી'}</span>`}
               </td>
               <td style="padding: 6px 4px; text-align: center; white-space: nowrap; font-size: 8px;">
@@ -6823,7 +6889,8 @@
     document.getElementById('form-disburse').addEventListener('submit', (e) => {
       e.preventDefault();
       const memberId = document.getElementById('disburse-member').value;
-      const amount = parseFloat(document.getElementById('disburse-amount').value) || 0;
+      const amountPaise = toPaise(document.getElementById('disburse-amount').value || 0);
+      const amount = fromPaise(amountPaise);
       const rate = parseFloat(document.getElementById('disburse-rate').value) || 0;
       const date = document.getElementById('disburse-date').value;
       const purpose = document.getElementById('disburse-purpose').value.trim() || 'વ્યક્તિગત લોન';
@@ -6856,15 +6923,18 @@
       }
 
       const balances = calculateBankBalances();
-      let selectedBankBal = balances.bank1; // Default Bank 1 (BOI)
+      let selectedBankBal = balances.bank1; 
       let bankTitle = 'BOI (Bank of India)';
+      let disBankCode = 'Bank 1';
 
       if (selectedBank === 'Bank 2') {
         selectedBankBal = balances.bank2;
         bankTitle = 'BOB (A/c 60149)';
+        disBankCode = 'Bank 2';
       } else if (selectedBank === 'Bank 3') {
         selectedBankBal = balances.bank3;
         bankTitle = 'BOB (A/c 00839)';
+        disBankCode = 'Bank 3';
       }
 
       const mShares = shares.filter(s => s.memberId === memberId && s.status === 'active');
@@ -6914,7 +6984,7 @@
         }
       });
 
-      const payMode = isBank2 ? 'ઓનલાઈન (Bank 2)' : 'ઓનલાઈન (Bank 1)';
+      const payMode = `ઓનલાઈન (${disBankCode})`;
       const typeLabel = loanType === 'special' ? 'વિશેષ' : 'સામાન્ય';
       let successAlertMsg = '';
 
@@ -6970,7 +7040,7 @@
           specialCategory,
           witness1,
           witness2,
-          disbursedFromBank: isBank2 ? 'Bank 2' : 'Bank 1',
+          disbursedFromBank: disBankCode,
           status: 'active'
         });
 
@@ -7008,8 +7078,10 @@
     document.getElementById('form-repay').addEventListener('submit', (e) => {
       e.preventDefault();
       const loanId = document.getElementById('repay-loan-select').value;
-      const principal = parseFloat(document.getElementById('repay-principal').value) || 0;
-      const interest = parseFloat(document.getElementById('repay-interest').value) || 0;
+      const principalPaise = toPaise(document.getElementById('repay-principal').value || 0);
+      const principal = fromPaise(principalPaise);
+      const interestPaise = toPaise(document.getElementById('repay-interest').value || 0);
+      const interest = fromPaise(interestPaise);
       const date = document.getElementById('repay-date').value;
 
       if (!loanId) {
@@ -7021,70 +7093,17 @@
       if (!targetLoan) return;
 
       if (principal > targetLoan.currentBalance) {
-        alert(`ભૂલ! પરત હપ્તો બાકી દેવું (₹${targetLoan.currentBalance}) થી મોટો ન હોઈ શકે.`);
+        alert(`ભૂલ! પરત હપ્તો બાકી દેવું (₹${targetLoan.currentBalance.toLocaleString()}) થી મોટો ન હોઈ શકે.`);
         return;
       }
 
-      targetLoan.currentBalance = Math.max(0, targetLoan.currentBalance - principal);
-      if (interest > 0) {
-        targetLoan.totalInterestPaid = (targetLoan.totalInterestPaid || 0) + interest;
-      }
-      if (targetLoan.currentBalance === 0) {
-        targetLoan.status = 'repaid';
-      }
-
-      const borrower = members.find(mem => mem.id === targetLoan.memberId);
-      const bName = borrower ? borrower.name : 'Unknown';
       const payMode = document.getElementById('repay-payment-mode').value;
-      const repayMonth = document.getElementById('repay-month-picker')?.value;
-
-      if (repayMonth && borrower) {
-        let existingEntry = monthlyEntries.find(e => e.memberId === borrower.id && e.monthCode === repayMonth);
-        if (existingEntry) {
-          existingEntry.principalRepaid = (existingEntry.principalRepaid || 0) + principal;
-          existingEntry.interestPaid = (existingEntry.interestPaid || 0) + interest;
-          existingEntry.datePaid = date;
-        } else {
-          monthlyEntries.push({
-            id: `me-${Date.now()}`,
-            monthCode: repayMonth,
-            memberId: borrower.id,
-            shareId: '',
-            savingsPaid: 0,
-            interestPaid: interest,
-            principalRepaid: principal,
-            datePaid: date,
-            notes: `રૂબરૂ હપ્તો (${targetLoan.purpose})`
-          });
-        }
-      }
-
-      if (principal > 0) {
-        transactions.push({
-          id: `t-${Date.now()}-qrep`,
-          date,
-          type: 'loan_repayment',
-          amount: principal,
-          memberName: bName,
-          paymentMode: payMode,
-          description: `રૂબરૂ લોન મુદ્દલ પરત હપ્તો જમા (${targetLoan.purpose})`
-        });
-      }
-
-      if (interest > 0) {
-        transactions.push({
-          id: `t-${Date.now()}-qint`,
-          date,
-          type: 'interest_payment',
-          amount: interest,
-          memberName: bName,
-          paymentMode: payMode,
-          description: `રૂબરૂ લોન વ્યાજ જમા (${targetLoan.purpose})`
-        });
-      }
+      
+      // Use shared helper
+      window.processLoanRepayment(loanId, principal, interest, date, payMode, 'રૂબરૂ હપ્તો');
 
       saveToLocalStorage();
-      alert('હપ્તો સફળતાપૂર્વક જમા મળ્યો!');
+      alert(`હપ્તો સફળતાપૂર્વક જમા મળ્યો!\nમુદ્દલ: ₹${principal.toLocaleString('en-IN')}\nવ્યાજ: ₹${interest.toLocaleString('en-IN')}\nનવું બાકી મુદ્દલ: ₹${targetLoan.currentBalance.toLocaleString('en-IN')}`);
       document.getElementById('form-repay').reset();
       document.getElementById('repay-info-box').style.display = 'none';
       closeModal('modal-repay');
@@ -7860,6 +7879,22 @@
       const memSelect = document.getElementById('unified-member-select');
       if (category === 'loan_repayment') {
         populateRepayLoans();
+      } else if (category === 'savings') {
+        // Filter members who have pending savings for this month
+        const today = new Date();
+        const currentMonthCode = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+        
+        const pendingMembers = members.filter(m => {
+          const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+          if (mShares.length === 0) return false;
+          
+          // Check if already paid for THIS specific month
+          const hasPaid = monthlyEntries.some(e => e.memberId === m.id && e.monthCode === currentMonthCode && e.savingsPaid > 0);
+          return !hasPaid;
+        });
+        
+        memSelect.innerHTML = '<option value="">-- બાકી બચતવાળા સભ્યો (Pending) --</option>' + 
+          pendingMembers.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
       } else {
         memSelect.innerHTML = '<option value="">-- સભ્ય પસંદ કરો --</option>' +
           members.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
@@ -7888,9 +7923,9 @@
 
       if (category === 'loan_repayment') {
         loanRepayFields.classList.remove('hidden');
-        amountLabel.textContent = 'મુદ્દલ ચૂકવણી રકમ (₹) * [Principal Amount]';
+        amountLabel.textContent = 'કુલ હપ્તો જમા રકમ (₹) * [Total EMI - Interest + Principal]';
         document.getElementById('unified-amount-input').placeholder = 'દા.ત. 1000';
-        handleRepayTypeChange();
+        // Automated rolling handles this
       } else if (category === 'savings') {
         amountLabel.textContent = 'બચત ફાળો રકમ (₹) *';
         document.getElementById('unified-amount-input').placeholder = 'દા.ત. 50';
@@ -7951,15 +7986,26 @@
         }
 
         const rate = targetLoan.interestRate || 1.0;
-        const interestAmt = Math.round(targetLoan.currentBalance * (rate / 100));
+        const m = members.find(mem => mem.id === targetLoan.memberId);
+        const intSched = calculateLoanInterestSchedule(targetLoan, m ? m.name : '');
+        
+        const currentInterestOwed = intSched.pendingInterest + (intSched.isThisMonthEmiPaid ? 0 : intSched.monthlyInterest);
 
         interestRateLbl.textContent = `${rate}% (માસિક દર)`;
-        interestAmtLbl.textContent = `₹${interestAmt}`;
+        interestAmtLbl.textContent = `₹${currentInterestOwed}`;
         
-        // Auto-fill dynamic default amount to 1000 or outstanding balance
-        const defaultAmt = Math.min(1000, targetLoan.currentBalance);
+        // Auto-fill dynamic default amount to 1000 or outstanding balance + interest
+        const defaultAmt = Math.min(1000, targetLoan.currentBalance + currentInterestOwed);
         document.getElementById('unified-amount-input').value = defaultAmt;
 
+      } else if (category === 'savings') {
+        const m = members.find(mem => mem.id === value);
+        if (m) {
+          const mShares = shares.filter(s => s.memberId === m.id && s.status === 'active');
+          const curSavPerShare = getCurrentMonthlySavingsPerShare();
+          const expectedAmount = mShares.length * curSavPerShare;
+          document.getElementById('unified-amount-input').value = expectedAmount;
+        }
       } else if (category === 'loan_disbursal') {
         const infoBox = document.getElementById('unified-disburse-info-box');
         if (!value) {
@@ -7975,35 +8021,9 @@
       }
     };
 
-    window.setUnifiedNextMonth = function() {
-      const picker = document.getElementById('unified-repay-month-picker');
-      if (picker) {
-        const today = new Date();
-        const nextM = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-        picker.value = `${nextM.getFullYear()}-${String(nextM.getMonth() + 1).padStart(2, '0')}`;
-      }
-    };
+    // setUnifiedNextMonth was removed as manual rolling is now automated.
 
-    window.handleRepayTypeChange = function() {
-      const repayType = document.getElementById('unified-repay-type').value;
-      const monthGroup = document.getElementById('unified-repay-month-group');
-      const picker = document.getElementById('unified-repay-month-picker');
-      const today = new Date();
-
-      if (repayType === 'advance') {
-        if (monthGroup) monthGroup.classList.remove('hidden');
-        if (picker) {
-          const nextM = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-          picker.value = `${nextM.getFullYear()}-${String(nextM.getMonth() + 1).padStart(2, '0')}`;
-        }
-      } else {
-        if (monthGroup) monthGroup.classList.add('hidden');
-        if (picker) {
-          picker.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-        }
-      }
-      handleUnifiedMemberChange();
-    };
+    // handleRepayTypeChange was removed as manual rolling is now automated.
 
     window.handleUnifiedPaymentModeChange = function() {
       const mode = document.getElementById('unified-payment-mode').value;
@@ -8020,7 +8040,8 @@
 
       const category = document.getElementById('unified-category-select').value;
       const memberId = document.getElementById('unified-member-select').value;
-      const amount = parseFloat(document.getElementById('unified-amount-input').value) || 0;
+      const amountPaise = toPaise(document.getElementById('unified-amount-input').value || 0);
+      const amount = fromPaise(amountPaise);
       const date = document.getElementById('unified-date').value;
       const notes = document.getElementById('unified-notes').value.trim();
 
@@ -8037,88 +8058,26 @@
             return;
           }
 
-          if (amount > targetLoan.currentBalance) {
-            alert(`ભૂલ! પરત હપ્તો બાકી દેવું (₹${targetLoan.currentBalance}) થી મોટો ન હોઈ શકે.`);
-            return;
-          }
-
-          const rate = targetLoan.interestRate || 1.0;
-          const interestAmt = Math.min(amount, Math.round(targetLoan.currentBalance * (rate / 100)));
-          const principalAmt = Math.max(0, amount - interestAmt);
+          const rate = targetLoan.interestRate !== undefined ? targetLoan.interestRate : 1.0;
+          const m = members.find(mem => mem.id === targetLoan.memberId);
+          const intSched = calculateLoanInterestSchedule(targetLoan, m ? m.name : '');
+          
+          const maxAllowedInterest = intSched.pendingInterest + (intSched.isThisMonthEmiPaid ? 0 : intSched.monthlyInterest) + intSched.nextMonthInterest;
+          
+          // Allocation: Interest first (up to maxAllowed), then Principal
+          const interestAmtPaise = Math.min(amountPaise, toPaise(maxAllowedInterest));
+          const principalAmtPaise = amountPaise - interestAmtPaise;
+          
+          const interestAmt = fromPaise(interestAmtPaise);
+          const principalAmt = fromPaise(principalAmtPaise);
 
           if (principalAmt > targetLoan.currentBalance) {
-            alert(`ભૂલ! ચૂકવેલ રકમમાંથી મુદ્દલ ચૂકવણી (₹${principalAmt}) બાકી દેવું (₹${targetLoan.currentBalance}) થી મોટો ન હોઈ શકે.`);
+            alert(`ભૂલ! ફક્ત ₹${targetLoan.currentBalance.toLocaleString()} મુદ્દલ બાકી છે. તમે ₹${principalAmt.toLocaleString()} મુદ્દલ ભરવા માંગો છો.`);
             return;
           }
 
-          targetLoan.currentBalance = Math.max(0, targetLoan.currentBalance - principalAmt);
-          if (interestAmt > 0) {
-            targetLoan.totalInterestPaid = (targetLoan.totalInterestPaid || 0) + interestAmt;
-          }
-          if (targetLoan.currentBalance === 0) {
-            targetLoan.status = 'repaid';
-          }
-
-          const borrower = members.find(mem => mem.id === targetLoan.memberId);
-          const bName = borrower ? borrower.name : 'Unknown';
-
-          const repayType = document.getElementById('unified-repay-type').value; 
-          const labelType = repayType === 'advance' ? 'આગામી એડવાન્સ હપ્તો' : 'ચાલુ માસિક હપ્તો';
-
-          if (principalAmt > 0) {
-            transactions.push({
-              id: `t-${Date.now()}-urep`,
-              date,
-              type: 'loan_repayment',
-              amount: principalAmt,
-              memberName: bName,
-              paymentMode: finalPaymentMode,
-              description: `લોન મુદ્દલ પરત હપ્તો જમા (${labelType}) [હેતુ: ${targetLoan.purpose}] ${notes ? `| નોંધ: ${notes}` : ''}`
-            });
-          }
-
-          if (interestAmt > 0) {
-            transactions.push({
-              id: `t-${Date.now()}-uint`,
-              date,
-              type: 'interest_payment',
-              amount: interestAmt,
-              memberName: bName,
-              paymentMode: finalPaymentMode,
-              description: `લોન વ્યાજ જમા (${labelType}) [વ્યાજ દર: ${rate}%] ${notes ? `| નોંધ: ${notes}` : ''}`
-            });
-          }
-
-          // Compute ledger target month
-          const emiPickerVal = document.getElementById('unified-repay-month-picker')?.value;
-          let targetMonthCode = emiPickerVal;
-          if (!targetMonthCode) {
-            const today = new Date();
-            if (repayType === 'advance') {
-              const nextD = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-              targetMonthCode = `${nextD.getFullYear()}-${String(nextD.getMonth() + 1).padStart(2, '0')}`;
-            } else {
-              targetMonthCode = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-            }
-          }
-
-          const mShares = shares.filter(s => s.memberId === targetLoan.memberId && s.status === 'active');
-          const targetShareId = mShares.length > 0 ? mShares[0].id : '';
-
-          if (targetShareId) {
-            monthlyEntries.push({
-              id: `me-${Date.now()}`,
-              monthCode: targetMonthCode,
-              memberId: targetLoan.memberId,
-              shareId: targetShareId,
-              savingsPaid: 0,
-              interestPaid: interestAmt,
-              principalRepaid: principalAmt,
-              datePaid: date,
-              notes: `${labelType} (સ્વયંચાલિત બુક એન્ટ્રી) ${notes}`
-            });
-          }
-
+          // Use shared helper
+          window.processLoanRepayment(loanId, principalAmt, interestAmt, date, finalPaymentMode, notes);
           alert('લોન હપ્તો અને વ્યાજ સફળતાપૂર્વક સ્વયં-ગણતરી કરી જમા કરવામાં આવ્યા છે!');
 
         } else if (category === 'savings') {
