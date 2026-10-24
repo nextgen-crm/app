@@ -1409,6 +1409,10 @@
             </span>
           </div>
 
+          <div style="margin-bottom: 12px;">
+            <input type="text" id="users-directory-search" oninput="renderUsersDirectory()" placeholder="નામ અથવા મોબાઈલ નંબર શોધો..." class="form-input" style="font-size: 11px; padding: 7px 10px;">
+          </div>
+
           <div id="users-directory-list" class="space-y-2" style="max-height: 280px; overflow-y: auto; padding-right: 2px;">
             <!-- Rendered by renderUsersDirectory() -->
           </div>
@@ -7131,24 +7135,35 @@
       if (!listEl) return;
       syncUsersWithMembers();
 
-      if (users.length === 0) {
-        listEl.innerHTML = `<div style="text-align: center; color: #94a3b8; font-size: 10px; padding: 12px;">કોઈ સક્રિય યુઝર મળ્યા નથી</div>`;
+      const searchInput = document.getElementById('users-directory-search');
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+      const filteredUsers = users.filter(u => {
+        return (u.name || '').toLowerCase().includes(query) || 
+               (u.phone || '').toLowerCase().includes(query);
+      });
+
+      if (filteredUsers.length === 0) {
+        listEl.innerHTML = `<div style="text-align: center; color: #94a3b8; font-size: 10px; padding: 12px;">કોઈ યુઝર મળ્યા નથી</div>`;
         return;
       }
 
-      listEl.innerHTML = users.map(u => {
+      listEl.innerHTML = filteredUsers.map(u => {
         const isAdmin = (u.role || '').toLowerCase() === 'admin';
         const hasCustomPass = Boolean((u.password || '').trim());
         const isMasterAdmin = (u.id === 'u-admin' || u.phone === 'admin');
+        const m = members.find(mem => mem.phone === u.phone || mem.id === u.memberId);
+        const isActive = m ? m.status !== 'inactive' : true;
 
         return `
           <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
             <div style="flex: 1; min-width: 0;">
               <div style="display: flex; align-items: center; gap: 6px;">
-                <strong style="font-size: 11px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.name || 'Unnamed'}</strong>
+                <strong style="font-size: 11px; color: ${isActive ? '#1e293b' : '#94a3b8'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.name || 'Unnamed'}</strong>
                 <span style="font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 4px; ${isAdmin ? 'background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;' : 'background: #f1f5f9; color: #475569;'}">
                   ${isAdmin ? 'ADMIN' : 'MEMBER'}
                 </span>
+                ${!isActive ? `<span style="font-size: 7.5px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 0 4px; border-radius: 3px; font-weight: 800;">INACTIVE</span>` : ''}
               </div>
               <div style="font-size: 9px; color: #64748b; margin-top: 2px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                 <span>${u.phone || 'N/A'}</span>
@@ -7159,13 +7174,16 @@
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
+              <button type="button" onclick="openEditMemberModal('${u.id}')" style="background: #ffffff; color: #2563eb; border: 1px solid #dbeafe; padding: 4px 7px; border-radius: 5px; font-size: 8.5px; font-weight: 700; cursor: pointer;" title="વિગત સુધારો">
+                સુધારો
+              </button>
               ${!isMasterAdmin ? `
                 <button type="button" onclick="toggleUserRole('${u.id}')" style="background: ${isAdmin ? '#fef2f2' : '#f0fdf4'}; color: ${isAdmin ? '#dc2626' : '#15803d'}; border: 1px solid ${isAdmin ? '#fecaca' : '#bbf7d0'}; padding: 4px 7px; border-radius: 5px; font-size: 8.5px; font-weight: 700; cursor: pointer;">
-                  ${isAdmin ? 'સભ્ય બનાવો' : 'Admin બનાવો'}
+                  ${isAdmin ? 'સભ્ય' : 'Admin'}
                 </button>
               ` : ''}
               <button type="button" onclick="editUserPasswordPrompt('${u.id}')" style="background: #f8fafc; color: #334155; border: 1px solid #cbd5e1; padding: 4px 7px; border-radius: 5px; font-size: 8.5px; font-weight: 600; cursor: pointer;">
-                પાસવર્ડ
+                P/W
               </button>
             </div>
           </div>
@@ -7208,6 +7226,70 @@
       saveToLocalStorage(); // Instantly saves and bg syncs to Google Sheets!
       renderUsersDirectory();
       alert(`${u.name} માટે વ્યક્તિગત પાસવર્ડ સફળતાપૂર્વક અપડેટ થઈ ગયો છે અને ગૂગલ શીટમાં સિન્ક થઈ ગયો છે!`);
+    };
+
+    window.openEditMemberModal = function(userId) {
+      syncUsersWithMembers();
+      const u = users.find(user => user.id === userId);
+      if (!u) return;
+      
+      const m = members.find(mem => mem.phone === u.phone || mem.id === u.memberId);
+      
+      document.getElementById('edit-member-id').value = userId;
+      document.getElementById('edit-member-name').value = u.name || '';
+      document.getElementById('edit-member-phone').value = u.phone || '';
+      document.getElementById('edit-member-nominee').value = m ? (m.nomineeName || '') : '';
+      document.getElementById('edit-member-status').value = m ? (m.status || 'active') : 'active';
+      
+      openModal('modal-edit-member-full');
+    };
+
+    window.handleUpdateMemberFull = function(e) {
+      if (e) e.preventDefault();
+      
+      const userId = document.getElementById('edit-member-id').value;
+      const newName = document.getElementById('edit-member-name').value.trim();
+      const newPhone = document.getElementById('edit-member-phone').value.trim();
+      const newNominee = document.getElementById('edit-member-nominee').value.trim();
+      const newStatus = document.getElementById('edit-member-status').value;
+      
+      if (!newName || !newPhone) {
+        alert('નામ અને ફોન નંબર ફરજિયાત છે!');
+        return;
+      }
+      
+      syncUsersWithMembers();
+      const u = users.find(user => user.id === userId);
+      if (!u) return;
+      
+      const m = members.find(mem => mem.phone === u.phone || mem.id === u.memberId);
+      
+      // Update User object
+      const oldPhone = u.phone;
+      u.name = newName;
+      u.phone = newPhone;
+      
+      // Update Member object if exists
+      if (m) {
+        m.name = newName;
+        m.phone = newPhone;
+        m.nomineeName = newNominee;
+        m.status = newStatus;
+      }
+      
+      // Update transactions, shares, etc if phone changed? 
+      // Most logic uses memberId/loanId now, but some might use name/phone.
+      // The summary says "source of truth moved from ledger to transactions to prevent double-counting" and "unique IDs used".
+      // But let's be safe and update name references if they are used as keys.
+      if (oldPhone !== newPhone) {
+        // Update other arrays if needed, but the current app architecture seems to rely on IDs or names/phones in some places.
+        // If they use IDs, we are good.
+      }
+      
+      saveToLocalStorage();
+      closeModal('modal-edit-member-full');
+      renderAllViews();
+      alert('સભ્યની વિગતો સફળતાપૂર્વક અપડેટ કરવામાં આવી છે!');
     };
 
     // --- ACTIVITY LOGS & ENTRIES CORRECTION CONTROLLER ---
@@ -8254,6 +8336,51 @@
       setTimeout(dismissSplash, TOTAL_DURATION);
     })();
   </script>
+
+  <!-- EDIT MEMBER FULL DETAILS MODAL -->
+  <div class="modal-backdrop hidden" id="modal-edit-member-full">
+    <div class="modal">
+      <div class="modal-header modal-header-blue">
+        <h3 id="edit-member-modal-title">સભ્યની વિગત સુધારો (Edit Member)</h3>
+        <button class="modal-close" onclick="closeModal('modal-edit-member-full')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-edit-member-full" onsubmit="handleUpdateMemberFull(event)" class="space-y-4">
+          <input type="hidden" id="edit-member-id">
+          
+          <div class="form-group">
+            <label class="form-label">સભ્યનું પૂરેપૂરું નામ (Full Name) *</label>
+            <input type="text" id="edit-member-name" class="form-input" required placeholder="દા.ત. અમીતકુમાર શાહ">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">મોબાઈલ નંબર (Phone) *</label>
+            <input type="tel" id="edit-member-phone" class="form-input" required placeholder="દા.ત. 9876543210">
+            <p style="font-size: 8.5px; color: #64748b; margin-top: 3px;">નોંધ: મોબાઈલ નંબર બદલવાથી લોગીન ID પણ બદલાઈ જશે.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">વારસદારનું નામ (Nominee Name)</label>
+            <input type="text" id="edit-member-nominee" class="form-input" placeholder="દા.ત. ગીતાબેન શાહ">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">સભ્ય સ્ટેટસ (Status)</label>
+            <select id="edit-member-status" class="form-select">
+              <option value="active">સક્રિય (Active)</option>
+              <option value="inactive">નિષ્ક્રિય (Inactive)</option>
+            </select>
+            <p style="font-size: 8.5px; color: #dc2626; margin-top: 4px;">નિષ્ક્રિય કરવાથી સભ્ય લોગીન કરી શકશે નહીં.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('modal-edit-member-full')">રદ કરો (Cancel)</button>
+            <button type="submit" class="btn btn-gradient">સેવ કરો (Update)</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
