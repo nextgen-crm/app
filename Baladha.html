@@ -845,12 +845,20 @@
 
             <!-- Financial Stats: Big Square Middle + 2 Square Boxes Flowing + Horizontal Long Savings Card -->
             <!-- 1. Big Square Box Middle: Society Main Fund -->
-            <div style="background: linear-gradient(145deg, #ffffff, #f8fafc); border: none; border-radius: 16px; padding: 32px 24px; text-align: left; margin-bottom: 16px; margin-top: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
-              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
-                <span style="display: inline-block; width: 8px; height: 8px; background-color: #059669; border-radius: 50%;"></span>
-                <span data-gu="સોસાયટી મુખ્ય ફંડ / Main Fund" data-en="Society Main Fund" style="font-size: 10px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી મુખ્ય ફંડ / Main Fund</span>
+            <div onclick="openDashboardReportModal()" style="background: linear-gradient(145deg, #ffffff, #f8fafc); border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 24px 20px; text-align: left; margin-bottom: 16px; margin-top: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='#e2e8f0'" title="મુખ્ય ડેશબોર્ડ રિપોર્ટ જુઓ અને ડાઉનલોડ કરો">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="display: inline-block; width: 8px; height: 8px; background-color: #059669; border-radius: 50%;"></span>
+                  <span data-gu="સોસાયટી મુખ્ય ફંડ / Main Fund" data-en="Society Main Fund" style="font-size: 10px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી મુખ્ય ફંડ / Main Fund</span>
+                </div>
+                <span style="font-size: 9px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                  📄 રિપોર્ટ ડાઉનલોડ
+                </span>
               </div>
-              <div style="font-size: 42px; font-weight: 900; color: #1e293b; margin: 4px 0 2px 0; letter-spacing: -0.02em;" id="stat-cash">₹0</div>
+              <div style="font-size: 38px; font-weight: 900; color: #1e293b; margin: 4px 0 2px 0; letter-spacing: -0.02em;" id="stat-cash">₹0</div>
+              <div style="font-size: 9.5px; color: #2563eb; font-weight: 700; margin-top: 6px; display: flex; align-items: center; gap: 4px;">
+                <span>રિપોર્ટ ડાઉનલોડ કરવા અહીં ક્લિક કરો (Click to Download PDF) →</span>
+              </div>
             </div>
 
             <!-- 2. Downside: 2 Flowing Square Boxes (Loans & Shares) -->
@@ -8347,6 +8355,254 @@
       // Automatically transition after 3.5 seconds
       setTimeout(dismissSplash, TOTAL_DURATION);
     })();
+
+    // Dashboard PDF Report & Floating Modal Engine
+    window.openDashboardReportModal = function() {
+      const trustCash = calculateTrustBalance();
+      const totalOutstanding = loans.reduce((sum, l) => sum + (l.status === 'active' ? l.currentBalance : 0), 0);
+      const totalSavings = monthlyEntries.reduce((sum, e) => sum + e.savingsPaid, 0);
+      const activeShares = shares.filter(s => s.status === 'active').length;
+      const activeMembers = members.filter(m => m.status === 'active').length;
+      const balances = calculateBankBalances();
+
+      const curShareVal = getCurrentShareValue();
+      const curSavPerShare = getCurrentMonthlySavingsPerShare();
+      const curLoanLimit = getCurrentLoanLimitPerShare();
+
+      const allTxInterest = transactions.filter(t => t.type === 'interest_payment').reduce((sum, t) => sum + (t.amount || 0), 0);
+      const allEntriesInterest = monthlyEntries.reduce((sum, e) => sum + (e.interestPaid || 0), 0);
+      const allLoansInterest = loans.reduce((sum, l) => sum + (l.totalInterestPaid || 0), 0);
+      const totalInterestCollected = Math.max(allTxInterest, allEntriesInterest, allLoansInterest);
+
+      const totalDonations = transactions.filter(t => t.type === 'other_income').reduce((sum, t) => sum + t.amount, 0);
+      const totalExpenses = transactions.filter(t => t.type === 'other_expense').reduce((sum, t) => sum + t.amount, 0);
+      const netProfit = totalInterestCollected - totalExpenses;
+
+      // Populate Floating Modal UI
+      document.getElementById('report-modal-main-fund').textContent = `₹${trustCash.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-loans').textContent = `₹${totalOutstanding.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-shares').textContent = `${activeShares} શેર`;
+      document.getElementById('report-modal-members').textContent = `કુલ સભ્યો: ${activeMembers}`;
+      document.getElementById('report-modal-savings').textContent = `₹${totalSavings.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-savings-sub').textContent = `માસિક ₹${curSavPerShare} ના ફાળામાંથી`;
+
+      document.getElementById('report-modal-rule-shareval').textContent = `₹${curShareVal.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-rule-sav').textContent = `₹${curSavPerShare}/શેર`;
+      document.getElementById('report-modal-rule-limit').textContent = `₹${curLoanLimit.toLocaleString('en-IN')}/શેર`;
+      document.getElementById('report-modal-rule-equity').textContent = `કુલ સુરક્ષિત શેર મૂડી: ₹${(activeShares * curShareVal).toLocaleString('en-IN')}`;
+
+      document.getElementById('report-modal-bank-trust-main').textContent = `₹${trustCash.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-bank1').textContent = `₹${balances.bank1.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-bank2').textContent = `₹${balances.bank2.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-bank3').textContent = `₹${balances.bank3.toLocaleString('en-IN')}`;
+
+      document.getElementById('report-modal-rev-interest').textContent = `₹${totalInterestCollected.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-rev-donations').textContent = `₹${totalDonations.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-rev-expenses').textContent = `₹${totalExpenses.toLocaleString('en-IN')}`;
+      document.getElementById('report-modal-rev-profit').textContent = `₹${netProfit.toLocaleString('en-IN')}`;
+
+      openModal('modal-dashboard-report');
+    };
+
+    window.downloadDashboardPdfReport = function() {
+      const trustCash = calculateTrustBalance();
+      const totalOutstanding = loans.reduce((sum, l) => sum + (l.status === 'active' ? l.currentBalance : 0), 0);
+      const totalSavings = monthlyEntries.reduce((sum, e) => sum + e.savingsPaid, 0);
+      const activeShares = shares.filter(s => s.status === 'active').length;
+      const activeMembers = members.filter(m => m.status === 'active').length;
+      const balances = calculateBankBalances();
+
+      const curShareVal = getCurrentShareValue();
+      const curSavPerShare = getCurrentMonthlySavingsPerShare();
+      const curLoanLimit = getCurrentLoanLimitPerShare();
+
+      const allTxInterest = transactions.filter(t => t.type === 'interest_payment').reduce((sum, t) => sum + (t.amount || 0), 0);
+      const allEntriesInterest = monthlyEntries.reduce((sum, e) => sum + (e.interestPaid || 0), 0);
+      const allLoansInterest = loans.reduce((sum, l) => sum + (l.totalInterestPaid || 0), 0);
+      const totalInterestCollected = Math.max(allTxInterest, allEntriesInterest, allLoansInterest);
+
+      const totalDonations = transactions.filter(t => t.type === 'other_income').reduce((sum, t) => sum + t.amount, 0);
+      const totalExpenses = transactions.filter(t => t.type === 'other_expense').reduce((sum, t) => sum + t.amount, 0);
+      const netProfit = totalInterestCollected - totalExpenses;
+
+      const todayStr = new Date().toLocaleDateString('gu-IN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        alert('કૃપા કરીને પૉપઅપ (Pop-up) બ્લોકર ડિસેબલ કરો જેથી રિપોર્ટ PDF જનરેટ થઈ શકે!');
+        return;
+      }
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="gu">
+        <head>
+          <meta charset="UTF-8">
+          <title>બલાઢા ક્રેડિટ સોસાયટી - ડેશબોર્ડ નાણાકીય સમરી રિપોર્ટ</title>
+          <style>
+            @page { size: A4; margin: 12mm; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: #1e293b; margin: 0; padding: 18px; background: #ffffff; }
+            .header { text-align: center; border-bottom: 2.5px solid #1e293b; padding-bottom: 10px; margin-bottom: 16px; }
+            .header h1 { margin: 0; font-size: 22px; color: #1e293b; font-weight: 800; }
+            .header h2 { margin: 3px 0 0 0; font-size: 13px; color: #2563eb; font-weight: 700; text-transform: uppercase; }
+            .header p { margin: 3px 0 0 0; font-size: 10px; color: #64748b; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+            .card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px; page-break-inside: avoid; }
+            .card-title { font-size: 10.5px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+            .value-hero { font-size: 30px; font-weight: 900; color: #4ade80; margin-top: 2px; }
+            .row { display: flex; justify-content: space-between; font-size: 10.5px; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; }
+            .row:last-child { border-bottom: none; }
+            .row-lbl { color: #475569; font-weight: 600; }
+            .row-val { font-weight: 800; color: #0f172a; }
+            .net-profit-box { background: #f0fdf4; border: 1.5px solid #a7f3d0; border-radius: 8px; padding: 8px; text-align: center; margin-top: 6px; }
+            .footer { margin-top: 20px; text-align: center; font-size: 9.5px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+            @media print {
+              .no-print { display: none !important; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="no-print" style="margin-bottom: 16px; text-align: right;">
+            <button onclick="window.print()" style="background: #2563eb; color: #ffffff; border: none; padding: 10px 20px; font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(37,99,235,0.3);">
+              📄 પીડીએફ ડાઉનલોડ / પ્રિન્ટ કરો (Save as PDF)
+            </button>
+          </div>
+
+          <div class="header">
+            <h1>બલાઢા ક્રેડિટ સોસાયટી</h1>
+            <h2>મુખ્ય ડેશબોર્ડ નાણાકીય પત્રક અને ઓડિટ રિપોર્ટ</h2>
+            <p>તારીખ: <strong>${todayStr}</strong></p>
+          </div>
+
+          <!-- Main Fund Hero Card -->
+          <div class="card" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #ffffff; margin-bottom: 14px;">
+            <div style="font-size: 10.5px; color: #94a3b8; font-weight: 700; text-transform: uppercase;">સોસાયટી મુખ્ય ફંડ / Main Fund</div>
+            <div class="value-hero">₹${trustCash.toLocaleString('en-IN')}</div>
+            <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">સોસાયટી તમામ બેંક ખાતા અને રોકડ સિલકનો કુલ મુખ્ય ફંડ</div>
+          </div>
+
+          <div class="grid">
+            <!-- Active Loans -->
+            <div class="card">
+              <div class="card-title" style="color: #1e40af;">૧. ચાલુ લોન પત્રક (Active Loans)</div>
+              <div class="row">
+                <span class="row-lbl">ચાલુ લોન (Loans):</span>
+                <span class="row-val" style="color: #1e40af;">₹${totalOutstanding.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="row">
+                <span class="row-lbl">વિગત:</span>
+                <span class="row-val">બહાર ફરેલા લોન નાણાં</span>
+              </div>
+            </div>
+
+            <!-- Shares & Members -->
+            <div class="card">
+              <div class="card-title" style="color: #0f172a;">૨. શેર અને સભ્યો (Shares & Members)</div>
+              <div class="row">
+                <span class="row-lbl">કુલ શેર (Shares):</span>
+                <span class="row-val">${activeShares} શેર</span>
+              </div>
+              <div class="row">
+                <span class="row-lbl">કુલ સભ્યો (Members):</span>
+                <span class="row-val">${activeMembers} સભ્યો</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <!-- Savings -->
+            <div class="card">
+              <div class="card-title" style="color: #059669;">૩. બચત ફાળો (Savings Contribution)</div>
+              <div class="row">
+                <span class="row-lbl">બચત ફાળો / Savings:</span>
+                <span class="row-val" style="color: #059669;">₹${totalSavings.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="row">
+                <span class="row-lbl">માસિક દરમાંથી:</span>
+                <span class="row-val">માસિક ₹${curSavPerShare} ના ફાળામાંથી</span>
+              </div>
+            </div>
+
+            <!-- Financial Rules -->
+            <div class="card">
+              <div class="card-title" style="color: #c2410c;">૪. સોસાયટી નાણાકીય નિયમો (Financial Rules)</div>
+              <div class="row">
+                <span class="row-lbl">શેર મૂડી:</span>
+                <span class="row-val">₹${curShareVal.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="row">
+                <span class="row-lbl">માસિક બચત:</span>
+                <span class="row-val">₹${curSavPerShare}/શેર</span>
+              </div>
+              <div class="row">
+                <span class="row-lbl">શેર લોન લિમિટ:</span>
+                <span class="row-val">₹${curLoanLimit.toLocaleString('en-IN')}/શેર</span>
+              </div>
+              <div class="row" style="border-top: 1px solid #cbd5e1; margin-top: 4px; padding-top: 4px;">
+                <span class="row-lbl" style="font-weight: 800; color: #1e293b;">કુલ સુરક્ષિત શેર મૂડી:</span>
+                <span class="row-val" style="color: #c2410c;">₹${(activeShares * curShareVal).toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bank Balance Sheet -->
+          <div class="card" style="margin-bottom: 14px;">
+            <div class="card-title" style="color: #1e3a8a;">૫. સોસાયટી બેંક ખાતા વિગત (Bank Balance Sheet)</div>
+            <div class="row" style="background: #e2e8f0; padding: 5px 8px; border-radius: 6px; font-weight: 800; margin-bottom: 4px;">
+              <span>સોસાયટી કુલ મુખ્ય સિલક:</span>
+              <span style="color: #059669; font-size: 12px;">₹${trustCash.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="row">
+              <span class="row-lbl">BOI (Bank of India):</span>
+              <span class="row-val">₹${balances.bank1.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="row">
+              <span class="row-lbl">BOB (A/c 60149):</span>
+              <span class="row-val">₹${balances.bank2.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="row">
+              <span class="row-lbl">BOB (A/c 00839):</span>
+              <span class="row-val">₹${balances.bank3.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
+          <!-- Revenue & Profit Analysis -->
+          <div class="card">
+            <div class="card-title" style="color: #047857;">૬. આવક, ખર્ચ અને નફો (Revenue & Profit Analysis)</div>
+            <div class="row">
+              <span class="row-lbl">વ્યાજ આવક (Loan Interest):</span>
+              <span class="row-val" style="color: #2563eb;">₹${totalInterestCollected.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="row">
+              <span class="row-lbl">કુલ મળેલ દાન (Donations):</span>
+              <span class="row-val" style="color: #059669;">₹${totalDonations.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="row">
+              <span class="row-lbl">સોસાયટી ખર્ચ (Expenses):</span>
+              <span class="row-val" style="color: #dc2626;">₹${totalExpenses.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="net-profit-box">
+              <span style="font-size: 10px; color: #047857; font-weight: 700; display: block;">ચોખ્ખો નફો (Net Profit):</span>
+              <span style="font-size: 18px; font-weight: 900; color: #059669;">₹${netProfit.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
+          <div class="footer">
+            <p>બલાઢા ક્રેડિટ સોસાયટી | કમ્પ્યુટરાઇઝડ સોસાયટી એકાઉન્ટિંગ સિસ્ટમ દ્વારા પ્રમાણિત મુખ્ય રિપોર્ટ</p>
+          </div>
+
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 300);
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+    };
   </script>
 
   <!-- EDIT MEMBER FULL DETAILS MODAL -->
@@ -8394,5 +8650,135 @@
     </div>
   </div>
 
+  <!-- DASHBOARD MAIN REPORT FLOATING MODAL -->
+  <div class="modal-backdrop hidden" id="modal-dashboard-report">
+    <div class="modal" style="max-width: 500px; border-radius: 18px; max-height: 90vh;">
+      <div class="modal-header modal-header-blue" style="border-radius: 18px 18px 0 0; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+        <div>
+          <h3 style="font-size: 13.5px; font-weight: 800; color: #1e293b; margin: 0; display: flex; align-items: center; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            બલાઢા ક્રેડિટ સોસાયટી - ડેશબોર્ડ મુખ્ય પત્રક રિપોર્ટ
+          </h3>
+          <p style="font-size: 9px; color: #64748b; margin: 2px 0 0 0;">બધા નાણાકીય આંકડાઓ સાથે પીડીએફ રિપોર્ટ જનરેટ અને ડાઉનલોડ કરો</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-dashboard-report')" style="background: none; border: none; font-size: 18px; color: #64748b; cursor: pointer; padding: 4px; border-radius: 6px;" title="બંધ કરો (Close)">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px; overflow-y: auto; max-height: calc(90vh - 120px);">
+        <!-- Live summary preview cards matching user's exact specification -->
+        <div class="space-y-3" style="font-size: 11px;">
+          
+          <!-- Card 1: Society Main Fund -->
+          <div style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #ffffff; padding: 14px; border-radius: 12px;">
+            <div style="font-size: 9.5px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">સોસાયટી મુખ્ય ફંડ / Main Fund</div>
+            <div style="font-size: 28px; font-weight: 900; color: #4ade80; margin-top: 2px;" id="report-modal-main-fund">₹0</div>
+          </div>
+
+          <!-- Grid 2: Active Loans & Shares/Members -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px;">
+              <span style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase;">ચાલુ લોન / Loans</span>
+              <div style="font-size: 16px; font-weight: 800; color: #1e40af; margin-top: 2px;" id="report-modal-loans">₹0</div>
+              <div style="font-size: 8.5px; color: #64748b;">બહાર ફરેલા લોન નાણાં</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px;">
+              <span style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase;">કુલ શેર / Shares</span>
+              <div style="font-size: 16px; font-weight: 800; color: #1e293b; margin-top: 2px;" id="report-modal-shares">0 શેર</div>
+              <div style="font-size: 8.5px; color: #64748b;" id="report-modal-members">કુલ સભ્યો: 0</div>
+            </div>
+          </div>
+
+          <!-- Card 3: Savings Contribution -->
+          <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 9.5px; color: #065f46; font-weight: 800; text-transform: uppercase;">બચત ફાળો / Savings</span>
+              <div style="font-size: 8.5px; color: #047857;" id="report-modal-savings-sub">માસિક ફાળામાંથી</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 900; color: #059669;" id="report-modal-savings">₹0</div>
+              <span style="font-size: 8px; color: #047857; font-weight: 700;">સુનિશ્ચિત બચત</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Society Financial Rules -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px;">
+            <div style="font-size: 9.5px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; margin-bottom: 6px;">સોસાયટી નાણાકીય નિયમો (Financial Rules)</div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-size: 9px; background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9;">
+              <div>
+                <span style="color: #64748b; display: block;">શેર મૂડી:</span>
+                <strong style="color: #1e293b; font-size: 11px;" id="report-modal-rule-shareval">₹20,000</strong>
+              </div>
+              <div>
+                <span style="color: #64748b; display: block;">માસિક બચત:</span>
+                <strong style="color: #059669; font-size: 11px;" id="report-modal-rule-sav">₹50/શેર</strong>
+              </div>
+              <div>
+                <span style="color: #64748b; display: block;">શેર લોન લિમિટ:</span>
+                <strong style="color: #c2410c; font-size: 11px;" id="report-modal-rule-limit">₹25,000/શેર</strong>
+              </div>
+            </div>
+            <div style="font-size: 8.5px; color: #475569; margin-top: 6px; font-weight: 700;" id="report-modal-rule-equity">કુલ સુરક્ષિત શેર મૂડી: ₹0</div>
+          </div>
+
+          <!-- Card 5: Bank Balance Sheet -->
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px;">
+            <div style="font-size: 9.5px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px;">સોસાયટી બેંક ખાતા વિગત (Bank Balance Sheet)</div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: #1e293b; background: #f8fafc; padding: 6px 8px; border-radius: 6px; margin-bottom: 6px;">
+              <span>સોસાયટી કુલ મુખ્ય સિલક:</span>
+              <span id="report-modal-bank-trust-main">₹0</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-size: 9px;">
+              <div style="background: #eff6ff; border: 1px solid #dbeafe; padding: 6px; border-radius: 6px;">
+                <span style="color: #1e40af; display: block; font-weight: 700;">BOI (Bank of India)</span>
+                <strong style="color: #1d4ed8; font-size: 11px;" id="report-modal-bank1">₹0</strong>
+              </div>
+              <div style="background: #faf5ff; border: 1px solid #e9d5ff; padding: 6px; border-radius: 6px;">
+                <span style="color: #7e22ce; display: block; font-weight: 700;">BOB (A/c 60149)</span>
+                <strong style="color: #6b21a8; font-size: 11px;" id="report-modal-bank2">₹0</strong>
+              </div>
+              <div style="background: #ecfdf5; border: 1px solid #a7f3d0; padding: 6px; border-radius: 6px;">
+                <span style="color: #047857; display: block; font-weight: 700;">BOB (A/c 00839)</span>
+                <strong style="color: #059669; font-size: 11px;" id="report-modal-bank3">₹0</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6: Revenue & Profit Analysis -->
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px;">
+            <div style="font-size: 9.5px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px;">આવક, ખર્ચ અને નફો (Revenue & Profit Analysis)</div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; font-size: 9px; margin-bottom: 6px;">
+              <div style="background: #f8fafc; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                <span style="color: #64748b; display: block;">વ્યાજ આવક (Loan Interest):</span>
+                <strong style="color: #2563eb; font-size: 11px;" id="report-modal-rev-interest">₹0</strong>
+              </div>
+              <div style="background: #f8fafc; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                <span style="color: #64748b; display: block;">કુલ મળેલ દાન (Donations):</span>
+                <strong style="color: #059669; font-size: 11px;" id="report-modal-rev-donations">₹0</strong>
+              </div>
+              <div style="background: #f8fafc; padding: 6px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                <span style="color: #64748b; display: block;">સોસાયટી ખર્ચ (Expenses):</span>
+                <strong style="color: #dc2626; font-size: 11px;" id="report-modal-rev-expenses">₹0</strong>
+              </div>
+              <div style="background: #ecfdf5; padding: 6px; border-radius: 6px; border: 1px solid #a7f3d0;">
+                <span style="color: #047857; display: block; font-weight: 700;">ચોખ્ખો નફો (Net Profit):</span>
+                <strong style="color: #059669; font-size: 12px; font-weight: 900;" id="report-modal-rev-profit">₹0</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding: 12px 16px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 18px 18px;">
+        <button type="button" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 11px;" onclick="closeModal('modal-dashboard-report')">બંધ કરો (Close)</button>
+        <button type="button" class="btn btn-gradient" style="width: auto; padding: 9px 22px; font-size: 12px; font-weight: 800; background: #2563eb; display: inline-flex; align-items: center; gap: 6px;" onclick="downloadDashboardPdfReport()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ડાઉનલોડ PDF રિપોર્ટ (Download PDF)
+        </button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
+
